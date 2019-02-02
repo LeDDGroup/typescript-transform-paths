@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "prepare": "npm run build",
     "prebuild": "rm -rf lib",
@@ -13,12 +15,24 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Transforms absolute imports to relative",
   "devDependencies": {
     "@types/node": "^10.12.21",
     "standard-version": "^4.4.0",
     "ttypescript": "^1.5.6",
     "typescript": "^3.2.4"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeDDGroup/typescript-transform-paths.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LeDDGroup/typescript-transform-paths/issues"
+  },
+  "homepage": "https://github.com/LeDDGroup/typescript-transform-paths#readme"
 }
