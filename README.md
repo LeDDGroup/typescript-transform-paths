@@ -5,7 +5,7 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![Built with Spacemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)](http://spacemacs.org)
 
-Transforms absolute imports to relative
+Transforms absolute imports to relative from `paths` in your tsconfig.json
 
 ## Install
 
@@ -20,6 +20,10 @@ Add it to _plugins_ in your _tsconfig.json_
 ```json
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@utils/*": ["utils/*"]
+    },
     "plugins": [{ "transform": "typescript-transform-paths" }]
   }
 }
