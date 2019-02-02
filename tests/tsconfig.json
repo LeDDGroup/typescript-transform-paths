@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+
+    "strict": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "@utils/*": ["utils/*"]
+    },
+
+    "esModuleInterop": true,
+
+    "plugins": [{ "transform": "../src/index.ts" }]
+  }
+}
