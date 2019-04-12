@@ -1,39 +1,39 @@
 {
   "name": "typescript-transform-paths",
   "version": "1.0.0",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "files": [
-    "lib"
-  ],
-  "scripts": {
-    "prepare": "npm run build",
-    "prebuild": "rm -rf lib",
-    "build": "tsc",
-    "release": "standard-version",
-    "test": "ttsc -p tests/tsconfig.json && node tests/core/index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "description": "Transforms absolute imports to relative",
-  "devDependencies": {
-    "@types/node": "^10.12.21",
-    "standard-version": "^4.4.0",
-    "ttypescript": "^1.5.6",
-    "typescript": "^3.2.4"
-  },
-  "dependencies": {},
-  "directories": {
-    "lib": "lib",
-    "test": "tests"
+  "keywords": [],
+  "homepage": "https://github.com/LeDDGroup/typescript-transform-paths#readme",
+  "bugs": {
+    "url": "https://github.com/LeDDGroup/typescript-transform-paths/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LeDDGroup/typescript-transform-paths.git"
   },
-  "bugs": {
-    "url": "https://github.com/LeDDGroup/typescript-transform-paths/issues"
+  "license": "ISC",
+  "author": "",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
   },
-  "homepage": "https://github.com/LeDDGroup/typescript-transform-paths#readme"
+  "scripts": {
+    "prebuild": "rm -rf lib",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "release": "standard-version",
+    "test": "ttsc -p tests/tsconfig.json && node tests/core/index.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^10.12.21",
+    "standard-version": "^4.4.0",
+    "ttypescript": "^1.5.6",
+    "typescript": "^3.2.4"
+  }
 }
