@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { dirname, resolve, relative } from "path";
 
 const transformer = <T extends ts.Node>(_: ts.Program) => {
@@ -28,7 +28,8 @@ const transformer = <T extends ts.Node>(_: ts.Program) => {
             if (match) {
               const out = path.resolve.replace(/\*/g, match[1]);
               const file = relative(fileDir, resolve(baseUrl, out));
-              node.moduleSpecifier.text = file;
+              // If it's in the same level or below add the ./
+              node.moduleSpecifier.text = file[0] === "." ? file : `./${file}`;
               break;
             }
           }

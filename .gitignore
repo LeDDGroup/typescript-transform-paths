@@ -1,4 +1,3 @@
 lib
 node_modules
-tests/core/index.js
-tests/utils/sum.js
+tests/**/*.js
