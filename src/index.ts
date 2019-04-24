@@ -1,5 +1,6 @@
 import * as ts from "typescript";
 import { dirname, resolve, relative } from "path";
+import slash = require("slash");
 
 const transformer = <T extends ts.Node>(_: ts.Program) => {
   return (context: ts.TransformationContext) => (rootNode: T) => {
@@ -25,7 +26,7 @@ const transformer = <T extends ts.Node>(_: ts.Program) => {
           const match = node.moduleSpecifier.text.match(path.regexp);
           if (match === null) continue;
           const out = path.resolve.replace(/\*/g, match[1]);
-          const file = relative(fileDir, resolve(baseUrl, out));
+          const file = slash(relative(fileDir, resolve(baseUrl, out)));
           return ts.updateImportDeclaration(
             node,
             node.decorators,
