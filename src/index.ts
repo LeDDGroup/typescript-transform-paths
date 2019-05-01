@@ -13,25 +13,53 @@ const transformer = <T extends ts.Node>(_: ts.Program) => {
       resolve: paths[key][0] // TODO should check if is not empty
     }));
     let fileDir = "";
+    function findFileInPaths(node: ts.ImportDeclaration | ts.ExportDeclaration) {
+      if (node.moduleSpecifier === undefined) {
+        return null;
+      }
+      for (const path of regPaths) {
+        const match = node.moduleSpecifier.text.match(path.regexp);
+        if (match) {
+          const out = path.resolve.replace(/\*/g, match[1]);
+          const file = slash(relative(fileDir, resolve(baseUrl, out)));
+          return file;
+        }
+      }
+      return null;
+    }
     function visit(node: ts.Node): ts.Node {
       if (ts.isSourceFile(node)) {
         fileDir = dirname(node.fileName);
         return ts.visitEachChild(node, visit, context);
       }
       if (
-        ts.isImportDeclaration(node) &&
-        ts.isStringLiteral(node.moduleSpecifier)
+        ts.isImportDeclaration(node)
+        && ts.isStringLiteral(node.moduleSpecifier)
       ) {
-        for (const path of regPaths) {
-          const match = node.moduleSpecifier.text.match(path.regexp);
-          if (match === null) continue;
-          const out = path.resolve.replace(/\*/g, match[1]);
-          const file = slash(relative(fileDir, resolve(baseUrl, out)));
+        const file = findFileInPaths(node);
+        if (file) {
           return ts.updateImportDeclaration(
             node,
             node.decorators,
             node.modifiers,
             node.importClause,
+            // If it's in the same level or below add the ./
+            ts.createLiteral(file[0] === "." ? file : `./${file}`)
+          );
+        }
+      }
+      if (
+        ts.isExportDeclaration(node)
+        && node.moduleSpecifier
+        && ts.isStringLiteral(node.moduleSpecifier)
+      ) {
+        const file = findFileInPaths(node);
+        if (file) {
+          return ts.updateExportDeclaration(
+            node,
+            node.decorators,
+            node.modifiers,
+            node.exportClause,
             // If it's in the same level or below add the ./
             ts.createLiteral(file[0] === "." ? file : `./${file}`)
           );
