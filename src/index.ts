@@ -19,7 +19,7 @@ const transformer = <T extends ts.Node>(_: ts.Program) => {
         if (match) {
           const out = path.resolve.replace(/\*/g, match[1]);
           const file = slash(relative(fileDir, resolve(baseUrl, out)));
-          return file;
+          return file[0] === "." ? file : `./${file}`;
         }
       }
       return null;
@@ -30,36 +30,14 @@ const transformer = <T extends ts.Node>(_: ts.Program) => {
         return ts.visitEachChild(node, visit, context);
       }
       if (
-        ts.isImportDeclaration(node) &&
-        ts.isStringLiteral(node.moduleSpecifier)
+        (ts.isImportDeclaration(node) || ts.isExportDeclaration(node))
+        && node.moduleSpecifier
+        && ts.isStringLiteral(node.moduleSpecifier)
       ) {
         const file = findFileInPaths(node.moduleSpecifier.text);
         if (file) {
-          return ts.updateImportDeclaration(
-            node,
-            node.decorators,
-            node.modifiers,
-            node.importClause,
-            // If it's in the same level or below add the ./
-            ts.createLiteral(file[0] === "." ? file : `./${file}`)
-          );
-        }
-      }
-      if (
-        ts.isExportDeclaration(node) &&
-        node.moduleSpecifier &&
-        ts.isStringLiteral(node.moduleSpecifier)
-      ) {
-        const file = findFileInPaths(node.moduleSpecifier.text);
-        if (file) {
-          return ts.updateExportDeclaration(
-            node,
-            node.decorators,
-            node.modifiers,
-            node.exportClause,
-            // If it's in the same level or below add the ./
-            ts.createLiteral(file[0] === "." ? file : `./${file}`)
-          );
+          node.moduleSpecifier.text = file;
+          return node;
         }
       }
       return ts.visitEachChild(node, visit, context);

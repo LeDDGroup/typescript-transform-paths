@@ -5,6 +5,7 @@
 
     "strict": true,
 
+    "outDir": "out/",
     "baseUrl": "./",
     "paths": {
       "@*": ["*"],
