@@ -41,6 +41,16 @@
         "bug",
         "platform"
       ]
+    },
+    {
+      "login": "roblav96",
+      "name": "Robert Laverty",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1457327?v=4",
+      "profile": "https://roblav96.github.io/resume",
+      "contributions": [
+        "bug",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
