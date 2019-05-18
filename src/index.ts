@@ -30,9 +30,9 @@ const transformer = <T extends ts.Node>(_: ts.Program) => {
         return ts.visitEachChild(node, visit, context);
       }
       if (
-        (ts.isImportDeclaration(node) || ts.isExportDeclaration(node))
-        && node.moduleSpecifier
-        && ts.isStringLiteral(node.moduleSpecifier)
+        (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+        node.moduleSpecifier &&
+        ts.isStringLiteral(node.moduleSpecifier)
       ) {
         const file = findFileInPaths(node.moduleSpecifier.text);
         if (file) {

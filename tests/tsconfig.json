@@ -8,7 +8,7 @@
     "outDir": "out/",
     "baseUrl": "./",
     "paths": {
-      "@*": ["*"],
+      "@*": ["*"]
     },
 
     "esModuleInterop": true,

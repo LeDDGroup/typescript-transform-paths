@@ -1,4 +1,4 @@
-import { A } from '@circular/a';
+import { A } from "@circular/a";
 
 export class B {
   print(a: A) {
