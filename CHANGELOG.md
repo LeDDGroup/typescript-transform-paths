@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.0...v1.1.1) (2019-05-18)
+
+
+### Bug Fixes
+
+* check for `paths` and `baseUrl` in tsconfig ([c3710c4](https://github.com/LeDDGroup/typescript-transform-paths/commit/c3710c4))
+* type only import not deleted from result file ([73dd8e2](https://github.com/LeDDGroup/typescript-transform-paths/commit/73dd8e2)), closes [#9](https://github.com/LeDDGroup/typescript-transform-paths/issues/9)
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.0.2...v1.1.0) (2019-05-01)
 
