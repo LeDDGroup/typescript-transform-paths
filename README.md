@@ -4,6 +4,7 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![Built with Spacemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)](http://spacemacs.org)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
 Transforms absolute imports to relative from `paths` in your tsconfig.json
 
@@ -61,3 +62,15 @@ sum_1.sum(2, 3);
 ## Contributing
 
 If you have any question or idea of a feature create an issue in github or make an PR.
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://github.com/danielpza"><img src="https://avatars2.githubusercontent.com/u/17787042?v=4" width="100px;" alt="Daniel Perez Alvarez"/><br /><sub><b>Daniel Perez Alvarez</b></sub></a><br /><a href="https://github.com/Daniel Perez Alvarez/typescript-transform-paths/commits?author=danielpza" title="Code">💻</a> <a href="#maintenance-danielpza" title="Maintenance">🚧</a> <a href="https://github.com/Daniel Perez Alvarez/typescript-transform-paths/commits?author=danielpza" title="Tests">⚠️</a></td><td align="center"><a href="https://github.com/anion155"><img src="https://avatars1.githubusercontent.com/u/4786672?v=4" width="100px;" alt="Михайлов Антон"/><br /><sub><b>Михайлов Антон</b></sub></a><br /><a href="https://github.com/Daniel Perez Alvarez/typescript-transform-paths/commits?author=anion155" title="Code">💻</a> <a href="https://github.com/Daniel Perez Alvarez/typescript-transform-paths/issues?q=author%3Aanion155" title="Bug reports">🐛</a> <a href="https://github.com/Daniel Perez Alvarez/typescript-transform-paths/commits?author=anion155" title="Tests">⚠️</a></td></tr></table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
