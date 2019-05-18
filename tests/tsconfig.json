@@ -5,10 +5,10 @@
 
     "strict": true,
 
+    "outDir": "out/",
     "baseUrl": "./",
     "paths": {
-      "@utils/*": ["utils/*"],
-      "@utils": ["utils"]
+      "@*": ["*"]
     },
 
     "esModuleInterop": true,
