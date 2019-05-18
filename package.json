@@ -12,7 +12,7 @@
     "url": "git+https://github.com/LeDDGroup/typescript-transform-paths.git"
   },
   "license": "ISC",
-  "author": "",
+  "author": "Daniel Perez Alvarez <danielpza@protonmail.com>",
   "files": [
     "lib"
   ],
