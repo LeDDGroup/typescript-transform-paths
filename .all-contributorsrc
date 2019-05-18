@@ -51,6 +51,15 @@
         "bug",
         "test"
       ]
+    },
+    {
+      "login": "oleersoy",
+      "name": "Ole Ersoy",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1163873?v=4",
+      "profile": "https://github.com/oleersoy",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
