@@ -1,0 +1,37 @@
+{
+  "projectName": "typescript-transform-paths",
+  "projectOwner": "Daniel Perez Alvarez",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "danielpza",
+      "name": "Daniel Perez Alvarez",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/17787042?v=4",
+      "profile": "https://github.com/danielpza",
+      "contributions": [
+        "code",
+        "maintenance",
+        "test"
+      ]
+    },
+    {
+      "login": "anion155",
+      "name": "Михайлов Антон",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/4786672?v=4",
+      "profile": "https://github.com/anion155",
+      "contributions": [
+        "code",
+        "bug",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
