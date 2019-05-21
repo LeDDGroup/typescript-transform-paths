@@ -95,12 +95,14 @@ const transformer = (
       visitImportClause as any,
       ts.isImportClause
     );
-    return importClause ? ts.updateImportDeclaration(
-      node,
-      node.decorators,
-      node.modifiers,
-      node.importClause,
-      fileLiteral
+    return node.importClause === importClause || importClause ? (
+      ts.updateImportDeclaration(
+        node,
+        node.decorators,
+        node.modifiers,
+        node.importClause,
+        fileLiteral
+      )
     ) : undefined;
   }
   function visitImportClause(
