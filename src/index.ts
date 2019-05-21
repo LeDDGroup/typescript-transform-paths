@@ -1,7 +1,6 @@
-
-import * as ts from 'typescript';
-import * as fs from 'fs';
-import { dirname, relative, join } from 'path';
+import * as ts from "typescript";
+import * as fs from "fs";
+import { dirname, relative, join } from "path";
 
 interface PluginConfig {
   extensions?: (string | [string, string])[];
@@ -12,11 +11,11 @@ const transformer = (_: ts.Program, config?: PluginConfig) => (context: ts.Trans
   const compilerOptions = context.getCompilerOptions();
   const sourceDir = dirname(sourceFile.fileName);
 
-  const { baseUrl = '', paths = { } } = compilerOptions;
-  const { extensions = [['.ts', '.js'], ['.tsx', '.jsx'], '.js', '.jsx'] } = config || { };
+  const { baseUrl = "", paths = { } } = compilerOptions;
+  const { extensions = [[".ts", ".js"], [".tsx", ".jsx"], ".js", ".jsx"] } = config || { };
 
   const binds = Object.keys(paths).map(key => ({
-    regexp: new RegExp(`^${key.replace(/\*$/, '(.*)')}$`),
+    regexp: new RegExp(`^${key.replace(/\*$/, "(.*)")}$`),
     paths: paths[key],
   }));
 
@@ -56,7 +55,7 @@ const transformer = (_: ts.Program, config?: PluginConfig) => (context: ts.Trans
     }
 
     file = relative(sourceDir, file);
-    return file[0] === '.' ? file : './' + file;
+    return file[0] === "." ? file : "./" + file;
   }
 
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
@@ -108,9 +107,9 @@ const transformer = (_: ts.Program, config?: PluginConfig) => (context: ts.Trans
       return node;
     }
     if (
-      !node.exportClause
-      && !compilerOptions.isolatedModules
-      && !resolver.moduleExportsSomeValue(node.moduleSpecifier)
+      !node.exportClause &&
+      !compilerOptions.isolatedModules &&
+      !resolver.moduleExportsSomeValue(node.moduleSpecifier)
     ) {
       return undefined;
     }
