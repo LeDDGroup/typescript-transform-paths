@@ -37,7 +37,7 @@
     "build": "tsc",
     "prepare": "npm run build",
     "release": "standard-version",
-    "test": "ttsc -p tests/tsconfig.json && node tests/out/core/index.js"
+    "test": "npm run build && ttsc -p tests/tsconfig.json && node tests/out/core/index.js"
   },
   "dependencies": {
     "slash": "^2.0.0"
