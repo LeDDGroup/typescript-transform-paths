@@ -1,6 +1,6 @@
 import { dirname, relative, resolve } from "path";
 import * as ts from "typescript";
-import slash = require("slash");
+import slash from "slash";
 
 const transformer = <T extends ts.Node>(_: ts.Program) => {
   return (context: ts.TransformationContext) => (rootNode: T) => {
