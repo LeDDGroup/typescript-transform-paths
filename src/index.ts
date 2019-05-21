@@ -1,7 +1,7 @@
 import * as ts from "typescript";
 import * as fs from "fs";
 import { dirname, relative, join } from "path";
-import * as slash from "slash";
+import slash = require("slash");
 
 interface PluginConfig {
   extensions?: (string | [string, string])[];
@@ -63,7 +63,8 @@ const transformer = (
       return undefined;
     }
 
-    file = slash(relative(sourceDir, file));
+    file = relative(sourceDir, file);
+    file = slash(file);
     return file[0] === "." ? file : "./" + file;
   }
 
@@ -148,16 +149,22 @@ const transformer = (
     node: ts.ExportDeclaration
   ): ts.VisitResult<ts.Statement> {
     if (
+      !node.moduleSpecifier ||
+      !ts.isStringLiteral(node.moduleSpecifier)
+    ) {
+      return node;
+    }
+    if (
       !node.exportClause &&
       !compilerOptions.isolatedModules &&
       !resolver.moduleExportsSomeValue(node.moduleSpecifier)
     ) {
-      return undefined;
+      return node;
     }
-    if (node.exportClause && resolver.isValueAliasDeclaration(node)) {
-      return undefined;
-    }
-    if (!node.moduleSpecifier || !ts.isStringLiteral(node.moduleSpecifier)) {
+    if (
+      node.exportClause &&
+      resolver.isValueAliasDeclaration(node)
+    ) {
       return node;
     }
 
