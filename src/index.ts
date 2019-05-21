@@ -1,57 +1,73 @@
-import { dirname, relative, resolve } from "path";
 import * as ts from "typescript";
+import { dirname, resolve, relative } from "path";
 import slash = require("slash");
 
-const transformer = <T extends ts.Node>(_: ts.Program) => {
-  return (context: ts.TransformationContext) => (rootNode: T) => {
-    const compilerOptions = context.getCompilerOptions();
+const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (sourceFile: ts.SourceFile) => {
+  const resolver = typeof (context as any).getEmitResolver === 'function' ? (
+    (context as any).getEmitResolver()
+  ) : undefined;
+  const compilerOptions = context.getCompilerOptions();
+  const sourceDir = dirname(sourceFile.fileName);
+
+  const { baseUrl = "", paths = { } } = compilerOptions;
+
+  const binds = Object.keys(paths).filter(key => (
+    paths[key].length
+  )).map(key => ({
+    regexp: new RegExp(`^${key.replace(/\*$/, "(.*)")}$`),
+    paths: paths[key].map(p => resolve(baseUrl, p.replace(/\*$/, ""))),
+  }));
+
+  if (!baseUrl || binds.length === 0) {
+    // There is nothing we can do without baseUrl and paths specified.
+    return sourceFile;
+  }
+
+  function bindModuleToFile(moduleName: string) {
+    for (const { regexp, paths } of binds) {
+      const match = regexp.exec(moduleName);
+      if (match) {
+        try {
+          let file = require.resolve(match[1], { paths });
+          file = file.replace(/\.\w+$/, '');
+          file = relative(sourceDir, file);
+          file = slash(file);
+          file = file[0] === "." ? file : "./" + file;
+          return file;
+        } catch (error) {
+          if (error.code !== 'MODULE_NOT_FOUND') {
+            throw error;
+          }
+        }
+      }
+    }
+  }
+
+  function visit(node: ts.Node): ts.VisitResult<ts.Node> {
     if (
-      compilerOptions.baseUrl === undefined ||
-      compilerOptions.paths === undefined
+      resolver &&
+      ts.isExportDeclaration(node) &&
+      !node.exportClause &&
+      !compilerOptions.isolatedModules &&
+      !resolver.moduleExportsSomeValue(node.moduleSpecifier)
     ) {
-      throw new Error(
-        "Should define baseUrl and paths properties in the tsconfig"
-      );
+      return undefined;
     }
-    const baseUrl = compilerOptions.baseUrl;
-    const paths = compilerOptions.paths;
-    const regPaths = Object.keys(paths)
-      .map(key => ({
-        regexp: new RegExp("^" + key.replace("*", "(.*)") + "$"),
-        resolve: paths[key][0]
-      }));
-    let fileDir = "";
-    function findFileInPaths(text: string) {
-      for (const path of regPaths) {
-        const match = text.match(path.regexp);
-        if (match) {
-          const out = path.resolve.replace(/\*/g, match[1]);
-          const file = slash(relative(fileDir, resolve(baseUrl, out)));
-          return file[0] === "." ? file : `./${file}`;
-        }
+    if (
+      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+      node.moduleSpecifier &&
+      ts.isStringLiteral(node.moduleSpecifier)
+    ) {
+      const file = bindModuleToFile(node.moduleSpecifier.text);
+      if (file) {
+        node.moduleSpecifier.text = file;
+        return node;
       }
-      return null;
     }
-    function visit(node: ts.Node): ts.Node {
-      if (ts.isSourceFile(node)) {
-        fileDir = dirname(node.fileName);
-        return ts.visitEachChild(node, visit, context);
-      }
-      if (
-        (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
-        node.moduleSpecifier &&
-        ts.isStringLiteral(node.moduleSpecifier)
-      ) {
-        const file = findFileInPaths(node.moduleSpecifier.text);
-        if (file) {
-          node.moduleSpecifier.text = file;
-          return node;
-        }
-      }
-      return ts.visitEachChild(node, visit, context);
-    }
-    return ts.visitNode(rootNode, visit);
-  };
+    return ts.visitEachChild(node, visit, context);
+  }
+
+  return ts.visitNode(sourceFile, visit);
 };
 
 export default transformer;
