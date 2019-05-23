@@ -15,11 +15,10 @@ const transformer = <T extends ts.Node>(_: ts.Program) => {
     }
     const baseUrl = compilerOptions.baseUrl;
     const paths = compilerOptions.paths;
-    const regPaths = Object.keys(paths)
-      .map(key => ({
-        regexp: new RegExp("^" + key.replace("*", "(.*)") + "$"),
-        resolve: paths[key][0]
-      }));
+    const regPaths = Object.keys(paths).map(key => ({
+      regexp: new RegExp("^" + key.replace("*", "(.*)") + "$"),
+      resolve: paths[key][0]
+    }));
     let fileDir = "";
     function findFileInPaths(text: string) {
       for (const path of regPaths) {
