@@ -1,66 +1,40 @@
-import * as fs from "fs";
-import { dirname, relative, join } from "path";
+import { dirname, relative, resolve } from "path";
 import ts from "typescript";
 import slash from "slash";
 
-interface PluginConfig {
-  extensions?: (string | [string, string])[];
-}
-
-const transformer = (_: ts.Program, config?: PluginConfig) => (
-  context: ts.TransformationContext
-) => (sourceFile: ts.SourceFile) => {
-  const resolver = (context as any).getEmitResolver();
+const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
+  sourceFile: ts.SourceFile
+) => {
+  const resolver =
+    typeof (context as any).getEmitResolver === "function"
+      ? (context as any).getEmitResolver()
+      : undefined;
   const compilerOptions = context.getCompilerOptions();
   const sourceDir = dirname(sourceFile.fileName);
 
   const { baseUrl = "", paths = {} } = compilerOptions;
-  const { extensions = [[".ts", ".js"], [".tsx", ".jsx"], ".js", ".jsx"] } =
-    config || {};
 
-  const binds = Object.keys(paths).map(key => ({
-    regexp: new RegExp(`^${key.replace(/\*$/, "(.*)")}$`),
-    paths: paths[key]
-  }));
+  const binds = Object.keys(paths)
+    .filter(key => paths[key].length)
+    .map(key => ({
+      regexp: new RegExp("^" + key.replace("*", "(.*)") + "$"),
+      path: paths[key][0]
+    }));
 
   if (!baseUrl || binds.length === 0) {
     // There is nothing we can do without baseUrl and paths specified.
     return sourceFile;
   }
 
-  function findModuleFile(moduleName: string) {
-    for (const { regexp, paths } of binds) {
+  function bindModuleToFile(moduleName: string) {
+    for (const { regexp, path } of binds) {
       const match = regexp.exec(moduleName);
       if (match) {
-        for (const path of paths) {
-          const dir = join(baseUrl, path.replace(/\*$/, match[1]));
-          if (fs.existsSync(dir)) {
-            return dir;
-          }
-          for (let ext of extensions) {
-            let src = ext;
-            if (Array.isArray(ext)) {
-              src = ext[0];
-              ext = ext[1];
-            }
-            if (fs.existsSync(`${dir}${src}`)) {
-              return `${dir}${ext}`;
-            }
-          }
-        }
+        const out = path.replace(/\*/g, match[1]);
+        const file = slash(relative(sourceDir, resolve(baseUrl, out)));
+        return file[0] === "." ? file : `./${file}`;
       }
     }
-    return undefined;
-  }
-  function bindModuleToFile(moduleName: string) {
-    let file = findModuleFile(moduleName);
-    if (!file) {
-      return undefined;
-    }
-
-    file = relative(sourceDir, file);
-    file = slash(file);
-    return file[0] === "." ? file : "./" + file;
   }
 
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
@@ -193,6 +167,30 @@ const transformer = (_: ts.Program, config?: PluginConfig) => (
   ): ts.VisitResult<ts.ExportSpecifier> {
     return resolver.isValueAliasDeclaration(node) ? node : undefined;
   }
+
+  // function visit(node: ts.Node): ts.VisitResult<ts.Node> {
+  //   if (
+  //     resolver &&
+  //     ts.isExportDeclaration(node) &&
+  //     !node.exportClause &&
+  //     !compilerOptions.isolatedModules &&
+  //     !resolver.moduleExportsSomeValue(node.moduleSpecifier)
+  //   ) {
+  //     return undefined;
+  //   }
+  //   if (
+  //     (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+  //     node.moduleSpecifier &&
+  //     ts.isStringLiteral(node.moduleSpecifier)
+  //   ) {
+  //     const file = bindModuleToFile(node.moduleSpecifier.text);
+  //     if (file) {
+  //       node.moduleSpecifier.text = file;
+  //       return node;
+  //     }
+  //   }
+  //   return ts.visitEachChild(node, visit, context);
+  // }
 
   return ts.visitNode(sourceFile, visit);
 };
