@@ -7,25 +7,20 @@ interface PluginConfig {
   extensions?: (string | [string, string])[];
 }
 
-const transformer = (
-  _: ts.Program, config?: PluginConfig
-) => (
+const transformer = (_: ts.Program, config?: PluginConfig) => (
   context: ts.TransformationContext
-) => (
-  sourceFile: ts.SourceFile
-) => {
+) => (sourceFile: ts.SourceFile) => {
   const resolver = (context as any).getEmitResolver();
   const compilerOptions = context.getCompilerOptions();
   const sourceDir = dirname(sourceFile.fileName);
 
-  const { baseUrl = "", paths = { } } = compilerOptions;
-  const { extensions = [
-    [".ts", ".js"], [".tsx", ".jsx"], ".js", ".jsx"
-  ] } = config || { };
+  const { baseUrl = "", paths = {} } = compilerOptions;
+  const { extensions = [[".ts", ".js"], [".tsx", ".jsx"], ".js", ".jsx"] } =
+    config || {};
 
   const binds = Object.keys(paths).map(key => ({
     regexp: new RegExp(`^${key.replace(/\*$/, "(.*)")}$`),
-    paths: paths[key],
+    paths: paths[key]
   }));
 
   if (!baseUrl || binds.length === 0) {
@@ -96,27 +91,28 @@ const transformer = (
       visitImportClause as any,
       ts.isImportClause
     );
-    return node.importClause === importClause || importClause ? (
-      ts.updateImportDeclaration(
-        node,
-        node.decorators,
-        node.modifiers,
-        node.importClause,
-        fileLiteral
-      )
-    ) : undefined;
+    return node.importClause === importClause || importClause
+      ? ts.updateImportDeclaration(
+          node,
+          node.decorators,
+          node.modifiers,
+          node.importClause,
+          fileLiteral
+        )
+      : undefined;
   }
   function visitImportClause(
     node: ts.ImportClause
   ): ts.VisitResult<ts.ImportClause> {
     const name = resolver.isReferencedAliasDeclaration(node)
-      ? node.name : undefined;
+      ? node.name
+      : undefined;
     const namedBindings = ts.visitNode(
       node.namedBindings,
       visitNamedImportBindings as any,
       ts.isNamedImports
     );
-    return (name || namedBindings)
+    return name || namedBindings
       ? ts.updateImportClause(node, name, namedBindings)
       : undefined;
   }
@@ -124,10 +120,8 @@ const transformer = (
     node: ts.NamedImportBindings
   ): ts.VisitResult<ts.NamedImportBindings> {
     if (node.kind === ts.SyntaxKind.NamespaceImport) {
-      return resolver.isReferencedAliasDeclaration(node)
-        ? node : undefined;
-    }
-    else {
+      return resolver.isReferencedAliasDeclaration(node) ? node : undefined;
+    } else {
       const elements = ts.visitNodes(
         node.elements,
         visitImportSpecifier as any,
@@ -141,17 +135,13 @@ const transformer = (
   function visitImportSpecifier(
     node: ts.ImportSpecifier
   ): ts.VisitResult<ts.ImportSpecifier> {
-    return resolver.isReferencedAliasDeclaration(node)
-      ? node : undefined;
+    return resolver.isReferencedAliasDeclaration(node) ? node : undefined;
   }
 
   function unpathExportDeclaration(
     node: ts.ExportDeclaration
   ): ts.VisitResult<ts.Statement> {
-    if (
-      !node.moduleSpecifier ||
-      !ts.isStringLiteral(node.moduleSpecifier)
-    ) {
+    if (!node.moduleSpecifier || !ts.isStringLiteral(node.moduleSpecifier)) {
       return node;
     }
     if (
@@ -161,10 +151,7 @@ const transformer = (
     ) {
       return node;
     }
-    if (
-      node.exportClause &&
-      resolver.isValueAliasDeclaration(node)
-    ) {
+    if (node.exportClause && resolver.isValueAliasDeclaration(node)) {
       return node;
     }
 
@@ -179,15 +166,15 @@ const transformer = (
       visitNamedExports as any,
       ts.isNamedExports
     );
-    return node.exportClause === exportClause || exportClause ? (
-      ts.updateExportDeclaration(
-        node,
-        node.decorators,
-        node.modifiers,
-        node.exportClause,
-        fileLiteral
-      )
-    ) : undefined;
+    return node.exportClause === exportClause || exportClause
+      ? ts.updateExportDeclaration(
+          node,
+          node.decorators,
+          node.modifiers,
+          node.exportClause,
+          fileLiteral
+        )
+      : undefined;
   }
   function visitNamedExports(
     node: ts.NamedExports
@@ -204,8 +191,7 @@ const transformer = (
   function visitExportSpecifier(
     node: ts.ExportSpecifier
   ): ts.VisitResult<ts.ExportSpecifier> {
-    return resolver.isValueAliasDeclaration(node)
-      ? node : undefined;
+    return resolver.isValueAliasDeclaration(node) ? node : undefined;
   }
 
   return ts.visitNode(sourceFile, visit);
