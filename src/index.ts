@@ -38,6 +38,15 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   }
 
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
+    if (
+      resolver &&
+      ts.isExportDeclaration(node) &&
+      !node.exportClause &&
+      !compilerOptions.isolatedModules &&
+      !resolver.moduleExportsSomeValue(node.moduleSpecifier)
+    ) {
+      return undefined;
+    }
     if (ts.isImportDeclaration(node)) {
       return unpathImportDeclaration(node);
     }
@@ -167,30 +176,6 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   ): ts.VisitResult<ts.ExportSpecifier> {
     return resolver.isValueAliasDeclaration(node) ? node : undefined;
   }
-
-  // function visit(node: ts.Node): ts.VisitResult<ts.Node> {
-  //   if (
-  //     resolver &&
-  //     ts.isExportDeclaration(node) &&
-  //     !node.exportClause &&
-  //     !compilerOptions.isolatedModules &&
-  //     !resolver.moduleExportsSomeValue(node.moduleSpecifier)
-  //   ) {
-  //     return undefined;
-  //   }
-  //   if (
-  //     (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
-  //     node.moduleSpecifier &&
-  //     ts.isStringLiteral(node.moduleSpecifier)
-  //   ) {
-  //     const file = bindModuleToFile(node.moduleSpecifier.text);
-  //     if (file) {
-  //       node.moduleSpecifier.text = file;
-  //       return node;
-  //     }
-  //   }
-  //   return ts.visitEachChild(node, visit, context);
-  // }
 
   return ts.visitNode(sourceFile, visit);
 };
