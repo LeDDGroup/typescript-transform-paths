@@ -37,7 +37,7 @@
     "build": "tsc",
     "prepare": "npm run build",
     "release": "standard-version",
-    "test": "npm run build && ttsc -p tests/tsconfig.json && node tests/out/core/index.js"
+    "test": "npm run build && ttsc -p tests/tsconfig.json && node tests/out/core/index.js && fgrep ../circular/b tests/out/core/index.d.ts"
   },
   "dependencies": {
     "slash": "^3.0.0"

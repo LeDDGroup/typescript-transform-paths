@@ -5,6 +5,8 @@
 
     "strict": true,
 
+    "declaration": true,
+    "outDir": "out/",
     "baseUrl": "./",
     "paths": {
       "@*": ["*"]
@@ -12,6 +14,9 @@
 
     "esModuleInterop": true,
 
-    "plugins": [{ "transform": "../" }]
+    "plugins": [
+      { "transform": "../" },
+      { "transform": "../", "afterDeclarations": true }
+    ]
   }
 }
