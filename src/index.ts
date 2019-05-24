@@ -1,7 +1,7 @@
-import * as ts from "typescript";
 import * as fs from "fs";
 import { dirname, relative, join } from "path";
-import slash = require("slash");
+import ts from "typescript";
+import slash from "slash";
 
 interface PluginConfig {
   extensions?: (string | [string, string])[];

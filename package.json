@@ -37,14 +37,14 @@
     "build": "tsc",
     "prepare": "npm run build",
     "release": "standard-version",
-    "test": "ttsc -p tests/tsconfig.json && node tests/core/index.js"
+    "test": "npm run build && ttsc -p tests/tsconfig.json && node tests/out/core/index.js"
   },
   "dependencies": {
     "slash": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^10.12.21",
-    "standard-version": "^4.4.0",
+    "@types/node": "^12.0.2",
+    "standard-version": "^6.0.1",
     "ttypescript": "^1.5.6",
     "typescript": "^3.4.5"
   }
