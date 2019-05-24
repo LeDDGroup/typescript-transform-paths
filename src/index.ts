@@ -2,21 +2,24 @@ import * as ts from "typescript";
 import { dirname, resolve, relative } from "path";
 import slash = require("slash");
 
-const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (sourceFile: ts.SourceFile) => {
-  const resolver = typeof (context as any).getEmitResolver === 'function' ? (
-    (context as any).getEmitResolver()
-  ) : undefined;
+const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
+  sourceFile: ts.SourceFile
+) => {
+  const resolver =
+    typeof (context as any).getEmitResolver === "function"
+      ? (context as any).getEmitResolver()
+      : undefined;
   const compilerOptions = context.getCompilerOptions();
   const sourceDir = dirname(sourceFile.fileName);
 
-  const { baseUrl = "", paths = { } } = compilerOptions;
+  const { baseUrl = "", paths = {} } = compilerOptions;
 
-  const binds = Object.keys(paths).filter(key => (
-    paths[key].length
-  )).map(key => ({
-    regexp: new RegExp(`^${key.replace(/\*$/, "(.*)")}$`),
-    paths: paths[key].map(p => resolve(baseUrl, p.replace(/\*$/, ""))),
-  }));
+  const binds = Object.keys(paths)
+    .filter(key => paths[key].length)
+    .map(key => ({
+      regexp: new RegExp(`^${key.replace(/\*$/, "(.*)")}$`),
+      paths: paths[key].map(p => resolve(baseUrl, p.replace(/\*$/, "")))
+    }));
 
   if (!baseUrl || binds.length === 0) {
     // There is nothing we can do without baseUrl and paths specified.
@@ -29,13 +32,13 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (s
       if (match) {
         try {
           let file = require.resolve(match[1], { paths });
-          file = file.replace(/\.\w+$/, '');
+          file = file.replace(/\.\w+$/, "");
           file = relative(sourceDir, file);
           file = slash(file);
           file = file[0] === "." ? file : "./" + file;
           return file;
         } catch (error) {
-          if (error.code !== 'MODULE_NOT_FOUND') {
+          if (error.code !== "MODULE_NOT_FOUND") {
             throw error;
           }
         }
