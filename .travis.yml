@@ -3,7 +3,7 @@ node_js:
 - stable
 script:
 - npm test
-- npx prettier "{src,tests}/**/*.ts" -c
+- npx prettier "src/**/*.ts" -c
 deploy:
   provider: npm
   email: danielpza@protonmail.com
