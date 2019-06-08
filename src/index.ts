@@ -127,22 +127,27 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     if (!node.moduleSpecifier || !ts.isStringLiteral(node.moduleSpecifier)) {
       return node;
     }
-    if (
-      !node.exportClause &&
-      !compilerOptions.isolatedModules &&
-      !resolver.moduleExportsSomeValue(node.moduleSpecifier)
-    ) {
-      return node;
-    }
-    if (node.exportClause && resolver.isValueAliasDeclaration(node)) {
-      return node;
-    }
 
     const file = bindModuleToFile(node.moduleSpecifier.text);
     if (!file) {
       return node;
     }
     const fileLiteral = ts.createLiteral(file);
+
+    if (
+      (!node.exportClause &&
+        !compilerOptions.isolatedModules &&
+        !resolver.moduleExportsSomeValue(node.moduleSpecifier)) ||
+      (node.exportClause && resolver.isValueAliasDeclaration(node))
+    ) {
+      return ts.updateExportDeclaration(
+        node,
+        node.decorators,
+        node.modifiers,
+        node.exportClause,
+        fileLiteral
+      );
+    }
 
     const exportClause = ts.visitNode(
       node.exportClause,
