@@ -59,6 +59,10 @@ var sum_1 = require("../utils/sum");
 sum_1.sum(2, 3);
 ```
 
+## Articles
+
+- [Node Consumable Modules With Typescript Paths](https://medium.com/@ole.ersoy/node-consumable-modules-with-typescript-paths-ed88a5f332fa?postPublishedType=initial) by [oleersoy](https://github.com/oleersoy")
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
