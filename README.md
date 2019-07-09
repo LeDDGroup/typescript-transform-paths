@@ -30,6 +30,8 @@ Add it to _plugins_ in your _tsconfig.json_
 }
 ```
 
+See https://github.com/LeDDGroup/typescript-transform-paths/issues/4#issuecomment-486380340 for generating declaration files.
+
 ## Example
 
 ```json
