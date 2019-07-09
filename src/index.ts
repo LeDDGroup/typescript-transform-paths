@@ -77,7 +77,9 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       visitImportClause as any,
       ts.isImportClause
     );
-    return node.importClause === importClause || importClause || isDeclarationFile
+    return node.importClause === importClause ||
+      importClause ||
+      isDeclarationFile
       ? ts.updateImportDeclaration(
           node,
           node.decorators,
