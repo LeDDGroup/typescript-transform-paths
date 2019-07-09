@@ -37,14 +37,27 @@
     "build": "tsc",
     "prepare": "npm run build",
     "release": "standard-version",
-    "test": "./test.sh"
+    "pretest": "npm run build && rm -rf tests/__result",
+    "test-original": "tsc -p tests/__fixtures/tsconfig.json --outDir tests/__result/original",
+    "test-generated": "ttsc -p tests/__fixtures/tsconfig.json --outDir tests/__result/generated",
+    "test": "npm run test-original && npm run test-generated && node tests/__result/generated/core/index.js && jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/index.ts"]
   },
   "dependencies": {
     "slash": "^3.0.0"
   },
   "devDependencies": {
+    "@types/fs-readdir-recursive": "^1.0.0",
+    "@types/jest": "^24.0.15",
     "@types/node": "^12.0.2",
+    "fs-readdir-recursive": "^1.1.0",
+    "jest": "^24.8.0",
     "standard-version": "^6.0.1",
+    "ts-jest": "^24.0.2",
     "ttypescript": "^1.5.6",
     "typescript": "^3.4.5"
   }
