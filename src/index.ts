@@ -12,6 +12,8 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   const compilerOptions = context.getCompilerOptions();
   const sourceDir = dirname(sourceFile.fileName);
 
+  const { isDeclarationFile } = sourceFile;
+
   const { baseUrl = "", paths = {} } = compilerOptions;
 
   const binds = Object.keys(paths)
@@ -39,6 +41,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
 
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
     if (
+      !isDeclarationFile &&
       resolver &&
       ts.isExportDeclaration(node) &&
       !node.exportClause &&
@@ -74,7 +77,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       visitImportClause as any,
       ts.isImportClause
     );
-    return node.importClause === importClause || importClause
+    return node.importClause === importClause || importClause || isDeclarationFile
       ? ts.updateImportDeclaration(
           node,
           node.decorators,
