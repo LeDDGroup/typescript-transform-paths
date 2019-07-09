@@ -5,6 +5,7 @@ script:
 - npm test
 - npx prettier "src/**/*.ts" -c
 deploy:
+  skip_cleanup: true
   provider: npm
   email: danielpza@protonmail.com
   api_key:
