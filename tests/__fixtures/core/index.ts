@@ -1,4 +1,5 @@
 export { sum } from "@utils";
+export { NoRuntimecodeHere } from "@utils/types-only";
 import { subs, NoRuntimecodeHere } from "@utils";
 import "@circular/b";
 import { A } from "@circular/a";
