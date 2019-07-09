@@ -159,7 +159,9 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       visitNamedExports as any,
       ts.isNamedExports
     );
-    return node.exportClause === exportClause || exportClause || isDeclarationFile
+    return node.exportClause === exportClause ||
+      exportClause ||
+      isDeclarationFile
       ? ts.updateExportDeclaration(
           node,
           node.decorators,
