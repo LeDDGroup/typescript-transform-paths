@@ -1,6 +1,6 @@
 {
   "name": "typescript-transform-paths",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Transforms absolute imports to relative",
   "keywords": [
     "typescript",
@@ -45,7 +45,9 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/tests/index.ts"]
+    "testMatch": [
+      "**/tests/index.ts"
+    ]
   },
   "dependencies": {
     "slash": "^3.0.0"
