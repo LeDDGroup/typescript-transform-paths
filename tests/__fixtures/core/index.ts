@@ -1,6 +1,7 @@
-export { sum } from "@utils";
+const { sum, subs } = require("@utils");
+const { NoRuntimecodeHere } = require("@utils/types-only");
 export { NoRuntimecodeHere } from "@utils/types-only";
-import { subs, NoRuntimecodeHere } from "@utils";
+import { NoRuntimecodeHere } from "@utils";
 import "@circular/b";
 import { A } from "@circular/a";
 
