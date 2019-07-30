@@ -40,7 +40,7 @@
     "pretest": "npm run build && rm -rf tests/__result",
     "test-original": "tsc -p tests/__fixtures/tsconfig.json --outDir tests/__result/original",
     "test-generated": "ttsc -p tests/__fixtures/tsconfig.json --outDir tests/__result/generated",
-    "test": "npm run test-original && npm run test-generated && node tests/__result/generated/core/index.js && jest"
+    "test": "npm run test-original && npm run test-generated && jest"
   },
   "jest": {
     "preset": "ts-jest",

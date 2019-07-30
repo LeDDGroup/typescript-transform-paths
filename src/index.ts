@@ -50,6 +50,23 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     ) {
       return undefined;
     }
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === "require" &&
+      ts.isStringLiteral(node.arguments[0]) &&
+      node.arguments.length === 1
+    ) {
+      const firstArg = node.arguments[0] as ts.StringLiteral;
+      const file = bindModuleToFile(firstArg.text);
+      if (!file) {
+        return node;
+      }
+      const fileLiteral = ts.createLiteral(file);
+      return ts.updateCall(node, node.expression, node.typeArguments, [
+        fileLiteral
+      ]);
+    }
     if (ts.isImportDeclaration(node)) {
       return unpathImportDeclaration(node);
     }
