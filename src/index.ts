@@ -50,6 +50,26 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     ) {
       return undefined;
     }
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === "require" &&
+      ts.isStringLiteral(node.arguments[0]) &&
+      node.arguments.length === 1
+    ) {
+      const firstArg = node.arguments[0] as ts.StringLiteral;
+      const file = bindModuleToFile(firstArg.text);
+      if (!file) {
+        return node;
+      }
+      const fileLiteral = ts.createLiteral(file);
+      return ts.updateCall(node, node.expression, node.typeArguments, [
+        fileLiteral
+      ]);
+    }
+    if (ts.isExternalModuleReference(node)) {
+      return unpathImportEqualsDeclaration(node);
+    }
     if (ts.isImportDeclaration(node)) {
       return unpathImportDeclaration(node);
     }
@@ -60,6 +80,18 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     return ts.visitEachChild(node, visit, context);
   }
 
+  function unpathImportEqualsDeclaration(node: ts.ExternalModuleReference) {
+    if (!ts.isStringLiteral(node.expression)) {
+      return node;
+    }
+    const file = bindModuleToFile(node.expression.text);
+    if (!file) {
+      return node;
+    }
+    const fileLiteral = ts.createLiteral(file);
+
+    return ts.updateExternalModuleReference(node, fileLiteral);
+  }
   function unpathImportDeclaration(
     node: ts.ImportDeclaration
   ): ts.VisitResult<ts.Statement> {
