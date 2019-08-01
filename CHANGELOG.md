@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.8](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.7...v1.1.8) (2019-08-01)
+
+
+### Bug Fixes
+
+* not updating external module reference ([2323637](https://github.com/LeDDGroup/typescript-transform-paths/commit/2323637))
+* revert [#27](https://github.com/LeDDGroup/typescript-transform-paths/issues/27) ([2d2cbeb](https://github.com/LeDDGroup/typescript-transform-paths/commit/2d2cbeb))
+
+
+
 ### [1.1.7](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.6...v1.1.7) (2019-07-30)
 
 
