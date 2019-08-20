@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.10](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.9...v1.1.10) (2019-08-20)
+
+
+### Bug Fixes
+
+* do not transform relative paths ([dd57089](https://github.com/LeDDGroup/typescript-transform-paths/commit/dd57089)), closes [#30](https://github.com/LeDDGroup/typescript-transform-paths/issues/30)
+* resolve only if file exists ([e6c51e0](https://github.com/LeDDGroup/typescript-transform-paths/commit/e6c51e0))
+
+
+
 ### [1.1.9](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.8...v1.1.9) (2019-08-20)
 
 
