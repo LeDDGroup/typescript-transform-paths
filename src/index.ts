@@ -1,7 +1,8 @@
-import { dirname, relative, resolve } from "path";
+import { dirname, relative, resolve, extname } from "path";
 import ts from "typescript";
 import slash from "slash";
 import { parse } from "url";
+import { existsSync, statSync } from "fs";
 
 const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   sourceFile: ts.SourceFile
@@ -12,6 +13,19 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       : undefined;
   const compilerOptions = context.getCompilerOptions();
   const sourceDir = dirname(sourceFile.fileName);
+
+  const implicitExtensions = [".ts", ".d.ts"];
+
+  const allowJs = compilerOptions.allowJs === true;
+  const allowJsx =
+    compilerOptions.jsx !== undefined &&
+    compilerOptions.jsx !== ts.JsxEmit.None;
+  const allowJson = compilerOptions.resolveJsonModule === true;
+
+  allowJs && implicitExtensions.push(".js");
+  allowJsx && implicitExtensions.push(".tsx");
+  allowJs && allowJsx && implicitExtensions.push(".jsx");
+  allowJson && implicitExtensions.push(".json");
 
   const { isDeclarationFile } = sourceFile;
 
@@ -29,12 +43,24 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     return sourceFile;
   }
 
+  function isRelative(s: string) {
+    return s[0] === ".";
+  }
+
   function isUrl(s: string) {
     return parse(s).protocol !== null;
   }
 
+  function fileExists(s: string) {
+    // if has extensions, file must exist
+    if (extname(s) !== "") return existsSync(s);
+    // else check for implicit extensions .ts, .dts, etc...
+    for (const ext of implicitExtensions) if (existsSync(s + ext)) return true;
+    return false;
+  }
+
   function bindModuleToFile(moduleName: string) {
-    if (moduleName[0] === ".") {
+    if (isRelative(moduleName)) {
       // if it's relative path do not transform
       return moduleName;
     }
@@ -45,10 +71,13 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
         if (isUrl(out)) {
           return out;
         }
-        const file = slash(relative(sourceDir, resolve(baseUrl, out)));
-        return file[0] === "." ? file : `./${file}`;
+        const filepath = resolve(baseUrl, out);
+        if (!fileExists(`${filepath}/index`) && !fileExists(filepath)) continue;
+        const resolved = slash(relative(sourceDir, filepath));
+        return isRelative(resolved) ? resolved : `./${resolved}`;
       }
     }
+    return undefined;
   }
 
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
