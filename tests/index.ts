@@ -21,7 +21,8 @@ function update(content: string, sourceDir: string) {
     .replace(/"(@.*)"/g, (_, moduleName) => {
       return `"${bindModuleToFile(moduleName, sourceDir)}"`;
     })
-    .replace('"path"', '"https://external.url/path.js"');
+    .replace('"path"', '"https://external.url/path.js"')
+    .replace('"circular/a"', '"../circular/a"');
 }
 
 function bindModuleToFile(moduleName: string, sourceDir: string) {

@@ -5,7 +5,11 @@ import { subs, NoRuntimecodeHere } from "@utils";
 import "@circular/b";
 import { A } from "@circular/a";
 import * as path from "path";
+import * as b from "circular/a";
+import * as c from "../circular/a";
 
+c.A;
+b.A;
 path.sep;
 
 sum.sum(2, 3);

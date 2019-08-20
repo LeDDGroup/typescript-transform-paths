@@ -9,7 +9,8 @@
     "baseUrl": "./",
     "paths": {
       "path": ["https://external.url/path.js"],
-      "@*": ["*"]
+      "@*": ["*"],
+      "*": ["*"]
     },
 
     "esModuleInterop": true,

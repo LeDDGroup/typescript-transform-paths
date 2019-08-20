@@ -34,6 +34,10 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   }
 
   function bindModuleToFile(moduleName: string) {
+    if (moduleName[0] === ".") {
+      // if it's relative path do not transform
+      return moduleName;
+    }
     for (const { regexp, path } of binds) {
       const match = regexp.exec(moduleName);
       if (match) {
