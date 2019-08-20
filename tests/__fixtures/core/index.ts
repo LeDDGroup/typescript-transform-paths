@@ -4,6 +4,9 @@ export { NoRuntimecodeHere } from "@utils/types-only";
 import { subs, NoRuntimecodeHere } from "@utils";
 import "@circular/b";
 import { A } from "@circular/a";
+import * as path from "path";
+
+path.sep;
 
 sum.sum(2, 3);
 

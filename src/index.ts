@@ -1,6 +1,7 @@
 import { dirname, relative, resolve } from "path";
 import ts from "typescript";
 import slash from "slash";
+import { parse } from "url";
 
 const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   sourceFile: ts.SourceFile
@@ -28,11 +29,18 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     return sourceFile;
   }
 
+  function isUrl(s: string) {
+    return parse(s).protocol !== null;
+  }
+
   function bindModuleToFile(moduleName: string) {
     for (const { regexp, path } of binds) {
       const match = regexp.exec(moduleName);
       if (match) {
         const out = path.replace(/\*/g, match[1]);
+        if (isUrl(out)) {
+          return out;
+        }
         const file = slash(relative(sourceDir, resolve(baseUrl, out)));
         return file[0] === "." ? file : `./${file}`;
       }

@@ -17,9 +17,11 @@ files.forEach(file => {
 });
 
 function update(content: string, sourceDir: string) {
-  return content.replace(/"(@.*)"/g, (_, moduleName) => {
-    return `"${bindModuleToFile(moduleName, sourceDir)}"`;
-  });
+  return content
+    .replace(/"(@.*)"/g, (_, moduleName) => {
+      return `"${bindModuleToFile(moduleName, sourceDir)}"`;
+    })
+    .replace('"path"', '"https://external.url/path.js"');
 }
 
 function bindModuleToFile(moduleName: string, sourceDir: string) {
