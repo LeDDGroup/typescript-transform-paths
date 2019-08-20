@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/travis/LeDDGroup/typescript-transform-paths/master.svg)](https://travis-ci.org/LeDDGroup/typescript-transform-paths)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
 
 Transforms absolute imports to relative from `paths` in your tsconfig.json
 
@@ -80,6 +80,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/oleersoy"><img src="https://avatars3.githubusercontent.com/u/1163873?v=4" width="100px;" alt="Ole Ersoy"/><br /><sub><b>Ole Ersoy</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Aoleersoy" title="Bug reports">🐛</a> <a href="#blog-oleersoy" title="Blogposts">📝</a></td>
     <td align="center"><a href="https://github.com/sbmw"><img src="https://avatars0.githubusercontent.com/u/30099628?v=4" width="100px;" alt="sbmw"/><br /><sub><b>sbmw</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Asbmw" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/richardspence"><img src="https://avatars2.githubusercontent.com/u/9914123?v=4" width="100px;" alt="richardspence"/><br /><sub><b>richardspence</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Arichardspence" title="Bug reports">🐛</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://codepen.io/viT-1/"><img src="https://avatars1.githubusercontent.com/u/19496430?v=4" width="100px;" alt="Vitaly Pinchuk"/><br /><sub><b>Vitaly Pinchuk</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3AviT-1" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
