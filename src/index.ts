@@ -1,7 +1,8 @@
-import { dirname, resolve, extname, posix } from "path";
+import { posix } from "path";
 import ts from "typescript";
 import { parse } from "url";
 import { existsSync } from "fs";
+const { dirname, resolve, extname, relative } = posix;
 
 const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   sourceFile: ts.SourceFile
@@ -72,7 +73,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
         }
         const filepath = resolve(baseUrl, out);
         if (!fileExists(`${filepath}/index`) && !fileExists(filepath)) continue;
-        const resolved = posix.relative(sourceDir, filepath);
+        const resolved = relative(sourceDir, filepath);
         return isRelative(resolved) ? resolved : `./${resolved}`;
       }
     }
