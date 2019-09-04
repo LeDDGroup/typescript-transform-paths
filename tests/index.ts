@@ -1,5 +1,4 @@
-import { dirname, relative, join } from "path";
-import slash = require("slash");
+import { dirname, relative, join, posix } from "path";
 import read = require("fs-readdir-recursive");
 import { readFileSync } from "fs";
 
@@ -29,7 +28,7 @@ function bindModuleToFile(moduleName: string, sourceDir: string) {
   const match = /@(.*)/.exec(moduleName);
   if (match) {
     const out = match[1];
-    const file = slash(relative(sourceDir, out));
+    const file = posix.relative(sourceDir, out);
     return file[0] === "." ? file : `./${file}`;
   }
 }

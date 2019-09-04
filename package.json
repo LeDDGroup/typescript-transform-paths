@@ -49,9 +49,7 @@
       "**/tests/index.ts"
     ]
   },
-  "dependencies": {
-    "slash": "^3.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/fs-readdir-recursive": "^1.0.0",
     "@types/jest": "^24.0.15",
