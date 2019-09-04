@@ -1,0 +1,7 @@
+version: 1.0.{build}
+
+build_script:
+- cmd: npm install
+
+test_script:
+- cmd: npm test
