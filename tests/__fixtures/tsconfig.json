@@ -8,6 +8,7 @@
     "declaration": true,
     "baseUrl": "./",
     "paths": {
+      "fs": ["/assets/my-libary.js"],
       "path": ["https://external.url/path.js"],
       "@*": ["*"],
       "*": ["*"]

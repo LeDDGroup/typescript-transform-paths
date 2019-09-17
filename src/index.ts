@@ -48,6 +48,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   }
 
   function isUrl(s: string) {
+    if (s[0] === '/') return true;
     return parse(s).protocol !== null;
   }
 

@@ -22,6 +22,7 @@ function update(content: string, sourceDir: string) {
       return `"${bindModuleToFile(moduleName, sourceDir)}"`;
     })
     .replace('"path"', '"https://external.url/path.js"')
+    .replace('"fs"', '"/assets/my-libary.js"')
     .replace('"circular/a"', '"../circular/a"');
 }
 
