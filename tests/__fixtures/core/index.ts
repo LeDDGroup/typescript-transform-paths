@@ -7,10 +7,12 @@ import { A } from "@circular/a";
 import * as path from "path";
 import * as b from "circular/a";
 import * as c from "../circular/a";
+import { myNative } from "@utils/utils.native";
 
 c.A;
 b.A;
 path.sep;
+myNative();
 
 sum.sum(2, 3);
 
