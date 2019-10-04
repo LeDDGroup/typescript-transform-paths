@@ -52,10 +52,10 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   }
 
   function fileExists(s: string) {
-    // if has extensions, file must exist
-    if (extname(s) !== "") return existsSync(s);
-    // else check for implicit extensions .ts, .dts, etc...
+    // check for implicit extensions .ts, .dts, etc...
     for (const ext of implicitExtensions) if (existsSync(s + ext)) return true;
+    // else if has extensions, file must exist
+    if (extname(s) !== "") return existsSync(s);
     return false;
   }
 
