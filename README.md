@@ -5,7 +5,7 @@
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/4i7egn9rn7iepg31/branch/master?svg=true)](https://ci.appveyor.com/project/danielpza/typescript-transform-paths/branch/master)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors)
 
 Transforms absolute imports to relative from `paths` in your tsconfig.json
 
@@ -85,6 +85,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="http://codepen.io/viT-1/"><img src="https://avatars1.githubusercontent.com/u/19496430?v=4" width="100px;" alt="Vitaly Pinchuk"/><br /><sub><b>Vitaly Pinchuk</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3AviT-1" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/laij84"><img src="https://avatars0.githubusercontent.com/u/18145822?v=4" width="100px;" alt="laij84"/><br /><sub><b>laij84</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Alaij84" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/dko-slapdash"><img src="https://avatars0.githubusercontent.com/u/46383452?v=4" width="100px;" alt="dko-slapdash"/><br /><sub><b>dko-slapdash</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Adko-slapdash" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
