@@ -4,7 +4,7 @@ import slash from "slash";
 import { parse } from "url";
 import { existsSync } from "fs";
 
-const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
+const transformer = (program: ts.Program) => (context: ts.TransformationContext) => (
   sourceFile: ts.SourceFile
 ) => {
   const resolver =
@@ -64,20 +64,11 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       // if it's relative path do not transform
       return moduleName;
     }
-    for (const { regexp, path } of binds) {
-      const match = regexp.exec(moduleName);
-      if (match) {
-        const out = path.replace(/\*/g, match[1]);
-        if (isUrl(out)) {
-          return out;
-        }
-        const filepath = resolve(baseUrl, out);
-        if (!fileExists(`${filepath}/index`) && !fileExists(filepath)) continue;
-        const resolved = slash(relative(sourceDir, filepath));
-        return isRelative(resolved) ? resolved : `./${resolved}`;
-      }
-    }
-    return undefined;
+    const {resolvedModule} = ts.nodeModuleNameResolver(moduleName, sourceFile.fileName, compilerOptions, ts.sys);
+    if (!resolvedModule) return moduleName;
+    const {resolvedFileName, extension } = resolvedModule;
+    const resolved = slash(relative(sourceDir, resolvedFileName)).replace(`${extension}`, "") // TODO remove extension from the end
+    return isRelative(resolved) ? resolved : `./${resolved}`;
   }
 
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
