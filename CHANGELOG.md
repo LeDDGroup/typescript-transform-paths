@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.12](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.11...v1.1.12) (2019-11-09)
+
+
+### Bug Fixes
+
+* handle tsconfig with out paths ([#41](https://github.com/LeDDGroup/typescript-transform-paths/issues/41)) ([1e936b8](https://github.com/LeDDGroup/typescript-transform-paths/commit/1e936b8))
+
+
+
 ### [1.1.11](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.10...v1.1.11) (2019-10-09)
 
 
