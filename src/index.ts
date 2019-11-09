@@ -1,12 +1,11 @@
-import { dirname, relative, resolve, extname } from "path";
+import { dirname, relative } from "path";
 import ts from "typescript";
 import slash from "slash";
 import { parse } from "url";
-import { existsSync } from "fs";
 
-const transformer = (program: ts.Program) => (context: ts.TransformationContext) => (
-  sourceFile: ts.SourceFile
-) => {
+const transformer = (_program: ts.Program) => (
+  context: ts.TransformationContext
+) => (sourceFile: ts.SourceFile) => {
   const resolver =
     typeof (context as any).getEmitResolver === "function"
       ? (context as any).getEmitResolver()
@@ -51,24 +50,37 @@ const transformer = (program: ts.Program) => (context: ts.TransformationContext)
     return parse(s).protocol !== null;
   }
 
-  function fileExists(s: string) {
-    // check for implicit extensions .ts, .dts, etc...
-    for (const ext of implicitExtensions) if (existsSync(s + ext)) return true;
-    // else if has extensions, file must exist
-    if (extname(s) !== "") return existsSync(s);
-    return false;
-  }
-
   function bindModuleToFile(moduleName: string) {
     if (isRelative(moduleName)) {
       // if it's relative path do not transform
       return moduleName;
     }
-    const {resolvedModule} = ts.nodeModuleNameResolver(moduleName, sourceFile.fileName, compilerOptions, ts.sys);
-    if (!resolvedModule) return moduleName;
-    const {resolvedFileName, extension } = resolvedModule;
-    const resolved = slash(relative(sourceDir, resolvedFileName)).replace(`${extension}`, "") // TODO remove extension from the end
-    return isRelative(resolved) ? resolved : `./${resolved}`;
+    const { resolvedModule } = ts.nodeModuleNameResolver(
+      moduleName,
+      sourceFile.fileName,
+      compilerOptions,
+      ts.sys
+    );
+    if (resolvedModule) {
+      const { resolvedFileName, extension } = resolvedModule;
+      const resolved = slash(relative(sourceDir, resolvedFileName)).replace(
+        `${extension}`,
+        ""
+      ); // TODO remove extension from the end
+      return isRelative(resolved) ? resolved : `./${resolved}`;
+    } else {
+      // only needed to check for urls
+      for (const { regexp, path } of binds) {
+        const match = regexp.exec(moduleName);
+        if (match) {
+          const out = path.replace(/\*/g, match[1]);
+          if (isUrl(out)) {
+            return out;
+          }
+        }
+      }
+      return moduleName;
+    }
   }
 
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
