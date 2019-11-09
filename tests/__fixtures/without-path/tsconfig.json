@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+
+    "declaration": true,
+    "baseUrl": "./",
+
+    "esModuleInterop": true,
+
+    "plugins": [
+      { "transform": "../../../" },
+      { "transform": "../../../", "afterDeclarations": true }
+    ]
+  }
+}

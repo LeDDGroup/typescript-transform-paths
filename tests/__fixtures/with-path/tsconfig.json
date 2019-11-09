@@ -3,8 +3,6 @@
     "target": "es5",
     "module": "commonjs",
 
-    "strict": true,
-
     "declaration": true,
     "baseUrl": "./",
     "paths": {
@@ -16,8 +14,8 @@
     "esModuleInterop": true,
 
     "plugins": [
-      { "transform": "../../" },
-      { "transform": "../../", "afterDeclarations": true }
+      { "transform": "../../../" },
+      { "transform": "../../../", "afterDeclarations": true }
     ]
   }
 }
