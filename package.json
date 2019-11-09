@@ -38,7 +38,7 @@
     "prepare": "npm run build",
     "release": "standard-version",
     "pretest": "npm run build && rm -rf tests/__result",
-    "test": "./test.sh"
+    "test": "tsc -p tests/__fixtures/with-path/tsconfig.json --outDir tests/__result/with-path/original && ttsc -p tests/__fixtures/with-path/tsconfig.json --outDir tests/__result/with-path/generated && tsc -p tests/__fixtures/without-path/tsconfig.json --outDir tests/__result/without-path/original && ttsc -p tests/__fixtures/without-path/tsconfig.json --outDir tests/__result/without-path/generated && jest"
   },
   "jest": {
     "preset": "ts-jest",
