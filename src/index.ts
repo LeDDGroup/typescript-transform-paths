@@ -2,7 +2,7 @@ import { dirname, relative, resolve, extname } from "path";
 import ts from "typescript";
 import slash from "slash";
 import { parse } from "url";
-import { existsSync, statSync } from "fs";
+import { existsSync } from "fs";
 
 const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   sourceFile: ts.SourceFile
@@ -29,7 +29,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
 
   const { isDeclarationFile } = sourceFile;
 
-  const { baseUrl = "", paths = {} } = compilerOptions;
+  const { baseUrl = "", paths = { "*": ["*"] } } = compilerOptions;
 
   const binds = Object.keys(paths)
     .filter(key => paths[key].length)
