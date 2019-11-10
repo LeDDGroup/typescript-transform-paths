@@ -28,7 +28,7 @@ const transformer = (_program: ts.Program) => (
 
   const { isDeclarationFile } = sourceFile;
 
-  const { baseUrl = "", paths = { "*": ["*"] } } = compilerOptions;
+  const { baseUrl = "", paths = {} } = compilerOptions;
 
   const binds = Object.keys(paths)
     .filter(key => paths[key].length)
@@ -37,7 +37,7 @@ const transformer = (_program: ts.Program) => (
       path: paths[key][0]
     }));
 
-  if (!baseUrl || binds.length === 0) {
+  if (!baseUrl) {
     // There is nothing we can do without baseUrl and paths specified.
     return sourceFile;
   }
