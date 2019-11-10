@@ -13,19 +13,6 @@ const transformer = (_program: ts.Program) => (
   const compilerOptions = context.getCompilerOptions();
   const sourceDir = dirname(sourceFile.fileName);
 
-  const implicitExtensions = [".ts", ".d.ts"];
-
-  const allowJs = compilerOptions.allowJs === true;
-  const allowJsx =
-    compilerOptions.jsx !== undefined &&
-    compilerOptions.jsx !== ts.JsxEmit.None;
-  const allowJson = compilerOptions.resolveJsonModule === true;
-
-  allowJs && implicitExtensions.push(".js");
-  allowJsx && implicitExtensions.push(".tsx");
-  allowJs && allowJsx && implicitExtensions.push(".jsx");
-  allowJson && implicitExtensions.push(".json");
-
   const { isDeclarationFile } = sourceFile;
 
   const { baseUrl = "", paths = {} } = compilerOptions;
