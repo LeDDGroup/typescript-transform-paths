@@ -61,26 +61,25 @@ const transformer = (_program: ts.Program) => (
       compilerOptions,
       ts.sys
     );
+    for (const { regexp, path } of binds) {
+      // only needed to check if is url
+      const match = regexp.exec(moduleName);
+      if (match) {
+        const out = path.replace(/\*/g, match[1]);
+        if (isUrl(out)) {
+          return out;
+        }
+      }
+    }
     if (resolvedModule) {
       const { resolvedFileName, extension } = resolvedModule;
       const resolved = slash(relative(sourceDir, resolvedFileName)).replace(
         `${extension}`,
         ""
-      ); // TODO remove extension from the end
+      );
       return isRelative(resolved) ? resolved : `./${resolved}`;
-    } else {
-      // only needed to check for urls
-      for (const { regexp, path } of binds) {
-        const match = regexp.exec(moduleName);
-        if (match) {
-          const out = path.replace(/\*/g, match[1]);
-          if (isUrl(out)) {
-            return out;
-          }
-        }
-      }
-      return moduleName;
     }
+    return moduleName;
   }
 
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
