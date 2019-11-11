@@ -29,7 +29,8 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
 
   const { isDeclarationFile } = sourceFile;
 
-  const { baseUrl = "", paths = { "*": ["*"] } } = compilerOptions;
+  const { baseUrl = "", paths = {} } = compilerOptions;
+  paths["*"] = paths["*"]?.concat("*") ?? ["*"];
 
   const binds = Object.keys(paths)
     .filter(key => paths[key].length)
