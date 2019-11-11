@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.13](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.12...v1.1.13) (2019-11-11)
+
+
+### Bug Fixes
+
+* another edge case for implicit * path ([#43](https://github.com/LeDDGroup/typescript-transform-paths/issues/43)) ([d0f4eb7](https://github.com/LeDDGroup/typescript-transform-paths/commit/d0f4eb7)), closes [#42](https://github.com/LeDDGroup/typescript-transform-paths/issues/42)
+
+
+
 ### [1.1.12](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.11...v1.1.12) (2019-11-09)
 
 
