@@ -106,7 +106,19 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "hedwiggggg",
+      "name": "hedwiggggg",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/42947316?v=4",
+      "profile": "https://github.com/hedwiggggg",
+      "contributions": [
+        "bug",
+        "test",
+        "code"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
