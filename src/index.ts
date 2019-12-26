@@ -129,7 +129,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     return ts.visitEachChild(node, visit, context);
   }
 
-  function unpathImportTypeNode(node: ts.ImportTypeNode) {    
+  function unpathImportTypeNode(node: ts.ImportTypeNode) {
     const argument = node.argument as LiteralTypeNode;
 
     if (!ts.isStringLiteral(argument.literal)) {
@@ -145,7 +145,13 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     const fileLiteral = ts.createLiteral(file);
     const fileArgument = ts.updateLiteralTypeNode(argument, fileLiteral);
 
-    return ts.updateImportTypeNode(node, fileArgument, node.qualifier, node.typeArguments, node.isTypeOf);
+    return ts.updateImportTypeNode(
+      node,
+      fileArgument,
+      node.qualifier,
+      node.typeArguments,
+      node.isTypeOf
+    );
   }
 
   function unpathImportEqualsDeclaration(node: ts.ExternalModuleReference) {
