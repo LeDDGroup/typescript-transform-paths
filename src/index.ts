@@ -1,5 +1,5 @@
 import { dirname, relative, resolve, extname } from "path";
-import ts from "typescript";
+import ts, { LiteralTypeNode } from "typescript";
 import slash from "slash";
 import { parse } from "url";
 import { existsSync } from "fs";
@@ -109,17 +109,43 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
         fileLiteral
       ]);
     }
+
     if (ts.isExternalModuleReference(node)) {
       return unpathImportEqualsDeclaration(node);
     }
+
     if (ts.isImportDeclaration(node)) {
       return unpathImportDeclaration(node);
     }
+
     if (ts.isExportDeclaration(node)) {
       return unpathExportDeclaration(node);
     }
 
+    if (ts.isImportTypeNode(node)) {
+      return unpathImportTypeNode(node);
+    }
+
     return ts.visitEachChild(node, visit, context);
+  }
+
+  function unpathImportTypeNode(node: ts.ImportTypeNode) {    
+    const argument = node.argument as LiteralTypeNode;
+
+    if (!ts.isStringLiteral(argument.literal)) {
+      return node;
+    }
+
+    const file = bindModuleToFile(argument.literal.text);
+
+    if (!file) {
+      return node;
+    }
+
+    const fileLiteral = ts.createLiteral(file);
+    const fileArgument = ts.updateLiteralTypeNode(argument, fileLiteral);
+
+    return ts.updateImportTypeNode(node, fileArgument, node.qualifier, node.typeArguments, node.isTypeOf);
   }
 
   function unpathImportEqualsDeclaration(node: ts.ExternalModuleReference) {
