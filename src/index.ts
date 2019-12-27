@@ -82,14 +82,14 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     return undefined;
   }
 
-  const isRequire = (node: ts.Node): boolean =>
+  const isRequire = (node: ts.Node): node is ts.CallExpression =>
     ts.isCallExpression(node) &&
     ts.isIdentifier(node.expression) &&
     node.expression.text === "require" &&
     ts.isStringLiteral(node.arguments[0]) &&
     node.arguments.length === 1;
 
-  const isAsyncImport = (node: ts.Node): boolean =>
+  const isAsyncImport = (node: ts.Node): node is ts.CallExpression =>
     ts.isCallExpression(node) &&
     node.expression.kind === ts.SyntaxKind.ImportKeyword &&
     ts.isStringLiteral(node.arguments[0]) &&
@@ -108,7 +108,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     }
 
     if (isRequire(node) || isAsyncImport(node)) {
-      return unpathRequireAndAsyncImport(node as ts.CallExpression);
+      return unpathRequireAndAsyncImport(node);
     }
 
     if (ts.isExternalModuleReference(node)) {
