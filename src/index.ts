@@ -1,5 +1,5 @@
 import { dirname, relative, resolve, extname } from "path";
-import ts, { LiteralTypeNode } from "typescript";
+import ts from "typescript";
 import slash from "slash";
 import { parse } from "url";
 import { existsSync } from "fs";
@@ -65,6 +65,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       // if it's relative path do not transform
       return moduleName;
     }
+
     for (const { regexp, path } of binds) {
       const match = regexp.exec(moduleName);
       if (match) {
@@ -81,6 +82,19 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     return undefined;
   }
 
+  const isRequire = (node: ts.Node): boolean =>
+    ts.isCallExpression(node) &&
+    ts.isIdentifier(node.expression) &&
+    node.expression.text === "require" &&
+    ts.isStringLiteral(node.arguments[0]) &&
+    node.arguments.length === 1;
+
+  const isAsyncImport = (node: ts.Node): boolean =>
+    ts.isCallExpression(node) &&
+    node.expression.kind === ts.SyntaxKind.ImportKeyword &&
+    ts.isStringLiteral(node.arguments[0]) &&
+    node.arguments.length === 1;
+
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
     if (
       !isDeclarationFile &&
@@ -92,22 +106,9 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     ) {
       return undefined;
     }
-    if (
-      ts.isCallExpression(node) &&
-      ts.isIdentifier(node.expression) &&
-      node.expression.text === "require" &&
-      ts.isStringLiteral(node.arguments[0]) &&
-      node.arguments.length === 1
-    ) {
-      const firstArg = node.arguments[0] as ts.StringLiteral;
-      const file = bindModuleToFile(firstArg.text);
-      if (!file) {
-        return node;
-      }
-      const fileLiteral = ts.createLiteral(file);
-      return ts.updateCall(node, node.expression, node.typeArguments, [
-        fileLiteral
-      ]);
+
+    if (isRequire(node) || isAsyncImport(node)) {
+      return unpathRequireAndAsyncImport(node as ts.CallExpression);
     }
 
     if (ts.isExternalModuleReference(node)) {
@@ -129,14 +130,30 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     return ts.visitEachChild(node, visit, context);
   }
 
-  function unpathImportTypeNode(node: ts.ImportTypeNode) {
-    const argument = node.argument as LiteralTypeNode;
+  function unpathRequireAndAsyncImport(node: ts.CallExpression) {
+    const firstArg = node.arguments[0] as ts.StringLiteral;
+    const file = bindModuleToFile(firstArg.text);
 
-    if (!ts.isStringLiteral(argument.literal)) {
+    if (!file) {
       return node;
     }
 
-    const file = bindModuleToFile(argument.literal.text);
+    const fileLiteral = ts.createLiteral(file);
+
+    return ts.updateCall(node, node.expression, node.typeArguments, [
+      fileLiteral
+    ]);
+  }
+
+  function unpathImportTypeNode(node: ts.ImportTypeNode) {
+    const argument = node.argument as ts.LiteralTypeNode;
+    const literal = argument.literal;
+
+    if (!ts.isStringLiteral(literal)) {
+      return node;
+    }
+
+    const file = bindModuleToFile(literal.text);
 
     if (!file) {
       return node;
