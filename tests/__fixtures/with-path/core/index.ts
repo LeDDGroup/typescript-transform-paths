@@ -20,3 +20,20 @@ const n: NoRuntimecodeHere = null as any;
 
 subs(2, 3);
 const a = new A("");
+
+(async function() {
+  const Logger = await (await import("@dynamic/logger")).Logger;
+  const logger = new Logger();
+
+  logger.log('hi');
+})();
+
+(async function() {
+  const Tester = (await import("@dynamic/tester")).Tester;
+
+  const testerConst = (await import("@dynamic/tester")).tester;
+  const testerClass = new Tester();
+
+  testerClass.test(12);
+  testerConst.test("12");
+})();
