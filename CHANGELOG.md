@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.14](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.13...v1.1.14) (2019-12-27)
+
+
+### Bug Fixes
+
+* add support for dynamic imports ([#46](https://github.com/LeDDGroup/typescript-transform-paths/issues/46)) ([88b6001](https://github.com/LeDDGroup/typescript-transform-paths/commit/88b6001))
+
+
+
 ### [1.1.13](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.12...v1.1.13) (2019-11-11)
 
 
