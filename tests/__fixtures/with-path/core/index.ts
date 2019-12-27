@@ -8,10 +8,6 @@ import * as path from "path";
 import * as b from "circular/a";
 import * as c from "../circular/a";
 import { myNative } from "@utils/utils.native";
-import { Logger } from "@dynamic/logger";
-import { LogLevel } from "@dynamic/logger-types";
-
-type LoggerManager = import("@dynamic/manager").LoggerManager;
 
 c.A;
 b.A;
@@ -25,16 +21,19 @@ const n: NoRuntimecodeHere = null as any;
 subs(2, 3);
 const a = new A("");
 
-const manager: LoggerManager = {
-  loggers: [
-    new Logger(),
-    new Logger(),
-  ]
-};
+(async function() {
+  const Logger = await (await import("@dynamic/logger")).Logger;
+  const logger = new Logger();
 
-manager.loggers.forEach((logger) => {
-  logger.log({
-    level: LogLevel.DEBUG,
-    text: 'test',
-  })
-})
+  logger.log('hi');
+})();
+
+(async function() {
+  const Tester = (await import("@dynamic/tester")).Tester;
+
+  const testerConst = (await import("@dynamic/tester")).tester;
+  const testerClass = new Tester();
+
+  testerClass.test(12);
+  testerConst.test("12");
+})();

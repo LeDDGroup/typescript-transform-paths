@@ -1,10 +1,10 @@
-type Log = import("@dynamic/logger-types").Log;
-type LogLevel = import("@dynamic/logger-types").LogLevel;
+type Tester = import("@dynamic/tester").Tester;
 
 export class Logger {
-  level: LogLevel;
+  level: string = 'hi';
+  tester: Tester;
 
-  public log (x: Log): void {
+  public log (x: string): void {
     console.log(x);
   };
 }
