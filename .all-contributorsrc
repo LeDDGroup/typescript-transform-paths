@@ -117,6 +117,15 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "kuskoman",
+      "name": "kuskoman",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/15456923?v=4",
+      "profile": "https://github.com/kuskoman",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
