@@ -126,6 +126,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "booninite",
+      "name": "alex weidner",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/13647495?v=4",
+      "profile": "https://github.com/booninite",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -1,7 +1,7 @@
 # typescript-transform-paths
 
 [![npm version](https://img.shields.io/npm/v/typescript-transform-paths.svg)](https://www.npmjs.com/package/typescript-transform-paths)
-[![Build Status](https://img.shields.io/travis/LeDDGroup/typescript-transform-paths/master.svg)](https://travis-ci.org/LeDDGroup/typescript-transform-paths)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FLeDDGroup%2Ftypescript-transform-paths%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/LeDDGroup/typescript-transform-paths/goto?ref=master)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/4i7egn9rn7iepg31/branch/master?svg=true)](https://ci.appveyor.com/project/danielpza/typescript-transform-paths/branch/master)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
@@ -108,12 +108,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/dko-slapdash"><img src="https://avatars0.githubusercontent.com/u/46383452?v=4" width="100px;" alt=""/><br /><sub><b>dko-slapdash</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Adko-slapdash" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/hedwiggggg"><img src="https://avatars1.githubusercontent.com/u/42947316?v=4" width="100px;" alt=""/><br /><sub><b>hedwiggggg</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Ahedwiggggg" title="Bug reports">🐛</a> <a href="https://github.com/LeDDGroup/typescript-transform-paths/commits?author=hedwiggggg" title="Tests">⚠️</a> <a href="https://github.com/LeDDGroup/typescript-transform-paths/commits?author=hedwiggggg" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/kuskoman"><img src="https://avatars3.githubusercontent.com/u/15456923?v=4" width="100px;" alt=""/><br /><sub><b>kuskoman</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/commits?author=kuskoman" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/booninite"><img src="https://avatars3.githubusercontent.com/u/13647495?v=4" width="100px;" alt=""/><br /><sub><b>alex weidner</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Abooninite" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors)
