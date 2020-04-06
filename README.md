@@ -11,8 +11,10 @@ Transforms absolute imports to relative from `paths` in your tsconfig.json
 
 ## Install
 
+npm:
+
 ```sh
-$ npm i -D typescript-transform-paths
+npm i -D typescript-transform-paths
 ```
 
 ## Usage with [ttypescript](https://github.com/cevek/ttypescript/)
@@ -31,7 +33,7 @@ Add it to _plugins_ in your _tsconfig.json_
 }
 ```
 
-### Transforming declatation paths
+### Transforming declaration paths
 
 If you want to generate declaration (_.d.ts_) files with transformed paths you have to
 modify your _tsconfig.json_ file:
@@ -114,6 +116,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors)
