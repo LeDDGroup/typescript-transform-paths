@@ -224,7 +224,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       ts.isNamedImports
     );
     return name || namedBindings
-      ? ts.updateImportClause(node, name, namedBindings)
+      ? ts.updateImportClause(node, name, namedBindings, node.isTypeOnly)
       : undefined;
   }
   function visitNamedImportBindings(
@@ -273,7 +273,8 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
         node.decorators,
         node.modifiers,
         node.exportClause,
-        fileLiteral
+        fileLiteral,
+        node.isTypeOnly
       );
     }
 
@@ -290,7 +291,8 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
           node.decorators,
           node.modifiers,
           node.exportClause,
-          fileLiteral
+          fileLiteral,
+          node.isTypeOnly
         )
       : undefined;
   }
