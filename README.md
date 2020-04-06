@@ -31,7 +31,26 @@ Add it to _plugins_ in your _tsconfig.json_
 }
 ```
 
-See https://github.com/LeDDGroup/typescript-transform-paths/issues/4#issuecomment-486380340 for generating declaration files.
+### Transforming declatation paths
+
+If you want to generate declaration (_.d.ts_) files with transformed paths you have to
+modify your _tsconfig.json_ file:
+
+```json
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@utils/*": ["utils/*"]
+    },
+    "declaration": true,
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
+  }
+```
+
+See [issue4](https://github.com/LeDDGroup/typescript-transform-paths/issues/4#issuecomment-486380340) for more information.
 
 ## Example
 
@@ -93,6 +112,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors)
+specification. Contributions of any kind welcome!
