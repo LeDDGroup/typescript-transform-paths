@@ -17,6 +17,12 @@ npm:
 npm i -D typescript-transform-paths
 ```
 
+yarn:
+
+```sh
+yarn add -D typescript-transform-paths
+```
+
 ## Usage with [ttypescript](https://github.com/cevek/ttypescript/)
 
 Add it to _plugins_ in your _tsconfig.json_
