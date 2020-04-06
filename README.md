@@ -108,12 +108,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/dko-slapdash"><img src="https://avatars0.githubusercontent.com/u/46383452?v=4" width="100px;" alt=""/><br /><sub><b>dko-slapdash</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Adko-slapdash" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/hedwiggggg"><img src="https://avatars1.githubusercontent.com/u/42947316?v=4" width="100px;" alt=""/><br /><sub><b>hedwiggggg</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Ahedwiggggg" title="Bug reports">🐛</a> <a href="https://github.com/LeDDGroup/typescript-transform-paths/commits?author=hedwiggggg" title="Tests">⚠️</a> <a href="https://github.com/LeDDGroup/typescript-transform-paths/commits?author=hedwiggggg" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/kuskoman"><img src="https://avatars3.githubusercontent.com/u/15456923?v=4" width="100px;" alt=""/><br /><sub><b>kuskoman</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/commits?author=kuskoman" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/booninite"><img src="https://avatars3.githubusercontent.com/u/13647495?v=4" width="100px;" alt=""/><br /><sub><b>alex weidner</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Abooninite" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors)
