@@ -1,8 +1,23 @@
 import { dirname, relative, resolve, extname } from "path";
 import ts from "typescript";
-import slash from "slash";
 import { parse } from "url";
 import { existsSync } from "fs";
+
+
+/* ****************************************************************************************************************** *
+ * Helpers
+ * ****************************************************************************************************************** */
+
+export const normalizePath = (p: string) =>
+  // Is extended length or has non-ascii chars (respectively)
+  (/^\\\\\?\\/.test(p) || /[^\u0000-\u0080]+/.test(p)) ? p :
+  // Normalize to forward slash and remove repeating slashes
+  p.replace(/[\\\/]+/g, '/');
+
+
+/* ****************************************************************************************************************** *
+ * Transformer
+ * ****************************************************************************************************************** */
 
 const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   sourceFile: ts.SourceFile
@@ -36,7 +51,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     .filter(key => paths[key].length)
     .map(key => ({
       regexp: new RegExp("^" + key.replace("*", "(.*)") + "$"),
-      path: paths[key][0]
+      paths: paths[key]
     }));
 
   if (!baseUrl || binds.length === 0) {
@@ -66,19 +81,24 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       return moduleName;
     }
 
-    for (const { regexp, path } of binds) {
+    for (const { regexp, paths } of binds) {
       const match = regexp.exec(moduleName);
       if (match) {
-        const out = path.replace(/\*/g, match[1]);
-        if (isUrl(out)) {
-          return out;
+        for (const p of paths) {
+          const out = p.replace(/\*/g, match[1]);
+
+          if (isUrl(out)) return out;
+
+          const filepath = resolve(baseUrl, out);
+          if (!fileExists(`${filepath}/index`) && !fileExists(filepath)) continue;
+
+          const resolved = fixupImportPath(relative(sourceDir, filepath));
+
+          return isRelative(resolved) ? resolved : `./${resolved}`;
         }
-        const filepath = resolve(baseUrl, out);
-        if (!fileExists(`${filepath}/index`) && !fileExists(filepath)) continue;
-        const resolved = slash(relative(sourceDir, filepath));
-        return isRelative(resolved) ? resolved : `./${resolved}`;
       }
     }
+
     return undefined;
   }
 
@@ -96,17 +116,6 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     node.arguments.length === 1;
 
   function visit(node: ts.Node): ts.VisitResult<ts.Node> {
-    if (
-      !isDeclarationFile &&
-      resolver &&
-      ts.isExportDeclaration(node) &&
-      !node.exportClause &&
-      !compilerOptions.isolatedModules &&
-      !resolver.moduleExportsSomeValue(node.moduleSpecifier)
-    ) {
-      return undefined;
-    }
-
     if (isRequire(node) || isAsyncImport(node)) {
       return unpathRequireAndAsyncImport(node);
     }
@@ -224,7 +233,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       ts.isNamedImports
     );
     return name || namedBindings
-      ? ts.updateImportClause(node, name, namedBindings)
+      ? ts.updateImportClause(node, name, namedBindings, node.isTypeOnly)
       : undefined;
   }
   function visitNamedImportBindings(
@@ -273,7 +282,8 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
         node.decorators,
         node.modifiers,
         node.exportClause,
-        fileLiteral
+        fileLiteral,
+        node.isTypeOnly
       );
     }
 
@@ -290,7 +300,8 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
           node.decorators,
           node.modifiers,
           node.exportClause,
-          fileLiteral
+          fileLiteral,
+          node.isTypeOnly
         )
       : undefined;
   }
@@ -310,6 +321,17 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     node: ts.ExportSpecifier
   ): ts.VisitResult<ts.ExportSpecifier> {
     return resolver.isValueAliasDeclaration(node) ? node : undefined;
+  }
+
+  function fixupImportPath(p:string) {
+    let res = normalizePath(p);
+
+    /* Remove implicit extension */
+    const ext = extname(res);
+    if (ext && implicitExtensions.includes(ext.replace(/^\./, '')))
+      res = res.slice(0, -ext.length);
+
+    return res;
   }
 
   return ts.visitNode(sourceFile, visit);

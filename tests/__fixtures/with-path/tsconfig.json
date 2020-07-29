@@ -8,6 +8,7 @@
     "paths": {
       "path": ["https://external.url/path.js"],
       "@*": ["*"],
+      "#utils/*": [ "./utils/*", "./secondary/*" ],
       "*": ["*"]
     },
 
