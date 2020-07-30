@@ -93,6 +93,15 @@ sum_1.sum(2, 3);
 
 - [Node Consumable Modules With Typescript Paths](https://medium.com/@ole.ersoy/node-consumable-modules-with-typescript-paths-ed88a5f332fa?postPublishedType=initial) by [oleersoy](https://github.com/oleersoy")
 
+## Contributting
+
+- make sure to format code with prettier:
+
+```sh
+npm install --global prettier
+prettier --write src/index.ts
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
