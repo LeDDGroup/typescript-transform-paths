@@ -3,17 +3,16 @@ import ts from "typescript";
 import { parse } from "url";
 import { existsSync } from "fs";
 
-
 /* ****************************************************************************************************************** *
  * Helpers
  * ****************************************************************************************************************** */
 
 export const normalizePath = (p: string) =>
   // Is extended length or has non-ascii chars (respectively)
-  (/^\\\\\?\\/.test(p) || /[^\u0000-\u0080]+/.test(p)) ? p :
-  // Normalize to forward slash and remove repeating slashes
-  p.replace(/[\\\/]+/g, '/');
-
+  /^\\\\\?\\/.test(p) || /[^\u0000-\u0080]+/.test(p)
+    ? p
+    : // Normalize to forward slash and remove repeating slashes
+      p.replace(/[\\\/]+/g, "/");
 
 /* ****************************************************************************************************************** *
  * Transformer
@@ -48,10 +47,10 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
   paths["*"] = paths["*"]?.concat("*") ?? ["*"];
 
   const binds = Object.keys(paths)
-    .filter(key => paths[key].length)
-    .map(key => ({
+    .filter((key) => paths[key].length)
+    .map((key) => ({
       regexp: new RegExp("^" + key.replace("*", "(.*)") + "$"),
-      paths: paths[key]
+      paths: paths[key],
     }));
 
   if (!baseUrl || binds.length === 0) {
@@ -90,7 +89,8 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
           if (isUrl(out)) return out;
 
           const filepath = resolve(baseUrl, out);
-          if (!fileExists(`${filepath}/index`) && !fileExists(filepath)) continue;
+          if (!fileExists(`${filepath}/index`) && !fileExists(filepath))
+            continue;
 
           const resolved = fixupImportPath(relative(sourceDir, filepath));
 
@@ -150,7 +150,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     const fileLiteral = ts.createLiteral(file);
 
     return ts.updateCall(node, node.expression, node.typeArguments, [
-      fileLiteral
+      fileLiteral,
     ]);
   }
 
@@ -247,7 +247,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
         visitImportSpecifier as any,
         ts.isImportSpecifier
       );
-      return elements.some(e => e)
+      return elements.some((e) => e)
         ? ts.updateNamedImports(node, elements)
         : undefined;
     }
@@ -313,7 +313,7 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
       visitExportSpecifier as any,
       ts.isExportSpecifier
     );
-    return elements.some(e => e)
+    return elements.some((e) => e)
       ? ts.updateNamedExports(node, elements)
       : undefined;
   }
@@ -323,12 +323,12 @@ const transformer = (_: ts.Program) => (context: ts.TransformationContext) => (
     return resolver.isValueAliasDeclaration(node) ? node : undefined;
   }
 
-  function fixupImportPath(p:string) {
+  function fixupImportPath(p: string) {
     let res = normalizePath(p);
 
     /* Remove implicit extension */
     const ext = extname(res);
-    if (ext && implicitExtensions.includes(ext.replace(/^\./, '')))
+    if (ext && implicitExtensions.includes(ext.replace(/^\./, "")))
       res = res.slice(0, -ext.length);
 
     return res;
