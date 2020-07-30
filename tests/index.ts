@@ -1,5 +1,5 @@
 import { dirname, relative, join } from "path";
-import slash = require("slash");
+import { normalizePath } from '../src'
 import read = require("fs-readdir-recursive");
 import { readFileSync } from "fs";
 
@@ -12,6 +12,9 @@ describe("with-path", () => {
       const sourceDir = dirname(relative(root, originalFile));
       const original = readFileSync(originalFile, "utf8")
         .replace(/"(@.*)"/g, (_, moduleName) => {
+          return `"${bindModuleToFile(moduleName, sourceDir)}"`;
+        })
+        .replace(/"(#utils\/.*)"/g, (_, moduleName) => {
           return `"${bindModuleToFile(moduleName, sourceDir)}"`;
         })
         .replace('"path"', '"https://external.url/path.js"')
@@ -56,7 +59,13 @@ function bindModuleToFile(moduleName: string, sourceDir: string) {
   const match = /@(.*)/.exec(moduleName);
   if (match) {
     const out = match[1];
-    const file = slash(relative(sourceDir, out));
+    const file = normalizePath(relative(sourceDir, out));
     return file[0] === "." ? file : `./${file}`;
+  }
+
+  let utilsModule = /^#utils\/(.+)/.exec(moduleName)?.[1];
+  if (utilsModule) {
+    const subDir = (utilsModule === 'hello') ? 'secondary' : 'utils';
+    return normalizePath(relative(sourceDir, join(subDir, utilsModule)));
   }
 }

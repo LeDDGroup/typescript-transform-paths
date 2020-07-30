@@ -1,0 +1,8 @@
+{
+  "exclude": [ "__fixtures" ],
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "esModuleInterop": true
+  }
+}

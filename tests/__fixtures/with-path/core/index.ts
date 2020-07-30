@@ -1,5 +1,7 @@
 import sum = require("@utils/sum");
 export { sum } from "@utils";
+export { g } from "#utils/hello";
+export { sum as sum2 } from "#utils/sum";
 export { NoRuntimecodeHere } from "@utils/types-only";
 import { subs, NoRuntimecodeHere } from "@utils";
 import "@circular/b";
