@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.15](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.14...v1.1.15) (2020-07-30)
+
+
+### Bug Fixes
+
+* multiple issue fixes ([#61](https://github.com/LeDDGroup/typescript-transform-paths/issues/61)) ([a4e2916](https://github.com/LeDDGroup/typescript-transform-paths/commit/a4e2916)), closes [#60](https://github.com/LeDDGroup/typescript-transform-paths/issues/60) [#24](https://github.com/LeDDGroup/typescript-transform-paths/issues/24) [#48](https://github.com/LeDDGroup/typescript-transform-paths/issues/48)
+
+
+
 ### [1.1.14](https://github.com/LeDDGroup/typescript-transform-paths/compare/v1.1.13...v1.1.14) (2019-12-27)
 
 
