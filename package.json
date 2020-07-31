@@ -37,6 +37,7 @@
     "prebuild": "rimraf lib",
     "build": "tsc",
     "release": "standard-version",
+    "prepare": "cd tests/__fixtures/specific && npm install",
     "test": "jest"
   },
   "jest": {

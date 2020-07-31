@@ -1,8 +1,11 @@
-import path, { join, relative } from 'path';
-import fs from 'fs';
+import path from 'path';
 import * as TS from 'typescript';
 import { TsTransformPathsConfig } from '../src';
 
+
+/* ****************************************************************************************************************** *
+ * Config
+ * ****************************************************************************************************************** */
 
 const ts = require('ttypescript') as typeof TS;
 

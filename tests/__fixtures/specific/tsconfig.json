@@ -1,0 +1,19 @@
+{
+  "include": [ "src", "generated" ],
+
+  "compilerOptions": {
+    "noEmit": true,
+
+    "rootDir": ".",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "declaration": true,
+
+    "rootDirs": [ "src", "generated" ],
+
+    "baseUrl": ".",
+    "paths": {
+      "#root/*": [ "./src/*", "./generated/*" ]
+    }
+  }
+}

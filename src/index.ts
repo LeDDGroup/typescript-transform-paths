@@ -35,6 +35,7 @@ const getImplicitExtensions = (options: ts.CompilerOptions) => {
 }
 
 const isURL = (s: string): boolean => !!s && (!!url.parse(s).host || !!url.parse(s).hostname);
+const isBaseDir = (base: string, dir: string) => (path.relative(base, dir)?.[0] !== '.');
 
 const isRequire = (node: ts.Node): node is ts.CallExpression =>
   ts.isCallExpression(node) &&
@@ -89,23 +90,32 @@ export default function transformer(program: ts.Program, config: PluginConfig & 
         const maybeURL = failedLookupLocations[0];
         if (!isURL(maybeURL)) return original;
         p = maybeURL;
-      } else {
+      }
+      else if (resolvedModule.isExternalLibraryImport) return original
+      else {
         const { extension, resolvedFileName } = resolvedModule;
 
-        let relativeFrom = fileDir;
+        let filePath = fileDir;
+        let modulePath = path.dirname(resolvedFileName);
 
         /* Handle rootDirs mapping */
-        if (useRootDirs && rootDirs)
+        if (useRootDirs && rootDirs) {
+          let fileRootDir = '';
+          let moduleRootDir = '';
           for (const rootDir of rootDirs) {
-            const relativeRootPath = path.relative(rootDir, resolvedFileName);
-            if (relativeRootPath[0] !== '.') {
-              relativeFrom = rootDir;
-              break;
-            }
+            if (isBaseDir(rootDir, resolvedFileName) && (rootDir.length > moduleRootDir.length)) moduleRootDir = rootDir;
+            if (isBaseDir(rootDir, fileName) && (rootDir.length > fileRootDir.length)) fileRootDir = rootDir;
           }
 
+          /* Remove base dirs to make relative to root */
+          if (fileRootDir && moduleRootDir) {
+            filePath = path.relative(fileRootDir, filePath);
+            modulePath = path.relative(moduleRootDir, modulePath);
+          }
+        }
+
         /* Remove extension if implicit */
-        p = ts.normalizePath(path.relative(relativeFrom, resolvedFileName));
+        p = ts.normalizePath(path.join(path.relative(filePath, modulePath), path.basename(resolvedFileName)));
         if (extension && implicitExtensions.includes(extension)) p = p.slice(0, -extension.length);
         if (!p) return original;
 

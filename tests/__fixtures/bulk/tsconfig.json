@@ -1,9 +1,8 @@
 {
-  "exclude": [ "root-paths" ],
   "compilerOptions": {
     "target": "es5",
     "module": "ESNext",
-    "outDir": "__built",
+    "outDir": "../__built",
 
     "declaration": true,
     "baseUrl": "./",
