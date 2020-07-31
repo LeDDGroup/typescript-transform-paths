@@ -80,7 +80,7 @@ via the `rootDirs` compiler option. To enable virtual directory mapping, use the
 }
 ```
 
-With the above setting, `import '#root/file1'` outputs as `import 'file1'`
+With the above setting, `import '#root/file1'` outputs as `import './file1'`
 
 ## Example Config
 
