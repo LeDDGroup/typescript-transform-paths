@@ -98,7 +98,7 @@ describe(`Transformer`, () => {
 
     test(`Does not resolve external modules`, () => {
       expect(normalEmit[indexFile].dts).toMatch(`import "ts-expose-internals";`);
-      expect(normalEmit[indexFile].dts).toMatch(`import "ts-expose-internals";`);
+      expect(rootDirsEmit[indexFile].dts).toMatch(`import "ts-expose-internals";`);
     });
 
     test(`(useRootDirs: false) Ignores rootDirs`, () => {
