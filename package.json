@@ -24,7 +24,8 @@
   "license": "MIT",
   "author": "Daniel Perez Alvarez <danielpza@protonmail.com>",
   "files": [
-    "lib"
+    "lib",
+    "README.md"
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -33,28 +34,27 @@
     "test": "tests"
   },
   "scripts": {
-    "prebuild": "rm -rf lib",
+    "prebuild": "rimraf lib",
     "build": "tsc",
-    "prepare": "npm run build",
     "release": "standard-version",
-    "pretest": "npm run build && rm -rf tests/__result",
-    "test": "tsc -p tests/__fixtures/with-path/tsconfig.json --outDir tests/__result/with-path/original && ttsc -p tests/__fixtures/with-path/tsconfig.json --outDir tests/__result/with-path/generated && tsc -p tests/__fixtures/without-path/tsconfig.json --outDir tests/__result/without-path/original && ttsc -p tests/__fixtures/without-path/tsconfig.json --outDir tests/__result/without-path/generated && jest"
+    "test": "jest"
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
     "testMatch": [
-      "**/tests/index.ts"
+      "**/tests/transformer.test.ts"
     ]
   },
   "devDependencies": {
-    "@types/fs-readdir-recursive": "^1.0.0",
     "@types/jest": "^24.0.15",
     "@types/node": "^12.0.2",
-    "fs-readdir-recursive": "^1.1.0",
     "jest": "^24.8.0",
+    "rimraf": "^3.0.2",
     "standard-version": "^8.0.1",
+    "ts-expose-internals": "^3.9.7-patch",
     "ts-jest": "^24.0.2",
+    "ts-node": "^8.10.2",
     "ttypescript": "^1.5.6",
     "typescript": "^3.9.7"
   }

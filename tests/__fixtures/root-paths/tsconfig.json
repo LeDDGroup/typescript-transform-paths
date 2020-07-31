@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+
+    "rootDir": "..",
+    "module": "ESNext",
+    "declaration": true,
+
+    "rootDirs": [ "../utils", "../secondary" ],
+    "baseUrl": "../utils",
+    "paths": {
+      "#root/*": [ "./*", "../secondary/*" ]
+    }
+  }
+}
