@@ -80,7 +80,26 @@ via the `rootDirs` compiler option. To enable virtual directory mapping, use the
 }
 ```
 
-With the above setting, `import '#root/file1'` outputs as `import './file1'`
+#### Example output
+
+```
+- src/
+    - subdir/
+      - sub-file.ts
+    - file1.ts
+- generated/
+    - file2.ts
+```
+
+`src/file1.ts`
+```ts
+import '#root/file2.ts' // resolves to './file2'
+```
+`src/subdir/sub-file.ts`
+```ts
+import '#root/file2.ts' // resolves to '../file2'
+import '#root/file1.ts' // resolves to '../file1'
+```
 
 ## Example Config
 
