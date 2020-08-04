@@ -23,7 +23,7 @@ yarn:
 yarn add -D typescript-transform-paths
 ```
 
-## Usage with [ttypescript](https://github.com/cevek/ttypescript/)
+## Usage with [ttypescript](https://github.com/cevek/ttypescript/) or [ts-patch](https://github.com/nonara/ts-patch)
 
 Add it to _plugins_ in your _tsconfig.json_
 
@@ -60,9 +60,50 @@ modify your _tsconfig.json_ file:
 
 See [issue4](https://github.com/LeDDGroup/typescript-transform-paths/issues/4#issuecomment-486380340) for more information.
 
-## Example
+### Virtual Directory Support
+TS allows defining
+[virtual directories](https://www.typescriptlang.org/docs/handbook/module-resolution.html#virtual-directories-with-rootdirs)
+via the `rootDirs` compiler option. To enable virtual directory mapping, use the `useRootDirs` plugin option.
 
-```json
+```jsonc
+{
+  "compilerOptions": {
+    "rootDirs": [ "src", "generated" ],
+    "baseUrl": ".",
+    "paths": {
+      "#root/*": [ "./src/*", "./generated/*" ]
+    },
+    "plugins": [
+      { "transform": "typescript-transform-paths", useRootDirs: true },
+    ]
+  }
+}
+```
+
+#### Example output
+
+```
+- src/
+    - subdir/
+      - sub-file.ts
+    - file1.ts
+- generated/
+    - file2.ts
+```
+
+`src/file1.ts`
+```ts
+import '#root/file2.ts' // resolves to './file2'
+```
+`src/subdir/sub-file.ts`
+```ts
+import '#root/file2.ts' // resolves to '../file2'
+import '#root/file1.ts' // resolves to '../file1'
+```
+
+## Example Config
+
+```jsonc
 // tsconfig.json
 {
   "compilerOptions": {

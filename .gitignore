@@ -1,3 +1,3 @@
 lib
 node_modules
-tests/__result/
+tests/__built/
