@@ -1,3 +1,3 @@
-import "#root/dir/gen-file"
+import "#root/dir/gen-file";
 
-export type A = string
+export type A = string;
