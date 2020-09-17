@@ -22,7 +22,10 @@
     "url": "git+https://github.com/LeDDGroup/typescript-transform-paths.git"
   },
   "license": "MIT",
-  "author": "Daniel Perez Alvarez <danielpza@protonmail.com>",
+  "contributors": [
+    "Daniel Perez Alvarez <danielpza@protonmail.com>",
+    "Ron S. <ron@nonara.com>"
+  ],
   "files": [
     "lib",
     "README.md"
