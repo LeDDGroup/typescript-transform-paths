@@ -1,7 +1,7 @@
 export class Tester {
-  public test (x: number): void {
+  public test(x: number): void {
     console.log(x);
-  };
+  }
 }
 
 export const tester = {

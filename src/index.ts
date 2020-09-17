@@ -157,9 +157,15 @@ export default function transformer(
     function visit(node: ts.Node): ts.Node | undefined {
       /* Update require() or import() */
       if (isRequire(node) || isAsyncImport(node))
-        return update(node, (<ts.StringLiteral>node.arguments[0]).text, (p) => factory
-          ? factory.updateCallExpression(node, node.expression, node.typeArguments, [p])
-          : ts.updateCall(node, node.expression, node.typeArguments, [p])
+        return update(node, (<ts.StringLiteral>node.arguments[0]).text, (p) =>
+          factory
+            ? factory.updateCallExpression(
+                node,
+                node.expression,
+                node.typeArguments,
+                [p]
+              )
+            : ts.updateCall(node, node.expression, node.typeArguments, [p])
         );
 
       /* Update ExternalModuleReference - import foo = require("foo"); */
@@ -167,9 +173,10 @@ export default function transformer(
         ts.isExternalModuleReference(node) &&
         ts.isStringLiteral(node.expression)
       )
-        return update(node, node.expression.text, (p) => factory
-          ? factory.updateExternalModuleReference(node, p)
-          : ts.updateExternalModuleReference(node, p)
+        return update(node, node.expression.text, (p) =>
+          factory
+            ? factory.updateExternalModuleReference(node, p)
+            : ts.updateExternalModuleReference(node, p)
         );
 
       /**
@@ -186,13 +193,14 @@ export default function transformer(
         node.moduleSpecifier &&
         ts.isStringLiteral(node.moduleSpecifier)
       )
-        return update(node, node.moduleSpecifier.text, (p) => factory
-          ? Object.assign(node, {
-            moduleSpecifier: p
-          })
-          : Object.assign(node, {
-            moduleSpecifier: (<any>ts).updateNode(p, node.moduleSpecifier),
-          })
+        return update(node, node.moduleSpecifier.text, (p) =>
+          factory
+            ? Object.assign(node, {
+                moduleSpecifier: p,
+              })
+            : Object.assign(node, {
+                moduleSpecifier: (<any>ts).updateNode(p, node.moduleSpecifier),
+              })
         );
 
       /* Update ImportTypeNode - typeof import("./bar"); */
@@ -203,22 +211,23 @@ export default function transformer(
 
         return !text
           ? node
-          : update(node, text, (p) => factory
-            ? factory.updateImportTypeNode(
-                node,
-                factory.updateLiteralTypeNode(argument, p),
-                node.qualifier,
-                node.typeArguments,
-                node.isTypeOf
-            )
-          : ts.updateImportTypeNode(
-              node,
-              ts.updateLiteralTypeNode(argument, p),
-              node.qualifier,
-              node.typeArguments,
-              node.isTypeOf
-            )
-          );
+          : update(node, text, (p) =>
+              factory
+                ? factory.updateImportTypeNode(
+                    node,
+                    factory.updateLiteralTypeNode(argument, p),
+                    node.qualifier,
+                    node.typeArguments,
+                    node.isTypeOf
+                  )
+                : ts.updateImportTypeNode(
+                    node,
+                    ts.updateLiteralTypeNode(argument, p),
+                    node.qualifier,
+                    node.typeArguments,
+                    node.isTypeOf
+                  )
+            );
       }
 
       return ts.visitEachChild(node, visit, context);

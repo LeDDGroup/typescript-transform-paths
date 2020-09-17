@@ -1,3 +1,3 @@
-import "#root/dir/src-file"
+import "#root/dir/src-file";
 
-export type B = number
+export type B = number;

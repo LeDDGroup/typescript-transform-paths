@@ -24,14 +24,14 @@ const n: NoRuntimecodeHere = null as any;
 subs(2, 3);
 const a = new A("");
 
-(async function() {
+(async function () {
   const Logger = await (await import("@dynamic/logger")).Logger;
   const logger = new Logger();
 
-  logger.log('hi');
+  logger.log("hi");
 })();
 
-(async function() {
+(async function () {
   const Tester = (await import("@dynamic/tester")).Tester;
 
   const testerConst = (await import("@dynamic/tester")).tester;
