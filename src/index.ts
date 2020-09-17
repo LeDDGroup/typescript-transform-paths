@@ -65,6 +65,9 @@ export default function transformer(
   const implicitExtensions = getImplicitExtensions(compilerOptions);
 
   return (context: ts.TransformationContext) => (sourceFile: ts.SourceFile) => {
+    // TS 4 - new node factory
+    const factory: ts.NodeFactory | undefined = context.factory;
+
     const { fileName } = sourceFile;
     const fileDir = ts.normalizePath(path.dirname(fileName));
     const { baseUrl } = compilerOptions;
@@ -152,42 +155,47 @@ export default function transformer(
      * Visit and replace nodes with module specifiers
      */
     function visit(node: ts.Node): ts.Node | undefined {
+      /* Update require() or import() */
       if (isRequire(node) || isAsyncImport(node))
-        return update(node, (<ts.StringLiteral>node.arguments[0]).text, (p) =>
-          ts.updateCall(node, node.expression, node.typeArguments, [p])
+        return update(node, (<ts.StringLiteral>node.arguments[0]).text, (p) => factory
+          ? factory.updateCallExpression(node, node.expression, node.typeArguments, [p])
+          : ts.updateCall(node, node.expression, node.typeArguments, [p])
         );
 
+      /* Update ExternalModuleReference - import foo = require("foo"); */
       if (
         ts.isExternalModuleReference(node) &&
         ts.isStringLiteral(node.expression)
       )
-        return update(node, node.expression.text, (p) =>
-          ts.updateExternalModuleReference(node, p)
+        return update(node, node.expression.text, (p) => factory
+          ? factory.updateExternalModuleReference(node, p)
+          : ts.updateExternalModuleReference(node, p)
         );
 
+      /**
+       * Update ImportDeclaration / ExportDeclaration
+       * import ... 'module';
+       * export ... 'module';
+       *
+       * This implements a workaround for the following TS issues:
+       * @see https://github.com/microsoft/TypeScript/issues/40603
+       * @see https://github.com/microsoft/TypeScript/issues/31446
+       */
       if (
-        ts.isImportDeclaration(node) &&
-        ts.isStringLiteral(node.moduleSpecifier)
-      )
-        return update(node, node.moduleSpecifier.text, (p) =>
-          // Issue & Workaround: https://github.com/microsoft/TypeScript/issues/31446#issuecomment-493846175
-          Object.assign(node, {
-            moduleSpecifier: ts.updateNode(p, node.moduleSpecifier),
-          })
-        );
-
-      if (
-        ts.isExportDeclaration(node) &&
+        (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
         node.moduleSpecifier &&
         ts.isStringLiteral(node.moduleSpecifier)
       )
-        return update(node, node.moduleSpecifier.text, (p) =>
-          // Issue & Workaround: https://github.com/microsoft/TypeScript/issues/31446#issuecomment-493846175
-          Object.assign(node, {
-            moduleSpecifier: ts.updateNode(p, node.moduleSpecifier!),
+        return update(node, node.moduleSpecifier.text, (p) => factory
+          ? Object.assign(node, {
+            moduleSpecifier: p
+          })
+          : Object.assign(node, {
+            moduleSpecifier: (<any>ts).updateNode(p, node.moduleSpecifier),
           })
         );
 
+      /* Update ImportTypeNode - typeof import("./bar"); */
       if (ts.isImportTypeNode(node)) {
         const argument = node.argument as ts.LiteralTypeNode;
         if (!ts.isStringLiteral(argument.literal)) return node;
@@ -195,15 +203,22 @@ export default function transformer(
 
         return !text
           ? node
-          : update(node, text, (p) =>
-              ts.updateImportTypeNode(
+          : update(node, text, (p) => factory
+            ? factory.updateImportTypeNode(
                 node,
-                ts.updateLiteralTypeNode(argument, p),
+                factory.updateLiteralTypeNode(argument, p),
                 node.qualifier,
                 node.typeArguments,
                 node.isTypeOf
-              )
-            );
+            )
+          : ts.updateImportTypeNode(
+              node,
+              ts.updateLiteralTypeNode(argument, p),
+              node.qualifier,
+              node.typeArguments,
+              node.isTypeOf
+            )
+          );
       }
 
       return ts.visitEachChild(node, visit, context);
