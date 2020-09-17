@@ -1,3 +1,4 @@
 lib
 node_modules
 tests/__built/
+.idea
