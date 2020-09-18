@@ -171,6 +171,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/vladimiry"><img src="https://avatars2.githubusercontent.com/u/1560781?v=4" width="100px;" alt=""/><br /><sub><b>Vladimir Yakovlev</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Avladimiry" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/vwpo"><img src="https://avatars3.githubusercontent.com/u/57674261?v=4" width="100px;" alt=""/><br /><sub><b>vwpo</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Avwpo" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
