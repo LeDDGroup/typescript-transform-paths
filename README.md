@@ -169,6 +169,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/booninite"><img src="https://avatars3.githubusercontent.com/u/13647495?v=4" width="100px;" alt=""/><br /><sub><b>alex weidner</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Abooninite" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/nonara"><img src="https://avatars0.githubusercontent.com/u/1427565?v=4" width="100px;" alt=""/><br /><sub><b>Ron S.</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Anonara" title="Bug reports">🐛</a> <a href="https://github.com/LeDDGroup/typescript-transform-paths/commits?author=nonara" title="Tests">⚠️</a> <a href="https://github.com/LeDDGroup/typescript-transform-paths/commits?author=nonara" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/vladimiry"><img src="https://avatars2.githubusercontent.com/u/1560781?v=4" width="100px;" alt=""/><br /><sub><b>Vladimir Yakovlev</b></sub></a><br /><a href="https://github.com/LeDDGroup/typescript-transform-paths/issues?q=author%3Avladimiry" title="Bug reports">🐛</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->
