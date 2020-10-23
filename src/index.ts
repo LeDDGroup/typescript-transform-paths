@@ -157,16 +157,42 @@ export default function transformer(
     function visit(node: ts.Node): ts.Node | undefined {
       /* Update require() or import() */
       if (isRequire(node) || isAsyncImport(node))
-        return update(node, (<ts.StringLiteral>node.arguments[0]).text, (p) =>
-          factory
-            ? factory.updateCallExpression(
-                node,
-                node.expression,
-                node.typeArguments,
-                [p]
-              )
-            : ts.updateCall(node, node.expression, node.typeArguments, [p])
-        );
+        return update(node, (<ts.StringLiteral>node.arguments[0]).text, (p) => {
+          let res: typeof node;
+          if (factory) {
+            res = factory.updateCallExpression(
+              node,
+              node.expression,
+              node.typeArguments,
+              [p]
+            );
+          } else {
+            res = ts.updateCall(node, node.expression, node.typeArguments, [p]);
+          }
+
+          const textNode = node.arguments[0];
+          const commentRanges =
+            ts.getLeadingCommentRanges(textNode.getFullText(), 0) || [];
+
+          for (const range of commentRanges) {
+            const { kind, pos, end, hasTrailingNewLine } = range;
+
+            const caption = textNode
+              .getFullText()
+              .substr(pos, end)
+              .replace(
+                /* searchValue */ kind === ts.SyntaxKind.MultiLineCommentTrivia
+                  ? // Comment range in a multi-line comment with more than one line erroneously includes the
+                    // node's text in the range. For that reason, we use the greedy selector in capture group
+                    // and dismiss anything after the final comment close tag
+                    /^\/\*(.+)\*\/.*/s
+                  : /^\/\/(.+)/s,
+                /* replaceValue */ "$1"
+              );
+            ts.addSyntheticLeadingComment(p, kind, caption, hasTrailingNewLine);
+          }
+          return res;
+        });
 
       /* Update ExternalModuleReference - import foo = require("foo"); */
       if (

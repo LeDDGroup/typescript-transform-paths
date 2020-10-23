@@ -129,6 +129,21 @@ describe(`Transformer`, () => {
       );
     });
 
+    test(`Import type-only transforms`, () => {
+      expect(normalEmit[indexFile].dts).toMatch(
+        `import type { A as ATypeOnly } from "./dir/src-file"`
+      );
+    });
+
+    test(`Copies comments in async import`, () => {
+      expect(normalEmit[indexFile].js).toMatch(
+        `import(/* webpackChunkName: "Comment" */ "./dir/src-file");`
+      );
+      expect(normalEmit[indexFile].js).toMatch(
+        /\/\/ comment 1\r?\n\s*\r?\n\/\*\r?\n\s*comment 2\r?\n\s*\*\/\r?\n\s*"\.\.\/generated\/dir\/gen-file"/
+      );
+    });
+
     test(`(useRootDirs: false) Ignores rootDirs`, () => {
       expect(normalEmit[genFile].dts).toMatch(
         `import "../../src/dir/src-file"`
