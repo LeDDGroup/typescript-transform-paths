@@ -1,6 +1,6 @@
 {
   "name": "typescript-transform-paths",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Transforms absolute imports to relative",
   "keywords": [
     "typescript",
