@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.3](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.0.2...v2.0.3) (2020-11-17)
+
+
+### Bug Fixes
+
+* Updated to more sound workaround for TS type-elision issue ([fb33832](https://github.com/LeDDGroup/typescript-transform-paths/commit/fb338322e5fcd3b3ee7d45269287006ddec1bdb6))
+
 ### [2.0.2](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.0.1...v2.0.2) (2020-10-23)
 
 
