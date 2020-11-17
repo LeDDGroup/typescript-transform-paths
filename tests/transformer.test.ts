@@ -93,6 +93,9 @@ describe(`Transformer`, () => {
       path.join(specificPath, "src/dir/src-file.ts")
     );
     const indexFile = ts.normalizePath(path.join(specificPath, "src/index.ts"));
+    const typeElisionIndex = ts.normalizePath(
+      path.join(specificPath, "src/type-elision/index.ts")
+    );
 
     let rootDirsEmit: EmittedFiles;
     let normalEmit: EmittedFiles;
@@ -126,6 +129,12 @@ describe(`Transformer`, () => {
       );
       expect(rootDirsEmit[indexFile].dts).toMatch(
         `import "ts-expose-internals";`
+      );
+    });
+
+    test(`Type elision works properly`, () => {
+      expect(normalEmit[typeElisionIndex].js).toMatch(
+        /import { ConstB } from "\.\/a";\s*export { ConstB };/
       );
     });
 
