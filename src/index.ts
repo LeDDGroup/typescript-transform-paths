@@ -219,15 +219,19 @@ export default function transformer(
         node.moduleSpecifier &&
         ts.isStringLiteral(node.moduleSpecifier)
       )
-        return update(node, node.moduleSpecifier.text, (p) =>
-          factory
-            ? Object.assign(node, {
-                moduleSpecifier: p,
-              })
-            : Object.assign(node, {
-                moduleSpecifier: (<any>ts).updateNode(p, node.moduleSpecifier),
-              })
-        );
+        return update(node, node.moduleSpecifier.text, (p) => {
+          if (factory) {
+            const newNode = factory.cloneNode(
+              node.moduleSpecifier!
+            ) as ts.StringLiteral;
+            newNode.text = p.text;
+            return Object.assign(node, { moduleSpecifier: newNode });
+          } else {
+            return Object.assign(node, {
+              moduleSpecifier: (<any>ts).updateNode(p, node.moduleSpecifier),
+            });
+          }
+        });
 
       /* Update ImportTypeNode - typeof import("./bar"); */
       if (ts.isImportTypeNode(node)) {
