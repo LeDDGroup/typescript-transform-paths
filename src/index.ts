@@ -65,8 +65,7 @@ export default function transformer(program: ts.Program, config: PluginConfig & 
 
     const { fileName } = sourceFile;
     const fileDir = ts.normalizePath(path.dirname(fileName));
-    const { baseUrl } = compilerOptions;
-    if (!baseUrl || !compilerOptions.paths) return sourceFile;
+    if (!compilerOptions.baseUrl && !compilerOptions.paths) return sourceFile;
 
     let rootDirs = compilerOptions.rootDirs?.filter(path.isAbsolute);
 
