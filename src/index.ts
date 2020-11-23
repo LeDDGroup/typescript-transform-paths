@@ -124,7 +124,8 @@ export default function transformer(program: ts.Program, config: PluginConfig & 
         p = p[0] === "." ? p : `./${p}`;
       }
 
-      return updaterFn(ts.createLiteral(p));
+      const newStringLiteral = factory ? factory.createStringLiteral(p) : ts.createLiteral(p);
+      return updaterFn(newStringLiteral);
     }
 
     /**
@@ -186,10 +187,11 @@ export default function transformer(program: ts.Program, config: PluginConfig & 
       )
         return update(node, node.moduleSpecifier.text, (p) => {
           if (factory) {
-            const newNode = factory.cloneNode(
-              node.moduleSpecifier!
-            ) as ts.StringLiteral;
+            const newNode = factory.cloneNode(node.moduleSpecifier!) as ts.StringLiteral;
+            ts.setSourceMapRange(newNode, ts.getSourceMapRange(node));
+            ts.setTextRange(newNode, node.moduleSpecifier);
             newNode.text = p.text;
+
             return Object.assign(node, { moduleSpecifier: newNode });
           } else {
             return Object.assign(node, {

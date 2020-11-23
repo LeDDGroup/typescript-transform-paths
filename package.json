@@ -37,13 +37,14 @@
     "test": "tests"
   },
   "scripts": {
-    "prebuild": "rimraf lib",
     "build": "tsc",
-    "release": "standard-version",
-    "install:tests": "cd tests/__fixtures/specific && npm install",
-    "prepare": "npm run build && npm run install:tests",
     "format": "prettier --write \"{tests,src}/**/*.{js,ts}\"",
-    "test": "jest"
+    "test": "jest",
+    "release": "standard-version",
+    "--------------": "",
+    "prebuild": "rimraf lib",
+    "install:tests": "cd tests/__fixtures/specific && npm install",
+    "prepare": "npm run build && npm run install:tests"
   },
   "jest": {
     "preset": "ts-jest",
