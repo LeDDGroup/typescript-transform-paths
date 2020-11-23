@@ -32,10 +32,8 @@ const getImplicitExtensions = (options: ts.CompilerOptions) => {
   return res;
 };
 
-const isURL = (s: string): boolean =>
-  !!s && (!!url.parse(s).host || !!url.parse(s).hostname);
-const isBaseDir = (base: string, dir: string) =>
-  path.relative(base, dir)?.[0] !== ".";
+const isURL = (s: string): boolean => !!s && (!!url.parse(s).host || !!url.parse(s).hostname);
+const isBaseDir = (base: string, dir: string) => path.relative(base, dir)?.[0] !== ".";
 
 const isRequire = (node: ts.Node): node is ts.CallExpression =>
   ts.isCallExpression(node) &&
@@ -56,10 +54,7 @@ const isAsyncImport = (node: ts.Node): node is ts.CallExpression =>
  * Transformer
  * ****************************************************************************************************************** */
 
-export default function transformer(
-  program: ts.Program,
-  config: PluginConfig & TsTransformPathsConfig
-) {
+export default function transformer(program: ts.Program, config: PluginConfig & TsTransformPathsConfig) {
   const { useRootDirs } = config;
   const compilerOptions = program.getCompilerOptions();
   const implicitExtensions = getImplicitExtensions(compilerOptions);
@@ -70,8 +65,7 @@ export default function transformer(
 
     const { fileName } = sourceFile;
     const fileDir = ts.normalizePath(path.dirname(fileName));
-    const { baseUrl } = compilerOptions;
-    if (!baseUrl || !compilerOptions.paths) return sourceFile;
+    if (!compilerOptions.baseUrl && !compilerOptions.paths) return sourceFile;
 
     let rootDirs = compilerOptions.rootDirs?.filter(path.isAbsolute);
 
@@ -84,11 +78,7 @@ export default function transformer(
     /**
      * Gets proper path and calls updaterFn to update the node
      */
-    function update(
-      original: ts.Node,
-      moduleName: string,
-      updaterFn: (newPath: ts.StringLiteral) => ts.Node
-    ): ts.Node {
+    function update(original: ts.Node, moduleName: string, updaterFn: (newPath: ts.StringLiteral) => ts.Node): ts.Node {
       let p: string;
 
       /* Have Compiler API attempt to resolve */
@@ -115,16 +105,8 @@ export default function transformer(
           let fileRootDir = "";
           let moduleRootDir = "";
           for (const rootDir of rootDirs) {
-            if (
-              isBaseDir(rootDir, resolvedFileName) &&
-              rootDir.length > moduleRootDir.length
-            )
-              moduleRootDir = rootDir;
-            if (
-              isBaseDir(rootDir, fileName) &&
-              rootDir.length > fileRootDir.length
-            )
-              fileRootDir = rootDir;
+            if (isBaseDir(rootDir, resolvedFileName) && rootDir.length > moduleRootDir.length) moduleRootDir = rootDir;
+            if (isBaseDir(rootDir, fileName) && rootDir.length > fileRootDir.length) fileRootDir = rootDir;
           }
 
           /* Remove base dirs to make relative to root */
@@ -135,20 +117,15 @@ export default function transformer(
         }
 
         /* Remove extension if implicit */
-        p = ts.normalizePath(
-          path.join(
-            path.relative(filePath, modulePath),
-            path.basename(resolvedFileName)
-          )
-        );
-        if (extension && implicitExtensions.includes(extension))
-          p = p.slice(0, -extension.length);
+        p = ts.normalizePath(path.join(path.relative(filePath, modulePath), path.basename(resolvedFileName)));
+        if (extension && implicitExtensions.includes(extension)) p = p.slice(0, -extension.length);
         if (!p) return original;
 
         p = p[0] === "." ? p : `./${p}`;
       }
 
-      return updaterFn(ts.createLiteral(p));
+      const newStringLiteral = factory ? factory.createStringLiteral(p) : ts.createLiteral(p);
+      return updaterFn(newStringLiteral);
     }
 
     /**
@@ -160,19 +137,13 @@ export default function transformer(
         return update(node, (<ts.StringLiteral>node.arguments[0]).text, (p) => {
           let res: typeof node;
           if (factory) {
-            res = factory.updateCallExpression(
-              node,
-              node.expression,
-              node.typeArguments,
-              [p]
-            );
+            res = factory.updateCallExpression(node, node.expression, node.typeArguments, [p]);
           } else {
             res = ts.updateCall(node, node.expression, node.typeArguments, [p]);
           }
 
           const textNode = node.arguments[0];
-          const commentRanges =
-            ts.getLeadingCommentRanges(textNode.getFullText(), 0) || [];
+          const commentRanges = ts.getLeadingCommentRanges(textNode.getFullText(), 0) || [];
 
           for (const range of commentRanges) {
             const { kind, pos, end, hasTrailingNewLine } = range;
@@ -195,14 +166,9 @@ export default function transformer(
         });
 
       /* Update ExternalModuleReference - import foo = require("foo"); */
-      if (
-        ts.isExternalModuleReference(node) &&
-        ts.isStringLiteral(node.expression)
-      )
+      if (ts.isExternalModuleReference(node) && ts.isStringLiteral(node.expression))
         return update(node, node.expression.text, (p) =>
-          factory
-            ? factory.updateExternalModuleReference(node, p)
-            : ts.updateExternalModuleReference(node, p)
+          factory ? factory.updateExternalModuleReference(node, p) : ts.updateExternalModuleReference(node, p)
         );
 
       /**
@@ -221,10 +187,11 @@ export default function transformer(
       )
         return update(node, node.moduleSpecifier.text, (p) => {
           if (factory) {
-            const newNode = factory.cloneNode(
-              node.moduleSpecifier!
-            ) as ts.StringLiteral;
+            const newNode = factory.cloneNode(node.moduleSpecifier!) as ts.StringLiteral;
+            ts.setSourceMapRange(newNode, ts.getSourceMapRange(node));
+            ts.setTextRange(newNode, node.moduleSpecifier);
             newNode.text = p.text;
+
             return Object.assign(node, { moduleSpecifier: newNode });
           } else {
             return Object.assign(node, {
