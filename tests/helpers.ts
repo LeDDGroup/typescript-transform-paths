@@ -57,21 +57,14 @@ export function createProgram(
   let fileNames: string[];
   let host: TS.CompilerHost | undefined;
   if (typeof configOrFiles === "string") {
-    const pcl = ts.getParsedCommandLineOfConfigFile(
-      configOrFiles,
-      extendOptions,
-      <any>ts.sys
-    )!;
+    const pcl = ts.getParsedCommandLineOfConfigFile(configOrFiles, extendOptions, <any>ts.sys)!;
     options = pcl.options;
     fileNames = pcl.fileNames;
   } else {
-    const files = Object.entries(configOrFiles).reduce(
-      (p, [fileName, data]) => {
-        p[ts.normalizePath(fileName)] = data;
-        return p;
-      },
-      <any>{}
-    );
+    const files = Object.entries(configOrFiles).reduce((p, [fileName, data]) => {
+      p[ts.normalizePath(fileName)] = data;
+      return p;
+    }, <any>{});
     fileNames = Object.keys(files);
 
     host = ts.createCompilerHost(options);
@@ -79,12 +72,8 @@ export function createProgram(
 
     /* Patch host to feed mock files */
     const originalGetSourceFile: any = host.getSourceFile;
-    host.getSourceFile = function (
-      fileName: string,
-      scriptTarget: TS.ScriptTarget
-    ) {
-      if (Object.keys(files).includes(fileName))
-        return ts.createSourceFile(fileName, files[fileName], scriptTarget);
+    host.getSourceFile = function (fileName: string, scriptTarget: TS.ScriptTarget) {
+      if (Object.keys(files).includes(fileName)) return ts.createSourceFile(fileName, files[fileName], scriptTarget);
       else originalGetSourceFile.apply(undefined, arguments);
     };
   }
