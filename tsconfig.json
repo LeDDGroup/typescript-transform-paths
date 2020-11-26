@@ -1,16 +1,9 @@
 {
+  "extends": "./tsconfig.base",
+  "include": [ "src" ],
+  "exclude": [ "src/declarations" ],
+
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-
-    "declaration": true,
-
-    "outDir": "./lib",
-    "rootDir": "./src",
-
-    "strict": true,
-
-    "esModuleInterop": true
-  },
-  "exclude": ["tests", "lib"]
+    "outDir": "dist"
+  }
 }

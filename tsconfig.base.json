@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "noErrorTruncation": false,
+    "incremental": true,
+
+    "lib": [ "esnext" ],
+    "target": "es5",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+
+    "declaration": false,
+    "sourceMap": false,
+
+    "strict": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "preserveSymlinks": true
+  }
+}
