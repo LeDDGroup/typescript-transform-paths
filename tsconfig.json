@@ -4,6 +4,7 @@
   "exclude": [ "src/declarations" ],
 
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "dist"
   }
 }
