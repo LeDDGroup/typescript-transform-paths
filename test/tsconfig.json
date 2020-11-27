@@ -1,6 +1,5 @@
 {
-  "include": [ "." ],
-  "exclude": [ "__fixtures" ],
+  "include": [ "tests", "utils" ],
 
   "compilerOptions": {
     "noEmit": true,

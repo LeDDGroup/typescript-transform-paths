@@ -7,19 +7,15 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors)
 
-Transforms absolute imports to relative from `paths` in your tsconfig.json
+Transform module resolution paths in compiled output source to conform with `TypeScript` internal resolution via `tsconfig.json` settings (`paths`, `rootDirs`, `baseUrl`)
 
 ## Install
 
-npm:
-
 ```sh
+# NPM
 npm i -D typescript-transform-paths
-```
 
-yarn:
-
-```sh
+# Yarn
 yarn add -D typescript-transform-paths
 ```
 
@@ -27,43 +23,43 @@ yarn add -D typescript-transform-paths
 
 Add it to _plugins_ in your _tsconfig.json_
 
-```json
+### Example Config
+
+```jsonc
 {
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
       "@utils/*": ["utils/*"]
     },
-    "plugins": [{ "transform": "typescript-transform-paths" }]
-  }
-}
-```
-
-### Transforming declaration paths
-
-If you want to generate declaration (_.d.ts_) files with transformed paths you have to
-modify your _tsconfig.json_ file:
-
-```json
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@utils/*": ["utils/*"]
-    },
-    "declaration": true,
     "plugins": [
+      // Tranform paths in output .js files
       { "transform": "typescript-transform-paths" },
+
+      // Tranform paths in output .d.ts files
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   }
+}
+```
+`core/index.ts`
+```tsx
+import { sum } from "@utils/sum";
+sum(2, 3);
 ```
 
-See [issue4](https://github.com/LeDDGroup/typescript-transform-paths/issues/4#issuecomment-486380340) for more information.
+`core/index.js` (compiled output)
+```js
+// core/index.js
+var sum_1 = require("../utils/sum");
+sum_1.sum(2, 3);
+```
 
-### Virtual Directory Support
+### Virtual Directories
 TS allows defining
 [virtual directories](https://www.typescriptlang.org/docs/handbook/module-resolution.html#virtual-directories-with-rootdirs)
-via the `rootDirs` compiler option. To enable virtual directory mapping, use the `useRootDirs` plugin option.
+via the `rootDirs` compiler option.  
+To enable virtual directory mapping, use the `useRootDirs` plugin option.
 
 ```jsonc
 {
@@ -74,13 +70,14 @@ via the `rootDirs` compiler option. To enable virtual directory mapping, use the
       "#root/*": [ "./src/*", "./generated/*" ]
     },
     "plugins": [
-      { "transform": "typescript-transform-paths", useRootDirs: true },
+      { "transform": "typescript-transform-paths", "useRootDirs": true },
+      { "transform": "typescript-transform-paths", "useRootDirs": true, "afterDeclarations": true }
     ]
   }
 }
 ```
 
-#### Example output
+#### Example
 
 ```
 - src/
@@ -101,47 +98,27 @@ import '#root/file2.ts' // resolves to '../file2'
 import '#root/file1.ts' // resolves to '../file1'
 ```
 
-## Example Config
-
-```jsonc
-// tsconfig.json
-{
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@utils/*": ["utils/*"]
-    }
-  }
-}
-```
-
-```tsx
-// core/index.ts
-import { sum } from "@utils/sum";
-
-sum(2, 3);
-```
-
-Gets compiled to:
-
-```js
-// core/index.js
-var sum_1 = require("../utils/sum");
-sum_1.sum(2, 3);
-```
-
 ## Articles
 
 - [Node Consumable Modules With Typescript Paths](https://medium.com/@ole.ersoy/node-consumable-modules-with-typescript-paths-ed88a5f332fa?postPublishedType=initial) by [oleersoy](https://github.com/oleersoy")
 
-## Contributting
+## Project Guidelines for Contributors
 
-- make sure to format code with prettier:
+- Package Manager: `yarn` (`yarn install`)
+- Commit messages: [Conventional Commit Specs](https://www.conventionalcommits.org/en/v1.0.0/)
+- Format before commit: `prettier` (`yarn run format`)
+- Releases: `standard-version` (`yarn run release`)
 
-```sh
-npm install --global prettier
-prettier --write src/index.ts
-```
+## Maintainers
+
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/nonara"><img src="https://avatars0.githubusercontent.com/u/1427565?v=4" width="100px;" alt=""/><br /><sub><b>Ron S.</b></sub></a></td>
+    <td align="center"><a href="https://github.com/danielpza"><img src="https://avatars2.githubusercontent.com/u/17787042?v=4" width="100px;" alt=""/><br /><sub><b>Daniel Perez Alvarez</b></sub></a></td>
+  </tr>
+</table>
 
 ## Contributors
 
