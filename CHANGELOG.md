@@ -6,11 +6,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* Added proper type elision (Closes #77 #78) ([cee93ec](https://github.com/LeDDGroup/typescript-transform-paths/commit/cee93ecc3dceb90474239787c216a8d26089b417))
+* Added proper type elision (Closes [#77](https://github.com/LeDDGroup/typescript-transform-paths/issues/77) [#78](https://github.com/LeDDGroup/typescript-transform-paths/issues/78)) ([cee93ec](https://github.com/LeDDGroup/typescript-transform-paths/commit/cee93ecc3dceb90474239787c216a8d26089b417))
 
 ### Bug Fixes
 
-* Ensure we use the same typescript instance that called the plugin (Fixes #80)
+* Ensure we use the same typescript instance that called the plugin (Fixes [#80](https://github.com/LeDDGroup/typescript-transform-paths/issues/80))
 
 ### Refactoring
 
@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### [2.0.4](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.0.3...v2.0.4) (2020-11-23)
 
 * Refactored from requiring _both_ to _at least one_ tsConfig option: baseUrl, paths ([34e4963](https://github.com/LeDDGroup/typescript-transform-paths/commit/34e49639f7248e38475efd854670c11ea65fc76e))
-  - Fixes issue #39
+  - Fixes issue [#39](https://github.com/LeDDGroup/typescript-transform-paths/issues/39)
   - Adds support for new [TS 4.1 - paths without baseUrl](https://devblogs.microsoft.com/typescript/announcing-typescript-4-1/#paths-without-baseurl)
 
 ### [2.0.3](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.0.2...v2.0.3) (2020-11-17)
