@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.0.3...v2.1.0) (2020-11-27)
+
+### Features
+
+* Added proper type elision (Closes #77 #78) ([cee93ec](https://github.com/LeDDGroup/typescript-transform-paths/commit/cee93ecc3dceb90474239787c216a8d26089b417))
+
+### Bug Fixes
+
+* Ensure we use the same typescript instance that called the plugin (Fixes #80)
+
+### Refactoring
+
+* Heavily refactored code base for better scale and readability
+* Refactored tests for modularity and multi-TS instance testing
+
 ### [2.0.4](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.0.3...v2.0.4) (2020-11-23)
 
 * Refactored from requiring _both_ to _at least one_ tsConfig option: baseUrl, paths ([34e4963](https://github.com/LeDDGroup/typescript-transform-paths/commit/34e49639f7248e38475efd854670c11ea65fc76e))
