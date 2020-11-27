@@ -19,7 +19,6 @@ export const tTypeScript = loadTypeScript("typescript.js", { folder: path.resolv
 
 export const tsModules = <const>[
   ["Latest", ts],
-  ["Latest (ttypescript)", tTypeScript],
   ["3.6.5", tsThree],
 ];
 export const projectsPaths = path.join(__dirname, "../projects");

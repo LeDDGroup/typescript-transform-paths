@@ -18,6 +18,8 @@ type TypeMapping = [
   [ts.LiteralTypeNode, tsThree.LiteralTypeNode],
   [ts.ImportDeclaration, tsThree.ImportDeclaration],
   [ts.ImportClause, tsThree.ImportClause],
+  [ts.Identifier, tsThree.Identifier],
+  [ts.NamedImportBindings, tsThree.NamedImportBindings],
   [ts.ImportDeclaration, tsThree.ImportDeclaration],
   [ts.ExportDeclaration, tsThree.ExportDeclaration],
   [ts.ExportDeclaration["exportClause"], tsThree.ExportDeclaration["exportClause"]]
@@ -59,14 +61,14 @@ export function downSampleTsType<T>(v: T): DownSampleTsType<T> {
 }
 
 /**
- * Convert TS4 to TS3 types
+ * Convert TS3 to TS4 types
  */
 export function upSampleTsTypes<T extends [...unknown[]]>(...args: T): UpSampleTsTypes<T> {
   return args as UpSampleTsTypes<T>;
 }
 
 /**
- * Convert TS4 to TS3 type
+ * Convert TS3 to TS4 type
  */
 export function upSampleTsType<T extends TsThreeType>(v: T): UpSampleTsType<T> {
   return v as UpSampleTsType<T>;

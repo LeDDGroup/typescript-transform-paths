@@ -1,6 +1,6 @@
-import ts from "typescript";
-import { VisitorContext } from "./types";
-import { downSampleTsType, downSampleTsTypes, getImportOrExportClause, resolvePathAndUpdateNode } from "./utils";
+import ts from 'typescript';
+import { VisitorContext } from './types';
+import { elideImportOrExportClause, resolvePathAndUpdateNode } from './utils';
 
 /* ****************************************************************************************************************** *
  * Node Visitor
@@ -10,7 +10,7 @@ import { downSampleTsType, downSampleTsTypes, getImportOrExportClause, resolvePa
  * Visit and replace nodes with module specifiers
  */
 export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | undefined {
-  const { factory, tsInstance, tsThreeInstance, transformationContext } = this;
+  const { factory, tsInstance, transformationContext } = this;
 
   /* ********************************************************* *
    * Helpers
@@ -41,13 +41,9 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    */
   if (isRequire(node) || isAsyncImport(node))
     return resolvePathAndUpdateNode(this, node, (<ts.StringLiteral>node.arguments[0]).text, (p) => {
-      const tsThreeNode = downSampleTsType(node);
-      const tsThreeP = downSampleTsType(p);
+      const res = factory.updateCallExpression(node, node.expression, node.typeArguments, [p]);
 
-      const res = factory
-        ? factory.updateCallExpression(node, node.expression, node.typeArguments, [p])
-        : tsThreeInstance.updateCall(tsThreeNode, tsThreeNode.expression, tsThreeNode.typeArguments, [tsThreeP]);
-
+      /* Handle comments */
       const textNode = node.arguments[0];
       const commentRanges = tsInstance.getLeadingCommentRanges(textNode.getFullText(), 0) || [];
 
@@ -78,9 +74,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    */
   if (tsInstance.isExternalModuleReference(node) && tsInstance.isStringLiteral(node.expression))
     return resolvePathAndUpdateNode(this, node, node.expression.text, (p) =>
-      factory
-        ? factory.updateExternalModuleReference(node, p)
-        : tsThreeInstance.updateExternalModuleReference.apply(void 0, downSampleTsTypes(node, p))
+      factory.updateExternalModuleReference(node, p)
     );
 
   /**
@@ -95,25 +89,15 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
     const { text } = argument.literal;
     if (!text) return node;
 
-    return resolvePathAndUpdateNode(this, node, text, (p) => {
-      if (factory)
-        return factory.updateImportTypeNode(
-          node,
-          factory.updateLiteralTypeNode(argument, p),
-          node.qualifier,
-          node.typeArguments,
-          node.isTypeOf
-        );
-
-      const [tsThreeNode, tsThreeP, tsThreeArgument] = downSampleTsTypes(node, p, argument);
-      return tsThreeInstance.updateImportTypeNode(
-        tsThreeNode,
-        tsThreeInstance.updateLiteralTypeNode(tsThreeArgument, tsThreeP),
-        tsThreeNode.qualifier,
-        tsThreeNode.typeArguments,
-        tsThreeNode.isTypeOf
-      );
-    });
+    return resolvePathAndUpdateNode(this, node, text, (p) =>
+      factory.updateImportTypeNode(
+        node,
+        factory.updateLiteralTypeNode(argument, p),
+        node.qualifier,
+        node.typeArguments,
+        node.isTypeOf
+      )
+    );
   }
 
   /**
@@ -126,21 +110,12 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
       let importClause = node.importClause;
 
       if (!this.isDeclarationFile && importClause) {
-        const updatedImportClause = getImportOrExportClause(this, node);
+        const updatedImportClause = elideImportOrExportClause(this, node);
         if (!updatedImportClause) return undefined; // No imports left, elide entire declaration
         importClause = updatedImportClause;
       }
 
-      if (factory) return factory.updateImportDeclaration(node, node.decorators, node.modifiers, importClause, p);
-
-      const [tsThreeNode, tsThreeP, tsThreeImportClause] = downSampleTsTypes(node, p, importClause);
-      return tsThreeInstance.updateImportDeclaration(
-        tsThreeNode,
-        tsThreeNode.decorators,
-        tsThreeNode.modifiers,
-        tsThreeImportClause,
-        tsThreeP
-      );
+      return factory.updateImportDeclaration(node, node.decorators, node.modifiers, importClause, p);
     });
 
   /**
@@ -153,24 +128,12 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
       let exportClause = node.exportClause;
 
       if (!this.isDeclarationFile && exportClause) {
-        const updatedExportClause = getImportOrExportClause(this, node);
+        const updatedExportClause = elideImportOrExportClause(this, node);
         if (!updatedExportClause) return undefined; // No export left, elide entire declaration
         exportClause = updatedExportClause;
       }
 
-      if (factory)
-        return factory.updateExportDeclaration(node, node.decorators, node.modifiers, node.isTypeOnly, exportClause, p);
-
-      const [tsThreeNode, tsThreeP, tsThreeExportClause] = downSampleTsTypes(node, p, exportClause);
-      return tsThreeInstance.updateExportDeclaration(
-        tsThreeNode,
-        tsThreeNode.decorators,
-        tsThreeNode.modifiers,
-        tsThreeExportClause,
-        tsThreeP,
-        // @ts-ignore - This was added in later versions of 3.x
-        tsThreeNode.isTypeOnly
-      );
+      return factory.updateExportDeclaration(node, node.decorators, node.modifiers, node.isTypeOnly, exportClause, p);
     });
 
   return tsInstance.visitEachChild(node, this.getVisitor(), transformationContext);

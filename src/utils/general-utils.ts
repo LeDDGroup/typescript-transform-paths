@@ -1,8 +1,6 @@
-import ts from "typescript";
-import url from "url";
-import path from "path";
-import { TsTransformPathsContext, TypeScriptThree } from "../types";
-import tsThree from "../declarations/typescript3";
+import ts from 'typescript';
+import url from 'url';
+import path from 'path';
 
 /* ****************************************************************************************************************** *
  * General Utilities & Helpers
@@ -27,14 +25,4 @@ export function getImplicitExtensions(options: ts.CompilerOptions) {
   allowJson && res.push(".json");
 
   return res;
-}
-
-/**
- * Creates a mutable clone of a TS Node (accommodates both TS4+ and earlier versions)
- */
-export function cloneNode<T extends ts.Node>(context: TsTransformPathsContext, node: T): T {
-  const { factory, tsInstance } = context;
-  return factory
-    ? factory.cloneNode(node)
-    : ((cast<TypeScriptThree>(tsInstance).getMutableClone(cast<tsThree.Node>(node)) as unknown) as T);
 }

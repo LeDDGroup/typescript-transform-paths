@@ -1,8 +1,16 @@
 // noinspection ES6UnusedImports
-import {} from "ts-expose-internals";
-import * as path from "path";
-import { createTsProgram, EmittedFiles, getEmitResult } from "../../utils";
-import { projectsPaths, ts, tsModules } from "../config";
+import {} from 'ts-expose-internals';
+import * as path from 'path';
+import { createTsProgram, EmittedFiles, getEmitResult } from '../../utils';
+import { projectsPaths, ts, tsModules, tTypeScript } from '../config';
+
+/* ****************************************************************************************************************** *
+ * Config
+ * ****************************************************************************************************************** */
+
+// TODO - In the future, remove this and create a separate small short test for TTS using a single SourceFile,
+//        as we only need to test that it runs the transformer. No other behaviour will differ.
+let testTsModules = <const>[ ...tsModules, ["Latest (ttypescript)", tTypeScript] ];
 
 /* ****************************************************************************************************************** *
  * Tests
@@ -16,7 +24,7 @@ describe(`Transformer -> Specific Cases`, () => {
   const indexFile = ts.normalizePath(path.join(projectRoot, "src/index.ts"));
   const typeElisionIndex = ts.normalizePath(path.join(projectRoot, "src/type-elision/index.ts"));
 
-  describe.each(tsModules)(`TypeScript %s`, (s, tsInstance) => {
+  describe.each(testTsModules)(`TypeScript %s`, (s, tsInstance) => {
     let rootDirsEmit: EmittedFiles;
     let normalEmit: EmittedFiles;
     const tsVersion = +tsInstance.versionMajorMinor.split(".").slice(0, 2).join("");

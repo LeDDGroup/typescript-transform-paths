@@ -3,7 +3,6 @@ import tsThree from "../declarations/typescript3";
 import path from "path";
 import { VisitorContext } from "../types";
 import { isBaseDir, isURL } from "./general-utils";
-import { upSampleTsType } from "./ts-type-conversion";
 
 /* ****************************************************************************************************************** *
  * Node Updater
@@ -18,17 +17,7 @@ export function resolvePathAndUpdateNode(
   moduleName: string,
   updaterFn: (newPath: ts.StringLiteral) => ts.Node | tsThree.Node | undefined
 ): ts.Node | undefined {
-  const {
-    sourceFile,
-    compilerOptions,
-    tsInstance,
-    config,
-    rootDirs,
-    implicitExtensions,
-    factory,
-    tsThreeInstance,
-  } = context;
-  let outputPath: string;
+  const { sourceFile, compilerOptions, tsInstance, config, rootDirs, implicitExtensions, factory } = context;
 
   /* Have Compiler API attempt to resolve */
   const { resolvedModule, failedLookupLocations } = tsInstance.resolveModuleName(
@@ -40,6 +29,7 @@ export function resolvePathAndUpdateNode(
 
   if (resolvedModule?.isExternalLibraryImport) return node;
 
+  let outputPath: string;
   if (!resolvedModule) {
     const maybeURL = failedLookupLocations[0];
     if (!isURL(maybeURL)) return node;
@@ -77,9 +67,6 @@ export function resolvePathAndUpdateNode(
     outputPath = outputPath[0] === "." ? outputPath : `./${outputPath}`;
   }
 
-  const newStringLiteral = factory
-    ? factory.createStringLiteral(outputPath)
-    : upSampleTsType(tsThreeInstance.createStringLiteral(outputPath));
-
+  const newStringLiteral = factory.createStringLiteral(outputPath);
   return updaterFn(newStringLiteral) as ts.Node | undefined;
 }
