@@ -33,10 +33,10 @@ Add it to _plugins_ in your _tsconfig.json_
       "@utils/*": ["utils/*"]
     },
     "plugins": [
-      // Tranform paths in output .js files
+      // Transform paths in output .js files
       { "transform": "typescript-transform-paths" },
 
-      // Tranform paths in output .d.ts files
+      // Transform paths in output .d.ts files (Include this line if you output declarations files)
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   }
