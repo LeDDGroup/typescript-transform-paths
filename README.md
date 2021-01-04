@@ -119,7 +119,7 @@ Example:
       { 
         "transform": "typescript-transform-paths", 
         "useRootDirs": true, 
-        exclude: [ "**/node_modules/**" ]
+        "exclude": [ "**/node_modules/**" ]
       }
     ]
   }
