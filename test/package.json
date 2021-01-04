@@ -12,6 +12,6 @@
     "ts-patch": "link:../node_modules/ts-patch"
   },
   "workspaces": [
-    "packages/*"
+    "projects/*"
   ]
 }
