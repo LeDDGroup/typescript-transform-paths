@@ -23,6 +23,7 @@ describe(`Transformer -> Specific Cases`, () => {
   const genFile = ts.normalizePath(path.join(projectRoot, "generated/dir/gen-file.ts"));
   const srcFile = ts.normalizePath(path.join(projectRoot, "src/dir/src-file.ts"));
   const indexFile = ts.normalizePath(path.join(projectRoot, "src/index.ts"));
+  const tagFile = ts.normalizePath(path.join(projectRoot, "src/tags.ts"));
   const typeElisionIndex = ts.normalizePath(path.join(projectRoot, "src/type-elision/index.ts"));
   const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "excluded-file.*"] };
 
@@ -53,19 +54,20 @@ describe(`Transformer -> Specific Cases`, () => {
       rootDirsEmit = getEmitResult(rootDirsProgram);
     });
 
-    test(`(useRootDirs: true) Re-maps for rootDirs`, () => {
-      expect(rootDirsEmit[genFile].dts).toMatch(`import "./src-file"`);
-      expect(rootDirsEmit[srcFile].dts).toMatch(`import "./gen-file"`);
-      expect(rootDirsEmit[indexFile].dts).toMatch(`export { B } from "./dir/gen-file"`);
-      expect(rootDirsEmit[indexFile].dts).toMatch(`export { A } from "./dir/src-file"`);
-    });
+    describe(`Options`, () => {
+      test(`(useRootDirs: true) Re-maps for rootDirs`, () => {
+        expect(rootDirsEmit[genFile].dts).toMatch(`import "./src-file"`);
+        expect(rootDirsEmit[srcFile].dts).toMatch(`import "./gen-file"`);
+        expect(rootDirsEmit[indexFile].dts).toMatch(`export { B } from "./dir/gen-file"`);
+        expect(rootDirsEmit[indexFile].dts).toMatch(`export { A } from "./dir/src-file"`);
+      });
 
-    test(`(useRootDirs: false) Ignores rootDirs`, () => {
-      expect(normalEmit[genFile].dts).toMatch(`import "../../src/dir/src-file"`);
-      expect(normalEmit[srcFile].dts).toMatch(`import "../../generated/dir/gen-file"`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { B } from "../generated/dir/gen-file"`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { A } from "./dir/src-file"`);
-    });
+      test(`(useRootDirs: false) Ignores rootDirs`, () => {
+        expect(normalEmit[genFile].dts).toMatch(`import "../../src/dir/src-file"`);
+        expect(normalEmit[srcFile].dts).toMatch(`import "../../generated/dir/gen-file"`);
+        expect(normalEmit[indexFile].dts).toMatch(`export { B } from "../generated/dir/gen-file"`);
+        expect(normalEmit[indexFile].dts).toMatch(`export { A } from "./dir/src-file"`);
+      });
 
       test(`(exclude) Doesn't transform for exclusion patterns`, () => {
         expect(rootDirsEmit[indexFile].dts).toMatch(

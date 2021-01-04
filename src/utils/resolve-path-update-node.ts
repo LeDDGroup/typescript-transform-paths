@@ -17,63 +17,114 @@ export function resolvePathAndUpdateNode(
   moduleName: string,
   updaterFn: (newPath: ts.StringLiteral) => ts.Node | tsThree.Node | undefined
 ): ts.Node | undefined {
-  const { sourceFile, compilerOptions, tsInstance, config, rootDirs, implicitExtensions, factory } = context;
+  const { sourceFile, compilerOptions, tsInstance, config, implicitExtensions, factory } = context;
+  const tags = getStatementTags();
 
-  /* Have Compiler API attempt to resolve */
-  const { resolvedModule, failedLookupLocations } = tsInstance.resolveModuleName(
-    moduleName,
-    sourceFile.fileName,
-    compilerOptions,
-    tsInstance.sys
-  );
+  // Skip if @no-transform-path specified
+  if (tags?.shouldSkip) return node;
 
-  if (resolvedModule?.isExternalLibraryImport) return node;
+  const resolutionResult = resolvePath(tags?.overridePath);
 
-  let outputPath: string;
-  if (!resolvedModule) {
-    const maybeURL = failedLookupLocations[0];
-    if (!isURL(maybeURL)) return node;
-    outputPath = maybeURL;
-  } else {
-    const { extension, resolvedFileName } = resolvedModule;
+  // Skip if can't be resolved
+  if (!resolutionResult || !resolutionResult.outputPath) return node;
 
-    const fileName = sourceFile.fileName;
-    let filePath = tsInstance.normalizePath(path.dirname(sourceFile.fileName));
-    let modulePath = path.dirname(resolvedFileName);
+  const { outputPath, filePath } = resolutionResult;
 
-    /* Handle rootDirs mapping */
-    if (config.useRootDirs && rootDirs) {
-      let fileRootDir = "";
-      let moduleRootDir = "";
-      for (const rootDir of rootDirs) {
-        if (isBaseDir(rootDir, resolvedFileName) && rootDir.length > moduleRootDir.length) moduleRootDir = rootDir;
-        if (isBaseDir(rootDir, fileName) && rootDir.length > fileRootDir.length) fileRootDir = rootDir;
-      }
+  // Check if matches exclusion
+  if (filePath && context.excludeMatchers)
+    for (const matcher of context.excludeMatchers) if (matcher.match(filePath)) return node;
 
-      /* Remove base dirs to make relative to root */
-      if (fileRootDir && moduleRootDir) {
-        filePath = path.relative(fileRootDir, filePath);
-        modulePath = path.relative(moduleRootDir, modulePath);
-      }
+  return updaterFn(factory.createStringLiteral(outputPath)) as ts.Node | undefined;
+
+  /* ********************************************************* *
+   * Helpers
+   * ********************************************************* */
+
+  function resolvePath(overridePath: string | undefined): { outputPath: string; filePath?: string } | undefined {
+    /* Handle overridden path -- ie. @transform-path ../my/path) */
+    if (overridePath) {
+      return {
+        outputPath: filePathToOutputPath(overridePath, path.extname(overridePath)),
+        filePath: overridePath,
+      };
     }
 
-    outputPath = tsInstance.normalizePath(
-      path.join(path.relative(filePath, modulePath), path.basename(resolvedFileName))
+    /* Have Compiler API attempt to resolve */
+    const { resolvedModule, failedLookupLocations } = tsInstance.resolveModuleName(
+      moduleName,
+      sourceFile.fileName,
+      compilerOptions,
+      tsInstance.sys
     );
 
-    /* Check if matches exclusion */
-    if (context.excludeMatchers)
-      for (const matcher of context.excludeMatchers)
-        if (matcher.match(outputPath)) return node;
+    // No transform for node-modules
+    if (resolvedModule?.isExternalLibraryImport) return void 0;
 
-    // Remove extension if implicit
-    if (extension && implicitExtensions.includes(extension)) outputPath = outputPath.slice(0, -extension.length);
+    /* Handle non-resolvable module */
+    if (!resolvedModule) {
+      const maybeURL = failedLookupLocations[0];
+      if (!isURL(maybeURL)) return void 0;
+      return { outputPath: maybeURL };
+    }
 
-    if (!outputPath) return node;
-
-    outputPath = outputPath[0] === "." ? outputPath : `./${outputPath}`;
+    /* Handle resolved module */
+    const { extension, resolvedFileName } = resolvedModule;
+    return {
+      outputPath: filePathToOutputPath(resolvedFileName, extension),
+      filePath: resolvedFileName,
+    };
   }
 
-  const newStringLiteral = factory.createStringLiteral(outputPath);
-  return updaterFn(newStringLiteral) as ts.Node | undefined;
+  function filePathToOutputPath(filePath: string, extension: string | undefined) {
+    if (path.isAbsolute(filePath)) {
+      let sourceFileDir = tsInstance.normalizePath(path.dirname(sourceFile.fileName));
+      let moduleDir = path.dirname(filePath);
+
+      /* Handle rootDirs mapping */
+      if (config.useRootDirs && context.rootDirs) {
+        let fileRootDir = "";
+        let moduleRootDir = "";
+        for (const rootDir of context.rootDirs) {
+          if (isBaseDir(rootDir, filePath) && rootDir.length > moduleRootDir.length) moduleRootDir = rootDir;
+          if (isBaseDir(rootDir, sourceFile.fileName) && rootDir.length > fileRootDir.length) fileRootDir = rootDir;
+        }
+
+        /* Remove base dirs to make relative to root */
+        if (fileRootDir && moduleRootDir) {
+          sourceFileDir = path.relative(fileRootDir, sourceFileDir);
+          moduleDir = path.relative(moduleRootDir, moduleDir);
+        }
+      }
+
+      /* Make path relative */
+      filePath = tsInstance.normalizePath(path.join(path.relative(sourceFileDir, moduleDir), path.basename(filePath)));
+    }
+
+    // Remove extension if implicit
+    if (extension && implicitExtensions.includes(extension)) filePath = filePath.slice(0, -extension.length);
+
+    return filePath[0] === "." || isURL(filePath) ? filePath : `./${filePath}`;
+  }
+
+  function getStatementTags() {
+    const targetNode = tsInstance.isStatement(node)
+      ? node
+      : tsInstance.findAncestor(node, tsInstance.isStatement) ?? node;
+    const jsDocTags = tsInstance.getJSDocTags(targetNode);
+
+    const trivia = targetNode.getFullText(sourceFile).slice(0, targetNode.getLeadingTriviaWidth(sourceFile));
+    const commentTags = new Map<string, string | undefined>();
+    const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gm;
+
+    for (let match = regex.exec(trivia); match; match = regex.exec(trivia)) commentTags.set(match[1], match[2]);
+
+    return {
+      overridePath:
+        commentTags.get("transform-path") ??
+        jsDocTags?.find((t) => t.tagName.text.toLowerCase() === "transform-path")?.comment,
+      shouldSkip:
+        commentTags.has("no-transform-path") ||
+        !!jsDocTags?.find((t) => t.tagName.text.toLowerCase() === "no-transform-path"),
+    };
+  }
 }
