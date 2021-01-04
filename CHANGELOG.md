@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.1.0...v2.2.0) (2021-01-04)
+
+
+### Features
+
+* Add overwriteNodeModules option ([b4a483e](https://github.com/LeDDGroup/typescript-transform-paths/commit/b4a483e880e348971c15dde697ec6813f678fde2))
+* Added `@transform-path` and `@no-transform-path` tags for custom statement level transformation ([8cab30d](https://github.com/LeDDGroup/typescript-transform-paths/commit/8cab30d25415596f19b162bcf50cf984256012e6))
+* Added `exclude` option to allow excluding transformation of matching resolved paths ([b1fdb54](https://github.com/LeDDGroup/typescript-transform-paths/commit/b1fdb545c2d963cd4d82a6a0bedfa2d7d0107398))
+
+
+### Bug Fixes
+
+* Certain edge cases existed where type elision improperly elided full import / export declarations without named bindings (closes [#87](https://github.com/LeDDGroup/typescript-transform-paths/issues/87)) ([84a7866](https://github.com/LeDDGroup/typescript-transform-paths/commit/84a7866d354b49a7d2e8abaadb89f24b8bff07bc))
+
 ## [2.1.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.0.3...v2.1.0) (2020-11-27)
 
 ### Features
