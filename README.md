@@ -98,6 +98,57 @@ import '#root/file2.ts' // resolves to '../file2'
 import '#root/file1.ts' // resolves to '../file1'
 ```
 
+## Custom Control
+
+### Exclusion patterns
+
+You can disable transformation for paths based on the resolved file path. The `exclude` option allows specifying glob
+patterns to match against resolved file path. 
+
+For an example context in which this would be useful, see [Issue #83](https://github.com/LeDDGroup/typescript-transform-paths/issues/83)
+
+Example:
+```jsonc
+{
+  "compilerOptions": {
+    "paths": {
+      "sub-module1/*": [ "../../node_modules/sub-module1/*" ],
+      "sub-module2/*": [ "../../node_modules/sub-module2/*" ],
+    },
+    "plugins": [
+      { 
+        "transform": "typescript-transform-paths", 
+        "useRootDirs": true, 
+        exclude: [ "**/node_modules/**" ]
+      }
+    ]
+  }
+}
+```
+
+```ts
+// This path will not be transformed
+import * as sm1 from 'sub-module1/index'
+```
+
+### @transform-path tag
+
+Use the `@transform-path` tag to explicitly specify the output path for a single statement.
+
+```ts
+// @transform-path https://cdnjs.cloudflare.com/ajax/libs/react/17.0.1/umd/react.production.min.js
+import react from 'react' // Output path will be the url above
+```
+
+### @no-transform-path
+
+Use the `@no-transform-path` tag to explicitly disable transformation for a single statement.
+
+```ts
+// @no-transform-path
+import 'normally-transformed' // This will remain 'normally-transformed', even though it has a different value in paths config
+```
+
 ## Articles
 
 - [Node Consumable Modules With Typescript Paths](https://medium.com/@ole.ersoy/node-consumable-modules-with-typescript-paths-ed88a5f332fa?postPublishedType=initial) by [oleersoy](https://github.com/oleersoy")
