@@ -58,5 +58,5 @@ export {
   explicitTransform1,
   explicitTransform2,
   explicitTransform3,
-  explicitTransform4
-}
+  explicitTransform4,
+};
