@@ -109,7 +109,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
     return resolvePathAndUpdateNode(this, node, node.moduleSpecifier.text, (p) => {
       let importClause = node.importClause;
 
-      if (!this.isDeclarationFile && importClause) {
+      if (!this.isDeclarationFile && importClause?.namedBindings) {
         const updatedImportClause = elideImportOrExportClause(this, node);
         if (!updatedImportClause) return undefined; // No imports left, elide entire declaration
         importClause = updatedImportClause;
@@ -127,7 +127,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
     return resolvePathAndUpdateNode(this, node, node.moduleSpecifier.text, (p) => {
       let exportClause = node.exportClause;
 
-      if (!this.isDeclarationFile && exportClause) {
+      if (!this.isDeclarationFile && exportClause && tsInstance.isNamedExports(exportClause)) {
         const updatedExportClause = elideImportOrExportClause(this, node);
         if (!updatedExportClause) return undefined; // No export left, elide entire declaration
         exportClause = updatedExportClause;
