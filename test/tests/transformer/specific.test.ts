@@ -79,7 +79,7 @@ describe(`Transformer -> Specific Cases`, () => {
     describe(`Tags`, () => {
       test(`(@no-transform-path) Doesn't transform path`, () => {
         const regex = /^import \* as skipTransform\d from "#root\/index"/gm;
-        const expectedLength = tsInstance.versionMajorMinor === '3.6' ? 8 : 16;
+        const expectedLength = tsInstance.versionMajorMinor === "3.6" ? 8 : 16;
         const matches = [
           ...(normalEmit[tagFile].dts.match(regex) ?? []),
           ...(rootDirsEmit[tagFile].dts.match(regex) ?? []),
@@ -92,7 +92,7 @@ describe(`Transformer -> Specific Cases`, () => {
       test(`(@transform-path) Transforms path with explicit value`, () => {
         const regex1 = /^import \* as explicitTransform\d from "\.\/dir\/src-file"/gm;
         const regex2 = /^import \* as explicitTransform\d from "http:\/\/www\.go\.com\/react\.js"/gm;
-        const expectedLength = tsInstance.versionMajorMinor === '3.6' ? 4 : 8;
+        const expectedLength = tsInstance.versionMajorMinor === "3.6" ? 4 : 8;
 
         const matches1 = [
           ...(normalEmit[tagFile].dts.match(regex1) ?? []),
