@@ -28,11 +28,18 @@
  * import { A, B } from './b'
  * export { A } from './b'
  */
-import { ImportOrExportClause, ImportOrExportDeclaration, VisitorContext } from '../types';
+import { ImportOrExportClause, ImportOrExportDeclaration, VisitorContext } from "../types";
 import {
-  ExportDeclaration, ExportSpecifier, ImportClause, ImportDeclaration, ImportSpecifier, NamedExports,
-  NamedImportBindings, Visitor, VisitResult
-} from 'typescript';
+  ExportDeclaration,
+  ExportSpecifier,
+  ImportClause,
+  ImportDeclaration,
+  ImportSpecifier,
+  NamedExports,
+  NamedImportBindings,
+  Visitor,
+  VisitResult,
+} from "typescript";
 
 /* ****************************************************************************************************************** */
 // region: Utilities
@@ -62,7 +69,7 @@ export function elideImportOrExportClause(
     SyntaxKind,
     visitNodes,
     isNamedExportBindings,
-    isExportSpecifier
+    isExportSpecifier,
   } = tsInstance;
 
   if (tsInstance.isImportDeclaration(node)) {

@@ -1,8 +1,15 @@
 import TS, {
-  Decorator, ExportDeclaration, Expression, Identifier, ImportClause, Modifier, NamedExportBindings, NamedImportBindings
-} from 'typescript'
-import { TsTransformPathsContext } from '../types';
-import { downSampleTsTypes } from './ts-type-conversion';
+  Decorator,
+  ExportDeclaration,
+  Expression,
+  Identifier,
+  ImportClause,
+  Modifier,
+  NamedExportBindings,
+  NamedImportBindings,
+} from "typescript";
+import { TsTransformPathsContext } from "../types";
+import { downSampleTsTypes } from "./ts-type-conversion";
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -27,8 +34,9 @@ export function createHarmonyFactory(context: TsTransformPathsContext): HarmonyF
       if (context.tsFactory) return (<any>target)[prop];
 
       switch (prop) {
-        case 'updateCallExpression': return (...args:any) => tsThreeInstance.updateCall.apply(void 0, args);
-        case 'updateImportClause':
+        case "updateCallExpression":
+          return (...args: any) => tsThreeInstance.updateCall.apply(void 0, args);
+        case "updateImportClause":
           return function (
             node: ImportClause,
             isTypeOnly: boolean,
@@ -36,8 +44,8 @@ export function createHarmonyFactory(context: TsTransformPathsContext): HarmonyF
             namedBindings: NamedImportBindings | undefined
           ) {
             return tsThreeInstance.updateImportClause.apply(void 0, downSampleTsTypes(node, name, namedBindings));
-          }
-        case 'updateExportDeclaration':
+          };
+        case "updateExportDeclaration":
           return function (
             node: ExportDeclaration,
             decorators: readonly Decorator[] | undefined,
@@ -56,10 +64,11 @@ export function createHarmonyFactory(context: TsTransformPathsContext): HarmonyF
               // @ts-ignore - This was added in later versions of 3.x
               dsNode.isTypeOnly
             );
-          }
-        default: return (...args:any) => (<any>tsThreeInstance)[prop](...args);
+          };
+        default:
+          return (...args: any) => (<any>tsThreeInstance)[prop](...args);
       }
-    }
+    },
   }) as HarmonyFactory;
 }
 

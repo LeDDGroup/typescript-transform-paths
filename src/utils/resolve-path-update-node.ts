@@ -27,11 +27,10 @@ export function resolvePathAndUpdateNode(
     tsInstance.sys
   );
 
-  const overwriteModule : boolean = config.overwriteNodeModules
-  if ( ! overwriteModule && resolvedModule?.isExternalLibraryImport ) return node;
+  if (!config.overwriteNodeModules && resolvedModule?.isExternalLibraryImport) return node;
 
   let outputPath: string;
-  if ( ( ! resolvedModule || overwriteModule ) ) {
+  if (!resolvedModule || config.overwriteNodeModules) {
     const maybeURL = failedLookupLocations[0];
     if (!isURL(maybeURL)) return node;
     outputPath = maybeURL;

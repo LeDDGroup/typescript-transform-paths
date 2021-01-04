@@ -1,7 +1,7 @@
 import tsThree from "./declarations/typescript3";
 import ts, { CompilerOptions } from "typescript";
 import { PluginConfig } from "ts-patch";
-import { HarmonyFactory } from './utils/harmony-factory';
+import { HarmonyFactory } from "./utils/harmony-factory";
 
 /* ****************************************************************************************************************** */
 // region: TS Types

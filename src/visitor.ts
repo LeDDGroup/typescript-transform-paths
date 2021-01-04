@@ -1,6 +1,6 @@
-import ts from 'typescript';
-import { VisitorContext } from './types';
-import { elideImportOrExportClause, resolvePathAndUpdateNode } from './utils';
+import ts from "typescript";
+import { VisitorContext } from "./types";
+import { elideImportOrExportClause, resolvePathAndUpdateNode } from "./utils";
 
 /* ****************************************************************************************************************** *
  * Node Visitor

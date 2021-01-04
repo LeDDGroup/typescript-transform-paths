@@ -5,7 +5,7 @@ import ts from "typescript";
 import { cast, getImplicitExtensions } from "./utils";
 import { TsTransformPathsConfig, TsTransformPathsContext, TypeScriptThree, VisitorContext } from "./types";
 import { nodeVisitor } from "./visitor";
-import { createHarmonyFactory } from './utils/harmony-factory';
+import { createHarmonyFactory } from "./utils/harmony-factory";
 
 /* ****************************************************************************************************************** *
  * Transformer
@@ -47,7 +47,7 @@ export default function transformer(
         getVisitor() {
           return nodeVisitor.bind(this);
         },
-        factory: createHarmonyFactory(tsTransformPathsContext)
+        factory: createHarmonyFactory(tsTransformPathsContext),
       };
 
       return tsInstance.visitEachChild(sourceFile, visitorContext.getVisitor(), transformationContext);

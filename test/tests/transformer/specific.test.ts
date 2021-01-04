@@ -1,8 +1,8 @@
 // noinspection ES6UnusedImports
-import {} from 'ts-expose-internals';
-import * as path from 'path';
-import { createTsProgram, EmittedFiles, getEmitResult } from '../../utils';
-import { projectsPaths, ts, tsModules, tTypeScript } from '../config';
+import {} from "ts-expose-internals";
+import * as path from "path";
+import { createTsProgram, EmittedFiles, getEmitResult } from "../../utils";
+import { projectsPaths, ts, tsModules, tTypeScript } from "../config";
 
 /* ****************************************************************************************************************** *
  * Config
@@ -10,7 +10,7 @@ import { projectsPaths, ts, tsModules, tTypeScript } from '../config';
 
 // TODO - In the future, remove this and create a separate small short test for TTS using a single SourceFile,
 //        as we only need to test that it runs the transformer. No other behaviour will differ.
-let testTsModules = <const>[ ...tsModules, ["Latest (ttypescript)", tTypeScript] ];
+let testTsModules = <const>[...tsModules, ["Latest (ttypescript)", tTypeScript]];
 
 /* ****************************************************************************************************************** *
  * Tests
