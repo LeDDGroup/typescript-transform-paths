@@ -20,6 +20,7 @@ export type ImportOrExportClause = ts.ImportDeclaration["importClause"] | ts.Exp
 
 export interface TsTransformPathsConfig extends PluginConfig {
   readonly useRootDirs?: boolean;
+  readonly overwriteNodeModules?: boolean;
 }
 
 // endregion
