@@ -57,11 +57,18 @@ export function resolvePathAndUpdateNode(
       }
     }
 
-    /* Remove extension if implicit */
     outputPath = tsInstance.normalizePath(
       path.join(path.relative(filePath, modulePath), path.basename(resolvedFileName))
     );
+
+    /* Check if matches exclusion */
+    if (context.excludeMatchers)
+      for (const matcher of context.excludeMatchers)
+        if (matcher.match(outputPath)) return node;
+
+    // Remove extension if implicit
     if (extension && implicitExtensions.includes(extension)) outputPath = outputPath.slice(0, -extension.length);
+
     if (!outputPath) return node;
 
     outputPath = outputPath[0] === "." ? outputPath : `./${outputPath}`;

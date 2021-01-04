@@ -6,6 +6,7 @@ import { cast, getImplicitExtensions } from "./utils";
 import { TsTransformPathsConfig, TsTransformPathsContext, TypeScriptThree, VisitorContext } from "./types";
 import { nodeVisitor } from "./visitor";
 import { createHarmonyFactory } from "./utils/harmony-factory";
+import { Minimatch } from "minimatch";
 
 /* ****************************************************************************************************************** *
  * Transformer
@@ -34,6 +35,7 @@ export default function transformer(
       transformationContext,
       tsInstance,
       tsThreeInstance: cast<TypeScriptThree>(tsInstance),
+      excludeMatchers: config.exclude?.map((globPattern) => new Minimatch(globPattern, { matchBase: true })),
     };
 
     return (sourceFile: ts.SourceFile) => {

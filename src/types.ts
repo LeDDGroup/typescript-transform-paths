@@ -2,6 +2,7 @@ import tsThree from "./declarations/typescript3";
 import ts, { CompilerOptions } from "typescript";
 import { PluginConfig } from "ts-patch";
 import { HarmonyFactory } from "./utils/harmony-factory";
+import { IMinimatch } from "minimatch";
 
 /* ****************************************************************************************************************** */
 // region: TS Types
@@ -20,6 +21,7 @@ export type ImportOrExportClause = ts.ImportDeclaration["importClause"] | ts.Exp
 
 export interface TsTransformPathsConfig extends PluginConfig {
   readonly useRootDirs?: boolean;
+  readonly exclude?: string[];
 }
 
 // endregion
@@ -45,6 +47,7 @@ export interface TsTransformPathsContext {
   readonly elisionMap: Map<ts.SourceFile, Map<ImportOrExportDeclaration, ImportOrExportDeclaration>>;
   readonly transformationContext: ts.TransformationContext;
   readonly rootDirs?: string[];
+  readonly excludeMatchers: IMinimatch[] | undefined;
 }
 
 export interface VisitorContext extends TsTransformPathsContext {

@@ -7,13 +7,15 @@
     "rootDir": ".",
     "module": "ESNext",
     "esModuleInterop": true,
+    "moduleResolution": "node",
     "declaration": true,
 
     "rootDirs": [ "src", "generated" ],
 
     "baseUrl": ".",
     "paths": {
-      "#root/*": [ "./src/*", "./generated/*" ]
+      "#root/*": [ "./src/*", "./generated/*" ],
+      "#exclusion/*": [ "./src/excluded/*" ]
     }
   }
 }

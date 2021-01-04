@@ -14,3 +14,8 @@ import(
    */
   "#root/dir/gen-file"
 );
+
+export { BB } from "#exclusion/ex";
+export { DD } from "#root/excluded-file";
+
+export const b = 3;
