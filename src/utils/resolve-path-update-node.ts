@@ -108,16 +108,23 @@ export function resolvePathAndUpdateNode(
   }
 
   function getStatementTags() {
-    const targetNode = tsInstance.isStatement(node)
+    let targetNode = tsInstance.isStatement(node)
       ? node
       : tsInstance.findAncestor(node, tsInstance.isStatement) ?? node;
-    const jsDocTags = tsInstance.getJSDocTags(targetNode);
+    targetNode = tsInstance.getOriginalNode(targetNode);
 
-    const trivia = targetNode.getFullText(sourceFile).slice(0, targetNode.getLeadingTriviaWidth(sourceFile));
+    let jsDocTags: readonly ts.JSDocTag[] | undefined;
+    try {
+      jsDocTags = tsInstance.getJSDocTags(targetNode);
+    } catch {}
+
     const commentTags = new Map<string, string | undefined>();
-    const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gm;
+    try {
+      const trivia = targetNode.getFullText(sourceFile).slice(0, targetNode.getLeadingTriviaWidth(sourceFile));
+      const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gm;
 
-    for (let match = regex.exec(trivia); match; match = regex.exec(trivia)) commentTags.set(match[1], match[2]);
+      for (let match = regex.exec(trivia); match; match = regex.exec(trivia)) commentTags.set(match[1], match[2]);
+    } catch {}
 
     return {
       overridePath:
