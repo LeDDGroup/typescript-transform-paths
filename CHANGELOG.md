@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.0...v2.2.1) (2021-01-10)
+
+
+### Bug Fixes
+
+* Preserve explicit file extensions (closes [#89](https://github.com/LeDDGroup/typescript-transform-paths/issues/89)) ([b0627f8](https://github.com/LeDDGroup/typescript-transform-paths/commit/b0627f8f6cd49681ff58ffad48e04e96a9e9ba27))
+* Rely on original node for getting comment tags (closes [#90](https://github.com/LeDDGroup/typescript-transform-paths/issues/90)) ([fa978c2](https://github.com/LeDDGroup/typescript-transform-paths/commit/fa978c2651f74ba3ce7d7363ac5a0b3677a8e90c))
+
 ## [2.2.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.1.0...v2.2.0) (2021-01-04)
 
 
