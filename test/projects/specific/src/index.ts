@@ -18,4 +18,6 @@ import(
 export { BB } from "#exclusion/ex";
 export { DD } from "#root/excluded-file";
 
+export { GeneralConstA, GeneralTypeA } from "#root/general.ts";
+
 export const b = 3;

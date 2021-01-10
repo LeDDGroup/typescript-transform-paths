@@ -134,5 +134,10 @@ describe(`Transformer -> Specific Cases`, () => {
         /\/\/ comment 1\r?\n\s*\r?\n\/\*\r?\n\s*comment 2\r?\n\s*\*\/\r?\n\s*"\.\.\/generated\/dir\/gen-file"/
       );
     });
+
+    test(`Preserves explicit extensions`, () => {
+      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstA } from "./general.ts";`);
+      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstA, GeneralTypeA } from "./general.ts";`);
+    });
   });
 });

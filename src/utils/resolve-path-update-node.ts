@@ -101,7 +101,8 @@ export function resolvePathAndUpdateNode(
     }
 
     // Remove extension if implicit
-    if (extension && implicitExtensions.includes(extension)) filePath = filePath.slice(0, -extension.length);
+    if (extension && implicitExtensions.includes(extension) && path.basename(moduleName) !== path.basename(filePath))
+      filePath = filePath.slice(0, -extension.length);
 
     return filePath[0] === "." || isURL(filePath) ? filePath : `./${filePath}`;
   }
