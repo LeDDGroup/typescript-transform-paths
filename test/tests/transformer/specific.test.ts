@@ -135,9 +135,11 @@ describe(`Transformer -> Specific Cases`, () => {
       );
     });
 
-    test(`Preserves explicit extensions`, () => {
-      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstA } from "./general.ts";`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstA, GeneralTypeA } from "./general.ts";`);
+    test(`Preserves explicit js/jsx extensions`, () => {
+      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstA } from "./general";`);
+      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstB } from "./general.js";`);
+      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstA, GeneralTypeA } from "./general";`);
+      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstB } from "./general.js";`);
     });
   });
 });

@@ -19,5 +19,6 @@ export { BB } from "#exclusion/ex";
 export { DD } from "#root/excluded-file";
 
 export { GeneralConstA, GeneralTypeA } from "#root/general.ts";
+export { GeneralConstB } from "#root/general.js";
 
 export const b = 3;

@@ -4,9 +4,17 @@ import path from "path";
 import { VisitorContext } from "../types";
 import { isBaseDir, isURL } from "./general-utils";
 
-/* ****************************************************************************************************************** *
- * Node Updater
- * ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+// region: Config
+/* ****************************************************************************************************************** */
+
+const explicitExtensions = [".js", ".jsx"];
+
+// endregion
+
+/* ****************************************************************************************************************** */
+// region: Node Updater Utility
+/* ****************************************************************************************************************** */
 
 /**
  * Gets proper path and calls updaterFn to get the new node if it should be updated
@@ -101,10 +109,19 @@ export function resolvePathAndUpdateNode(
     }
 
     // Remove extension if implicit
-    if (extension && implicitExtensions.includes(extension) && path.basename(moduleName) !== path.basename(filePath))
-      filePath = filePath.slice(0, -extension.length);
+    if (extension && implicitExtensions.includes(extension))
+      filePath = filePath.slice(0, -extension.length) + maybeGetExplicitJsExtension(filePath, extension);
 
     return filePath[0] === "." || isURL(filePath) ? filePath : `./${filePath}`;
+  }
+
+  function maybeGetExplicitJsExtension(filePath: string, resolvedExtension: string): string {
+    const moduleExtension = path.extname(moduleName);
+    if (moduleExtension && !explicitExtensions.includes(moduleExtension)) return "";
+
+    return path.basename(moduleName, moduleExtension) === path.basename(filePath, resolvedExtension)
+      ? moduleExtension
+      : "";
   }
 
   function getStatementTags() {
@@ -136,3 +153,5 @@ export function resolvePathAndUpdateNode(
     };
   }
 }
+
+// endregion
