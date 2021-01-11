@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.2](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.1...v2.2.2) (2021-01-11)
+
+
+### Bug Fixes
+
+* Corrected explicit extensions fix from previous patch ([a90e550](https://github.com/LeDDGroup/typescript-transform-paths/commit/a90e550a3d0c4804ef3a4e27cbc4e32ce6971296))
+
 ### [2.2.1](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.0...v2.2.1) (2021-01-10)
 
 
