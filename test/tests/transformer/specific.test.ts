@@ -136,8 +136,10 @@ describe(`Transformer -> Specific Cases`, () => {
     });
 
     test(`Preserves explicit js/jsx extensions`, () => {
+      expect(normalEmit[indexFile].js).toMatch(`export { JsonValue } from "./data.json";`);
       expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstA } from "./general";`);
       expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstB } from "./general.js";`);
+      expect(normalEmit[indexFile].dts).toMatch(`export { JsonValue } from "./data.json";`);
       expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstA, GeneralTypeA } from "./general";`);
       expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstB } from "./general.js";`);
     });

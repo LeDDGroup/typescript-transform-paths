@@ -16,13 +16,12 @@ export const cast = <T>(v: any): T => v;
 export function getImplicitExtensions(options: ts.CompilerOptions) {
   let res: string[] = [".ts", ".d.ts"];
 
-  let { allowJs, jsx, resolveJsonModule: allowJson } = options;
-  const allowJsx = !!jsx && <any>jsx !== ts.JsxEmit.None;
+  let { allowJs, jsx } = options;
+  const allowJsx = !!jsx && (<any>jsx !== ts.JsxEmit.None);
 
-  allowJs && res.push(".js");
+  allowJs && res.push(".js", ".cjs", ".mjs");
   allowJsx && res.push(".tsx");
   allowJs && allowJsx && res.push(".jsx");
-  allowJson && res.push(".json");
 
   return res;
 }

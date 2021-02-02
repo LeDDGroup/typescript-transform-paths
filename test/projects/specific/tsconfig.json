@@ -16,6 +16,7 @@
     "paths": {
       "#root/*": [ "./src/*", "./generated/*" ],
       "#exclusion/*": [ "./src/excluded/*" ]
-    }
+    },
+    "resolveJsonModule": true
   }
 }

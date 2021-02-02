@@ -8,7 +8,7 @@ import { isBaseDir, isURL } from "./general-utils";
 // region: Config
 /* ****************************************************************************************************************** */
 
-const explicitExtensions = [".js", ".jsx"];
+const explicitExtensions = [".js", ".jsx", ".cjs", ".mjs"];
 
 // endregion
 
@@ -110,12 +110,12 @@ export function resolvePathAndUpdateNode(
 
     // Remove extension if implicit
     if (extension && implicitExtensions.includes(extension))
-      filePath = filePath.slice(0, -extension.length) + maybeGetExplicitJsExtension(filePath, extension);
+      filePath = filePath.slice(0, -extension.length) + maybeGetExplicitExtension(filePath, extension);
 
     return filePath[0] === "." || isURL(filePath) ? filePath : `./${filePath}`;
   }
 
-  function maybeGetExplicitJsExtension(filePath: string, resolvedExtension: string): string {
+  function maybeGetExplicitExtension(filePath: string, resolvedExtension: string): string {
     const moduleExtension = path.extname(moduleName);
     if (moduleExtension && !explicitExtensions.includes(moduleExtension)) return "";
 
