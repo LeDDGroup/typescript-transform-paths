@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.3](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.2...v2.2.3) (2021-02-02)
+
+
+### Bug Fixes
+
+* Prevent `.json` extension being stripped in output (fixes [#95](https://github.com/LeDDGroup/typescript-transform-paths/issues/95)) ([bcca436](https://github.com/LeDDGroup/typescript-transform-paths/commit/bcca43677d23ddea0a409ec3daff008313d17342))
+
 ### [2.2.2](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.1...v2.2.2) (2021-01-11)
 
 
