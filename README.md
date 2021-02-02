@@ -118,7 +118,6 @@ Example:
     "plugins": [
       { 
         "transform": "typescript-transform-paths", 
-        "useRootDirs": true, 
         "exclude": [ "**/node_modules/**" ]
       }
     ]
