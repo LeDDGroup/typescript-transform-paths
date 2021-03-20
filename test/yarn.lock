@@ -207,10 +207,6 @@ ts-expose-internals@^4.1.2:
   resolved "https://registry.yarnpkg.com/ts-expose-internals/-/ts-expose-internals-4.1.2.tgz#c89a64be5b7ae6634d2f0f25dffa798e2931d136"
   integrity sha512-J5xYsQocO5tjP2UMkGlOb5U+joore0AiL1drA5bMPganlQR/9gPmQVO55pQDeHVfy8OATqZaBT5JweyjI6f3eA==
 
-"ts-patch-alias@link:../node_modules/ts-patch":
-  version "0.0.0"
-  uid ""
-
 "ts-patch@link:../node_modules/ts-patch":
   version "0.0.0"
   uid ""
