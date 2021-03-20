@@ -32,6 +32,7 @@ Add it to _plugins_ in your _tsconfig.json_
     "paths": {
       "@utils/*": ["utils/*"]
     },
+    // Note: In order to transform *both* js and d.ts files, you need to add both of the below lines to plugins
     "plugins": [
       // Transform paths in output .js files
       { "transform": "typescript-transform-paths" },
