@@ -19,7 +19,7 @@ export { BB } from "#exclusion/ex";
 export { DD } from "#root/excluded-file";
 
 export { JsonValue } from "#root/data.json";
-export { GeneralConstA, GeneralTypeA } from "#root/general.ts";
+export { GeneralConstA, GeneralTypeA } from "#root/general";
 export { GeneralConstB } from "#root/general.js";
 
 export const b = 3;
