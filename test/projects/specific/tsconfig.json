@@ -15,7 +15,9 @@
     "baseUrl": ".",
     "paths": {
       "#root/*": [ "./src/*", "./generated/*" ],
-      "#exclusion/*": [ "./src/excluded/*" ]
+      "#exclusion/*": [ "./src/excluded/*" ],
+      "#elision": [ "./src/type-elision" ],
+      "#elision/*": [ "./src/type-elision/*" ]
     },
     "resolveJsonModule": true
   }

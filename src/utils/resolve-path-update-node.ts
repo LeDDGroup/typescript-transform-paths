@@ -108,9 +108,18 @@ export function resolvePathAndUpdateNode(
       filePath = tsInstance.normalizePath(path.join(path.relative(sourceFileDir, moduleDir), path.basename(filePath)));
     }
 
-    // Remove extension if implicit
-    if (extension && implicitExtensions.includes(extension))
-      filePath = filePath.slice(0, -extension.length) + maybeGetExplicitExtension(filePath, extension);
+    /* Fixup filename */
+    if (extension) {
+      const isImplicitIndex =
+        path.basename(filePath, extension) === 'index' &&
+        path.basename(moduleName, path.extname(moduleName)) !== 'index';
+
+      // Remove implicit index
+      if (isImplicitIndex) filePath = path.dirname(filePath);
+      // Remove implicit extension
+      else if (implicitExtensions.includes(extension))
+        filePath = filePath.slice(0, -extension.length) + maybeGetExplicitExtension(filePath, extension);
+    }
 
     return filePath[0] === "." || isURL(filePath) ? filePath : `./${filePath}`;
   }

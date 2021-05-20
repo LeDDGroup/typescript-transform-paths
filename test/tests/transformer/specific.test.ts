@@ -143,5 +143,10 @@ describe(`Transformer -> Specific Cases`, () => {
       expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstA, GeneralTypeA } from "./general";`);
       expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstB } from "./general.js";`);
     });
+
+    test(`Does not output implicit index filenames`, () => {
+      expect(normalEmit[indexFile].js).toMatch(`export { ConstB } from "./type-elision"`);
+      expect(normalEmit[indexFile].dts).toMatch(`export { ConstB } from "./type-elision"`);
+    });
   });
 });

@@ -23,3 +23,5 @@ export { GeneralConstA, GeneralTypeA } from "#root/general";
 export { GeneralConstB } from "#root/general.js";
 
 export const b = 3;
+
+export { ConstB } from '#elision'
