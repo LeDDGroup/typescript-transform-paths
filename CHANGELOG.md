@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.4](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.3...v2.2.4) (2021-05-20)
+
+
+### Bug Fixes
+
+* Implicit 'index' was written to output filename for imports (fixes [#105](https://github.com/LeDDGroup/typescript-transform-paths/issues/105)) ([4803cd2](https://github.com/LeDDGroup/typescript-transform-paths/commit/4803cd212c20785c74e534366fddc5c62f3a4d89))
+
 ### [2.2.3](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.2...v2.2.3) (2021-02-02)
 
 
