@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.4...v3.0.0) (2021-06-16)
+
+
+### Features
+
+* Rewrote resolution strategy + various improvements (see notes) ([ed1df79](https://github.com/LeDDGroup/typescript-transform-paths/commit/ed1df795063c4d08b2a29b8b229d6ac7d134b816)), closes [#109](https://github.com/LeDDGroup/typescript-transform-paths/issues/109) [#110](https://github.com/LeDDGroup/typescript-transform-paths/issues/110) [#106](https://github.com/LeDDGroup/typescript-transform-paths/issues/106) [#108](https://github.com/LeDDGroup/typescript-transform-paths/issues/108) [#107](https://github.com/LeDDGroup/typescript-transform-paths/issues/107) [#103](https://github.com/LeDDGroup/typescript-transform-paths/issues/103)
+
 ### [2.2.4](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.3...v2.2.4) (2021-05-20)
 
 
