@@ -25,6 +25,7 @@ describe(`Transformer -> Specific Cases`, () => {
   const indexFile = ts.normalizePath(path.join(projectRoot, "src/index.ts"));
   const tagFile = ts.normalizePath(path.join(projectRoot, "src/tags.ts"));
   const typeElisionIndex = ts.normalizePath(path.join(projectRoot, "src/type-elision/index.ts"));
+  const subPackagesFile = ts.normalizePath(path.join(projectRoot, "src/sub-packages.ts"));
   const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "excluded-file.*"] };
 
   describe.each(testTsModules)(`TypeScript %s`, (s, tsInstance) => {
@@ -135,18 +136,39 @@ describe(`Transformer -> Specific Cases`, () => {
       );
     });
 
-    test(`Preserves explicit js/jsx extensions`, () => {
-      expect(normalEmit[indexFile].js).toMatch(`export { JsonValue } from "./data.json";`);
-      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstA } from "./general";`);
-      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstB } from "./general.js";`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { JsonValue } from "./data.json";`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstA, GeneralTypeA } from "./general";`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstB } from "./general.js";`);
+    test(`Preserves explicit extensions`, () => {
+      expect(normalEmit[indexFile].js).toMatch(`export { JsonValue } from "./data.json"`);
+      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstA } from "./general"`);
+      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstB } from "./general.js"`);
+      expect(normalEmit[indexFile].dts).toMatch(`export { JsonValue } from "./data.json"`);
+      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstA, GeneralTypeA } from "./general"`);
+      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstB } from "./general.js"`);
     });
 
     test(`Does not output implicit index filenames`, () => {
       expect(normalEmit[indexFile].js).toMatch(`export { ConstB } from "./type-elision"`);
       expect(normalEmit[indexFile].dts).toMatch(`export { ConstB } from "./type-elision"`);
+    });
+
+    test(`Resolves sub-modules properly`, () => {
+      const { js, dts } = normalEmit[subPackagesFile];
+      expect(js).toMatch(`export { packageBConst } from "./packages/pkg-b"`);
+      expect(js).toMatch(`export { packageAConst } from "./packages/pkg-a"`);
+      expect(js).toMatch(`export { packageCConst } from "./packages/pkg-c"`);
+      expect(js).toMatch(`export { subPackageConst } from "./packages/pkg-a/sub-pkg"`);
+      expect(js).toMatch(`export { packageCConst as C2 } from "./packages/pkg-c/main"`);
+      expect(js).toMatch(`export { packageCConst as C3 } from "./packages/pkg-c/main.js"`);
+      expect(js).toMatch(`export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`);
+      expect(js).toMatch(`export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`);
+
+      expect(dts).toMatch(`export { packageAConst, PackageAType } from "./packages/pkg-a"`);
+      expect(dts).toMatch(`export { packageBConst, PackageBType } from "./packages/pkg-b"`);
+      expect(dts).toMatch(`export { packageCConst, PackageCType } from "./packages/pkg-c"`);
+      expect(dts).toMatch(`export { SubPackageType, subPackageConst } from "./packages/pkg-a/sub-pkg"`);
+      expect(dts).toMatch(`export { packageCConst as C2 } from "./packages/pkg-c/main"`);
+      expect(dts).toMatch(`export { packageCConst as C3 } from "./packages/pkg-c/main.js"`);
+      expect(dts).toMatch(`export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`);
+      expect(dts).toMatch(`export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`);
     });
   });
 });

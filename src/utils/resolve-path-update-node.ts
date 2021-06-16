@@ -1,16 +1,8 @@
 import ts from "typescript";
-import tsThree from "../declarations/typescript3";
-import path from "path";
 import { VisitorContext } from "../types";
-import { isBaseDir, isURL } from "./general-utils";
-
-/* ****************************************************************************************************************** */
-// region: Config
-/* ****************************************************************************************************************** */
-
-const explicitExtensions = [".js", ".jsx", ".cjs", ".mjs"];
-
-// endregion
+import { isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
+import { isModulePathsMatch } from "./ts-helpers";
+import { resolveModuleName } from "./resolve-module-name";
 
 /* ****************************************************************************************************************** */
 // region: Node Updater Utility
@@ -23,115 +15,44 @@ export function resolvePathAndUpdateNode(
   context: VisitorContext,
   node: ts.Node,
   moduleName: string,
-  updaterFn: (newPath: ts.StringLiteral) => ts.Node | tsThree.Node | undefined
+  updaterFn: (newPath: ts.StringLiteral) => ts.Node | undefined
 ): ts.Node | undefined {
-  const { sourceFile, compilerOptions, tsInstance, config, implicitExtensions, factory } = context;
+  const { sourceFile, tsInstance, factory } = context;
+  const { normalizePath } = tsInstance;
+
+  /* Handle JSDoc statement tags */
   const tags = getStatementTags();
 
   // Skip if @no-transform-path specified
-  if (tags?.shouldSkip) return node;
+  if (tags.shouldSkip) return node;
 
-  const resolutionResult = resolvePath(tags?.overridePath);
+  // Accommodate direct override via @transform-path tag
+  if (tags.overridePath) {
+    const transformedPath = !isURL(tags.overridePath)
+      ? maybeAddRelativeLocalPrefix(normalizePath(tags.overridePath))
+      : tags.overridePath;
+    return updaterFn(factory.createStringLiteral(transformedPath));
+  }
 
-  // Skip if can't be resolved
-  if (!resolutionResult || !resolutionResult.outputPath) return node;
+  /* Resolve Module */
+  // Skip if no paths match found
+  if (!isModulePathsMatch(context, moduleName)) return node;
 
-  const { outputPath, filePath } = resolutionResult;
+  const res = resolveModuleName(context, moduleName);
+  if (!res) return void 0;
 
-  // Check if matches exclusion
-  if (filePath && context.excludeMatchers)
-    for (const matcher of context.excludeMatchers) if (matcher.match(filePath)) return node;
+  const { outputPath, resolvedPath } = res;
 
-  return updaterFn(factory.createStringLiteral(outputPath)) as ts.Node | undefined;
+  /* Skip if matches exclusion */
+  if (context.excludeMatchers)
+    for (const matcher of context.excludeMatchers)
+      if (matcher.match(outputPath) || (resolvedPath && matcher.match(resolvedPath))) return node;
+
+  return updaterFn(factory.createStringLiteral(outputPath));
 
   /* ********************************************************* *
    * Helpers
    * ********************************************************* */
-
-  function resolvePath(overridePath: string | undefined): { outputPath: string; filePath?: string } | undefined {
-    /* Handle overridden path -- ie. @transform-path ../my/path) */
-    if (overridePath) {
-      return {
-        outputPath: filePathToOutputPath(overridePath, path.extname(overridePath)),
-        filePath: overridePath,
-      };
-    }
-
-    /* Have Compiler API attempt to resolve */
-    const { resolvedModule, failedLookupLocations } = tsInstance.resolveModuleName(
-      moduleName,
-      sourceFile.fileName,
-      compilerOptions,
-      tsInstance.sys
-    );
-
-    // No transform for node-modules
-    if (resolvedModule?.isExternalLibraryImport) return void 0;
-
-    /* Handle non-resolvable module */
-    if (!resolvedModule) {
-      const maybeURL = failedLookupLocations[0];
-      if (!isURL(maybeURL)) return void 0;
-      return { outputPath: maybeURL };
-    }
-
-    /* Handle resolved module */
-    const { extension, resolvedFileName } = resolvedModule;
-    return {
-      outputPath: filePathToOutputPath(resolvedFileName, extension),
-      filePath: resolvedFileName,
-    };
-  }
-
-  function filePathToOutputPath(filePath: string, extension: string | undefined) {
-    if (path.isAbsolute(filePath)) {
-      let sourceFileDir = tsInstance.normalizePath(path.dirname(sourceFile.fileName));
-      let moduleDir = path.dirname(filePath);
-
-      /* Handle rootDirs mapping */
-      if (config.useRootDirs && context.rootDirs) {
-        let fileRootDir = "";
-        let moduleRootDir = "";
-        for (const rootDir of context.rootDirs) {
-          if (isBaseDir(rootDir, filePath) && rootDir.length > moduleRootDir.length) moduleRootDir = rootDir;
-          if (isBaseDir(rootDir, sourceFile.fileName) && rootDir.length > fileRootDir.length) fileRootDir = rootDir;
-        }
-
-        /* Remove base dirs to make relative to root */
-        if (fileRootDir && moduleRootDir) {
-          sourceFileDir = path.relative(fileRootDir, sourceFileDir);
-          moduleDir = path.relative(moduleRootDir, moduleDir);
-        }
-      }
-
-      /* Make path relative */
-      filePath = tsInstance.normalizePath(path.join(path.relative(sourceFileDir, moduleDir), path.basename(filePath)));
-    }
-
-    /* Fixup filename */
-    if (extension) {
-      const isImplicitIndex =
-        path.basename(filePath, extension) === 'index' &&
-        path.basename(moduleName, path.extname(moduleName)) !== 'index';
-
-      // Remove implicit index
-      if (isImplicitIndex) filePath = path.dirname(filePath);
-      // Remove implicit extension
-      else if (implicitExtensions.includes(extension))
-        filePath = filePath.slice(0, -extension.length) + maybeGetExplicitExtension(filePath, extension);
-    }
-
-    return filePath[0] === "." || isURL(filePath) ? filePath : `./${filePath}`;
-  }
-
-  function maybeGetExplicitExtension(filePath: string, resolvedExtension: string): string {
-    const moduleExtension = path.extname(moduleName);
-    if (moduleExtension && !explicitExtensions.includes(moduleExtension)) return "";
-
-    return path.basename(moduleName, moduleExtension) === path.basename(filePath, resolvedExtension)
-      ? moduleExtension
-      : "";
-  }
 
   function getStatementTags() {
     let targetNode = tsInstance.isStatement(node)

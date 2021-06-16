@@ -2,11 +2,12 @@
 import {} from "ts-expose-internals";
 import path from "path";
 import ts from "typescript";
-import { cast, getImplicitExtensions } from "./utils";
+import { cast } from "./utils";
 import { TsTransformPathsConfig, TsTransformPathsContext, TypeScriptThree, VisitorContext } from "./types";
 import { nodeVisitor } from "./visitor";
 import { createHarmonyFactory } from "./utils/harmony-factory";
 import { Minimatch } from "minimatch";
+import { createParsedCommandLineForProgram } from "./utils/ts-helpers";
 
 /* ****************************************************************************************************************** *
  * Transformer
@@ -20,27 +21,31 @@ export default function transformer(
   if (!tsInstance) tsInstance = ts;
 
   const compilerOptions = program.getCompilerOptions();
-  const implicitExtensions = getImplicitExtensions(compilerOptions);
   const rootDirs = compilerOptions.rootDirs?.filter(path.isAbsolute);
 
   return (transformationContext: ts.TransformationContext) => {
+    const pathsBasePath = compilerOptions.pathsBasePath ?? compilerOptions.baseUrl;
+
+    if (!pathsBasePath || !compilerOptions.paths) return (sourceFile: ts.SourceFile) => sourceFile;
+
     const tsTransformPathsContext: TsTransformPathsContext = {
       compilerOptions,
       config,
       elisionMap: new Map(),
       tsFactory: transformationContext.factory,
-      implicitExtensions,
       program,
       rootDirs,
       transformationContext,
       tsInstance,
+      pathsBasePath,
+      getCanonicalFileName: tsInstance.createGetCanonicalFileName(tsInstance.sys.useCaseSensitiveFileNames),
       tsThreeInstance: cast<TypeScriptThree>(tsInstance),
       excludeMatchers: config.exclude?.map((globPattern) => new Minimatch(globPattern, { matchBase: true })),
+      parsedCommandLine: createParsedCommandLineForProgram(tsInstance, program),
+      outputFileNamesCache: new Map(),
     };
 
     return (sourceFile: ts.SourceFile) => {
-      if (!compilerOptions.baseUrl || !compilerOptions.paths) return sourceFile;
-
       const visitorContext: VisitorContext = {
         ...tsTransformPathsContext,
         sourceFile,
