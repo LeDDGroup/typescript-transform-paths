@@ -24,4 +24,4 @@ export { GeneralConstB } from "#root/general.js";
 
 export const b = 3;
 
-export { ConstB } from '#elision'
+export { ConstB } from "#elision";

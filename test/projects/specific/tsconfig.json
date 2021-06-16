@@ -17,7 +17,8 @@
       "#root/*": [ "./src/*", "./generated/*" ],
       "#exclusion/*": [ "./src/excluded/*" ],
       "#elision": [ "./src/type-elision" ],
-      "#elision/*": [ "./src/type-elision/*" ]
+      "#elision/*": [ "./src/type-elision/*" ],
+      "#packages/*": [ "./src/packages/*" ]
     },
     "resolveJsonModule": true
   }
