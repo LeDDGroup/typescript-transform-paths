@@ -1,8 +1,8 @@
-import { VisitorContext } from "../types";
-import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
-import * as path from "path";
-import { removeFileExtension, removeSuffix, ResolvedModuleFull } from "typescript";
-import { getOutputFile } from "./ts-helpers";
+import { VisitorContext } from '../types';
+import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from './general-utils';
+import * as path from 'path';
+import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } from 'typescript';
+import { getOutputDirForSourceFile } from './ts-helpers';
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -87,6 +87,27 @@ function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
   };
 }
 
+function getResolvedSourceFile(context: VisitorContext, fileName: string): SourceFile {
+  let res: SourceFile | undefined;
+  const { program, tsInstance } = context;
+
+  /* Attempt to directly pull from Program */
+  res = program.getSourceFile(fileName) as SourceFile;
+  if (res) return res;
+
+  /* Attempt to find without extension */
+  res = (program.getSourceFiles() as SourceFile[]).find(
+    (s) => removeFileExtension(s.fileName) === removeFileExtension(fileName)
+  );
+  if (res) return res;
+
+  /*
+   * Create basic synthetic SourceFile for use with compiler API - Applies if SourceFile not found in program due to
+   * import being added by another transformer
+   */
+  return tsInstance.createSourceFile(fileName, ``, tsInstance.ScriptTarget.ESNext, /* setParentNodes */ false);
+}
+
 // endregion
 
 /* ****************************************************************************************************************** */
@@ -118,6 +139,8 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
     };
   }
 
+  const resolvedSourceFile = getResolvedSourceFile(context, resolvedModule.resolvedFileName);
+
   const {
     indexType,
     resolvedBaseNameNoExtension,
@@ -134,8 +157,8 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
   if (outputBaseName && extName) outputBaseName = `${outputBaseName}${extName}`;
 
   /* Determine output dir */
-  let srcFileOutputDir = path.dirname(getOutputFile(context, sourceFile.fileName));
-  let moduleFileOutputDir = implicitPackageIndex ? resolvedDir : path.dirname(getOutputFile(context, resolvedFileName));
+  let srcFileOutputDir = getOutputDirForSourceFile(context, sourceFile);
+  let moduleFileOutputDir = implicitPackageIndex ? resolvedDir : getOutputDirForSourceFile(context, resolvedSourceFile);
 
   // Handle rootDirs remapping
   if (config.useRootDirs && rootDirs) {
