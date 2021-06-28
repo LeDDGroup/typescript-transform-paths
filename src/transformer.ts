@@ -47,10 +47,11 @@ export default function transformer(
       excludeMatchers: config.exclude?.map((globPattern) => new Minimatch(globPattern, { matchBase: true })),
       parsedCommandLine: createParsedCommandLineForProgram(tsInstance, program),
       outputFileNamesCache: new Map(),
+      // Get paths patterns appropriate for TS compiler version
       pathsPatterns: tryParsePatterns
         // TODO - Remove typecast when pathPatterns is recognized (probably after ts v4.4)
         ? (configFile?.configFileSpecs as any)?.pathPatterns || tryParsePatterns(paths)
-        : paths
+        : tsInstance.getOwnKeys(paths)
     };
 
     return (sourceFile: ts.SourceFile) => {
