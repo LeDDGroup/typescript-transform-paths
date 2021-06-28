@@ -1,13 +1,12 @@
 // noinspection ES6UnusedImports
-import {} from "ts-expose-internals";
-import path from "path";
-import ts from "typescript";
-import { cast } from "./utils";
-import { TsTransformPathsConfig, TsTransformPathsContext, TypeScriptThree, VisitorContext } from "./types";
-import { nodeVisitor } from "./visitor";
-import { createHarmonyFactory } from "./utils/harmony-factory";
-import { Minimatch } from "minimatch";
-import { createParsedCommandLineForProgram } from "./utils/ts-helpers";
+import {} from 'ts-expose-internals';
+import path from 'path';
+import ts from 'typescript';
+import { cast } from './utils';
+import { TsTransformPathsConfig, TsTransformPathsContext, TypeScriptThree, VisitorContext } from './types';
+import { nodeVisitor } from './visitor';
+import { createHarmonyFactory } from './utils/harmony-factory';
+import { Minimatch } from 'minimatch';
 
 /* ****************************************************************************************************************** *
  * Transformer
@@ -42,10 +41,10 @@ export default function transformer(
       transformationContext,
       tsInstance,
       pathsBasePath,
+      emitHost: transformationContext.getEmitHost(),
       getCanonicalFileName: tsInstance.createGetCanonicalFileName(tsInstance.sys.useCaseSensitiveFileNames),
       tsThreeInstance: cast<TypeScriptThree>(tsInstance),
       excludeMatchers: config.exclude?.map((globPattern) => new Minimatch(globPattern, { matchBase: true })),
-      parsedCommandLine: createParsedCommandLineForProgram(tsInstance, program),
       outputFileNamesCache: new Map(),
       // Get paths patterns appropriate for TS compiler version
       pathsPatterns: tryParsePatterns
@@ -53,6 +52,12 @@ export default function transformer(
         ? (configFile?.configFileSpecs as any)?.pathPatterns || tryParsePatterns(paths)
         : tsInstance.getOwnKeys(paths)
     };
+
+    if (!tsTransformPathsContext.emitHost)
+      throw new Error(
+        `typescript-transform-paths >= 3.1.0 requires an EmitHost in the TransformationContext to resolve properly.`
+        + ` Make sure you're using either ts-patch or ttypescript.`
+      );
 
     return (sourceFile: ts.SourceFile) => {
       const visitorContext: VisitorContext = {
