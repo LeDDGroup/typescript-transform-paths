@@ -39,7 +39,7 @@ export function resolvePathAndUpdateNode(
   if (!isModulePathsMatch(context, moduleName)) return node;
 
   const res = resolveModuleName(context, moduleName);
-  if (!res) return void 0;
+  if (!res) return node;
 
   const { outputPath, resolvedPath } = res;
 
