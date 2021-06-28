@@ -1,5 +1,5 @@
 import tsThree from "./declarations/typescript3";
-import ts, { CompilerOptions, GetCanonicalFileName, ParsedCommandLine } from "typescript";
+import ts, { CompilerOptions, GetCanonicalFileName, ParsedCommandLine, Pattern } from "typescript";
 import { PluginConfig } from "ts-patch";
 import { HarmonyFactory } from "./utils/harmony-factory";
 import { IMinimatch } from "minimatch";
@@ -51,6 +51,7 @@ export interface TsTransformPathsContext {
   readonly outputFileNamesCache: Map<string, string>;
   readonly pathsBasePath: string;
   readonly getCanonicalFileName: GetCanonicalFileName;
+  readonly pathsPatterns: (string | Pattern)[]
 }
 
 export interface VisitorContext extends TsTransformPathsContext {
