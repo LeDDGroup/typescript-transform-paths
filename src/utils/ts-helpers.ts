@@ -65,8 +65,9 @@ export function getOutputFile(context: VisitorContext, fileName: string): string
  * Determine if moduleName matches config in paths
  */
 export function isModulePathsMatch(context: VisitorContext, moduleName: string): boolean {
-  const { matchPatternOrExact, getOwnKeys } = context.tsInstance;
-  return !!matchPatternOrExact(getOwnKeys(context.compilerOptions.paths!), moduleName);
+  const { pathsPatterns, tsInstance: { matchPatternOrExact }} = context
+  // TODO - Remove typecast after ts v4.4
+  return !!matchPatternOrExact((pathsPatterns as any), moduleName);
 }
 
 export function isTsProjectSourceFile(context: VisitorContext, filePath: string): boolean {
