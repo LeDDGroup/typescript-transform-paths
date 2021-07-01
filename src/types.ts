@@ -1,8 +1,8 @@
-import tsThree from './declarations/typescript3';
+import tsThree from "./declarations/typescript3";
 import ts, { CompilerOptions, EmitHost, GetCanonicalFileName, Pattern, SourceFile } from "typescript";
-import { PluginConfig } from 'ts-patch';
-import { HarmonyFactory } from './utils/harmony-factory';
-import { IMinimatch } from 'minimatch';
+import { PluginConfig } from "ts-patch";
+import { HarmonyFactory } from "./utils/harmony-factory";
+import { IMinimatch } from "minimatch";
 
 /* ****************************************************************************************************************** */
 // region: TS Types
