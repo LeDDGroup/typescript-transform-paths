@@ -1,8 +1,8 @@
-import { VisitorContext } from '../types';
-import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from './general-utils';
-import * as path from 'path';
-import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } from 'typescript';
-import { getOutputDirForSourceFile } from './ts-helpers';
+import { VisitorContext } from "../types";
+import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
+import * as path from "path";
+import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } from "typescript";
+import { getOutputDirForSourceFile } from "./ts-helpers";
 
 /* ****************************************************************************************************************** */
 // region: Types
