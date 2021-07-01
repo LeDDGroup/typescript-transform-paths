@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.2](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.0.1...v3.0.2) (2021-07-01)
+
+
+### Features
+
+* Improved resolution strategy by using EmitHost ([87294b4](https://github.com/LeDDGroup/typescript-transform-paths/commit/87294b437dfa572d409aa0b59a144de8545a3672))
+
+
+### Bug Fixes
+
+* Accommodate TS 4.4 paths pattern caching (fixes [#114](https://github.com/LeDDGroup/typescript-transform-paths/issues/114)) ([#116](https://github.com/LeDDGroup/typescript-transform-paths/issues/116)) ([e9b2a9f](https://github.com/LeDDGroup/typescript-transform-paths/commit/e9b2a9f0240bafd1a8d4a97c2be7cda3587af303))
+* Base Node was elided if could not resolve (fixes: [#119](https://github.com/LeDDGroup/typescript-transform-paths/issues/119)) ([1b97c80](https://github.com/LeDDGroup/typescript-transform-paths/commit/1b97c8026903ede676c831fe24f9d18c98d24b24))
+
 ### [3.0.1](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.0.0...v3.0.1) (2021-06-28)
 
 ## [3.0.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v2.2.4...v3.0.0) (2021-06-16)
