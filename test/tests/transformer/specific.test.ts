@@ -26,6 +26,7 @@ describe(`Transformer -> Specific Cases`, () => {
   const tagFile = ts.normalizePath(path.join(projectRoot, "src/tags.ts"));
   const typeElisionIndex = ts.normalizePath(path.join(projectRoot, "src/type-elision/index.ts"));
   const subPackagesFile = ts.normalizePath(path.join(projectRoot, "src/sub-packages.ts"));
+  const moduleAugmentFile = ts.normalizePath(path.join(projectRoot, "src/module-augment.ts"));
   const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "excluded-file.*"] };
 
   describe.each(testTsModules)(`TypeScript %s`, (s, tsInstance) => {
@@ -169,6 +170,12 @@ describe(`Transformer -> Specific Cases`, () => {
       expect(dts).toMatch(`export { packageCConst as C3 } from "./packages/pkg-c/main.js"`);
       expect(dts).toMatch(`export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`);
       expect(dts).toMatch(`export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`);
+    });
+
+    test(`Resolves module augmentation`, () => {
+      const { dts } = normalEmit[moduleAugmentFile];
+      expect(dts).toMatch(`declare module "./general" {`);
+      expect(dts).toMatch(`declare module "./excluded-file" {`);
     });
   });
 });

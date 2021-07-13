@@ -3,6 +3,23 @@ import { VisitorContext } from "./types";
 import { elideImportOrExportClause, resolvePathAndUpdateNode } from "./utils";
 
 /* ****************************************************************************************************************** *
+ * Helpers
+ * ****************************************************************************************************************** */
+
+const isAsyncImport = ({ tsInstance }: VisitorContext, node: ts.Node): node is ts.CallExpression =>
+  tsInstance.isCallExpression(node) &&
+  node.expression.kind === tsInstance.SyntaxKind.ImportKeyword &&
+  tsInstance.isStringLiteral(node.arguments[0]) &&
+  node.arguments.length === 1;
+
+const isRequire = ({ tsInstance }: VisitorContext, node: ts.Node): node is ts.CallExpression =>
+  tsInstance.isCallExpression(node) &&
+  tsInstance.isIdentifier(node.expression) &&
+  node.expression.text === "require" &&
+  tsInstance.isStringLiteral(node.arguments[0]) &&
+  node.arguments.length === 1;
+
+/* ****************************************************************************************************************** *
  * Node Visitor
  * ****************************************************************************************************************** */
 
@@ -12,34 +29,13 @@ import { elideImportOrExportClause, resolvePathAndUpdateNode } from "./utils";
 export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | undefined {
   const { factory, tsInstance, transformationContext } = this;
 
-  /* ********************************************************* *
-   * Helpers
-   * ********************************************************* */
-
-  const isAsyncImport = (node: ts.Node): node is ts.CallExpression =>
-    tsInstance.isCallExpression(node) &&
-    node.expression.kind === tsInstance.SyntaxKind.ImportKeyword &&
-    tsInstance.isStringLiteral(node.arguments[0]) &&
-    node.arguments.length === 1;
-
-  const isRequire = (node: ts.Node): node is ts.CallExpression =>
-    tsInstance.isCallExpression(node) &&
-    tsInstance.isIdentifier(node.expression) &&
-    node.expression.text === "require" &&
-    tsInstance.isStringLiteral(node.arguments[0]) &&
-    node.arguments.length === 1;
-
-  /* ********************************************************* *
-   * Visit Logic
-   * ********************************************************* */
-
   /**
    * Update require / import functions
    *
    * require('module')
    * import('module')
    */
-  if (isRequire(node) || isAsyncImport(node))
+  if (isRequire(this, node) || isAsyncImport(this, node))
     return resolvePathAndUpdateNode(this, node, (<ts.StringLiteral>node.arguments[0]).text, (p) => {
       const res = factory.updateCallExpression(node, node.expression, node.typeArguments, [p]);
 
@@ -135,6 +131,14 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
 
       return factory.updateExportDeclaration(node, node.decorators, node.modifiers, node.isTypeOnly, exportClause, p);
     });
+
+  /**
+   * Update module augmentation
+   */
+  if (tsInstance.isModuleDeclaration(node) && tsInstance.isStringLiteral(node.name))
+    return resolvePathAndUpdateNode(this, node, node.name.text, (p) =>
+      factory.updateModuleDeclaration(node, node.decorators, node.modifiers, p, node.body)
+    );
 
   return tsInstance.visitEachChild(node, this.getVisitor(), transformationContext);
 }
