@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.0.2...v3.1.0) (2021-07-13)
+
+
+### Features
+
+* Add support for module augmentation (closes [#122](https://github.com/LeDDGroup/typescript-transform-paths/issues/122)) ([f9d4994](https://github.com/LeDDGroup/typescript-transform-paths/commit/f9d49944d1fed7c1d6cbfa1cbd04c0c76abae1c0))
+
 ### [3.0.2](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.0.1...v3.0.2) (2021-07-01)
 
 
