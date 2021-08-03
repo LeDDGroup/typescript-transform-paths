@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.1.0...v3.2.0) (2021-08-03)
+
+
+### Features
+
+* Support transformation via ts-node transpileOnly and compiler API transformNodes (closes [#123](https://github.com/LeDDGroup/typescript-transform-paths/issues/123)) ([dd942fd](https://github.com/LeDDGroup/typescript-transform-paths/commit/dd942fdbf34afcdec8f976a1540746521a758c73))
+
+
+### Bug Fixes
+
+* Custom JSDoc tags not working for older TS (fixes [#126](https://github.com/LeDDGroup/typescript-transform-paths/issues/126)) ([d4280c3](https://github.com/LeDDGroup/typescript-transform-paths/commit/d4280c3dec4dc9f3834fc98be2e51109422bd9aa))
+
 ## [3.1.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.0.2...v3.1.0) (2021-07-13)
 
 
