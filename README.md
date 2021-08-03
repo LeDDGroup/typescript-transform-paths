@@ -152,9 +152,9 @@ Most people using `ts-node` can achieve what they want without the transformer, 
 
 ### Others
 
-If you'd still like to use the transformer, it is now possible to do programmatically, with or without a `Program` instance. This can be done via `ts-node` or the compiler API using `ts.transform()`.
+If you'd still like to use the transformer, it is now possible to do so programmatically, with or without a `Program` instance. This can be done via `ts-node` or the compiler API using `ts.transform()`.
 
-Here is an example of how to register `ts-node` with the transformer
+Here is an example of how to register `ts-node` with the transformer:
 
 ```ts
 import transformer, { TsTransformPathsConfig } from 'typescript-transform-paths';
