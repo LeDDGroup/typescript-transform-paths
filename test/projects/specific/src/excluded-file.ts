@@ -1,1 +1,1 @@
-export type DD = number;
+export const dd = 1;

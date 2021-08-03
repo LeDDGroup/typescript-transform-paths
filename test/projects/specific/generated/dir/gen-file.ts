@@ -1,3 +1,3 @@
 import "#root/dir/src-file";
 
-export type B = number;
+export const b = 1;

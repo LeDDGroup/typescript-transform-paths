@@ -1,2 +1,2 @@
-export type SubPackageType = null
-export declare const subPackageConst: SubPackageType
+export type SubPackageType = null;
+export declare const subPackageConst: SubPackageType;

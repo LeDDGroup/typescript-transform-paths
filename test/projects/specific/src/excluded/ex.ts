@@ -1,1 +1,1 @@
-export type BB = number;
+export const bb = 1;

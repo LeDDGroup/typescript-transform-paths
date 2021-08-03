@@ -1,7 +1,7 @@
 // noinspection ES6UnusedImports
 import {} from "ts-expose-internals";
 import * as path from "path";
-import { createTsProgram, EmittedFiles, getEmitResult } from "../../utils";
+import { createTsProgram, EmittedFiles, getEmitResultFromProgram } from "../../utils";
 import { ts, tsModules, projectsPaths } from "../config";
 
 /* ****************************************************************************************************************** *
@@ -40,8 +40,8 @@ describe(`Transformer -> General Tests`, () => {
     const fileNames = program.getRootFileNames() as string[];
 
     beforeAll(() => {
-      originalFiles = getEmitResult(program);
-      transformedFiles = getEmitResult(programWithTransformer);
+      originalFiles = getEmitResultFromProgram(program);
+      transformedFiles = getEmitResultFromProgram(programWithTransformer);
     });
 
     describe.each(fileNames!.map((p) => [p.slice(projectRoot.length), p]))(`%s`, (_, file) => {

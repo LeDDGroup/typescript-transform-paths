@@ -1,181 +1,245 @@
 // noinspection ES6UnusedImports
 import {} from "ts-expose-internals";
 import * as path from "path";
-import { createTsProgram, EmittedFiles, getEmitResult } from "../../utils";
-import { projectsPaths, ts, tsModules, tTypeScript } from "../config";
+import {
+  createTsProgram,
+  EmittedFiles,
+  getEmitResultFromProgram,
+  getManualEmitResult,
+  getTsNodeEmitResult,
+} from "../../utils";
+import { projectsPaths, ts, tsModules } from "../config";
 import { TsTransformPathsConfig } from "../../../src/types";
+import TS from "typescript";
 
 /* ****************************************************************************************************************** *
  * Config
  * ****************************************************************************************************************** */
 
-// TODO - In the future, remove this and create a separate small short test for TTS using a single SourceFile,
-//        as we only need to test that it runs the transformer. No other behaviour will differ.
-let testTsModules = <const>[...tsModules, ["Latest (ttypescript)", tTypeScript]];
+const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "excluded-file.*"] };
+
+/* Test Mapping */
+const modes = ["program", "manual", "ts-node"] as const;
+const testConfigs: { label: string; tsInstance: any; mode: typeof modes[number]; tsSpecifier: string }[] = [];
+for (const cfg of tsModules)
+  testConfigs.push(...modes.map((mode) => ({ label: cfg[0], tsInstance: cfg[1], mode, tsSpecifier: cfg[2] })));
+
+/* File Paths */
+const projectRoot = ts.normalizePath(path.join(projectsPaths, "specific"));
+const tsConfigFile = ts.normalizePath(path.join(projectsPaths, "specific/tsconfig.json"));
+const genFile = ts.normalizePath(path.join(projectRoot, "generated/dir/gen-file.ts"));
+const srcFile = ts.normalizePath(path.join(projectRoot, "src/dir/src-file.ts"));
+const indexFile = ts.normalizePath(path.join(projectRoot, "src/index.ts"));
+const tagFile = ts.normalizePath(path.join(projectRoot, "src/tags.ts"));
+const typeElisionIndex = ts.normalizePath(path.join(projectRoot, "src/type-elision/index.ts"));
+const subPackagesFile = ts.normalizePath(path.join(projectRoot, "src/sub-packages.ts"));
+const moduleAugmentFile = ts.normalizePath(path.join(projectRoot, "src/module-augment.ts"));
+
+/* ****************************************************************************************************************** *
+ * Types
+ * ****************************************************************************************************************** */
+
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      transformedMatches(expected: RegExp | string, opt?: { base?: EmittedFiles[]; kind?: ("dts" | "js")[] }): void;
+    }
+  }
+}
 
 /* ****************************************************************************************************************** *
  * Tests
  * ****************************************************************************************************************** */
 
-describe(`Transformer -> Specific Cases`, () => {
-  const projectRoot = ts.normalizePath(path.join(projectsPaths, "specific"));
-  const tsConfigFile = ts.normalizePath(path.join(projectsPaths, "specific/tsconfig.json"));
-  const genFile = ts.normalizePath(path.join(projectRoot, "generated/dir/gen-file.ts"));
-  const srcFile = ts.normalizePath(path.join(projectRoot, "src/dir/src-file.ts"));
-  const indexFile = ts.normalizePath(path.join(projectRoot, "src/index.ts"));
-  const tagFile = ts.normalizePath(path.join(projectRoot, "src/tags.ts"));
-  const typeElisionIndex = ts.normalizePath(path.join(projectRoot, "src/type-elision/index.ts"));
-  const subPackagesFile = ts.normalizePath(path.join(projectRoot, "src/sub-packages.ts"));
-  const moduleAugmentFile = ts.normalizePath(path.join(projectRoot, "src/module-augment.ts"));
-  const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "excluded-file.*"] };
-
-  describe.each(testTsModules)(`TypeScript %s`, (s, tsInstance) => {
-    let rootDirsEmit: EmittedFiles;
-    let normalEmit: EmittedFiles;
+describe(`Specific Tests`, () => {
+  describe.each(testConfigs)(`TypeScript $label - Mode: $mode`, ({ tsInstance, mode, tsSpecifier }) => {
     const tsVersion = +tsInstance.versionMajorMinor.split(".").slice(0, 2).join("");
+    let normalEmit: EmittedFiles;
+    let rootDirsEmit: EmittedFiles;
+    let skipDts = false;
 
     beforeAll(() => {
-      const program = createTsProgram({
-        tsInstance,
-        tsConfigFile,
-        pluginOptions: {
-          ...baseConfig,
-          useRootDirs: false,
-        },
-      });
-      normalEmit = getEmitResult(program);
+      switch (mode) {
+        case "program":
+          const program = createTsProgram({
+            tsInstance,
+            tsConfigFile,
+            pluginOptions: {
+              ...baseConfig,
+              useRootDirs: false,
+            },
+          });
+          normalEmit = getEmitResultFromProgram(program);
 
-      const rootDirsProgram = createTsProgram({
-        tsInstance,
-        tsConfigFile,
-        pluginOptions: {
-          ...baseConfig,
-          useRootDirs: true,
+          const rootDirsProgram = createTsProgram({
+            tsInstance,
+            tsConfigFile,
+            pluginOptions: {
+              ...baseConfig,
+              useRootDirs: true,
+            },
+          });
+          rootDirsEmit = getEmitResultFromProgram(rootDirsProgram);
+          break;
+        case "manual": {
+          skipDts = true;
+          const pcl = tsInstance.getParsedCommandLineOfConfigFile(
+            tsConfigFile,
+            {},
+            <any>tsInstance.sys
+          )! as TS.ParsedCommandLine;
+          normalEmit = getManualEmitResult({ ...baseConfig, useRootDirs: false }, tsInstance, pcl);
+          rootDirsEmit = getManualEmitResult({ ...baseConfig, useRootDirs: true }, tsInstance, pcl);
+          break;
+        }
+        case "ts-node": {
+          const pcl = tsInstance.getParsedCommandLineOfConfigFile(
+            tsConfigFile,
+            {},
+            <any>tsInstance.sys
+          )! as TS.ParsedCommandLine;
+          skipDts = true;
+          normalEmit = getTsNodeEmitResult({ ...baseConfig, useRootDirs: false }, pcl, tsSpecifier);
+          rootDirsEmit = getTsNodeEmitResult({ ...baseConfig, useRootDirs: true }, pcl, tsSpecifier);
+        }
+      }
+
+      expect.extend({
+        transformedMatches(
+          fileName: string,
+          expected: RegExp | string,
+          opt?: { base?: EmittedFiles[]; kind?: ("dts" | "js")[] }
+        ) {
+          const bases = opt?.base ?? [normalEmit, rootDirsEmit];
+          const kinds = (opt?.kind ?? ["dts", "js"]).filter((k) => !skipDts || k !== "dts");
+
+          let failed: boolean = false;
+          const messages: string[] = [];
+          for (const base of bases) {
+            for (const kind of kinds) {
+              const content = base[fileName][kind];
+              const isValid = typeof expected === "string" ? content.indexOf(expected) >= 0 : expected.test(content);
+              if (!isValid) {
+                failed = true;
+                messages.push(
+                  `File: ${fileName}\nKind: ${kind}\nrootDirs: ${base === normalEmit}\n\n` +
+                  `Expected: \`${expected}\`\nReceived:\n\t${content.replace(/(\r?\n)+/g, "$1\t")}`
+                );
+              }
+            }
+          }
+
+          return { message: () => messages.join("\n\n"), pass: !failed };
         },
       });
-      rootDirsEmit = getEmitResult(rootDirsProgram);
     });
 
     describe(`Options`, () => {
       test(`(useRootDirs: true) Re-maps for rootDirs`, () => {
-        expect(rootDirsEmit[genFile].dts).toMatch(`import "./src-file"`);
-        expect(rootDirsEmit[srcFile].dts).toMatch(`import "./gen-file"`);
-        expect(rootDirsEmit[indexFile].dts).toMatch(`export { B } from "./dir/gen-file"`);
-        expect(rootDirsEmit[indexFile].dts).toMatch(`export { A } from "./dir/src-file"`);
+        expect(genFile).transformedMatches(`import "./src-file"`, { base: [rootDirsEmit] });
+        expect(srcFile).transformedMatches(`import "./gen-file"`, { base: [rootDirsEmit] });
+        expect(indexFile).transformedMatches(`export { b } from "./dir/gen-file"`, { base: [rootDirsEmit] });
+        expect(indexFile).transformedMatches(`export { a } from "./dir/src-file"`, { base: [rootDirsEmit] });
       });
 
       test(`(useRootDirs: false) Ignores rootDirs`, () => {
-        expect(normalEmit[genFile].dts).toMatch(`import "../../src/dir/src-file"`);
-        expect(normalEmit[srcFile].dts).toMatch(`import "../../generated/dir/gen-file"`);
-        expect(normalEmit[indexFile].dts).toMatch(`export { B } from "../generated/dir/gen-file"`);
-        expect(normalEmit[indexFile].dts).toMatch(`export { A } from "./dir/src-file"`);
+        expect(genFile).transformedMatches(`import "../../src/dir/src-file"`, { base: [normalEmit] });
+        expect(srcFile).transformedMatches(`import "../../generated/dir/gen-file"`, { base: [normalEmit] });
+        expect(indexFile).transformedMatches(`export { b } from "../generated/dir/gen-file"`, { base: [normalEmit] });
+        expect(indexFile).transformedMatches(`export { a } from "./dir/src-file"`, { base: [normalEmit] });
       });
 
       test(`(exclude) Doesn't transform for exclusion patterns`, () => {
-        expect(rootDirsEmit[indexFile].dts).toMatch(
-          /export { BB } from "#exclusion\/ex";\s*export { DD } from "#root\/excluded-file";/
+        expect(indexFile).transformedMatches(
+          /export { bb } from "#exclusion\/ex";\s*export { dd } from "#root\/excluded-file"/
         );
       });
     });
 
     describe(`Tags`, () => {
       test(`(@no-transform-path) Doesn't transform path`, () => {
-        const regex = /^import \* as skipTransform\d from "#root\/index"/gm;
-        const expectedLength = tsInstance.versionMajorMinor === "3.6" ? 8 : 16;
-        const matches = [
-          ...(normalEmit[tagFile].dts.match(regex) ?? []),
-          ...(rootDirsEmit[tagFile].dts.match(regex) ?? []),
-          ...(normalEmit[tagFile].js.match(regex) ?? []),
-          ...(rootDirsEmit[tagFile].js.match(regex) ?? []),
-        ];
-        expect(matches).toHaveLength(expectedLength);
+        for (let i = 1; i <= 4; i++)
+          expect(tagFile).transformedMatches(`import * as skipTransform${i} from "#root\/index`);
       });
 
       test(`(@transform-path) Transforms path with explicit value`, () => {
-        const regex1 = /^import \* as explicitTransform\d from "\.\/dir\/src-file"/gm;
-        const regex2 = /^import \* as explicitTransform\d from "http:\/\/www\.go\.com\/react\.js"/gm;
-        const expectedLength = tsInstance.versionMajorMinor === "3.6" ? 4 : 8;
-
-        const matches1 = [
-          ...(normalEmit[tagFile].dts.match(regex1) ?? []),
-          ...(rootDirsEmit[tagFile].dts.match(regex1) ?? []),
-          ...(normalEmit[tagFile].js.match(regex1) ?? []),
-          ...(rootDirsEmit[tagFile].js.match(regex1) ?? []),
-        ];
-        expect(matches1).toHaveLength(expectedLength);
-
-        const matches2 = [
-          ...(normalEmit[tagFile].dts.match(regex2) ?? []),
-          ...(rootDirsEmit[tagFile].dts.match(regex2) ?? []),
-          ...(normalEmit[tagFile].js.match(regex2) ?? []),
-          ...(rootDirsEmit[tagFile].js.match(regex2) ?? []),
-        ];
-        expect(matches2).toHaveLength(expectedLength);
+        expect(tagFile).transformedMatches(`import * as explicitTransform1 from "./dir/src-file"`);
+        expect(tagFile).transformedMatches(`import * as explicitTransform2 from "http://www.go.com/react.js"`);
+        expect(tagFile).transformedMatches(`import * as explicitTransform3 from "./dir/src-file"`);
+        expect(tagFile).transformedMatches(`import * as explicitTransform4 from "http://www.go.com/react.js"`);
       });
     });
 
-    test(`Does not resolve external modules`, () => {
-      expect(normalEmit[indexFile].dts).toMatch(`import "ts-expose-internals";`);
-      expect(rootDirsEmit[indexFile].dts).toMatch(`import "ts-expose-internals";`);
-    });
-
-    test(`Type elision works properly`, () => {
-      expect(normalEmit[typeElisionIndex].js).toMatch(/import { ConstB } from "\.\/a";\s*export { ConstB };/);
-      expect(normalEmit[typeElisionIndex].dts).toMatch(
-        /import { ConstB, TypeA } from "\.\/a";\s*import { TypeA as TypeA2 } from "\.\/a";\s*export { ConstB, TypeA };\s*export { TypeA2 };/
+    (mode === "program" ? test : test.skip)(`Type elision works properly`, () => {
+      expect(typeElisionIndex).transformedMatches(/import { ConstB } from "\.\/a";\s*export { ConstB };/, {
+        kind: ["js"],
+      });
+      expect(typeElisionIndex).transformedMatches(
+        /import { ConstB, TypeA } from "\.\/a";\s*import { TypeA as TypeA2 } from "\.\/a";\s*export { ConstB, TypeA };\s*export { TypeA2 };/,
+        { kind: ["dts"] }
       );
     });
 
-    (tsVersion >= 38 ? test : test.skip)(`Import type-only transforms`, () => {
-      expect(normalEmit[indexFile].dts).toMatch(`import type { A as ATypeOnly } from "./dir/src-file"`);
+    (!skipDts && tsVersion >= 38 ? test : test.skip)(`Import type-only transforms`, () => {
+      expect(indexFile).transformedMatches(`import type { A as ATypeOnly } from "./dir/src-file"`, { kind: ["dts"] });
     });
 
     test(`Copies comments in async import`, () => {
-      expect(normalEmit[indexFile].js).toMatch(`import(/* webpackChunkName: "Comment" */ "./dir/src-file");`);
-      expect(normalEmit[indexFile].js).toMatch(
-        /\/\/ comment 1\r?\n\s*\r?\n\/\*\r?\n\s*comment 2\r?\n\s*\*\/\r?\n\s*"\.\.\/generated\/dir\/gen-file"/
+      expect(indexFile).transformedMatches(`import(/* webpackChunkName: "Comment" */ "./dir/src-file");`, {
+        kind: ["js"],
+      });
+      expect(indexFile).transformedMatches(
+        /\/\/ comment 1\r?\n\s*\r?\n\/\*\r?\n\s*comment 2\r?\n\s*\*\/\r?\n\s*"\.\/dir\/src-file"/,
+        { kind: ["js"] }
       );
     });
 
     test(`Preserves explicit extensions`, () => {
-      expect(normalEmit[indexFile].js).toMatch(`export { JsonValue } from "./data.json"`);
-      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstA } from "./general"`);
-      expect(normalEmit[indexFile].js).toMatch(`export { GeneralConstB } from "./general.js"`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { JsonValue } from "./data.json"`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstA, GeneralTypeA } from "./general"`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { GeneralConstB } from "./general.js"`);
+      expect(indexFile).transformedMatches(`export { JsonValue } from "./data.json"`);
+      expect(indexFile).transformedMatches(`export { GeneralConstA } from "./general"`);
+      expect(indexFile).transformedMatches(`export { GeneralConstB } from "./general.js"`);
     });
 
     test(`Does not output implicit index filenames`, () => {
-      expect(normalEmit[indexFile].js).toMatch(`export { ConstB } from "./type-elision"`);
-      expect(normalEmit[indexFile].dts).toMatch(`export { ConstB } from "./type-elision"`);
+      expect(indexFile).transformedMatches(`export { ConstB } from "./type-elision"`);
     });
 
     test(`Resolves sub-modules properly`, () => {
-      const { js, dts } = normalEmit[subPackagesFile];
-      expect(js).toMatch(`export { packageBConst } from "./packages/pkg-b"`);
-      expect(js).toMatch(`export { packageAConst } from "./packages/pkg-a"`);
-      expect(js).toMatch(`export { packageCConst } from "./packages/pkg-c"`);
-      expect(js).toMatch(`export { subPackageConst } from "./packages/pkg-a/sub-pkg"`);
-      expect(js).toMatch(`export { packageCConst as C2 } from "./packages/pkg-c/main"`);
-      expect(js).toMatch(`export { packageCConst as C3 } from "./packages/pkg-c/main.js"`);
-      expect(js).toMatch(`export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`);
-      expect(js).toMatch(`export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`);
+      const a = {
+        js: `export { packageAConst } from "./packages/pkg-a"`,
+        full: `export { packageAConst, PackageAType } from "./packages/pkg-a"`,
+      };
+      const b = {
+        js: `export { packageBConst } from "./packages/pkg-b"`,
+        full: `export { packageBConst, PackageBType } from "./packages/pkg-b"`,
+      };
+      const c = {
+        js: `export { packageCConst } from "./packages/pkg-c"`,
+        full: `export { packageCConst, PackageCType } from "./packages/pkg-c"`,
+      };
+      const sub = {
+        js: `export { subPackageConst } from "./packages/pkg-a/sub-pkg"`,
+        full: `export { SubPackageType, subPackageConst } from "./packages/pkg-a/sub-pkg"`,
+      };
 
-      expect(dts).toMatch(`export { packageAConst, PackageAType } from "./packages/pkg-a"`);
-      expect(dts).toMatch(`export { packageBConst, PackageBType } from "./packages/pkg-b"`);
-      expect(dts).toMatch(`export { packageCConst, PackageCType } from "./packages/pkg-c"`);
-      expect(dts).toMatch(`export { SubPackageType, subPackageConst } from "./packages/pkg-a/sub-pkg"`);
-      expect(dts).toMatch(`export { packageCConst as C2 } from "./packages/pkg-c/main"`);
-      expect(dts).toMatch(`export { packageCConst as C3 } from "./packages/pkg-c/main.js"`);
-      expect(dts).toMatch(`export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`);
-      expect(dts).toMatch(`export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`);
+      for (const exp of [a, b, c, sub]) {
+        expect(subPackagesFile).transformedMatches(mode !== "program" ? exp.full : exp.js, { kind: ["js"] });
+        if (!skipDts) expect(subPackagesFile).transformedMatches(exp.full, { kind: ["dts"] });
+      }
+
+      expect(subPackagesFile).transformedMatches(`export { packageCConst as C2 } from "./packages/pkg-c/main"`);
+      expect(subPackagesFile).transformedMatches(`export { packageCConst as C3 } from "./packages/pkg-c/main.js"`);
+      expect(subPackagesFile).transformedMatches(
+        `export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`
+      );
+      expect(subPackagesFile).transformedMatches(
+        `export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`
+      );
     });
 
-    test(`Resolves module augmentation`, () => {
-      const { dts } = normalEmit[moduleAugmentFile];
-      expect(dts).toMatch(`declare module "./general" {`);
-      expect(dts).toMatch(`declare module "./excluded-file" {`);
+    (!skipDts ? test : test.skip)(`Resolves module augmentation`, () => {
+      expect(moduleAugmentFile).transformedMatches(`declare module "./general" {`, { kind: ["dts"] });
+      expect(moduleAugmentFile).transformedMatches(`declare module "./excluded-file" {`, { kind: ["dts"] });
     });
   });
 });

@@ -1,6 +1,9 @@
 import path from "path";
-import * as TS from "typescript";
 import { TsTransformPathsConfig } from "../../src/types";
+import { default as tstpTransform } from "../../src";
+import fs from "fs";
+import ts from "typescript";
+import * as tsNode from "ts-node";
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -13,7 +16,7 @@ export interface CreateTsProgramOptions {
   files?: { [fileName: string]: /* data */ string };
   tsConfigFile?: string;
   disablePlugin?: boolean;
-  additionalOptions?: TS.CompilerOptions;
+  additionalOptions?: ts.CompilerOptions;
   pluginOptions?: TsTransformPathsConfig;
 }
 
@@ -34,9 +37,9 @@ const transformerPath = path.resolve(__dirname, "../../src/index.ts");
 /**
  * Create TS Program with faux files and options
  */
-export function createTsProgram(opt: CreateTsProgramOptions): TS.Program {
+export function createTsProgram(opt: CreateTsProgramOptions): ts.Program {
   const { disablePlugin, additionalOptions, pluginOptions } = opt;
-  const tsInstance: typeof TS = opt.tsInstance;
+  const tsInstance: typeof ts = opt.tsInstance;
 
   if ((!opt.files && !opt.tsConfigFile) || (opt.files && opt.tsConfigFile))
     throw new Error(`Must supply *either* files or tsConfigFile to createProgram`);
@@ -56,9 +59,9 @@ export function createTsProgram(opt: CreateTsProgramOptions): TS.Program {
         ],
   });
 
-  let compilerOptions: TS.CompilerOptions = {};
+  let compilerOptions: ts.CompilerOptions = {};
   let fileNames: string[];
-  let host: TS.CompilerHost | undefined;
+  let host: ts.CompilerHost | undefined;
 
   if (opt.tsConfigFile) {
     const pcl = tsInstance.getParsedCommandLineOfConfigFile(opt.tsConfigFile, extendOptions, <any>tsInstance.sys)!;
@@ -76,7 +79,7 @@ export function createTsProgram(opt: CreateTsProgramOptions): TS.Program {
 
     /* Patch host to feed mock files */
     const originalGetSourceFile: any = host.getSourceFile;
-    host.getSourceFile = function (fileName: string, scriptTarget: TS.ScriptTarget) {
+    host.getSourceFile = function (fileName: string, scriptTarget: ts.ScriptTarget) {
       if (Object.keys(files).includes(fileName))
         return tsInstance.createSourceFile(fileName, files[fileName], scriptTarget);
       else originalGetSourceFile.apply(undefined, arguments);
@@ -90,7 +93,7 @@ export function createTsProgram(opt: CreateTsProgramOptions): TS.Program {
  * Get emitted files for program
  * @param program
  */
-export function getEmitResult(program: TS.Program): EmittedFiles {
+export function getEmitResultFromProgram(program: ts.Program): EmittedFiles {
   const outputFiles: EmittedFiles = {};
 
   const writeFile = (fileName: string, data: string) => {
@@ -105,6 +108,55 @@ export function getEmitResult(program: TS.Program): EmittedFiles {
   program.emit(undefined, writeFile);
 
   return outputFiles;
+}
+
+export function getManualEmitResult(pluginConfig: TsTransformPathsConfig, tsInstance: any, pcl: ts.ParsedCommandLine) {
+  const { options: compilerOptions, fileNames } = pcl;
+  const transformer = tstpTransform(void 0, pluginConfig, { ts: tsInstance } as any, { compilerOptions, fileNames });
+
+  const { transformed } = tsInstance.transform(
+    fileNames.map((f) =>
+      tsInstance.createSourceFile(f, fs.readFileSync(f, "utf8"), tsInstance.ScriptTarget.ESNext, true)
+    ),
+    [transformer],
+    compilerOptions
+  );
+
+  const printer = tsInstance.createPrinter();
+
+  const res: EmittedFiles = {};
+  for (const sourceFile of transformed) res[sourceFile.fileName] = <any>{ js: printer.printFile(sourceFile) };
+
+  return res;
+}
+
+export function getTsNodeEmitResult(
+  pluginConfig: TsTransformPathsConfig,
+  pcl: ts.ParsedCommandLine,
+  tsSpecifier: string
+) {
+  const compiler = tsNode.create({
+    transpileOnly: true,
+    transformers: {
+      before: [tstpTransform(void 0, pluginConfig, <any>{ ts: require(tsSpecifier) })],
+    },
+    project: pcl.options.configFilePath,
+    compiler: tsSpecifier,
+    logError: true,
+    ignoreDiagnostics: [1144, 1005], // Issues with old TS and type only imports
+  });
+
+  const originalRegister = global.process[tsNode.REGISTER_INSTANCE];
+  global.process[tsNode.REGISTER_INSTANCE] = compiler;
+  try {
+    const res: EmittedFiles = {};
+    for (const fileName of pcl.fileNames.filter((f) => !/\.d\.ts$/.test(f)))
+      res[fileName] = <any>{ js: compiler.compile(fs.readFileSync(fileName, "utf8"), fileName) };
+
+    return res;
+  } finally {
+    global.process[tsNode.REGISTER_INSTANCE] = originalRegister;
+  }
 }
 
 // endregion

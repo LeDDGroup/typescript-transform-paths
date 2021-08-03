@@ -1,7 +1,6 @@
 import ts from "typescript";
 import TypeScriptThree from "typescript-three";
 import path from "path";
-import { loadTypeScript } from "ttypescript/lib/loadTypescript";
 
 /* ****************************************************************************************************************** */
 // region: TS Instances
@@ -9,7 +8,6 @@ import { loadTypeScript } from "ttypescript/lib/loadTypescript";
 
 export { ts };
 export const tsThree: typeof TypeScriptThree = require("typescript-three");
-export const tTypeScript = loadTypeScript("typescript.js", { folder: path.resolve(__dirname, "../../") });
 
 // endregion
 
@@ -18,8 +16,8 @@ export const tTypeScript = loadTypeScript("typescript.js", { folder: path.resolv
 /* ****************************************************************************************************************** */
 
 export const tsModules = <const>[
-  ["Latest", ts],
-  ["3.6.5", tsThree],
+  ["Latest", ts, "typescript"],
+  ["3.6.5", tsThree, "typescript-three"],
 ];
 export const projectsPaths = path.join(__dirname, "../projects");
 Error.stackTraceLimit = 120;

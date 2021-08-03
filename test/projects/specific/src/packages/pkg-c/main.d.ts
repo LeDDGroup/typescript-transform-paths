@@ -1,2 +1,2 @@
-export type PackageCType = null
-export declare const packageCConst: PackageCType
+export type PackageCType = null;
+export declare const packageCConst: PackageCType;
