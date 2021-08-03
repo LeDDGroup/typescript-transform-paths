@@ -1,4 +1,6 @@
-module.exports = {
+import type { InitialOptionsTsJest } from "ts-jest/dist/types";
+
+const config: InitialOptionsTsJest = {
   testEnvironment: "node",
   preset: 'ts-jest',
   testRegex: '.*(test)\\.tsx?$',
@@ -11,3 +13,5 @@ module.exports = {
   modulePaths: [ "<rootDir>" ],
   roots: [ '<rootDir>' ]
 }
+
+export default config;
