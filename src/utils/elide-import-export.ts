@@ -62,6 +62,9 @@ export function elideImportOrExportClause(
 ): ImportOrExportClause | undefined {
   const { tsInstance, transformationContext, factory } = context;
   const resolver = transformationContext.getEmitResolver();
+  // Resolver may not be present if run manually (without Program)
+  if (!resolver) return tsInstance.isImportDeclaration(node) ? node.importClause : node.exportClause;
+
   const {
     visitNode,
     isNamedImportBindings,

@@ -91,15 +91,17 @@ function getResolvedSourceFile(context: VisitorContext, fileName: string): Sourc
   let res: SourceFile | undefined;
   const { program, tsInstance } = context;
 
-  /* Attempt to directly pull from Program */
-  res = program.getSourceFile(fileName) as SourceFile;
-  if (res) return res;
+  if (program) {
+    /* Attempt to directly pull from Program */
+    res = program.getSourceFile(fileName) as SourceFile;
+    if (res) return res;
 
-  /* Attempt to find without extension */
-  res = (program.getSourceFiles() as SourceFile[]).find(
-    (s) => removeFileExtension(s.fileName) === removeFileExtension(fileName)
-  );
-  if (res) return res;
+    /* Attempt to find without extension */
+    res = (program.getSourceFiles() as SourceFile[]).find(
+      (s) => removeFileExtension(s.fileName) === removeFileExtension(fileName)
+    );
+    if (res) return res;
+  }
 
   /*
    * Create basic synthetic SourceFile for use with compiler API - Applies if SourceFile not found in program due to
@@ -141,14 +143,8 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
 
   const resolvedSourceFile = getResolvedSourceFile(context, resolvedModule.resolvedFileName);
 
-  const {
-    indexType,
-    resolvedBaseNameNoExtension,
-    resolvedFileName,
-    implicitPackageIndex,
-    extName,
-    resolvedDir,
-  } = getPathDetail(moduleName, resolvedModule);
+  const { indexType, resolvedBaseNameNoExtension, resolvedFileName, implicitPackageIndex, extName, resolvedDir } =
+    getPathDetail(moduleName, resolvedModule);
 
   /* Determine output filename */
   let outputBaseName = resolvedBaseNameNoExtension ?? "";

@@ -1,5 +1,5 @@
 import tsThree from "./declarations/typescript3";
-import ts, { CompilerOptions, EmitHost, GetCanonicalFileName, Pattern, SourceFile } from "typescript";
+import ts, { CompilerOptions, EmitHost, Pattern, SourceFile } from "typescript";
 import { PluginConfig } from "ts-patch";
 import { HarmonyFactory } from "./utils/harmony-factory";
 import { IMinimatch } from "minimatch";
@@ -40,7 +40,7 @@ export interface TsTransformPathsContext {
    */
   readonly tsThreeInstance: TypeScriptThree;
   readonly tsFactory?: ts.NodeFactory;
-  readonly program: ts.Program | tsThree.Program;
+  readonly program?: ts.Program | tsThree.Program;
   readonly config: TsTransformPathsConfig;
   readonly compilerOptions: CompilerOptions;
   readonly elisionMap: Map<ts.SourceFile, Map<ImportOrExportDeclaration, ImportOrExportDeclaration>>;
@@ -48,10 +48,9 @@ export interface TsTransformPathsContext {
   readonly rootDirs?: string[];
   readonly excludeMatchers: IMinimatch[] | undefined;
   readonly outputFileNamesCache: Map<SourceFile, string>;
-  readonly pathsBasePath: string;
-  readonly getCanonicalFileName: GetCanonicalFileName;
-  readonly pathsPatterns: (string | Pattern)[];
+  readonly pathsPatterns: (string | Pattern)[] | undefined;
   readonly emitHost: EmitHost;
+  readonly isTsNode: boolean;
 }
 
 export interface VisitorContext extends TsTransformPathsContext {

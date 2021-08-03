@@ -7,25 +7,84 @@ import { TsTransformPathsConfig, TsTransformPathsContext, TypeScriptThree, Visit
 import { nodeVisitor } from "./visitor";
 import { createHarmonyFactory } from "./utils/harmony-factory";
 import { Minimatch } from "minimatch";
+import { createSyntheticEmitHost, getTsNodeRegistrationProperties } from "./utils/ts-helpers";
+import { TransformerExtras } from "ts-patch";
 
-/* ****************************************************************************************************************** *
- * Transformer
- * ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+// region: Helpers
+/* ****************************************************************************************************************** */
+
+function getTsProperties(args: Parameters<typeof transformer>) {
+  let tsInstance: typeof ts;
+  let compilerOptions: ts.CompilerOptions;
+  let fileNames: readonly string[] | undefined;
+  let isTsNode = false;
+
+  const { 0: program, 2: extras, 3: manualTransformOptions } = args;
+
+  tsInstance = extras?.ts ?? ts;
+  compilerOptions = manualTransformOptions?.compilerOptions!;
+
+  if (program) {
+    compilerOptions ??= program.getCompilerOptions();
+  } else if (manualTransformOptions) {
+    fileNames = manualTransformOptions.fileNames;
+  } else {
+    const tsNodeProps = getTsNodeRegistrationProperties(tsInstance);
+    if (!tsNodeProps)
+      throw new Error(
+        `Cannot transform without a Program, ts-node instance, or manual parameters supplied. ` +
+          `Make sure you're using ts-patch or ts-node with transpileOnly.`
+      );
+    isTsNode = true;
+    compilerOptions = tsNodeProps.compilerOptions;
+    fileNames = tsNodeProps.fileNames;
+  }
+
+  return { tsInstance, compilerOptions, fileNames, isTsNode };
+}
+
+// endregion
+
+/* ****************************************************************************************************************** */
+// region: Transformer
+/* ****************************************************************************************************************** */
 
 export default function transformer(
-  program: ts.Program,
-  config: TsTransformPathsConfig,
-  { ts: tsInstance }: { ts: typeof ts }
+  program?: ts.Program,
+  pluginConfig?: TsTransformPathsConfig,
+  transformerExtras?: TransformerExtras,
+  /**
+   * Supply if manually transforming with compiler API via 'transformNodes' / 'transformModule'
+   */
+  manualTransformOptions?: {
+    compilerOptions?: ts.CompilerOptions;
+    fileNames?: string[];
+  }
 ) {
-  if (!tsInstance) tsInstance = ts;
-
-  const compilerOptions = program.getCompilerOptions();
-  const rootDirs = compilerOptions.rootDirs?.filter(path.isAbsolute);
-
   return (transformationContext: ts.TransformationContext) => {
-    const pathsBasePath = compilerOptions.pathsBasePath ?? compilerOptions.baseUrl;
+    // prettier-ignore
+    const {
+      tsInstance,
+      compilerOptions,
+      fileNames,
+      isTsNode
+    } = getTsProperties([ program, pluginConfig, transformerExtras, manualTransformOptions ]);
 
-    if (!pathsBasePath || !compilerOptions.paths) return (sourceFile: ts.SourceFile) => sourceFile;
+    const rootDirs = compilerOptions.rootDirs?.filter(path.isAbsolute);
+    const config: TsTransformPathsConfig = pluginConfig ?? {};
+    const getCanonicalFileName = tsInstance.createGetCanonicalFileName(tsInstance.sys.useCaseSensitiveFileNames);
+
+    let emitHost = transformationContext.getEmitHost();
+    if (!emitHost) {
+      if (!fileNames)
+        throw new Error(
+          `No EmitHost found and could not determine files to be processed. Please file an issue with a reproduction!`
+        );
+      emitHost = createSyntheticEmitHost(compilerOptions, tsInstance, getCanonicalFileName, fileNames as string[]);
+    } else if (isTsNode) {
+      Object.assign(emitHost, { getCompilerOptions: () => compilerOptions });
+    }
 
     const { configFile, paths } = compilerOptions;
     // TODO - Remove typecast when tryParsePatterns is recognized (probably after ts v4.4)
@@ -40,24 +99,19 @@ export default function transformer(
       rootDirs,
       transformationContext,
       tsInstance,
-      pathsBasePath,
-      emitHost: transformationContext.getEmitHost(),
-      getCanonicalFileName: tsInstance.createGetCanonicalFileName(tsInstance.sys.useCaseSensitiveFileNames),
+      emitHost,
+      isTsNode,
       tsThreeInstance: cast<TypeScriptThree>(tsInstance),
       excludeMatchers: config.exclude?.map((globPattern) => new Minimatch(globPattern, { matchBase: true })),
       outputFileNamesCache: new Map(),
       // Get paths patterns appropriate for TS compiler version
-      pathsPatterns: tryParsePatterns
-        ? // TODO - Remove typecast when pathPatterns is recognized (probably after ts v4.4)
-          (configFile?.configFileSpecs as any)?.pathPatterns || tryParsePatterns(paths)
-        : tsInstance.getOwnKeys(paths),
+      pathsPatterns:
+        paths &&
+        (tryParsePatterns
+          ? // TODO - Remove typecast when pathPatterns is recognized (probably after ts v4.4)
+            (configFile?.configFileSpecs as any)?.pathPatterns || tryParsePatterns(paths)
+          : tsInstance.getOwnKeys(paths)),
     };
-
-    if (!tsTransformPathsContext.emitHost)
-      throw new Error(
-        `typescript-transform-paths >= 3.1.0 requires an EmitHost in the TransformationContext to resolve properly.` +
-          ` Make sure you're using either ts-patch or ttypescript.`
-      );
 
     return (sourceFile: ts.SourceFile) => {
       const visitorContext: VisitorContext = {
@@ -75,3 +129,5 @@ export default function transformer(
     };
   };
 }
+
+// endregion

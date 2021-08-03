@@ -77,8 +77,8 @@ export function resolvePathAndUpdateNode(
     const shouldSkip = findTag("no-transform-path");
 
     return {
-      overridePath: typeof overridePath === 'string' ? overridePath : void 0,
-      shouldSkip: !!shouldSkip
+      overridePath: typeof overridePath === "string" ? overridePath : void 0,
+      shouldSkip: !!shouldSkip,
     };
 
     function findTag(expected: string): boolean | string | undefined {
@@ -90,15 +90,15 @@ export function resolvePathAndUpdateNode(
         if (tagName === expected) return typeof tag.comment === "string" ? tag.comment : true;
 
         /* The following handles older TS which splits tags at first hyphens */
-        if (typeof tag.comment !== 'string' || tag.comment[0] !== '-') continue;
+        if (typeof tag.comment !== "string" || tag.comment[0] !== "-") continue;
 
-        const dashPos = expected.indexOf('-');
+        const dashPos = expected.indexOf("-");
         if (dashPos < 0) return void 0;
 
         if (tagName === expected.slice(0, dashPos)) {
           const comment = tag.comment;
           const choppedCommentTagName = comment.slice(0, expected.length - dashPos);
-          return (choppedCommentTagName === expected.slice(dashPos))
+          return choppedCommentTagName === expected.slice(dashPos)
             ? comment.slice(choppedCommentTagName.length + 1).trim() || true
             : void 0;
         }

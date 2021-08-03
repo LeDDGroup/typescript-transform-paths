@@ -1,6 +1,7 @@
-import { SourceFile } from "typescript";
+import ts, { GetCanonicalFileName, SourceFile } from "typescript";
 import path from "path";
 import { VisitorContext } from "../types";
+import { REGISTER_INSTANCE } from "ts-node";
 
 /* ****************************************************************************************************************** */
 // region: TS Helpers
@@ -46,8 +47,54 @@ export function isModulePathsMatch(context: VisitorContext, moduleName: string):
     pathsPatterns,
     tsInstance: { matchPatternOrExact },
   } = context;
-  // TODO - Remove typecast after ts v4.4
-  return !!matchPatternOrExact(pathsPatterns as any, moduleName);
+  return !!(pathsPatterns && matchPatternOrExact(pathsPatterns as readonly string[], moduleName));
+}
+
+/**
+ * Create barebones EmitHost (for no-Program transform)
+ */
+export function createSyntheticEmitHost(
+  compilerOptions: ts.CompilerOptions,
+  tsInstance: typeof ts,
+  getCanonicalFileName: GetCanonicalFileName,
+  fileNames: string[]
+) {
+  return {
+    getCompilerOptions: () => compilerOptions,
+    getCurrentDirectory: tsInstance.sys.getCurrentDirectory,
+    getCommonSourceDirectory: () =>
+      tsInstance.getCommonSourceDirectoryOfConfig(
+        { options: compilerOptions, fileNames: fileNames } as ts.ParsedCommandLine,
+        !tsInstance.sys.useCaseSensitiveFileNames
+      ),
+    getCanonicalFileName,
+  } as unknown as ts.EmitHost;
+}
+
+/**
+ * Get ts-node register info
+ */
+export function getTsNodeRegistrationProperties(tsInstance: typeof ts) {
+  let tsNodeSymbol: typeof REGISTER_INSTANCE;
+  try {
+    tsNodeSymbol = require("ts-node")?.["REGISTER_INSTANCE"];
+  } catch {
+    return undefined;
+  }
+
+  if (!global.process[tsNodeSymbol]) return undefined;
+
+  const { config, options } = global.process[REGISTER_INSTANCE]!;
+
+  const { configFilePath } = config.options;
+  const pcl = configFilePath
+    ? tsInstance.getParsedCommandLineOfConfigFile(configFilePath, {}, <any>tsInstance.sys)
+    : void 0;
+
+  const fileNames = pcl?.fileNames || config.fileNames;
+  const compilerOptions = Object.assign(config.options, options.compilerOptions, { outDir: pcl?.options.outDir });
+
+  return { compilerOptions, fileNames };
 }
 
 // endregion
