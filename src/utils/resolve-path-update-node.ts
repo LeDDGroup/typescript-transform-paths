@@ -68,19 +68,42 @@ export function resolvePathAndUpdateNode(
     const commentTags = new Map<string, string | undefined>();
     try {
       const trivia = targetNode.getFullText(sourceFile).slice(0, targetNode.getLeadingTriviaWidth(sourceFile));
-      const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gm;
+      const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gim;
 
       for (let match = regex.exec(trivia); match; match = regex.exec(trivia)) commentTags.set(match[1], match[2]);
     } catch {}
 
+    const overridePath = findTag("transform-path");
+    const shouldSkip = findTag("no-transform-path");
+
     return {
-      overridePath:
-        commentTags.get("transform-path") ??
-        jsDocTags?.find((t) => t.tagName.text.toLowerCase() === "transform-path")?.comment,
-      shouldSkip:
-        commentTags.has("no-transform-path") ||
-        !!jsDocTags?.find((t) => t.tagName.text.toLowerCase() === "no-transform-path"),
+      overridePath: typeof overridePath === 'string' ? overridePath : void 0,
+      shouldSkip: !!shouldSkip
     };
+
+    function findTag(expected: string): boolean | string | undefined {
+      if (commentTags.has(expected)) return commentTags.get(expected) || true;
+      if (!jsDocTags?.length) return void 0;
+
+      for (const tag of jsDocTags) {
+        const tagName = tag.tagName.text.toLowerCase();
+        if (tagName === expected) return typeof tag.comment === "string" ? tag.comment : true;
+
+        /* The following handles older TS which splits tags at first hyphens */
+        if (typeof tag.comment !== 'string' || tag.comment[0] !== '-') continue;
+
+        const dashPos = expected.indexOf('-');
+        if (dashPos < 0) return void 0;
+
+        if (tagName === expected.slice(0, dashPos)) {
+          const comment = tag.comment;
+          const choppedCommentTagName = comment.slice(0, expected.length - dashPos);
+          return (choppedCommentTagName === expected.slice(dashPos))
+            ? comment.slice(choppedCommentTagName.length + 1).trim() || true
+            : void 0;
+        }
+      }
+    }
   }
 }
 
