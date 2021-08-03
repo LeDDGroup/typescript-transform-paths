@@ -2,24 +2,19 @@
 
 [![npm version](https://img.shields.io/npm/v/typescript-transform-paths.svg)](https://www.npmjs.com/package/typescript-transform-paths)
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FLeDDGroup%2Ftypescript-transform-paths%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/LeDDGroup/typescript-transform-paths/goto?ref=master)
-[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/4i7egn9rn7iepg31/branch/master?svg=true)](https://ci.appveyor.com/project/danielpza/typescript-transform-paths/branch/master)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors)
+![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)
 
 Transform module resolution paths in compiled output source to conform with `TypeScript` internal resolution via `tsconfig.json` settings (`paths`, `rootDirs`, `baseUrl`)
 
 ## Install
 
 ```sh
-# NPM
-npm i -D typescript-transform-paths
-
-# Yarn
-yarn add -D typescript-transform-paths
+<yarn|npm|pnpm> add -D typescript-transform-paths
 ```
 
-## Usage with [ttypescript](https://github.com/cevek/ttypescript/) or [ts-patch](https://github.com/nonara/ts-patch)
+## Usage with [ts-patch](https://github.com/nonara/ts-patch) or [ttypescript](https://github.com/cevek/ttypescript/)
 
 Add it to _plugins_ in your _tsconfig.json_
 
@@ -29,10 +24,11 @@ Add it to _plugins_ in your _tsconfig.json_
 {
   "compilerOptions": {
     "baseUrl": "./",
+    // Configure your path mapping here
     "paths": {
       "@utils/*": ["utils/*"]
     },
-    // Note: In order to transform *both* js and d.ts files, you need to add both of the below lines to plugins
+    // Note: To transform paths in both .js and .d.ts files, be sure to add both lines to plugins
     "plugins": [
       // Transform paths in output .js files
       { "transform": "typescript-transform-paths" },
@@ -56,7 +52,7 @@ var sum_1 = require("../utils/sum");
 sum_1.sum(2, 3);
 ```
 
-### Virtual Directories
+## Virtual Directories
 TS allows defining
 [virtual directories](https://www.typescriptlang.org/docs/handbook/module-resolution.html#virtual-directories-with-rootdirs)
 via the `rootDirs` compiler option.  
@@ -148,6 +144,42 @@ Use the `@no-transform-path` tag to explicitly disable transformation for a sing
 // @no-transform-path
 import 'normally-transformed' // This will remain 'normally-transformed', even though it has a different value in paths config
 ```
+
+## `ts-node` & TS Compiler API Usage
+
+### Note
+Most people using `ts-node` can achieve what they want without the transformer, by using [tsconfig-paths](https://github.com/dividab/tsconfig-paths#readme]) (ie. `ts-node -r tsconfig-paths`)
+
+### Others
+
+If you'd still like to use the transformer, it is now possible to do programmatically, with or without a `Program` instance. This can be done via `ts-node` or the compiler API using `ts.transform()`.
+
+Here is an example of how to register `ts-node` with the transformer
+
+```ts
+import transformer, { TsTransformPathsConfig } from 'typescript-transform-paths';
+import { register } from 'ts-node';
+import ts from 'typescript';
+
+const pluginConfig: TsTransformPathsConfig = {
+  useRootDirs: false
+};
+
+// Use this code if using transpileOnly
+register({
+  transpileOnly: true,
+  transformers: {
+    before: [ transformer(/* Program */ undefined, pluginConfig) ]
+  }
+});
+
+// Use this if not using transpileOnly
+register({
+  transformers: (program: ts.Program) => { before: [ transformer(program, pluginConfig) ] }
+});
+```
+
+For TS compiler API usage example, have a look at the logic in [specific.test.ts](https://github.com/LeDDGroup/typescript-transform-paths/blob/master/test/tests/transformer/specific.test.ts) for `manual` mode.
 
 ## Articles
 
