@@ -1,7 +1,7 @@
 import ts, { GetCanonicalFileName, SourceFile } from "typescript";
 import path from "path";
 import { VisitorContext } from "../types";
-import { REGISTER_INSTANCE } from "ts-node";
+import type { REGISTER_INSTANCE } from "ts-node";
 
 /* ****************************************************************************************************************** */
 // region: TS Helpers
@@ -84,7 +84,7 @@ export function getTsNodeRegistrationProperties(tsInstance: typeof ts) {
 
   if (!global.process[tsNodeSymbol]) return undefined;
 
-  const { config, options } = global.process[REGISTER_INSTANCE]!;
+  const { config, options } = global.process[tsNodeSymbol]!;
 
   const { configFilePath } = config.options;
   const pcl = configFilePath
