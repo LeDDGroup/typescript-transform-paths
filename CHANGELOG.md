@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.2.0...v3.2.1) (2021-08-05)
+
+
+### Bug Fixes
+
+* Missing type-only modifier for ts-node type import (fixes [#130](https://github.com/LeDDGroup/typescript-transform-paths/issues/130)) ([0320574](https://github.com/LeDDGroup/typescript-transform-paths/commit/0320574a42acf2b54585562e57850bbab2deea05))
+
 ## [3.2.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.1.0...v3.2.0) (2021-08-03)
 
 
