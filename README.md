@@ -43,6 +43,7 @@ Add it to _plugins_ in your _tsconfig.json_
 ```
 #### Example result
 
+`core/index.ts`
 ```tsx
 // The following transforms path to '../utils/sum'
 import { sum } from "@utils/sum";
