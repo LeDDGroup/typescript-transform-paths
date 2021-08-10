@@ -34,13 +34,13 @@ jobs:
       - name: Install Packages
         run: yarn install --frozen-lockfile
 
+      - name: Build
+        run: yarn build
+
       - name: Test
         run: yarn test
         env:
           CI: true
-
-      - name: Build
-        run: yarn build
 
       - name: Publish to NPM
         run: npm publish
