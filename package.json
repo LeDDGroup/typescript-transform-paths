@@ -1,7 +1,24 @@
 {
   "name": "typescript-transform-paths",
   "version": "3.2.1",
-  "description": "Transforms module resolution paths using TypeScript path mapping",
+  "description": "Transforms module resolution paths using TypeScript path mapping and/or custom paths",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "compile": "tsc",
+    "build": "yarn run clean && yarn run compile",
+    "test": "jest",
+    "release": "standard-version",
+    "--------------": "",
+    "format": "prettier --write \"{src,test}/**/{*.js,!(*.d).ts}\"",
+    "clean": "rimraf dist **/*.tsbuildinfo",
+    "clean:all": "yarn run clean && rimraf node_modules test/node_modules test/.yarn-cache",
+    "reset": "yarn run clean:all && yarn install",
+    "-------------- ": "",
+    "prebuild": "rimraf dist",
+    "install:tests": "cd test && yarn install && cd projects/extras && yarn install",
+    "prepare": "yarn run install:tests"
+  },
   "keywords": [
     "typescript",
     "transform",
@@ -31,29 +48,6 @@
     "README.md",
     "CHANGELOG.md"
   ],
-  "main": "dist/index.js",
-  "scripts": {
-    "compile": "tsc",
-    "build": "yarn run clean && yarn run compile",
-    "test": "jest",
-    "release": "standard-version",
-    "--------------": "",
-    "format": "prettier --write \"{src,test}/**/{*.js,!(*.d).ts}\"",
-    "clean": "rimraf dist **/*.tsbuildinfo",
-    "clean:all": "yarn run clean && rimraf node_modules test/node_modules test/.yarn-cache",
-    "reset": "yarn run clean:all && yarn install",
-    "-------------- ": "",
-    "prebuild": "rimraf dist",
-    "install:tests": "cd test && yarn install",
-    "prepare": "yarn run install:tests"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/tests/transformer.test.ts"
-    ]
-  },
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@types/minimatch": "^3.0.5",

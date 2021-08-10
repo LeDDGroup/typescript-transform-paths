@@ -8,9 +8,6 @@
     "module": "CommonJS",
     "moduleResolution": "node",
 
-    "declaration": false,
-    "sourceMap": false,
-
     "strict": true,
     "preserveConstEnums": true,
     "removeComments": false,
