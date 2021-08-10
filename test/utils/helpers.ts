@@ -1,9 +1,8 @@
-import path from "path";
-import { TsTransformPathsConfig } from "../../src/types";
-import { default as tstpTransform } from "../../src";
+import { default as tstpTransform, TsTransformPathsConfig } from "../../src";
 import fs from "fs";
 import ts from "typescript";
 import * as tsNode from "ts-node";
+import * as config from "../tests/config";
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -23,21 +22,16 @@ export interface CreateTsProgramOptions {
 // endregion
 
 /* ****************************************************************************************************************** */
-// region: Config
-/* ****************************************************************************************************************** */
-
-const transformerPath = path.resolve(__dirname, "../../src/index.ts");
-
-// endregion
-
-/* ****************************************************************************************************************** */
 // region: Utilities
 /* ****************************************************************************************************************** */
 
 /**
  * Create TS Program with faux files and options
  */
-export function createTsProgram(opt: CreateTsProgramOptions): ts.Program {
+export function createTsProgram(
+  opt: CreateTsProgramOptions,
+  transformerPath: string = config.transformerPath
+): ts.Program {
   const { disablePlugin, additionalOptions, pluginOptions } = opt;
   const tsInstance: typeof ts = opt.tsInstance;
 

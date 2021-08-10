@@ -9,7 +9,7 @@ import {
   getTsNodeEmitResult,
 } from "../../utils";
 import { projectsPaths, ts, tsModules } from "../config";
-import { TsTransformPathsConfig } from "../../../src/types";
+import { TsTransformPathsConfig } from '../../../src';
 import TS from "typescript";
 
 /* ****************************************************************************************************************** *
@@ -123,7 +123,7 @@ describe(`Specific Tests`, () => {
                 failed = true;
                 messages.push(
                   `File: ${fileName}\nKind: ${kind}\nrootDirs: ${base === normalEmit}\n\n` +
-                  `Expected: \`${expected}\`\nReceived:\n\t${content.replace(/(\r?\n)+/g, "$1\t")}`
+                    `Expected: \`${expected}\`\nReceived:\n\t${content.replace(/(\r?\n)+/g, "$1\t")}`
                 );
               }
             }

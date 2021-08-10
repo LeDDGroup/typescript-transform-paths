@@ -216,6 +216,10 @@ ts-expose-internals@^4.1.2:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.5.tgz#dae20114a7b4ff4bd642db9c8c699f2953e8bbdb"
   integrity sha512-BEjlc0Z06ORZKbtcxGrIvvwYs5hAnuo6TKdNFL55frVDlB+na3z5bsLhFaIxmT+dPWgBIjMo6aNnTOgHHmHgiQ==
 
+"typescript-transform-paths@link:..":
+  version "0.0.0"
+  uid ""
+
 "typescript-transform-paths@link:../src":
   version "0.0.0"
   uid ""

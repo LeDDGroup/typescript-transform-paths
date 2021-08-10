@@ -22,4 +22,7 @@ export const tsModules = <const>[
 export const projectsPaths = path.join(__dirname, "../projects");
 Error.stackTraceLimit = 120;
 
+export const transformerPath = path.resolve(__dirname, "../../src/index.ts");
+export const builtTransformerPath = path.resolve(__dirname, "../../dist/index.js");
+
 // endregion
