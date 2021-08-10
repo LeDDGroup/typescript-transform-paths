@@ -6,19 +6,21 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)
 
-Transform module resolution paths in compiled output source to conform with `TypeScript` internal resolution via `tsconfig.json` settings (`paths`, `rootDirs`, `baseUrl`)
+Transform compiled source module resolution paths using TypeScript's `paths` config, and/or custom resolution paths.
 
-## Install
+## Setup Steps
+
+### 1. Install
 
 ```sh
 <yarn|npm|pnpm> add -D typescript-transform-paths
 ```
 
-## Usage with [ts-patch](https://github.com/nonara/ts-patch) or [ttypescript](https://github.com/cevek/ttypescript/)
+### 2. Configure
 
 Add it to _plugins_ in your _tsconfig.json_
 
-### Example Config
+#### Example Config
 
 ```jsonc
 {
@@ -28,7 +30,7 @@ Add it to _plugins_ in your _tsconfig.json_
     "paths": {
       "@utils/*": ["utils/*"]
     },
-    // Note: To transform paths in both .js and .d.ts files, be sure to add both lines to plugins
+    // Note: To transform paths for both the output .js and .d.ts files, you need both of the below entries
     "plugins": [
       // Transform paths in output .js files
       { "transform": "typescript-transform-paths" },
@@ -39,18 +41,32 @@ Add it to _plugins_ in your _tsconfig.json_
   }
 }
 ```
-`core/index.ts`
+#### Example result
+
 ```tsx
+// The following transforms path to '../utils/sum'
 import { sum } from "@utils/sum";
-sum(2, 3);
 ```
 
-`core/index.js` (compiled output)
-```js
-// core/index.js
-var sum_1 = require("../utils/sum");
-sum_1.sum(2, 3);
-```
+### 3. Usage
+
+- **To compile with `tsc`** — Use [ts-patch](https://github.com/nonara/ts-patch)
+
+
+- **To use with ts-node** — Add `typescript-trasnsform-paths/register` to `require` config.  
+   
+    `tsconfig.json`
+  ```jsonc
+  {
+    "ts-node": {
+      "transpileOnly": true,
+      "require": [ "typescript-transform-paths/register" ],
+    },
+    "compilerOptions" { /* ... */ }
+  }
+  ```
+
+- **To use with node** — Use the register script: `node -r typescript-transform-paths/register src/index.ts`
 
 ## Virtual Directories
 TS allows defining
@@ -144,42 +160,6 @@ Use the `@no-transform-path` tag to explicitly disable transformation for a sing
 // @no-transform-path
 import 'normally-transformed' // This will remain 'normally-transformed', even though it has a different value in paths config
 ```
-
-## `ts-node` & TS Compiler API Usage
-
-### Note
-Most people using `ts-node` can achieve what they want without the transformer, by using [tsconfig-paths](https://github.com/dividab/tsconfig-paths#readme]) (ie. `ts-node -r tsconfig-paths`)
-
-### Others
-
-If you'd still like to use the transformer, it is now possible to do so programmatically, with or without a `Program` instance. This can be done via `ts-node` or the compiler API using `ts.transform()`.
-
-Here is an example of how to register `ts-node` with the transformer:
-
-```ts
-import transformer, { TsTransformPathsConfig } from 'typescript-transform-paths';
-import { register } from 'ts-node';
-import ts from 'typescript';
-
-const pluginConfig: TsTransformPathsConfig = {
-  useRootDirs: false
-};
-
-// Use this code if using transpileOnly
-register({
-  transpileOnly: true,
-  transformers: {
-    before: [ transformer(/* Program */ undefined, pluginConfig) ]
-  }
-});
-
-// Use this if not using transpileOnly
-register({
-  transformers: (program: ts.Program) => { before: [ transformer(program, pluginConfig) ] }
-});
-```
-
-For TS compiler API usage example, have a look at the logic in [specific.test.ts](https://github.com/LeDDGroup/typescript-transform-paths/blob/master/test/tests/transformer/specific.test.ts) for `manual` mode.
 
 ## Articles
 
