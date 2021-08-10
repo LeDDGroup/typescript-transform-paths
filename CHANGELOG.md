@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.2.1...v3.3.0) (2021-08-10)
+
+
+### Features
+
+* Added typescript-transform-paths/register script ([8c36b09](https://github.com/LeDDGroup/typescript-transform-paths/commit/8c36b098a837d1ed04c04a8fb8a39a03eb0bbadf))
+
 ### [3.2.1](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.2.0...v3.2.1) (2021-08-05)
 
 
