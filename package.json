@@ -46,7 +46,8 @@
   "files": [
     "dist",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "register.js"
   ],
   "devDependencies": {
     "@types/jest": "^26.0.24",
