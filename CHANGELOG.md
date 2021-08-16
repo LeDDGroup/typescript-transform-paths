@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.1](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.3.0...v3.3.1) (2021-08-16)
+
+
+### Bug Fixes
+
+* External project references not resolved properly in composite projects (fixes [#125](https://github.com/LeDDGroup/typescript-transform-paths/issues/125)) ([4a16396](https://github.com/LeDDGroup/typescript-transform-paths/commit/4a16396199058b6a705e22dc84ddfe8e6491f6be))
+
 ## [3.3.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.2.1...v3.3.0) (2021-08-10)
 
 
