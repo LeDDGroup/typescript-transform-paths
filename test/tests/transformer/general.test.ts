@@ -35,8 +35,8 @@ describe(`Transformer -> General Tests`, () => {
     let originalFiles: EmittedFiles = {};
     let transformedFiles: EmittedFiles = {};
 
-    const program = createTsProgram({ tsInstance, tsConfigFile, disablePlugin: true });
-    const programWithTransformer = createTsProgram({ tsInstance, tsConfigFile });
+    const program = createTsProgram({ tsInstance: tsInstance as typeof ts, tsConfigFile, disablePlugin: true });
+    const programWithTransformer = createTsProgram({ tsInstance: tsInstance as typeof ts, tsConfigFile });
     const fileNames = program.getRootFileNames() as string[];
 
     beforeAll(() => {
