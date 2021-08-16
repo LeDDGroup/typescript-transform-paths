@@ -2,6 +2,7 @@
   "compilerOptions": {
     "noErrorTruncation": false,
     "incremental": true,
+    "declaration": false,
 
     "lib": [ "esnext" ],
     "target": "es2015",
