@@ -1,0 +1,12 @@
+{
+  "files": [ "index.ts", "local/index.ts" ],
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../lib/b",
+  },
+  "references": [
+    {
+      "path": "../a"
+    }
+  ]
+}

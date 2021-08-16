@@ -2,7 +2,7 @@ import { default as tstpTransform, TsTransformPathsConfig } from "../../src";
 import fs from "fs";
 import ts from "typescript";
 import * as tsNode from "ts-node";
-import * as config from "../tests/config";
+import * as config from "../config";
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -11,12 +11,47 @@ import * as config from "../tests/config";
 export type EmittedFiles = { [fileName: string]: { js: string; dts: string } };
 
 export interface CreateTsProgramOptions {
-  tsInstance: any;
+  tsInstance: typeof ts;
   files?: { [fileName: string]: /* data */ string };
   tsConfigFile?: string;
   disablePlugin?: boolean;
   additionalOptions?: ts.CompilerOptions;
   pluginOptions?: TsTransformPathsConfig;
+}
+
+export interface CreateTsSolutionBuilderOptions {
+  tsInstance: typeof ts;
+  projectDir: string;
+}
+
+// endregion
+
+/* ****************************************************************************************************************** */
+// region: Helpers
+/* ****************************************************************************************************************** */
+
+function createWriteFile(outputFiles: EmittedFiles) {
+  return (fileName: string, data: string) => {
+    let { 1: rootName, 2: ext } = fileName.match(/(.+)\.((d.ts)|(js))$/) ?? [];
+    if (!ext) return;
+    rootName = `${rootName}.ts`;
+    const key = ext.replace(".", "") as keyof EmittedFiles[string];
+    if (!outputFiles[rootName]) outputFiles[rootName] = <any>{};
+    outputFiles[rootName][key] = data;
+  };
+}
+
+function createReadFile(outputFiles: EmittedFiles, originalReadFile: Function) {
+  return (fileName: string) => {
+    let { 1: rootName, 2: ext } = fileName.match(/(.+)\.((d.ts)|(js))$/) ?? [];
+    if (ext) {
+      rootName = `${rootName}.ts`;
+      const key = ext.replace(".", "") as keyof EmittedFiles[string];
+      const res = outputFiles[rootName]?.[key];
+      if (res) return res;
+    }
+    return originalReadFile(fileName);
+  };
 }
 
 // endregion
@@ -83,24 +118,36 @@ export function createTsProgram(
   return tsInstance.createProgram({ options: compilerOptions, rootNames: fileNames, host });
 }
 
+export function createTsSolutionBuilder(
+  opt: CreateTsSolutionBuilderOptions
+): ts.SolutionBuilder<ts.BuilderProgram> & { getEmitFiles(): EmittedFiles } {
+  const { tsInstance, projectDir } = opt;
+
+  const outputFiles: EmittedFiles = {};
+
+  const host = tsInstance.createSolutionBuilderHost();
+  const originalReadFile = host.readFile;
+  Object.assign(host, {
+    readFile: createReadFile(outputFiles, originalReadFile),
+    writeFile: createWriteFile(outputFiles),
+  });
+
+  const builder = tsInstance.createSolutionBuilder(host, [projectDir], { force: true });
+
+  return Object.assign(builder, {
+    getEmitFiles() {
+      builder.build();
+      return outputFiles;
+    },
+  });
+}
+
 /**
  * Get emitted files for program
- * @param program
  */
 export function getEmitResultFromProgram(program: ts.Program): EmittedFiles {
   const outputFiles: EmittedFiles = {};
-
-  const writeFile = (fileName: string, data: string) => {
-    let { 1: rootName, 2: ext } = fileName.match(/(.+)\.((d.ts)|(js))$/) ?? [];
-    if (!ext) return;
-    rootName = `${rootName}.ts`;
-    const key = ext.replace(".", "") as keyof EmittedFiles[string];
-    if (!outputFiles[rootName]) outputFiles[rootName] = <any>{};
-    outputFiles[rootName][key] = data;
-  };
-
-  program.emit(undefined, writeFile);
-
+  program.emit(undefined, createWriteFile(outputFiles));
   return outputFiles;
 }
 

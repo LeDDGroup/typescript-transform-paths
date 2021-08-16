@@ -8,8 +8,8 @@ import {
   getManualEmitResult,
   getTsNodeEmitResult,
 } from "../../utils";
-import { projectsPaths, ts, tsModules } from "../config";
-import { TsTransformPathsConfig } from '../../../src';
+import { projectsPaths, ts, tsModules } from "../../config";
+import { TsTransformPathsConfig } from "../../../src";
 import TS from "typescript";
 
 /* ****************************************************************************************************************** *

@@ -21,11 +21,13 @@ export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: S
 
   if (outputFileNamesCache.has(sourceFile)) return outputFileNamesCache.get(sourceFile)!;
 
-  const outputPath = getOwnEmitOutputFilePath(
-    sourceFile.fileName,
-    emitHost,
-    getOutputExtension(sourceFile, compilerOptions)
-  );
+  // Note: In project references, resolved path is different from path. In that case, our output path is already
+  // determined in resolvedPath
+  const outputPath =
+    sourceFile.path && sourceFile.resolvedPath && sourceFile.path !== sourceFile.resolvedPath
+      ? sourceFile.resolvedPath
+      : getOwnEmitOutputFilePath(sourceFile.fileName, emitHost, getOutputExtension(sourceFile, compilerOptions));
+
   if (!outputPath)
     throw new Error(
       `Could not resolve output path for ${sourceFile.fileName}. Please report a GH issue at: ` +

@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "@tests/project-ref",
+  "version": "0.0.0",
+  "dependencies": {
+    "typescript-transform-paths": "link:../../../"
+  }
+}

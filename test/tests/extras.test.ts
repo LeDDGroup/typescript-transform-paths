@@ -1,8 +1,8 @@
 import { createTsProgram, getEmitResultFromProgram } from "../utils";
-import { projectsPaths } from "./config";
+import { projectsPaths } from "../config";
 import path from "path";
 import ts from "typescript";
-import * as config from "./config";
+import * as config from "../config";
 import { execSync } from "child_process";
 
 /* ****************************************************************************************************************** *
