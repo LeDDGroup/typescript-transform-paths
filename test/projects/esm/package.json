@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "name": "@tests/extras-esm",
+  "version": "0.0.0",
+  "dependencies": {
+    "typescript-transform-paths": "link:../../../"
+  },
+  "type": "module"
+}

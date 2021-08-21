@@ -10,6 +10,7 @@ import { execSync } from "child_process";
  * ****************************************************************************************************************** */
 
 describe(`Extra Tests`, () => {
+  const esmProjectRoot = ts.normalizePath(path.join(projectsPaths, "esm"));
   const projectRoot = ts.normalizePath(path.join(projectsPaths, "extras"));
   const indexFile = ts.normalizePath(path.join(projectRoot, "src/index.ts"));
   const tsConfigFile = ts.normalizePath(path.join(projectRoot, "tsconfig.json"));
@@ -33,9 +34,20 @@ describe(`Extra Tests`, () => {
       }
     });
 
-    test(`Register script transforms with ts-node`, () => {
-      const res = execSync("ts-node src/index.ts", { cwd: projectRoot }).toString();
-      expect(res).toMatch(/^null($|\r?\n)/);
+    describe(`Register script transforms with ts-node`, () => {
+      test(`CommonJS`, () => {
+        const res = execSync("ts-node src/index.ts", { cwd: projectRoot }).toString();
+        expect(res).toMatch(/^null($|\r?\n)/);
+      });
+
+      // See: https://github.com/LeDDGroup/typescript-transform-paths/issues/134
+      test(`ESM`, () => {
+        const res = execSync(
+          `node --no-warnings --loader typescript-transform-paths/esm --es-module-specifier-resolution=node src/index.ts`,
+          { cwd: esmProjectRoot }
+        ).toString();
+        expect(res).toMatch(/^null($|\r?\n)/);
+      });
     });
   });
 });

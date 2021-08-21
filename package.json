@@ -48,7 +48,8 @@
     "types",
     "README.md",
     "CHANGELOG.md",
-    "register.js"
+    "register.js",
+    "esm.mjs"
   ],
   "devDependencies": {
     "@types/jest": "^26.0.24",

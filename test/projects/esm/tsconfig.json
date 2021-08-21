@@ -1,0 +1,34 @@
+{
+  "include": [ "src" ],
+
+  "ts-node": {
+    "transpileOnly": true,
+    "require": [ "typescript-transform-paths/register" ],
+  },
+
+  "compilerOptions": {
+    "noEmit": true,
+
+    "rootDir": ".",
+    "module": "ESNext",
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "declaration": true,
+
+    "baseUrl": "./src",
+    "paths": {
+      "#identifier": [ "./id.ts" ]
+    },
+
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      }
+    ]
+  }
+}
