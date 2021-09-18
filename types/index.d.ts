@@ -8,9 +8,7 @@ import ts from 'typescript'
 export interface TsTransformPathsConfig {
   readonly useRootDirs?: boolean;
   readonly exclude?: string[];
-  readonly afterDeclarations?: boolean;
-  readonly tsConfig?: string;
-  readonly transform?: string
+  readonly outputMode?: 'commonjs' | 'esm'
 }
 
 export interface TransformerExtras {

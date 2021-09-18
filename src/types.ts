@@ -3,6 +3,7 @@ import ts, { CompilerOptions, EmitHost, Pattern, SourceFile } from "typescript";
 import { PluginConfig } from "ts-patch";
 import { HarmonyFactory } from "./utils/harmony-factory";
 import { IMinimatch } from "minimatch";
+import { RequireSome } from "./utils";
 
 /* ****************************************************************************************************************** */
 // region: TS Types
@@ -22,6 +23,7 @@ export type ImportOrExportClause = ts.ImportDeclaration["importClause"] | ts.Exp
 export interface TsTransformPathsConfig extends PluginConfig {
   readonly useRootDirs?: boolean;
   readonly exclude?: string[];
+  readonly outputMode?: "commonjs" | "esm";
 }
 
 // endregion
@@ -41,7 +43,7 @@ export interface TsTransformPathsContext {
   readonly tsThreeInstance: TypeScriptThree;
   readonly tsFactory?: ts.NodeFactory;
   readonly program?: ts.Program | tsThree.Program;
-  readonly config: TsTransformPathsConfig;
+  readonly config: RequireSome<TsTransformPathsConfig, "outputMode">;
   readonly compilerOptions: CompilerOptions;
   readonly elisionMap: Map<ts.SourceFile, Map<ImportOrExportDeclaration, ImportOrExportDeclaration>>;
   readonly transformationContext: ts.TransformationContext;

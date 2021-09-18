@@ -20,10 +20,14 @@ function getTsProperties(args: Parameters<typeof transformer>) {
   let fileNames: readonly string[] | undefined;
   let isTsNode = false;
 
-  const { 0: program, 2: extras, 3: manualTransformOptions } = args;
+  const [program, pluginConfig, extras, manualTransformOptions] = args;
 
   tsInstance = extras?.ts ?? ts;
   compilerOptions = manualTransformOptions?.compilerOptions!;
+  const config = {
+    ...pluginConfig,
+    outputMode: pluginConfig?.outputMode === "esm" ? <const>"esm" : <const>"commonjs",
+  };
 
   if (program) {
     compilerOptions ??= program.getCompilerOptions();
@@ -41,7 +45,7 @@ function getTsProperties(args: Parameters<typeof transformer>) {
     fileNames = tsNodeProps.fileNames;
   }
 
-  return { tsInstance, compilerOptions, fileNames, isTsNode };
+  return { tsInstance, compilerOptions, fileNames, isTsNode, config };
 }
 
 // endregion
@@ -68,11 +72,11 @@ export default function transformer(
       tsInstance,
       compilerOptions,
       fileNames,
-      isTsNode
+      isTsNode,
+      config
     } = getTsProperties([ program, pluginConfig, transformerExtras, manualTransformOptions ]);
 
     const rootDirs = compilerOptions.rootDirs?.filter(path.isAbsolute);
-    const config: TsTransformPathsConfig = pluginConfig ?? {};
     const getCanonicalFileName = tsInstance.createGetCanonicalFileName(tsInstance.sys.useCaseSensitiveFileNames);
 
     let emitHost = transformationContext.getEmitHost();

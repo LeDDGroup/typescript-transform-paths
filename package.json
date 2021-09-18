@@ -12,8 +12,8 @@
     "--------------": "",
     "format": "prettier --write \"{src,test}/**/{*.js,!(*.d).ts}\"",
     "clean": "rimraf dist **/*.tsbuildinfo",
-    "clean:all": "yarn run clean && rimraf node_modules test/node_modules test/.yarn-cache",
-    "reset": "yarn run clean:all && yarn install",
+    "clean:all": "yarn run clean && rimraf node_modules **/node_modules test/.yarn-cache",
+    "reset": "yarn run clean:all && yarn install && yarn build",
     "-------------- ": "",
     "prebuild": "rimraf dist",
     "install:tests": "cd test && yarn install && cd projects/extras && yarn install",
@@ -61,7 +61,7 @@
     "ts-expose-internals": "^4.4.3",
     "ts-jest": "^27.0.4",
     "ts-node": "^10.1.0",
-    "ts-patch": "^1.4.2",
+    "ts-patch": "^1.4.4",
     "typescript": "^4.4.3"
   },
   "peerDependencies": {

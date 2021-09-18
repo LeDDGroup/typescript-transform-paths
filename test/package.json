@@ -5,7 +5,7 @@
     "prepare": "node prepare.js"
   },
   "devDependencies": {
-    "typescript-transform-paths": "link:../src",
+    "typescript-transform-paths": "link:../",
     "ts-expose-internals": "^4.1.2",
     "typescript": "npm:typescript@latest",
     "typescript-three": "npm:typescript@3.6.5",

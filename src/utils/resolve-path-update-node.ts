@@ -18,6 +18,7 @@ export function resolvePathAndUpdateNode(
   updaterFn: (newPath: ts.StringLiteral) => ts.Node | undefined
 ): ts.Node | undefined {
   const { sourceFile, tsInstance, factory } = context;
+  const { outputMode } = context.config;
   const { normalizePath } = tsInstance;
 
   /* Handle JSDoc statement tags */
@@ -36,7 +37,7 @@ export function resolvePathAndUpdateNode(
 
   /* Resolve Module */
   // Skip if no paths match found
-  if (!isModulePathsMatch(context, moduleName)) return node;
+  if (outputMode !== "esm" && !isModulePathsMatch(context, moduleName)) return node;
 
   const res = resolveModuleName(context, moduleName);
   if (!res) return node;

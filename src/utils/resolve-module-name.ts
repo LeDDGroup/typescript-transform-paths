@@ -2,7 +2,7 @@ import { VisitorContext } from "../types";
 import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
 import * as path from "path";
 import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } from "typescript";
-import { getOutputDirForSourceFile } from "./ts-helpers";
+import { getOutputPathForSourceFile } from "./ts-helpers";
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -63,9 +63,9 @@ function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
   // prettier-ignore
   const indexType =
     implicitPackageIndex ? IndexType.ImplicitPackage :
-      baseNameNoExtension === 'index' && resolvedBaseNameNoExtension === 'index' ? IndexType.Explicit :
-        baseNameNoExtension !== 'index' && resolvedBaseNameNoExtension === 'index' ? IndexType.Implicit :
-          IndexType.NonIndex;
+    baseNameNoExtension === 'index' && resolvedBaseNameNoExtension === 'index' ? IndexType.Explicit :
+    baseNameNoExtension !== 'index' && resolvedBaseNameNoExtension === 'index' ? IndexType.Implicit :
+    IndexType.NonIndex;
 
   if (indexType === IndexType.Implicit) {
     baseName = void 0;
@@ -121,6 +121,7 @@ function getResolvedSourceFile(context: VisitorContext, fileName: string): Sourc
  */
 export function resolveModuleName(context: VisitorContext, moduleName: string): ResolvedModule | undefined {
   const { tsInstance, compilerOptions, sourceFile, config, rootDirs } = context;
+  const useEsmOutput = !context.isDeclarationFile && context.config.outputMode === "esm";
 
   // Attempt to resolve with TS Compiler API
   const { resolvedModule, failedLookupLocations } = tsInstance.resolveModuleName(
@@ -143,18 +144,22 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
 
   const resolvedSourceFile = getResolvedSourceFile(context, resolvedModule.resolvedFileName);
 
-  const { indexType, resolvedBaseNameNoExtension, resolvedFileName, implicitPackageIndex, extName, resolvedDir } =
-    getPathDetail(moduleName, resolvedModule);
+  const pathDetail = getPathDetail(moduleName, resolvedModule);
+  const { indexType, resolvedBaseNameNoExtension, resolvedFileName, implicitPackageIndex, resolvedDir } = pathDetail;
+  let extName = pathDetail.extName;
 
   /* Determine output filename */
   let outputBaseName = resolvedBaseNameNoExtension ?? "";
 
-  if (indexType === IndexType.Implicit) outputBaseName = outputBaseName.replace(/(\/index$)|(^index$)/, "");
+  const moduleFileOutputPath = getOutputPathForSourceFile(context, resolvedSourceFile);
+  if (useEsmOutput) extName = path.extname(moduleFileOutputPath);
+  else if (indexType === IndexType.Implicit) outputBaseName = outputBaseName.replace(/(\/index$)|(^index$)/, "");
+
   if (outputBaseName && extName) outputBaseName = `${outputBaseName}${extName}`;
 
   /* Determine output dir */
-  let srcFileOutputDir = getOutputDirForSourceFile(context, sourceFile);
-  let moduleFileOutputDir = implicitPackageIndex ? resolvedDir : getOutputDirForSourceFile(context, resolvedSourceFile);
+  let srcFileOutputDir = path.dirname(getOutputPathForSourceFile(context, sourceFile));
+  let moduleFileOutputDir = implicitPackageIndex ? resolvedDir : path.dirname(moduleFileOutputPath);
 
   // Handle rootDirs remapping
   if (config.useRootDirs && rootDirs) {
