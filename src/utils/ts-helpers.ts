@@ -1,5 +1,4 @@
 import ts, { GetCanonicalFileName, SourceFile } from "typescript";
-import path from "path";
 import { VisitorContext } from "../types";
 import type { REGISTER_INSTANCE } from "ts-node";
 
@@ -10,7 +9,7 @@ import type { REGISTER_INSTANCE } from "ts-node";
 /**
  * Determine output file path for source file
  */
-export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: SourceFile): string {
+export function getOutputPathForSourceFile(context: VisitorContext, sourceFile: SourceFile): string {
   const {
     emitHost,
     outputFileNamesCache,
@@ -33,22 +32,20 @@ export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: S
         `https://github.com/LeDDGroup/typescript-transform-paths/issues`
     );
 
-  const res = path.dirname(outputPath);
+  outputFileNamesCache.set(sourceFile, outputPath);
 
-  outputFileNamesCache.set(sourceFile, res);
-
-  return tsInstance.normalizePath(res);
+  return outputPath;
 }
 
 /**
  * Determine if moduleName matches config in paths
  */
-export function isModulePathsMatch(context: VisitorContext, moduleName: string): boolean {
+export function getTsPathsMatch(context: VisitorContext, moduleName: string): string | ts.Pattern | undefined {
   const {
     pathsPatterns,
     tsInstance: { matchPatternOrExact },
   } = context;
-  return !!(pathsPatterns && matchPatternOrExact(pathsPatterns, moduleName));
+  return pathsPatterns && matchPatternOrExact(pathsPatterns, moduleName);
 }
 
 /**

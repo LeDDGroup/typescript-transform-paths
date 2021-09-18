@@ -1827,7 +1827,7 @@ glob@^7.0.0, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.1.4:
+glob@^7.1.4, glob@^7.1.7:
   version "7.1.7"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.7.tgz#3b193e9233f01d42d0b3f78294bbeeb418f94a90"
   integrity sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==
@@ -3674,14 +3674,16 @@ ts-node@^10.1.0:
     source-map-support "^0.5.17"
     yn "3.1.1"
 
-ts-patch@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/ts-patch/-/ts-patch-1.4.2.tgz#2b763dc1de5a24631062844735ca169821c2c604"
-  integrity sha512-Nj3mjvQM3t8cB4wGfLKeE8zBT+cx1mDjttOcx9nb2fEl6Q/5u79w19tQniv2eLmeYEbki/+wdQc0zszPEpOxOg==
+ts-patch@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/ts-patch/-/ts-patch-1.4.4.tgz#c4814af4ab36183ddcf04c178f0153ce6ef48245"
+  integrity sha512-b0CxxrkrCGsD22gl5BtSFlXzyTFP2mbOVffxMOWRrwdSh37sM01wzxSY4wlbBiHHHAJICmaaDgESzJ8lKkVoZA==
   dependencies:
     chalk "^4.1.0"
+    glob "^7.1.7"
     global-prefix "^3.0.0"
     minimist "^1.2.5"
+    resolve "^1.20.0"
     shelljs "^0.8.4"
     strip-ansi "^6.0.0"
 

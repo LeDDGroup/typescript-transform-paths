@@ -13,11 +13,12 @@
       "#b/*": [ "./b/*" ]
     },
     "plugins": [
+      // Note - Paths are relative to one level deeper, due to tsp not resolving from base config dir
       {
-        "transform": "./src/index.ts",
+        "transform": "../../../../src/index.ts",
       },
       {
-        "transform": "./src/index.ts",
+        "transform": "../../../../src/index.ts",
         "afterDeclarations": true
       }
     ]

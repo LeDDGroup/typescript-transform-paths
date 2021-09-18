@@ -1,17 +1,17 @@
-import tsThree from "./declarations/typescript3";
 import ts, { CompilerOptions, EmitHost, Pattern, SourceFile } from "typescript";
-import { PluginConfig } from "ts-patch";
 import { HarmonyFactory } from "./utils/harmony-factory";
 import { IMinimatch } from "minimatch";
+import { RequireSome } from "./utils";
 
 /* ****************************************************************************************************************** */
 // region: TS Types
 /* ****************************************************************************************************************** */
 
-export type TypeScriptLatest = typeof ts;
-export type TypeScriptThree = typeof tsThree;
 export type ImportOrExportDeclaration = ts.ImportDeclaration | ts.ExportDeclaration;
 export type ImportOrExportClause = ts.ImportDeclaration["importClause"] | ts.ExportDeclaration["exportClause"];
+export type TransformerExtras = {
+  ts: typeof ts;
+}
 
 // endregion
 
@@ -19,9 +19,10 @@ export type ImportOrExportClause = ts.ImportDeclaration["importClause"] | ts.Exp
 // region: Config
 /* ****************************************************************************************************************** */
 
-export interface TsTransformPathsConfig extends PluginConfig {
+export interface TsTransformPathsConfig {
   readonly useRootDirs?: boolean;
   readonly exclude?: string[];
+  readonly outputMode?: "commonjs" | "esm";
 }
 
 // endregion
@@ -31,26 +32,27 @@ export interface TsTransformPathsConfig extends PluginConfig {
 /* ****************************************************************************************************************** */
 
 export interface TsTransformPathsContext {
-  /**
-   * TS Instance passed from ts-patch / ttypescript with TS4+ typings
-   */
-  readonly tsInstance: TypeScriptLatest;
-  /**
-   * TS Instance passed from ts-patch / ttypescript with TS3 typings
-   */
-  readonly tsThreeInstance: TypeScriptThree;
+  readonly tsInstance: typeof ts;
   readonly tsFactory?: ts.NodeFactory;
-  readonly program?: ts.Program | tsThree.Program;
-  readonly config: TsTransformPathsConfig;
+  readonly program?: ts.Program;
+  readonly config: RequireSome<TsTransformPathsConfig, "outputMode">;
   readonly compilerOptions: CompilerOptions;
-  readonly elisionMap: Map<ts.SourceFile, Map<ImportOrExportDeclaration, ImportOrExportDeclaration>>;
   readonly transformationContext: ts.TransformationContext;
   readonly rootDirs?: string[];
-  readonly excludeMatchers: IMinimatch[] | undefined;
-  readonly outputFileNamesCache: Map<SourceFile, string>;
-  readonly pathsPatterns: readonly (string | Pattern)[] | undefined;
-  readonly emitHost: EmitHost;
   readonly isTsNode: boolean;
+  readonly isTranspileOnly: boolean;
+
+  /** @internal - Do not remove internal flag — this uses an internal TS type */
+  readonly pathsPatterns: readonly (string | Pattern)[] | undefined;
+  /** @internal - Do not remove internal flag — this uses an internal TS type */
+  readonly emitHost: EmitHost;
+
+  /** @internal */
+  readonly elisionMap: Map<ts.SourceFile, Map<ImportOrExportDeclaration, ImportOrExportDeclaration>>;
+  /** @internal */
+  readonly excludeMatchers: IMinimatch[] | undefined;
+  /** @internal */
+  readonly outputFileNamesCache: Map<SourceFile, string>;
 }
 
 export interface VisitorContext extends TsTransformPathsContext {
@@ -58,6 +60,9 @@ export interface VisitorContext extends TsTransformPathsContext {
   readonly sourceFile: ts.SourceFile;
   readonly isDeclarationFile: boolean;
   readonly originalSourceFile: ts.SourceFile;
+  readonly outputMode: 'esm' | 'commonjs';
+
+  /** @internal */
   getVisitor(): (node: ts.Node) => ts.VisitResult<ts.Node>;
 }
 

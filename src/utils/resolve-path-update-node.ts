@@ -1,7 +1,7 @@
 import ts from "typescript";
 import { VisitorContext } from "../types";
 import { isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
-import { isModulePathsMatch } from "./ts-helpers";
+import { getTsPathsMatch } from "./ts-helpers";
 import { resolveModuleName } from "./resolve-module-name";
 
 /* ****************************************************************************************************************** */
@@ -17,7 +17,7 @@ export function resolvePathAndUpdateNode(
   moduleName: string,
   updaterFn: (newPath: ts.StringLiteral) => ts.Node | undefined
 ): ts.Node | undefined {
-  const { sourceFile, tsInstance, factory } = context;
+  const { sourceFile, tsInstance, factory, outputMode } = context;
   const { normalizePath } = tsInstance;
 
   /* Handle JSDoc statement tags */
@@ -35,16 +35,18 @@ export function resolvePathAndUpdateNode(
   }
 
   /* Resolve Module */
-  // Skip if no paths match found
-  if (!isModulePathsMatch(context, moduleName)) return node;
+  const pathsMatch = getTsPathsMatch(context, moduleName);
 
-  const res = resolveModuleName(context, moduleName);
+  // Don't process if not necessary
+  if (!pathsMatch && !context.resolver && outputMode !== "esm") return node;
+
+  const res = resolveModuleName(context, node, moduleName, pathsMatch);
   if (!res) return node;
 
   const { outputPath, resolvedPath } = res;
 
   /* Skip if matches exclusion */
-  if (context.excludeMatchers)
+  if (resolvedPath && context.excludeMatchers)
     for (const matcher of context.excludeMatchers)
       if (matcher.match(outputPath) || (resolvedPath && matcher.match(resolvedPath))) return node;
 

@@ -1,33 +1,27 @@
 import { VisitorContext } from "../types";
 import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
-import * as path from "path";
-import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } from "typescript";
-import { getOutputDirForSourceFile } from "./ts-helpers";
+import { Node, Pattern, removeFileExtension, ResolvedModuleFull, SourceFile } from "typescript";
+import { getOutputPathDetail, joinPaths, OutputPathDetail } from "./path";
+import { getOutputPathForSourceFile } from "./ts-helpers";
+import path from "path";
 
 /* ****************************************************************************************************************** */
 // region: Types
 /* ****************************************************************************************************************** */
 
 export interface ResolvedModule {
-  /**
-   * Absolute path to resolved module
-   */
-  resolvedPath: string | undefined;
-  /**
-   * Output path
-   */
+  resolvedPath?: string;
   outputPath: string;
-  /**
-   * Resolved to URL
-   */
-  isURL: boolean;
 }
 
-enum IndexType {
-  NonIndex,
-  Explicit,
-  Implicit,
-  ImplicitPackage,
+interface GetReturnPathContext {
+  visitorContext: VisitorContext
+  node: Node
+  moduleName: string
+  pathDetail?: OutputPathDetail
+  resolvedModule?: ResolvedModuleFull
+  resolvedSourceFile?: SourceFile
+  outputPath: string | (string | undefined)[]
 }
 
 // endregion
@@ -35,57 +29,6 @@ enum IndexType {
 /* ****************************************************************************************************************** */
 // region: Helpers
 /* ****************************************************************************************************************** */
-
-function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
-  let resolvedFileName = resolvedModule.originalPath ?? resolvedModule.resolvedFileName;
-  const implicitPackageIndex = resolvedModule.packageId?.subModuleName;
-
-  const resolvedDir = implicitPackageIndex
-    ? removeSuffix(resolvedFileName, `/${implicitPackageIndex}`)
-    : path.dirname(resolvedFileName);
-  const resolvedBaseName = implicitPackageIndex ? void 0 : path.basename(resolvedFileName);
-  const resolvedBaseNameNoExtension = resolvedBaseName && removeFileExtension(resolvedBaseName);
-  const resolvedExtName = resolvedBaseName && path.extname(resolvedFileName);
-
-  let baseName = !implicitPackageIndex ? path.basename(moduleName) : void 0;
-  let baseNameNoExtension = baseName && removeFileExtension(baseName);
-  let extName = baseName && path.extname(moduleName);
-
-  // Account for possible false extensions. Example scenario:
-  //   moduleName = './file.accounting'
-  //   resolvedBaseName = 'file.accounting.ts'
-  // ('accounting' would be considered the extension)
-  if (resolvedBaseNameNoExtension && baseName && resolvedBaseNameNoExtension === baseName) {
-    baseNameNoExtension = baseName;
-    extName = void 0;
-  }
-
-  // prettier-ignore
-  const indexType =
-    implicitPackageIndex ? IndexType.ImplicitPackage :
-      baseNameNoExtension === 'index' && resolvedBaseNameNoExtension === 'index' ? IndexType.Explicit :
-        baseNameNoExtension !== 'index' && resolvedBaseNameNoExtension === 'index' ? IndexType.Implicit :
-          IndexType.NonIndex;
-
-  if (indexType === IndexType.Implicit) {
-    baseName = void 0;
-    baseNameNoExtension = void 0;
-    extName = void 0;
-  }
-
-  return {
-    baseName,
-    baseNameNoExtension,
-    extName,
-    resolvedBaseName,
-    resolvedBaseNameNoExtension,
-    resolvedExtName,
-    resolvedDir,
-    indexType,
-    implicitPackageIndex,
-    resolvedFileName,
-  };
-}
 
 function getResolvedSourceFile(context: VisitorContext, fileName: string): SourceFile {
   let res: SourceFile | undefined;
@@ -110,6 +53,33 @@ function getResolvedSourceFile(context: VisitorContext, fileName: string): Sourc
   return tsInstance.createSourceFile(fileName, ``, tsInstance.ScriptTarget.ESNext, /* setParentNodes */ false);
 }
 
+function getReturnPath(ctx: GetReturnPathContext) {
+  const { pathDetail, outputPath } = ctx;
+  const { outputMode } = ctx.visitorContext;
+  const {
+    resolvedExt,
+    suppliedExt,
+    resolvedPath,
+    isImplicitExtension,
+    implicitPath,
+  } = ctx.pathDetail ?? {};
+
+  const isEsm = outputMode === "esm";
+  const paths = [ outputPath ].flat();
+
+  let res = joinPaths(...paths);
+  if (!res)
+    throw new Error(`Could not resolve path! Please file an issue!\nDetail: ${JSON.stringify(pathDetail, null,2)}`);
+
+  if (pathDetail) {
+    const ext = isEsm ? resolvedExt : isImplicitExtension ? void 0 : suppliedExt;
+    const implicit = isEsm ? implicitPath : void 0;
+    if (ext) res = joinPaths(res, implicit, ext);
+  }
+
+  return { resolvedPath: resolvedPath, outputPath: res };
+}
+
 // endregion
 
 /* ****************************************************************************************************************** */
@@ -119,7 +89,12 @@ function getResolvedSourceFile(context: VisitorContext, fileName: string): Sourc
 /**
  * Resolve a module name
  */
-export function resolveModuleName(context: VisitorContext, moduleName: string): ResolvedModule | undefined {
+export function resolveModuleName(
+  context: VisitorContext,
+  node: Node,
+  moduleName: string,
+  pathMatch: string | Pattern | undefined
+): ResolvedModule | undefined {
   const { tsInstance, compilerOptions, sourceFile, config, rootDirs } = context;
 
   // Attempt to resolve with TS Compiler API
@@ -133,28 +108,41 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
   // Handle non-resolvable module
   if (!resolvedModule) {
     const maybeURL = failedLookupLocations[0];
-    if (!isURL(maybeURL)) return void 0;
-    return {
-      isURL: true,
-      resolvedPath: void 0,
-      outputPath: maybeURL,
-    };
+    const pathIsUrl = isURL(maybeURL);
+
+    if (pathIsUrl && !context.resolver) return void 0;
+    return getReturnPath({
+      moduleName,
+      visitorContext: context,
+      node,
+      outputPath: pathIsUrl ? maybeURL : moduleName
+    });
   }
 
   const resolvedSourceFile = getResolvedSourceFile(context, resolvedModule.resolvedFileName);
+  const pathDetail = getOutputPathDetail(moduleName, resolvedModule, pathMatch);
 
-  const { indexType, resolvedBaseNameNoExtension, resolvedFileName, implicitPackageIndex, extName, resolvedDir } =
-    getPathDetail(moduleName, resolvedModule);
+  const { isExternalLibraryImport } = pathDetail;
 
-  /* Determine output filename */
-  let outputBaseName = resolvedBaseNameNoExtension ?? "";
+  // External packages without a path match hit do not require path relativization
+  if (isExternalLibraryImport && !pathMatch) {
+    const { suppliedPackageName, outputPath } = pathDetail;
+    return getReturnPath({
+      moduleName,
+      node,
+      visitorContext: context,
+      resolvedModule,
+      resolvedSourceFile,
+      pathDetail,
+      outputPath: [ suppliedPackageName, outputPath ]
+    });
+  }
 
-  if (indexType === IndexType.Implicit) outputBaseName = outputBaseName.replace(/(\/index$)|(^index$)/, "");
-  if (outputBaseName && extName) outputBaseName = `${outputBaseName}${extName}`;
-
-  /* Determine output dir */
-  let srcFileOutputDir = getOutputDirForSourceFile(context, sourceFile);
-  let moduleFileOutputDir = implicitPackageIndex ? resolvedDir : getOutputDirForSourceFile(context, resolvedSourceFile);
+  /* Determine output dirs */
+  let srcFileOutputDir = path.dirname(getOutputPathForSourceFile(context, sourceFile));
+  let moduleFileOutputDir = path.dirname(
+    resolvedModule.packageId ? pathDetail.outputPath! : getOutputPathForSourceFile(context, resolvedSourceFile)
+  );
 
   // Handle rootDirs remapping
   if (config.useRootDirs && rootDirs) {
@@ -175,9 +163,18 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
   const outputDir = path.relative(srcFileOutputDir, moduleFileOutputDir);
 
   /* Compose final output path */
-  const outputPath = maybeAddRelativeLocalPrefix(tsInstance.normalizePath(path.join(outputDir, outputBaseName)));
+  const outputBaseName = pathDetail.implicitPath ? void 0 : path.basename(pathDetail.resolvedPath, pathDetail.resolvedExt);
+  const outputPath = maybeAddRelativeLocalPrefix(joinPaths(outputDir, outputBaseName));
 
-  return { isURL: false, outputPath, resolvedPath: resolvedFileName };
+  return getReturnPath({
+    moduleName,
+    node,
+    visitorContext: context,
+    resolvedModule,
+    resolvedSourceFile,
+    pathDetail,
+    outputPath
+  });
 }
 
 // endregion

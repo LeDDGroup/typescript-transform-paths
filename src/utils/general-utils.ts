@@ -12,3 +12,5 @@ export const isBaseDir = (baseDir: string, testDir: string): boolean => {
   return relative ? !relative.startsWith("..") && !path.isAbsolute(relative) : true;
 };
 export const maybeAddRelativeLocalPrefix = (p: string) => (p[0] === "." ? p : `./${p}`);
+
+export type RequireSome<T, K extends keyof T> = T & Pick<Required<T>, K>;
