@@ -101,8 +101,9 @@ export default function transformer(
 
     /* Create Visitor Context */
     const { configFile, paths } = compilerOptions;
-    const { tryParsePatterns } = tsInstance;
+
     const [tsVersionMajor, tsVersionMinor] = tsInstance.versionMajorMinor.split(".").map((v) => +v);
+    const tryParsePatterns: typeof ts.tryParsePatterns | undefined = tsInstance.tryParsePatterns;
 
     if (!tsVersionMajor || !tsVersionMinor) throw new Error("Expected version to be parsed");
 
