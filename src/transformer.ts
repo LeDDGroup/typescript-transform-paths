@@ -87,8 +87,7 @@ export default function transformer(
     }
 
     const { configFile, paths } = compilerOptions;
-    // TODO - Remove typecast when tryParsePatterns is recognized (probably after ts v4.4)
-    const { tryParsePatterns } = tsInstance as any;
+    const tryParsePatterns: typeof ts.tryParsePatterns | undefined = tsInstance.tryParsePatterns;
 
     const tsTransformPathsContext: TsTransformPathsContext = {
       compilerOptions,
@@ -108,8 +107,7 @@ export default function transformer(
       pathsPatterns:
         paths &&
         (tryParsePatterns
-          ? // TODO - Remove typecast when pathPatterns is recognized (probably after ts v4.4)
-            (configFile?.configFileSpecs as any)?.pathPatterns || tryParsePatterns(paths)
+          ? configFile?.configFileSpecs?.pathPatterns || tryParsePatterns(paths)
           : tsInstance.getOwnKeys(paths)),
     };
 

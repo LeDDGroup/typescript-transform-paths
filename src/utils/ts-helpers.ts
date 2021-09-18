@@ -12,7 +12,6 @@ import type { REGISTER_INSTANCE } from "ts-node";
  */
 export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: SourceFile): string {
   const {
-    tsInstance,
     emitHost,
     outputFileNamesCache,
     compilerOptions,
@@ -49,7 +48,7 @@ export function isModulePathsMatch(context: VisitorContext, moduleName: string):
     pathsPatterns,
     tsInstance: { matchPatternOrExact },
   } = context;
-  return !!(pathsPatterns && matchPatternOrExact(pathsPatterns as readonly string[], moduleName));
+  return !!(pathsPatterns && matchPatternOrExact(pathsPatterns, moduleName));
 }
 
 /**

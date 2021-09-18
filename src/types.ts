@@ -48,7 +48,7 @@ export interface TsTransformPathsContext {
   readonly rootDirs?: string[];
   readonly excludeMatchers: IMinimatch[] | undefined;
   readonly outputFileNamesCache: Map<SourceFile, string>;
-  readonly pathsPatterns: (string | Pattern)[] | undefined;
+  readonly pathsPatterns: readonly (string | Pattern)[] | undefined;
   readonly emitHost: EmitHost;
   readonly isTsNode: boolean;
 }
