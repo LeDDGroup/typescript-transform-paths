@@ -18,6 +18,7 @@ function getTsProperties(args: Parameters<typeof transformer>) {
   let tsInstance: typeof ts;
   let compilerOptions: ts.CompilerOptions;
   let fileNames: readonly string[] | undefined;
+  let isTranspileOnly = false;
   let isTsNode = false;
 
   const [program, pluginConfig, extras, manualTransformOptions] = args;
@@ -29,23 +30,25 @@ function getTsProperties(args: Parameters<typeof transformer>) {
     outputMode: pluginConfig?.outputMode === "esm" ? <const>"esm" : <const>"commonjs",
   };
 
+  const tsNodeProps = getTsNodeRegistrationProperties(tsInstance);
+  if (tsNodeProps) isTsNode = true;
+
   if (program) {
-    compilerOptions ??= program.getCompilerOptions();
+    compilerOptions ??= Object.assign({}, program.getCompilerOptions(), tsNodeProps?.compilerOptions);
   } else if (manualTransformOptions) {
     fileNames = manualTransformOptions.fileNames;
   } else {
-    const tsNodeProps = getTsNodeRegistrationProperties(tsInstance);
     if (!tsNodeProps)
       throw new Error(
         `Cannot transform without a Program, ts-node instance, or manual parameters supplied. ` +
           `Make sure you're using ts-patch or ts-node with transpileOnly.`
       );
-    isTsNode = true;
+    isTranspileOnly = true;
     compilerOptions = tsNodeProps.compilerOptions;
     fileNames = tsNodeProps.fileNames;
   }
 
-  return { tsInstance, compilerOptions, fileNames, isTsNode, config };
+  return { tsInstance, compilerOptions, fileNames, isTranspileOnly, config, isTsNode };
 }
 
 // endregion
@@ -72,6 +75,7 @@ export default function transformer(
       tsInstance,
       compilerOptions,
       fileNames,
+      isTranspileOnly,
       isTsNode,
       config
     } = getTsProperties([ program, pluginConfig, transformerExtras, manualTransformOptions ]);
@@ -86,7 +90,7 @@ export default function transformer(
           `No EmitHost found and could not determine files to be processed. Please file an issue with a reproduction!`
         );
       emitHost = createSyntheticEmitHost(compilerOptions, tsInstance, getCanonicalFileName, fileNames as string[]);
-    } else if (isTsNode) {
+    } else if (isTranspileOnly) {
       Object.assign(emitHost, { getCompilerOptions: () => compilerOptions });
     }
 
@@ -103,6 +107,7 @@ export default function transformer(
       transformationContext,
       tsInstance,
       emitHost,
+      isTranspileOnly,
       isTsNode,
       tsThreeInstance: cast<TypeScriptThree>(tsInstance),
       excludeMatchers: config.exclude?.map((globPattern) => new Minimatch(globPattern, { matchBase: true })),
