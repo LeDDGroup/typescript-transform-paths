@@ -53,6 +53,7 @@ export interface TsTransformPathsContext {
   readonly pathsPatterns: readonly (string | Pattern)[] | undefined;
   readonly emitHost: EmitHost;
   readonly isTsNode: boolean;
+  readonly isTranspileOnly: boolean;
 }
 
 export interface VisitorContext extends TsTransformPathsContext {
