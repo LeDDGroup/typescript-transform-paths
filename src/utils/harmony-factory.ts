@@ -8,6 +8,8 @@ import TS, {
   NamedExportBindings,
   NamedImportBindings,
 } from "typescript";
+import { cast } from "./general-utils";
+import * as TsThree from '../declarations/typescript3';
 import { TsTransformPathsContext } from "../types";
 import { downSampleTsTypes } from "./ts-type-conversion";
 
@@ -27,7 +29,8 @@ export interface HarmonyFactory extends TS.NodeFactory {}
  * Creates a node factory compatible with TS v3+
  */
 export function createHarmonyFactory(context: TsTransformPathsContext): HarmonyFactory {
-  const { tsThreeInstance } = context;
+  const { tsInstance } = context;
+  const tsThreeInstance = cast<typeof TsThree>(tsInstance);
 
   return new Proxy(context.tsFactory ?? context.tsInstance, {
     get(target, prop) {

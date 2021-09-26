@@ -28,13 +28,13 @@ type TypeMapping = [
 type TsType = Exclude<TypeMapping[number][0], undefined>;
 type TsThreeType = Exclude<TypeMapping[number][1], undefined>;
 
-export type TsTypeConversion<Tuple extends [...unknown[]]> = {
+type TsTypeConversion<Tuple extends [...unknown[]]> = {
   [i in keyof Tuple]: Tuple[i] extends any[] ? TsTypeConversion<Tuple[i]> : DownSampleTsType<Tuple[i]>;
 } & { length: Tuple["length"] };
 
 type DownSampleTsType<T> = T extends TsType ? Extract<TypeMapping[number], [T, any]>[1] : T;
 
-export type UpSampleTsTypes<Tuple extends [...unknown[]]> = {
+type UpSampleTsTypes<Tuple extends [...unknown[]]> = {
   [i in keyof Tuple]: Tuple[i] extends any[] ? UpSampleTsTypes<Tuple[i]> : UpSampleTsType<Tuple[i]>;
 } & { length: Tuple["length"] };
 
@@ -48,13 +48,15 @@ type UpSampleTsType<T> = T extends TsThreeType ? Extract<TypeMapping[number], [a
 
 /**
  * Convert TS4 to TS3 types
- */
+ * @internal
+*/
 export function downSampleTsTypes<T extends [...unknown[]]>(...args: T): TsTypeConversion<T> {
   return args as TsTypeConversion<T>;
 }
 
 /**
  * Convert TS4 to TS3 type
+ * @internal
  */
 export function downSampleTsType<T>(v: T): DownSampleTsType<T> {
   return v as DownSampleTsType<T>;
@@ -62,6 +64,7 @@ export function downSampleTsType<T>(v: T): DownSampleTsType<T> {
 
 /**
  * Convert TS3 to TS4 types
+ * @internal
  */
 export function upSampleTsTypes<T extends [...unknown[]]>(...args: T): UpSampleTsTypes<T> {
   return args as UpSampleTsTypes<T>;
@@ -69,6 +72,7 @@ export function upSampleTsTypes<T extends [...unknown[]]>(...args: T): UpSampleT
 
 /**
  * Convert TS3 to TS4 type
+ * @internal
  */
 export function upSampleTsType<T extends TsThreeType>(v: T): UpSampleTsType<T> {
   return v as UpSampleTsType<T>;

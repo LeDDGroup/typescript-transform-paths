@@ -2,13 +2,12 @@
 import {} from "ts-expose-internals";
 import path from "path";
 import ts from "typescript";
-import { cast } from "./utils";
-import { TsTransformPathsConfig, TsTransformPathsContext, TypeScriptThree, VisitorContext } from "./types";
+import { TransformerExtras, TsTransformPathsConfig, TsTransformPathsContext, VisitorContext } from "./types";
 import { nodeVisitor } from "./visitor";
 import { createHarmonyFactory } from "./utils/harmony-factory";
 import { Minimatch } from "minimatch";
 import { createSyntheticEmitHost, getTsNodeRegistrationProperties } from "./utils/ts-helpers";
-import { TransformerExtras } from "ts-patch";
+
 
 /* ****************************************************************************************************************** */
 // region: Helpers
@@ -109,7 +108,6 @@ export default function transformer(
       emitHost,
       isTranspileOnly,
       isTsNode,
-      tsThreeInstance: cast<TypeScriptThree>(tsInstance),
       excludeMatchers: config.exclude?.map((globPattern) => new Minimatch(globPattern, { matchBase: true })),
       outputFileNamesCache: new Map(),
       // Get paths patterns appropriate for TS compiler version

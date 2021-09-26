@@ -88,6 +88,7 @@ function getReturnPath(ctx: GetReturnPathContext) {
 
 /**
  * Resolve a module name
+ * @internal — Uses internal TS type
  */
 export function resolveModuleName(
   context: VisitorContext,
