@@ -3,8 +3,8 @@ import {
   baseName, dirName, isBaseDir, isURL, joinPaths, maybeAddRelativeLocalPrefix, normalizeSlashes, relativePath,
   removeSuffix
 } from "../utils";
-import { getOutputExtension, Node, Pattern, removeFileExtension, ResolvedModuleFull, SourceFile } from "typescript";
-import { getOutputPathForSourceFile } from "../ts";
+import { Node, Pattern, removeFileExtension, ResolvedModuleFull, SourceFile } from "typescript";
+import { getOutputPathForSourceFile, getOutputExtension } from "../ts";
 import { getOutputPathDetail, OutputPathDetail } from "./output-path-detail";
 import { IndexFlags } from "./index-checker";
 
@@ -63,6 +63,8 @@ function getReturnPath(ctx: GetReturnPathContext) {
     resolver,
     config: { outputExtensions, outputIndexes },
     compilerOptions,
+    tsInstance,
+    isDeclarationFile
   } = ctx.visitorContext;
   const { suppliedExt, resolvedPath, isImplicitExtension, indexDetail, isExternalLibraryImport } = ctx.pathDetail ?? {};
 
@@ -74,7 +76,7 @@ function getReturnPath(ctx: GetReturnPathContext) {
       !isImplicitExtension && outputExtensions !== 'never'
         ? suppliedExt
         : outputExtensions === 'always'
-        ? getOutputExtension(resolvedSourceFile!, compilerOptions)
+        ? getOutputExtension(tsInstance, compilerOptions, resolvedSourceFile!, isDeclarationFile)
         : void 0;
 
     let usesStrippedIndex = false;

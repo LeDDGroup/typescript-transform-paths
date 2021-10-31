@@ -31,8 +31,8 @@ export const maybeAddRelativeLocalPrefix = (p: string) => (p[0] === "." ? p : `.
  * Merge and normalize paths (preserves relative prefix – ie. `./my/path`)
  */
 export function joinPaths(...paths: (string | undefined)[]): string {
-  // path.join / ts.normalizePath cannot be used here, because they remove relative prefix
-  return normalizePath((paths.filter(p => !!p) as string[]).join('/'))!;
+  // path.join / normalizePath cannot be used here, because they remove relative prefix
+  return normalizeSlashes((paths.filter(p => !!p) as string[]).join('/'))!;
 }
 
 /**

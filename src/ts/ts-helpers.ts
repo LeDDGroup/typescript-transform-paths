@@ -137,4 +137,13 @@ export function checkTsSupport(tsInstance: typeof TS) {
     throw new Error(`The latest version of 'typescript-transform-paths' requires TS version 4.2.2 or higher. Either upgrade TS or use v3 of the plugin.`);
 }
 
+export function getOutputExtension(
+  tsInstance: typeof TS,
+  compilerOptions: TS.CompilerOptions,
+  sourceFile: TS.SourceFile,
+  isDeclaration: boolean
+) {
+  return isDeclaration ? '.d.ts' : tsInstance.getOutputExtension(sourceFile, compilerOptions);
+}
+
 // endregion
