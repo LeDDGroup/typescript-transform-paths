@@ -5,11 +5,14 @@
     "prepare": "node prepare.js"
   },
   "devDependencies": {
-    "typescript-transform-paths": "link:../",
-    "ts-expose-internals": "^4.1.2",
-    "typescript": "npm:typescript@latest",
-    "typescript-three": "npm:typescript@3.6.5",
-    "ts-patch": "link:../node_modules/ts-patch"
+    "@types/underscore-test": "link:src/ut-global",
+    "chalk": "^4.1.2",
+    "ts-expose-internals": "latest",
+    "ts-patch": "link:../node_modules/ts-patch",
+    "tstp": "link:../",
+    "typescript-latest": "npm:typescript@latest",
+    "typescript-42": "npm:typescript@4.2.2",
+    "typescript-transform-paths": "link:./transformer-wrapper"
   },
   "workspaces": [
     "projects/*"

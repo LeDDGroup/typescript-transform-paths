@@ -1,8 +1,10 @@
 {
-  "files": [ "index.ts", "local/index.ts" ],
+  "files": [ "index.ts", "local/index.ts", "tests.ts" ],
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "noEmit": false,
     "outDir": "../lib/b",
+    "declaration": true
   },
   "references": [
     {

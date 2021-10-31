@@ -8,4 +8,4 @@ try {
 }
 
 tsNode.register();
-require('./').register();
+require('./').nodeRegister();

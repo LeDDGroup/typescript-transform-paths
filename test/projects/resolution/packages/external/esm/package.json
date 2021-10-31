@@ -1,0 +1,10 @@
+{
+  "name": "@external/esm",
+  "version": "0.0.0",
+  "private": "true",
+  "exports": {
+    ".": "./dir/main.js",
+    "./synthetic/path/mod": "./dir/mod.mjs",
+    "./synthetic/path/mod.mjs": "./dir/mod.mjs"
+  }
+}

@@ -7,17 +7,19 @@
   "scripts": {
     "compile": "tsc",
     "build": "yarn run clean && yarn run compile && yarn run check:built-types",
+    "check:built-types": "tsc dist/index.d.ts --esModuleInterop",
+    "--------------  ": "",
     "test": "jest",
-    "release": "standard-version",
+    "test:src": "cross-env TEST_TARGET=src jest",
+    "test:dist": "cross-env TEST_TARGET=dist jest",
     "--------------": "",
     "format": "prettier --write \"{src,test}/**/{*.js,!(*.d).ts}\"",
     "clean": "npx rimraf dist **/*.tsbuildinfo",
     "clean:all": "yarn run clean && npx rimraf node_modules **/node_modules test/.yarn-cache",
     "reset": "yarn run clean:all && yarn install && yarn build",
-    "check:built-types": "tsc dist/index.d.ts --esModuleInterop",
     "-------------- ": "",
     "prebuild": "npx rimraf dist",
-    "install:tests": "cd test && yarn install && cd projects/extras && yarn install",
+    "install:tests": "cd test && yarn install",
     "prepare": "yarn run install:tests"
   },
   "keywords": [
@@ -55,20 +57,26 @@
     "@types/jest": "^26.0.24",
     "@types/minimatch": "^3.0.5",
     "@types/node": "^16.4.10",
+    "@types/ts-expose-internals": "npm:ts-expose-internals@4.4.3",
+    "cross-env": "^7.0.3",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.1",
-    "ts-expose-internals": "^4.4.3",
     "ts-jest": "^27.0.4",
     "ts-node": "^10.1.0",
     "ts-patch": "^1.4.4",
-    "typescript": "^4.4.3"
+    "ts3": "npm:typescript@3.7.7",
+    "ts45": "npm:typescript@4.5.0-beta",
+    "typescript": "latest"
   },
   "peerDependencies": {
-    "typescript": ">=3.6.5"
+    "typescript": ">=4.2.2"
   },
   "dependencies": {
     "minimatch": "^3.0.4"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }

@@ -3,7 +3,7 @@
 
   "ts-node": {
     "transpileOnly": true,
-    "require": [ "typescript-transform-paths/register" ],
+    "require": [ "tstp/register" ],
   },
 
   "compilerOptions": {

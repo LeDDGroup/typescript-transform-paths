@@ -12,6 +12,7 @@ const config: Config.InitialOptions = {
   },
   modulePaths: [ "<rootDir>" ],
   roots: [ '<rootDir>' ],
+  setupFilesAfterEnv: [ "./test/src/setup.ts" ]
 }
 
 export default config;

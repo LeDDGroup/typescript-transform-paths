@@ -1,8 +1,5 @@
 {
   "private": true,
   "name": "@tests/extras",
-  "version": "0.0.0",
-  "dependencies": {
-    "typescript-transform-paths": "*"
-  }
+  "version": "0.0.0"
 }

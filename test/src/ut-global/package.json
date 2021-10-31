@@ -1,0 +1,6 @@
+{
+  "name": "@types/tester",
+  "version": "0.0.0",
+  "private": true,
+  "types": "globals.d.ts"
+}

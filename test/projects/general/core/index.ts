@@ -1,5 +1,3 @@
-// @ts-ignore
-import sum = require("@utils/sum");
 export { sum } from "@utils/index";
 export { g } from "#utils/hello";
 export { sum as sum2 } from "#utils/sum";
@@ -7,10 +5,13 @@ export { NoRuntimecodeHere } from "@utils/types-only";
 import { subs, NoRuntimecodeHere } from "@utils/index";
 import "@circular/b";
 import { A } from "@circular/a";
-import * as path from "path";
 import * as b from "circular/a";
 import * as c from "../circular/a";
 import { myNative } from "@utils/utils.native";
+// @ts-expect-error
+import sum = require("@utils/sum");
+// @ts-expect-error
+import * as path from "path";
 
 c.A;
 b.A;

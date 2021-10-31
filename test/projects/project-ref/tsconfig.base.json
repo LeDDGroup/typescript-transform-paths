@@ -1,26 +1,21 @@
 {
   "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "types": [ "@types/underscore-test" ],
+    "typeRoots": [],
+
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "module": "ESNext",
     "target": "ESNext",
     "composite": true,
-    "declaration": true,
 
     "baseUrl": ".",
     "paths": {
       "#a/*": [ "./a/*" ],
       "#b/*": [ "./b/*" ]
-    },
-    "plugins": [
-      // Note - Paths are relative to one level deeper, due to tsp not resolving from base config dir
-      {
-        "transform": "../../../../src/index.ts",
-      },
-      {
-        "transform": "../../../../src/index.ts",
-        "afterDeclarations": true
-      }
-    ]
+    }
   }
 }

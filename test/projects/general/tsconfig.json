@@ -1,8 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "types": [ "@types/underscore-test" ],
+    "typeRoots": [],
+
+    "target": "ES2015",
     "module": "ESNext",
+    "moduleResolution": "node",
     "outDir": "../__built",
+    "sourceMap": false,
 
     "declaration": true,
     "baseUrl": "./",
@@ -13,11 +20,6 @@
       "*": ["*"]
     },
 
-    "esModuleInterop": true,
-
-    "plugins": [
-      { "transform": "../../../src/index.ts" },
-      { "transform": "../../../src/index.ts", "afterDeclarations": true }
-    ]
+    "esModuleInterop": true
   }
 }

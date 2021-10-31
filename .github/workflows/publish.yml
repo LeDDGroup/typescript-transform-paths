@@ -41,6 +41,7 @@ jobs:
         run: yarn test
         env:
           CI: true
+          TEST_TARGET: dist
 
       - name: Generate Release Body
         run: npx extract-changelog-release > RELEASE_BODY.md
