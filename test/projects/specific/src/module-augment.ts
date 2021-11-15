@@ -1,15 +1,15 @@
-import { Expandable } from "#root/general";
-import { _test_module_augmentation } from "../tests";
+import { Expandable } from '#root/general';
+import { _test_module_augmentation } from '../tests';
 
 _expect(_test_module_augmentation, { path: './general' });
-declare module "#root/general" {
+declare module '#root/general' {
   interface Expandable {
     b: number;
   }
 }
 
 _expect(_test_module_augmentation);
-declare module "./excluded-file" {
+declare module './excluded-file' {
   type B = null;
 }
 

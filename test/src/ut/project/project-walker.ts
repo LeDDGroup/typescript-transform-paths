@@ -1,24 +1,27 @@
-import { TestDetail, UnderscoreTestContext } from "../types";
-import type { Identifier, Node, Program, SourceFile, TransformationContext, TransformerFactory } from "typescript";
-import type TS from "typescript";
-import { expectCallName, testCallName } from "../../config";
+import { TestDetail, UnderscoreTestContext } from '../types';
+import type { Identifier, Node, Program, SourceFile, TransformationContext, TransformerFactory } from 'typescript';
+import type TS from 'typescript';
+import { expectCallName, testCallName } from '../../config';
 import {
-  getFirstOriginal, getString, getStringOrFunctionOrObjectLiteral, isAsyncImport, isRequire,
-} from "../utils/node-helpers";
-import { createHarmonyFactory, copyNodeComments } from "tstp/src/ts";
-import { assert } from "console";
-
+  getFirstOriginal,
+  getString,
+  getStringOrFunctionOrObjectLiteral,
+  isAsyncImport,
+  isRequire,
+} from '../utils/node-helpers';
+import { createHarmonyFactory, copyNodeComments } from 'tstp/src/ts';
+import { assert } from 'console';
 
 /* ****************************************************************************************************************** */
 // region: Types
 /* ****************************************************************************************************************** */
 
 export interface VisitorContext extends UnderscoreTestContext {
-  checker: TS.TypeChecker
-  factory: TS.NodeFactory
-  sourceFile: SourceFile
-  compiledSourceFile: SourceFile
-  isDeclarations: boolean
+  checker: TS.TypeChecker;
+  factory: TS.NodeFactory;
+  sourceFile: SourceFile;
+  compiledSourceFile: SourceFile;
+  isDeclarations: boolean;
 }
 
 // endregion
@@ -54,7 +57,7 @@ function getExpectTargetNode(ctx: VisitorContext, expectIndex: number) {
 
       throw new Error(
         `Unexpected target node type! _expect() must follow statement with valid transform target — ` +
-        expectNode.getText()
+          expectNode.getText()
       );
     }
   }
@@ -97,7 +100,8 @@ function getExpectedOutput(
       factory.createImportDeclaration(
         node.decorators,
         node.modifiers,
-        node.importClause && factory.createImportClause(node.importClause.isTypeOnly, node.importClause.name, namedBindings),
+        node.importClause &&
+          factory.createImportClause(node.importClause.isTypeOnly, node.importClause.name, namedBindings),
         moduleSpecifier || node.moduleSpecifier
       )
     );
@@ -115,19 +119,24 @@ function getExpectedOutput(
     );
   } else if (ts.isExternalModuleReference(node)) {
     return print(moduleSpecifier ? factory.createExternalModuleReference(moduleSpecifier) : node);
-  }
-  else if (ts.isImportTypeNode(node)) {
-    const argument = moduleSpecifier ? factory.createLiteralTypeNode(moduleSpecifier as TS.LiteralExpression) : node.argument;
+  } else if (ts.isImportTypeNode(node)) {
+    const argument = moduleSpecifier
+      ? factory.createLiteralTypeNode(moduleSpecifier as TS.LiteralExpression)
+      : node.argument;
     return print(factory.createImportTypeNode(argument, node.qualifier, node.typeArguments, node.isTypeOf));
   } else if (ts.isModuleDeclaration(node))
     return print(
-      factory.createModuleDeclaration(node.decorators, node.modifiers, moduleSpecifier as TS.ModuleName || node.name, node.body, node.flags)
+      factory.createModuleDeclaration(
+        node.decorators,
+        node.modifiers,
+        (moduleSpecifier as TS.ModuleName) || node.name,
+        node.body,
+        node.flags
+      )
     );
   else {
     const res = print(node);
-    return expectedPath
-           ? res.replace(/((?:^|\s*)(?:require|import)\(['"])(.+?)(['"]\))/g, `$1${expectedPath}$3`)
-           : res;
+    return expectedPath ? res.replace(/((?:^|\s*)(?:require|import)\(['"])(.+?)(['"]\))/g, `$1${expectedPath}$3`) : res;
   }
 
   function print(n: Node) {
@@ -136,20 +145,18 @@ function getExpectedOutput(
   }
 }
 
-function getExpectMethodResult(
-  ctx: VisitorContext,
-  rootNode: TS.ExpressionStatement,
-  node: TS.CallExpression
-) {
+function getExpectMethodResult(ctx: VisitorContext, rootNode: TS.ExpressionStatement, node: TS.CallExpression) {
   const { ts, transformerConfig: cfg, compiledSourceFile, sourceFile } = ctx;
   if (
-    ts.isPropertyAccessExpression(node.expression) && ts.isIdentifier(node.expression.expression) &&
-    node.expression.expression.text === expectCallName && ts.isIdentifier(node.expression.name)
+    ts.isPropertyAccessExpression(node.expression) &&
+    ts.isIdentifier(node.expression.expression) &&
+    node.expression.expression.text === expectCallName &&
+    ts.isIdentifier(node.expression.name)
   ) {
     const fnName = node.expression.name.text;
     if (fnName === 'index' || fnName === 'path') {
-      const getExt = () => compiledSourceFile.isDeclarationFile ? '.d.ts' : '.js';
-      const args = node.arguments.map(n => getString(ctx, n, sourceFile));
+      const getExt = () => (compiledSourceFile.isDeclarationFile ? '.d.ts' : '.js');
+      const args = node.arguments.map((n) => getString(ctx, n, sourceFile));
 
       let res: string = args[0];
       if (fnName === 'index' && cfg.outputIndexes === 'always')
@@ -169,16 +176,15 @@ function checkForKind(forKind: ForKind | undefined, sourceFile: SourceFile) {
     case undefined:
       return true;
     case 'dts':
-      return sourceFile.isDeclarationFile
+      return sourceFile.isDeclarationFile;
     case 'js':
-      return !sourceFile.isDeclarationFile
+      return !sourceFile.isDeclarationFile;
   }
 }
 
 function findStatementByOriginal(originalNode: Node, sourceFile: SourceFile) {
   for (const s of sourceFile.statements)
-    for (let n: Node | undefined = s; n; n = n.original)
-      if (n === originalNode) return s;
+    for (let n: Node | undefined = s; n; n = n.original) if (n === originalNode) return s;
 }
 
 // endregion
@@ -219,20 +225,28 @@ function checkExpect(context: VisitorContext, node: Node, statementIndex: number
     if (!test.enabled) return;
 
     /* Get Config */
-    const pathOrConfig =
-      !pathOrConfigOrCallNode ? void 0 :
-      ts.isCallExpression(pathOrConfigOrCallNode) ? getExpectMethodResult(context, node, pathOrConfigOrCallNode) :
-      getStringOrFunctionOrObjectLiteral<ExpectConfig["path"] | ExpectConfig>(context, pathOrConfigOrCallNode, sourceFile)!;
+    const pathOrConfig = !pathOrConfigOrCallNode
+      ? void 0
+      : ts.isCallExpression(pathOrConfigOrCallNode)
+      ? getExpectMethodResult(context, node, pathOrConfigOrCallNode)
+      : getStringOrFunctionOrObjectLiteral<ExpectConfig['path'] | ExpectConfig>(
+          context,
+          pathOrConfigOrCallNode,
+          sourceFile
+        )!;
 
-    const config: ExpectConfig =
-      !pathOrConfigOrCallNode ? { path: undefined } :
-      (typeof pathOrConfig === 'string' || typeof pathOrConfigOrCallNode === 'function')
-      ? { path: pathOrConfig } as ExpectConfig
-      : pathOrConfig as ExpectConfig;
+    const config: ExpectConfig = !pathOrConfigOrCallNode
+      ? { path: undefined }
+      : typeof pathOrConfig === 'string' || typeof pathOrConfigOrCallNode === 'function'
+      ? ({ path: pathOrConfig } as ExpectConfig)
+      : (pathOrConfig as ExpectConfig);
 
-    const expectedPath = typeof config.path === 'string' ? config.path :
-                         typeof config.path === 'function' ? config.path(runConfig) :
-                         void 0;
+    const expectedPath =
+      typeof config.path === 'string'
+        ? config.path
+        : typeof config.path === 'function'
+        ? config.path(runConfig)
+        : void 0;
 
     /* Check against expect config if & for */
     if (config.if && !config.if(runConfig)) return;
@@ -242,13 +256,14 @@ function checkExpect(context: VisitorContext, node: Node, statementIndex: number
     const { targetNode, compiledTargetNode } = getExpectTargetNode(context, statementIndex);
     if (!config.elided && !compiledTargetNode)
       throw new Error(
-        `No target found for _expect() in compiled code! Did you mean to set elided: true? — ` +
-        targetNode.getText()
+        `No target found for _expect() in compiled code! Did you mean to set elided: true? — ` + targetNode.getText()
       );
 
     /* Create output comparisons */
     let expectedOutput = config.elided ? void 0 : getExpectedOutput(context, factory, targetNode, expectedPath, config);
-    let actualOutput = compiledTargetNode ? printer.printNode(ts.EmitHint.Unspecified, compiledTargetNode, compiledSourceFile) : void 0;
+    let actualOutput = compiledTargetNode
+      ? printer.printNode(ts.EmitHint.Unspecified, compiledTargetNode, compiledSourceFile)
+      : void 0;
 
     if (expectedOutput) expectedOutput = standardizeQuotes(expectedOutput);
     if (actualOutput) actualOutput = standardizeQuotes(actualOutput);
@@ -273,11 +288,7 @@ function checkExpect(context: VisitorContext, node: Node, statementIndex: number
 /**
  * Handle _test() — ie. const test_name = _test(...)
  */
-function checkTest(
-  context: VisitorContext,
-  node: Node,
-  expectValidTest: boolean = false
-): TestDetail | undefined {
+function checkTest(context: VisitorContext, node: Node, expectValidTest: boolean = false): TestDetail | undefined {
   const { ts, tests, runConfig, sourceFile, compiledSourceFile } = context;
 
   if (ts.isVariableStatement(node) && node.declarationList.declarations.length === 1) {
@@ -285,8 +296,12 @@ function checkTest(
     if (declarationNode.initializer && ts.isIdentifier(declarationNode.name)) {
       const init = declarationNode.initializer;
       if (ts.isCallExpression(init) && ts.isIdentifier(init.expression) && init.expression.text === testCallName) {
-        const arg0 = getStringOrFunctionOrObjectLiteral<TestDetail["label"] | TestConfig>(context, init.arguments[0], sourceFile);
-        const config = (typeof arg0 === 'string' || typeof arg0 === 'function') ? { label: arg0 } as TestConfig : arg0;
+        const arg0 = getStringOrFunctionOrObjectLiteral<TestDetail['label'] | TestConfig>(
+          context,
+          init.arguments[0],
+          sourceFile
+        );
+        const config = typeof arg0 === 'string' || typeof arg0 === 'function' ? ({ label: arg0 } as TestConfig) : arg0;
         const label = typeof config.label === 'string' ? config.label : config.label(runConfig);
         const testName = declarationNode.name.text;
 
@@ -315,28 +330,29 @@ export function getProjectWalker(context: UnderscoreTestContext, program: Progra
   const { ts } = context;
   const checker = program.getTypeChecker();
 
-  const transformer: TransformerFactory<SourceFile> = (tCtx: TransformationContext) => (compiledSourceFile: SourceFile) => {
-    const factory = createHarmonyFactory(ts, tCtx.factory);
-    const sourceFile = getFirstOriginal(compiledSourceFile);
-    const visitorContext: VisitorContext = {
-      ...context,
-      checker,
-      factory,
-      sourceFile,
-      compiledSourceFile,
-      isDeclarations: compiledSourceFile.isDeclarationFile
+  const transformer: TransformerFactory<SourceFile> =
+    (tCtx: TransformationContext) => (compiledSourceFile: SourceFile) => {
+      const factory = createHarmonyFactory(ts, tCtx.factory);
+      const sourceFile = getFirstOriginal(compiledSourceFile);
+      const visitorContext: VisitorContext = {
+        ...context,
+        checker,
+        factory,
+        sourceFile,
+        compiledSourceFile,
+        isDeclarations: compiledSourceFile.isDeclarationFile,
+      };
+
+      context.walkLog.declarations ||= compiledSourceFile.isDeclarationFile;
+      context.walkLog.js ||= !compiledSourceFile.isDeclarationFile;
+
+      sourceFile.statements.forEach((s, idx) => {
+        checkTest(visitorContext, s);
+        checkExpect(visitorContext, s, idx);
+      });
+
+      return compiledSourceFile;
     };
-
-    context.walkLog.declarations ||= compiledSourceFile.isDeclarationFile;
-    context.walkLog.js ||= !compiledSourceFile.isDeclarationFile;
-
-    sourceFile.statements.forEach((s, idx) => {
-      checkTest(visitorContext, s);
-      checkExpect(visitorContext, s, idx);
-    });
-
-    return compiledSourceFile;
-  };
 
   return transformer;
 }

@@ -1,4 +1,4 @@
-import { ut } from "../../src";
+import { ut } from '../../src';
 
 /* ****************************************************************************************************************** *
  * Config
@@ -6,9 +6,8 @@ import { ut } from "../../src";
 
 const testRuns = ut.loadProject({
   projectName: 'root-dirs',
-  configs: [ true, false, undefined ].map(v => ({ useRootDirs: v }))
+  configs: [true, false, undefined].map((v) => ({ useRootDirs: v })),
 });
-
 
 /* ****************************************************************************************************************** *
  * Tests
@@ -19,5 +18,5 @@ describe(`[Project: 'root-dirs'] - TS RootDirs`, () => {
     test.each(tests)(`%s`, (_, { expects }) => {
       expects.forEach((exp) => expect(exp).toResolve());
     });
-  })
+  });
 });

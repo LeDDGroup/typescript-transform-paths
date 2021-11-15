@@ -28,7 +28,7 @@
  * import { A, B } from './b'
  * export { A } from './b'
  */
-import { ImportOrExportClause, ImportOrExportDeclaration, VisitorContext } from "../types";
+import { ImportOrExportClause, ImportOrExportDeclaration, VisitorContext } from '../types';
 import type {
   ExportDeclaration,
   ExportSpecifier,
@@ -39,7 +39,7 @@ import type {
   NamedImportBindings,
   Visitor,
   VisitResult,
-} from "typescript";
+} from 'typescript';
 
 /* ****************************************************************************************************************** */
 // region: Utilities
@@ -55,7 +55,7 @@ import type {
 export function elideImportOrExportClause<T extends ImportOrExportDeclaration>(
   context: VisitorContext,
   node: T
-): (T extends ImportDeclaration ? ImportDeclaration["importClause"] : ExportDeclaration["exportClause"]) | undefined;
+): (T extends ImportDeclaration ? ImportDeclaration['importClause'] : ExportDeclaration['exportClause']) | undefined;
 
 export function elideImportOrExportClause(
   context: VisitorContext,

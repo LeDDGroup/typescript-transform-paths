@@ -1,6 +1,6 @@
 import { joinPaths } from 'tstp/src/utils';
-import { ut } from "../../src";
-import { projectsPath } from "../../src/config";
+import { ut } from '../../src';
+import { projectsPath } from '../../src/config';
 
 /* ****************************************************************************************************************** *
  * Config
@@ -10,7 +10,7 @@ const testRuns = ut.loadProject({
   projectName: 'project-ref',
   programKind: 'solutionBuilder',
   builderTransformerPredicate: (program) =>
-    program.getCompilerOptions().configFilePath === joinPaths(projectsPath, 'project-ref/b/tsconfig.json')
+    program.getCompilerOptions().configFilePath === joinPaths(projectsPath, 'project-ref/b/tsconfig.json'),
 });
 
 /* ****************************************************************************************************************** *
@@ -20,7 +20,7 @@ const testRuns = ut.loadProject({
 describe(`[Project: 'project-ref'] - Project References`, () => {
   describe.each(testRuns)(`$runLabel`, ({ tests }) => {
     test.each(tests)(`%s`, (_, detail) => {
-      detail.expects.forEach(exp => expect(exp).toResolve());
-    })
-  })
+      detail.expects.forEach((exp) => expect(exp).toResolve());
+    });
+  });
 });

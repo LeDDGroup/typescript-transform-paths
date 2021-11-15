@@ -4,17 +4,17 @@
 
 export const _test_tag_no_transform = _test({
   label: `(@no-transform-path) Doesn't transform path`,
-  group: "Tags",
+  group: 'Tags',
 });
 
 export const _test_tag_explicit_transform = _test({
   label: `(@transform-path) Transforms path with explicit value`,
-  group: "Tags",
+  group: 'Tags',
 });
 
 export const _test_exclude = _test({
   label: `(exclude) Doesn't transform for exclusion patterns`,
-  group: "Options",
+  group: 'Options',
 });
 
 export const _test_type_only_import = _test({
@@ -24,7 +24,7 @@ export const _test_type_only_import = _test({
 
 export const _test_module_augmentation = _test({
   label: `Resolves module augmentation`,
-  for: "dts",
+  for: 'dts',
 });
 
 export const _test_type_elision = _test(`Type elision works properly`);

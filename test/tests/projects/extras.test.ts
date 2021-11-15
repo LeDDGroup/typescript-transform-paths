@@ -1,10 +1,9 @@
-import { projectsPath, rootPath } from "../../src/config";
-import path from "path";
+import { projectsPath, rootPath } from '../../src/config';
+import path from 'path';
 import type TS from 'typescript';
-import { normalizePath } from 'typescript'
-import { execSync } from "child_process";
-import { createTsProgram, getEmitResultFromProgram } from "../../src";
-
+import { normalizePath } from 'typescript';
+import { execSync } from 'child_process';
+import { createTsProgram, getEmitResultFromProgram } from '../../src';
 
 /* ****************************************************************************************************************** *
  * Config
@@ -17,9 +16,9 @@ const tsNodePath = path.resolve(rootPath, 'node_modules/.bin/ts-node');
  * ****************************************************************************************************************** */
 
 describe(`[Project: 'extras'] Extra Tests`, () => {
-  const projectRoot = normalizePath(path.join(projectsPath, "extras"));
-  const indexFile = normalizePath(path.join(projectRoot, "src/index.ts"));
-  const tsConfigFile = normalizePath(path.join(projectRoot, "tsconfig.json"));
+  const projectRoot = normalizePath(path.join(projectsPath, 'extras'));
+  const indexFile = normalizePath(path.join(projectRoot, 'src/index.ts'));
+  const tsConfigFile = normalizePath(path.join(projectRoot, 'tsconfig.json'));
 
   describe.each(envOptions.tsModules)(`[TS %s]`, (_, tsSpecifier) => {
     const ts: typeof TS = require(tsSpecifier);
@@ -27,9 +26,9 @@ describe(`[Project: 'extras'] Extra Tests`, () => {
     // see: https://github.com/LeDDGroup/typescript-transform-paths/issues/130
     test(`Transformer works without ts-node being present`, () => {
       jest.doMock(
-        "ts-node",
+        'ts-node',
         () => {
-          require("sdf0s39rf3333d@fake-module");
+          require('sdf0s39rf3333d@fake-module');
         },
         { virtual: true }
       );
@@ -38,7 +37,7 @@ describe(`[Project: 'extras'] Extra Tests`, () => {
         const res = getEmitResultFromProgram(ts, program);
         expect(res[indexFile].js).toMatch(`const _identifier_1 = require("./id")`);
       } finally {
-        jest.dontMock("ts-node");
+        jest.dontMock('ts-node');
       }
     });
   });

@@ -1,7 +1,7 @@
-import type TSNode from "ts-node";
-import type { REGISTER_INSTANCE } from "ts-node";
-import type TS from "typescript";
-import { transformer } from "../transform";
+import type TSNode from 'ts-node';
+import type { REGISTER_INSTANCE } from 'ts-node';
+import type TS from 'typescript';
+import { transformer } from '../transform';
 
 /* ****************************************************************************************************************** */
 // region: Helpers
@@ -16,7 +16,7 @@ const checkModuleIsTsTp = (m: string) => {
   if (!transformerModule) return m === 'typescript-transform-paths';
 
   return transformerModule.isTsTp;
-}
+};
 
 function getProjectTransformerConfig(pcl: TS.ParsedCommandLine) {
   const plugins = pcl.options.plugins as Record<string, string>[] | undefined;
@@ -25,7 +25,7 @@ function getProjectTransformerConfig(pcl: TS.ParsedCommandLine) {
   const res: { afterDeclarations?: Record<string, string>; before?: Record<string, string> } = {};
   for (const plugin of plugins) {
     if (plugin.transform && checkModuleIsTsTp(plugin.transform) && !plugin.after)
-      res[plugin.afterDeclarations ? "afterDeclarations" : "before"] = plugin;
+      res[plugin.afterDeclarations ? 'afterDeclarations' : 'before'] = plugin;
   }
 
   return res;
@@ -78,7 +78,7 @@ export function nodeRegister(): TSNode.RegisterOptions | undefined {
 
   const registerOptions: TSNode.RegisterOptions = Object.assign({}, tsNodeInstance.options);
   if (registerOptions.transformers) {
-    if (typeof registerOptions.transformers === "function") {
+    if (typeof registerOptions.transformers === 'function') {
       let oldTransformersFactory = registerOptions.transformers;
       registerOptions.transformers = (program) => {
         const transformers = getTransformers(program, beforeConfig, afterDeclarationsConfig);
@@ -108,14 +108,14 @@ export namespace nodeRegister {
   } {
     let tsNode: typeof TSNode;
     try {
-      tsNode = require("ts-node");
+      tsNode = require('ts-node');
     } catch {
       throw new Error(
         `Cannot resolve ts-node. Make sure ts-node is installed before using typescript-transform-paths/register`
       );
     }
 
-    const instanceSymbol: typeof REGISTER_INSTANCE = tsNode["REGISTER_INSTANCE"];
+    const instanceSymbol: typeof REGISTER_INSTANCE = tsNode['REGISTER_INSTANCE'];
 
     let tsNodeInstance = global.process[instanceSymbol];
     if (!tsNodeInstance) {

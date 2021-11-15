@@ -23,9 +23,9 @@ export function createConfigSpread(config: SpreadableConfig) {
     const configs = v.map((val) => ({ ...staticProps, [k]: val }));
     if (!res.length) res.push(...configs);
     else {
-      for (const existing of [ ...res ]) {
+      for (const existing of [...res]) {
         res.shift();
-        res.push(...configs.map(c => ({ ...existing, ...c })));
+        res.push(...configs.map((c) => ({ ...existing, ...c })));
       }
     }
   }

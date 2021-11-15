@@ -4,12 +4,12 @@
 
 export const _test_internal_package_index = _test({
   label: `Internal packages resolve properly`,
-  group: "Package"
+  group: 'Package',
 });
 
 export const _test_external_package_index = _test({
   label: `External packages resolve properly`,
-  group: "Package"
+  group: 'Package',
 });
 
 export const _test_local_index = _test(`Local index resolves properly`);
@@ -24,7 +24,7 @@ export const _test_local_index = _test(`Local index resolves properly`);
 export const _test_esm_reject_unmapped = _test({
   label: `Does not transform unmapped paths`,
   group: 'ESM',
-  if: () => false
+  if: () => false,
 });
 
 // --- TODO ----

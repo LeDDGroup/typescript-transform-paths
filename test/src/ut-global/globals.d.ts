@@ -1,4 +1,3 @@
-
 /* ****************************************************************************************************************** */
 // region: Project Functions
 /* ****************************************************************************************************************** */
@@ -6,8 +5,8 @@
 declare function _test(label: TestConfig['label']): UnderscoreTest;
 declare function _test(cfg: TestConfig): UnderscoreTest;
 
-declare function _expect(test: UnderscoreTest, path?: ExpectConfig['path']): void
-declare function _expect(test: UnderscoreTest, cfg?: ExpectConfig): void
+declare function _expect(test: UnderscoreTest, path?: ExpectConfig['path']): void;
+declare function _expect(test: UnderscoreTest, cfg?: ExpectConfig): void;
 
 declare namespace _expect {
   /**
@@ -27,58 +26,57 @@ declare namespace _expect {
 
 // endregion
 
-
 /* ****************************************************************************************************************** */
 // region: Project Function Types
 /* ****************************************************************************************************************** */
 
 declare interface TestConfig {
-  label: string | ((opt: TestRunConfig) => string)
+  label: string | ((opt: TestRunConfig) => string);
 
   /**
    * This test will only process if predicate is true
    */
-  if?: (c: TestRunConfig) => boolean
+  if?: (c: TestRunConfig) => boolean;
 
   /**
    * Assign a group name to the test
    */
-  group?: string
+  group?: string;
 
   /**
    * Only run test for specific output type
    */
-  for?: ForKind
+  for?: ForKind;
 }
 
 declare interface ExpectConfig {
   /**
    * Only apply expect if predicate is true
    */
-  if?: (c: TestRunConfig) => boolean
+  if?: (c: TestRunConfig) => boolean;
 
   /**
    * Only apply expect to a certain type of output file
    * @default 'all'
    */
-  for?: ForKind
+  for?: ForKind;
 
   /**
    * Specific Path
    * @default same as source
    */
-  path?: string | undefined | ((c: TestRunConfig) => string)
+  path?: string | undefined | ((c: TestRunConfig) => string);
 
   /**
    * Specific Path if outputMode = 'esm'
    * Note: Not all tests use esm mode
    */
-  esmPath?: string | undefined | ((c: TestRunConfig) => string)
+  esmPath?: string | undefined | ((c: TestRunConfig) => string);
 
   /**
    * If true, the entire node is expected to be elided
    */
-  elided?: boolean
+  elided?: boolean;
 
   /**
    * Expected specifiers
@@ -86,12 +84,12 @@ declare interface ExpectConfig {
    * _expect(_my_test, 'path', { specifiers: [ 'shown' ] });
    * import { shown, elided } from 'path';
    */
-  specifiers?: string []
+  specifiers?: string[];
 
   /**
    * Additional check predicate (test fails if predicate returns false)
    */
-  extraCheck?: (compiledStatement: string | undefined) => boolean
+  extraCheck?: (compiledStatement: string | undefined) => boolean;
 }
 
 // endregion
@@ -104,14 +102,14 @@ declare type ForKind = 'dts' | 'js' | 'all';
 
 declare const underscoreTestSym: unique symbol;
 declare interface UnderscoreTest {
-  [underscoreTestSym]: boolean
+  [underscoreTestSym]: boolean;
 }
 
 declare interface TestRunConfig {
-  pluginOptions?: Record<string, any>
-  mode: 'program' | 'ts-node' | 'manual'
-  tsMajorVersion: number
-  tsMinorVersion: number
+  pluginOptions?: Record<string, any>;
+  mode: 'program' | 'ts-node' | 'manual';
+  tsMajorVersion: number;
+  tsMinorVersion: number;
 }
 
 // endregion

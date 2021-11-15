@@ -10,9 +10,9 @@ import {
   VisitorContext,
 } from '../types';
 import { nodeVisitor } from './visitor';
-import { checkTsSupport, createHarmonyFactory, createSyntheticEmitHost, getTsNodeRegistrationProperties } from "../ts";
+import { checkTsSupport, createHarmonyFactory, createSyntheticEmitHost, getTsNodeRegistrationProperties } from '../ts';
 import { Minimatch } from 'minimatch';
-import { IndexChecker } from "../resolve/index-checker";
+import { IndexChecker } from '../resolve/index-checker';
 
 /* ****************************************************************************************************************** */
 // region: Helpers
@@ -69,7 +69,7 @@ function getTsDetail(p: {
     emitHost = createSyntheticEmitHost(compilerOptions, tsInstance, getCanonicalFileName, fileNames as string[]);
   }
 
-  const projectReferences = program?.getResolvedProjectReferences()?.map(r => r?.sourceFile);
+  const projectReferences = program?.getResolvedProjectReferences()?.map((r) => r?.sourceFile);
 
   return { tsInstance, compilerOptions, fileNames, isTranspileOnly, isTsNode, emitHost, projectReferences };
 }
@@ -88,7 +88,7 @@ export function getTransformerConfig(options?: TransformerOptions): TransformerC
     ...options,
     outputIndexes: options?.outputIndexes || 'auto',
     outputExtensions: options?.outputExtensions || 'auto',
-    usePaths: options?.usePaths ?? true
+    usePaths: options?.usePaths ?? true,
   };
 }
 
@@ -109,14 +109,12 @@ export function transformer(
 ) {
   return (transformationContext: TS.TransformationContext) => {
     const config = getTransformerConfig(options);
-    const { tsInstance, compilerOptions, isTranspileOnly, isTsNode, emitHost } = getTsDetail(
-      {
-        program,
-        extras,
-        manualTransformOptions,
-        transformationContext,
-      }
-    );
+    const { tsInstance, compilerOptions, isTranspileOnly, isTsNode, emitHost } = getTsDetail({
+      program,
+      extras,
+      manualTransformOptions,
+      transformationContext,
+    });
 
     const rootDirs = compilerOptions.rootDirs?.filter(path.isAbsolute);
     const { configFile, paths } = compilerOptions;

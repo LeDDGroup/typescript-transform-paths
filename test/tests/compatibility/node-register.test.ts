@@ -1,7 +1,7 @@
-import { nodeRegister } from "typescript-transform-paths";
-import * as tsNode from "ts-node";
-import { REGISTER_INSTANCE } from "ts-node";
-import { CustomTransformers, PluginImport, Program } from "typescript";
+import { nodeRegister } from 'typescript-transform-paths';
+import * as tsNode from 'ts-node';
+import { REGISTER_INSTANCE } from 'ts-node';
+import { CustomTransformers, PluginImport, Program } from 'typescript';
 
 /* ****************************************************************************************************************** *
  * Config
@@ -10,14 +10,14 @@ import { CustomTransformers, PluginImport, Program } from "typescript";
 const transformerModule = require(`tstp/${envOptions.testTarget}/transform/transformer`);
 
 const pluginOptions = { opt1: true, opt2: 3 };
-const otherTransformer = { transform: "fake-transformer@23904" };
+const otherTransformer = { transform: 'fake-transformer@23904' };
 
 const configs = {
-  "Implicit before": {},
-  "Explicit before": { before: true },
+  'Implicit before': {},
+  'Explicit before': { before: true },
   afterDeclarations: { afterDeclarations: true },
-  "Implicit before + afterDeclarations": [{}, { afterDeclarations: true }],
-  "Explicit before + afterDeclarations": [{ before: true }, { afterDeclarations: true }],
+  'Implicit before + afterDeclarations': [{}, { afterDeclarations: true }],
+  'Explicit before + afterDeclarations': [{ before: true }, { afterDeclarations: true }],
 } as const;
 const configMap = Object.entries(configs).map(([label, cfg]) => {
   let hasBefore: boolean = false;
@@ -27,14 +27,14 @@ const configMap = Object.entries(configs).map(([label, cfg]) => {
     .map((c) => {
       if ((<any>c).before || !(<any>c).afterDeclarations) hasBefore = true;
       if ((<any>c).afterDeclarations) hasAfterDeclarations = true;
-      return { transform: "typescript-transform-paths", ...c, ...pluginOptions } as any;
+      return { transform: 'typescript-transform-paths', ...c, ...pluginOptions } as any;
     })
     .concat([otherTransformer]);
 
   return { label, transformers, hasBefore, hasAfterDeclarations };
 });
 
-const instanceSymbol: typeof REGISTER_INSTANCE = tsNode["REGISTER_INSTANCE"];
+const instanceSymbol: typeof REGISTER_INSTANCE = tsNode['REGISTER_INSTANCE'];
 
 /* ****************************************************************************************************************** *
  * Tests
@@ -47,7 +47,7 @@ describe(`[Compatibility: ts-node] Register script`, () => {
       global.process[instanceSymbol] = void 0;
       let registerSpy: jest.SpyInstance | undefined;
       try {
-        registerSpy = jest.spyOn(tsNode, "register");
+        registerSpy = jest.spyOn(tsNode, 'register');
         expect(global.process[instanceSymbol]).toBeUndefined();
 
         nodeRegister.initialize();
@@ -67,7 +67,7 @@ describe(`[Compatibility: ts-node] Register script`, () => {
       global.process[instanceSymbol] = fakeInstance;
       let registerSpy: jest.SpyInstance | undefined;
       try {
-        registerSpy = jest.spyOn(tsNode, "register");
+        registerSpy = jest.spyOn(tsNode, 'register');
 
         const { tsNodeInstance } = nodeRegister.initialize();
 
@@ -90,25 +90,25 @@ describe(`[Compatibility: ts-node] Register script`, () => {
   describe(`Register`, () => {
     test(`Throws without ts-node`, () => {
       jest.doMock(
-        "ts-node",
+        'ts-node',
         () => {
-          require("sdf0s39rf3333d@fake-module");
+          require('sdf0s39rf3333d@fake-module');
         },
         { virtual: true }
       );
       expect(() => nodeRegister()).toThrow(`Cannot resolve ts-node`);
-      jest.dontMock("ts-node");
+      jest.dontMock('ts-node');
     });
 
     test(`Throws if can't register ts-node`, () => {
-      jest.doMock("ts-node", () => ({ register: () => {} }), { virtual: true });
+      jest.doMock('ts-node', () => ({ register: () => {} }), { virtual: true });
       expect(() => nodeRegister()).toThrow(`Could not register ts-node instance!`);
-      jest.dontMock("ts-node");
+      jest.dontMock('ts-node');
     });
 
     test(`No transformers in tsConfig exits quietly`, () => {
       const originalInitialize = nodeRegister.initialize;
-      const initializeSpy = jest.spyOn(nodeRegister, "initialize");
+      const initializeSpy = jest.spyOn(nodeRegister, 'initialize');
       try {
         initializeSpy.mockImplementation(() => {
           const res = originalInitialize();
@@ -122,9 +122,9 @@ describe(`[Compatibility: ts-node] Register script`, () => {
     });
 
     describe.each([
-      "Existing Transformer Config",
-      "Existing Transformer Config Factory",
-      "No Existing Transformers",
+      'Existing Transformer Config',
+      'Existing Transformer Config Factory',
+      'No Existing Transformers',
     ] as const)(`%s`, (configKind) => {
       const fakeExistingTransformer = function fakeExistingTransformer(): any {};
       const fakeTransformer = function fakeTransformer(): any {};
@@ -138,13 +138,13 @@ describe(`[Compatibility: ts-node] Register script`, () => {
 
       let existingTransformers: CustomTransformers | ((p: Program) => CustomTransformers) | undefined;
       switch (configKind) {
-        case "Existing Transformer Config Factory":
+        case 'Existing Transformer Config Factory':
           existingTransformers = transformerFactoryFn;
           break;
-        case "Existing Transformer Config":
+        case 'Existing Transformer Config':
           existingTransformers = { ...fakeTransformerConfig };
           break;
-        case "No Existing Transformers":
+        case 'No Existing Transformers':
           existingTransformers = void 0;
       }
 
@@ -156,12 +156,12 @@ describe(`[Compatibility: ts-node] Register script`, () => {
         let mergedTransformers: CustomTransformers;
 
         beforeAll(() => {
-          mockTransformer = jest.spyOn(transformerModule, "transformer").mockReturnValue(fakeTransformer);
+          mockTransformer = jest.spyOn(transformerModule, 'transformer').mockReturnValue(fakeTransformer);
 
           global.process[instanceSymbol] = void 0;
 
           const originalInitialize = nodeRegister.initialize;
-          initializeSpy = jest.spyOn(nodeRegister, "initialize");
+          initializeSpy = jest.spyOn(nodeRegister, 'initialize');
           initializeSpy.mockImplementation(() => {
             const res = originalInitialize();
             if (existingTransformers) res.tsNodeInstance.options.transformers = existingTransformers;
@@ -177,7 +177,7 @@ describe(`[Compatibility: ts-node] Register script`, () => {
           global.process[instanceSymbol] = originalTsNodeInstance;
 
           mergedTransformers =
-            typeof registerResult.transformers === "function"
+            typeof registerResult.transformers === 'function'
               ? registerResult.transformers(fakeProgram)
               : registerResult.transformers!;
         });
@@ -219,16 +219,16 @@ describe(`[Compatibility: ts-node] Register script`, () => {
         });
 
         test(`Transformer instantiated w/ proper config${
-          existingTransformers === transformerFactoryFn ? " & Program" : ""
+          existingTransformers === transformerFactoryFn ? ' & Program' : ''
         }`, () => {
           const callTimes = +hasBefore + +hasAfterDeclarations;
           expect(mockTransformer).toBeCalledTimes(callTimes);
 
           const afterDeclarationsConfig = transformers.find(
-            (t) => t.transform === "typescript-transform-paths" && t.afterDeclarations
+            (t) => t.transform === 'typescript-transform-paths' && t.afterDeclarations
           );
           const beforeConfig = transformers.find(
-            (t) => t.transform === "typescript-transform-paths" && !t.afterDeclarations
+            (t) => t.transform === 'typescript-transform-paths' && !t.afterDeclarations
           );
 
           if (hasBefore) expect(beforeConfig).not.toBeUndefined();

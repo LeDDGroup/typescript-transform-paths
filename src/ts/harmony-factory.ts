@@ -1,4 +1,4 @@
-import TS from "typescript";
+import TS from 'typescript';
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -80,7 +80,7 @@ export interface HarmonyFactory extends TS.NodeFactory {}
  * Creates a factory capable of working with any TS version using modern parameters
  */
 export function createHarmonyFactory(tsInstance: typeof TS, factory: TS.NodeFactory | undefined): HarmonyFactory {
-  const [ majorVer, minorVer ] = tsInstance.versionMajorMinor.split('.');
+  const [majorVer, minorVer] = tsInstance.versionMajorMinor.split('.');
 
   return new Proxy(factory ?? tsInstance, {
     get(target, prop) {

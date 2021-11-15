@@ -1,7 +1,7 @@
-import { Pattern, ResolvedModuleFull } from "typescript";
-import { baseName, extName, joinPaths, normalizeSlashes, removeSuffix } from "../utils";
-import { VisitorContext } from "../types";
-import { IndexDetail } from "./index-checker";
+import { Pattern, ResolvedModuleFull } from 'typescript';
+import { baseName, extName, joinPaths, normalizeSlashes, removeSuffix } from '../utils';
+import { VisitorContext } from '../types';
+import { IndexDetail } from './index-checker';
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -21,7 +21,7 @@ export interface OutputPathDetail {
   packageRoot?: string;
   packageFileName?: string;
   tsPathsKey?: string;
-  indexDetail: IndexDetail
+  indexDetail: IndexDetail;
 }
 
 // endregion
@@ -116,7 +116,7 @@ export function getOutputPathDetail(
     suppliedPackagePath,
     suppliedPackageName,
     packageFileName,
-    indexDetail
+    indexDetail,
   };
 }
 

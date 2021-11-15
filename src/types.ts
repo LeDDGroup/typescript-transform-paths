@@ -1,7 +1,7 @@
-import type TS from "typescript";
-import type { HarmonyFactory } from "./ts";
-import type { IMinimatch } from "minimatch";
-import { IndexChecker, IndexDetail } from "./resolve/index-checker";
+import type TS from 'typescript';
+import type { HarmonyFactory } from './ts';
+import type { IMinimatch } from 'minimatch';
+import { IndexChecker, IndexDetail } from './resolve/index-checker';
 
 /* ****************************************************************************************************************** */
 // region: Config
@@ -46,7 +46,7 @@ export interface TransformerConfig {
    * //   'never: 'pkg'
    * import 'pkg';
    */
-  readonly outputIndexes: 'auto' | 'always' | 'never'
+  readonly outputIndexes: 'auto' | 'always' | 'never';
 
   /**
    * Method for handling implicit extensions
@@ -71,7 +71,7 @@ export interface TransformerConfig {
    * //  'never': './dir'
    * import './dir'
    */
-  readonly outputExtensions: 'auto' | 'always' | 'never'
+  readonly outputExtensions: 'auto' | 'always' | 'never';
 
   /**
    * Transform Exclusion patterns — exclude from transform if file path matches pattern
@@ -91,7 +91,7 @@ export interface TransformerConfig {
 /* ****************************************************************************************************************** */
 
 export interface PathResolver {
-  (ctx: ResolutionContext): string | undefined
+  (ctx: ResolutionContext): string | undefined;
 }
 
 export interface ResolutionContext {
@@ -102,7 +102,7 @@ export interface ResolutionContext {
    * // moduleName = 'typescript-transform-paths/dist/index'
    * import './src/index';
    */
-  moduleName: string
+  moduleName: string;
 
   /**
    * Supplied module name's extension (if specified)
@@ -113,17 +113,17 @@ export interface ResolutionContext {
    * // moduleExtName = '.ts'
    * import './src/index.ts';
    */
-  moduleExtName?: string
+  moduleExtName?: string;
 
   /**
    * This is the path that will normally be output by the plugin
    */
-  outputPath: string
+  outputPath: string;
 
   /**
    * Extension for output path
    */
-  outputExt: string | undefined
+  outputExt: string | undefined;
 
   /**
    * If there is a match from tsconfig.json -> 'compilerOptions' -> 'paths', the matched key name will be here
@@ -140,12 +140,12 @@ export interface ResolutionContext {
    * // tsPathsKey = '#src/*'
    * import '#src/hello';
    */
-  tsPathsKey?: string
+  tsPathsKey?: string;
 
   /**
    * True if target is a URL
    */
-  isURL: boolean
+  isURL: boolean;
 
   /**
    * Info on resolved target (not supplied if module can't be resolved to file)
@@ -154,17 +154,17 @@ export interface ResolutionContext {
     /**
      * If the resolved file is a symlink, this will be the initial resolved path (before following link)
      */
-    originalPath?: string
+    originalPath?: string;
 
     /**
      * Implicit index detail
      */
-    indexDetail: IndexDetail
+    indexDetail: IndexDetail;
 
     /**
      * Final resolved file path (after following any symlink — for pre-follow, use `originalPath`)
      */
-    resolvedFilePath: string
+    resolvedFilePath: string;
 
     /**
      * If module resolves to a sub-package within the current package or an external package, this is the sub-path within the package
@@ -172,13 +172,13 @@ export interface ResolutionContext {
      * Note: This field is especially important with ESM, as it's possible for the import path not to correspond to the actual
      * resolved file path.
      */
-    packagePath?: string
+    packagePath?: string;
 
     /**
      * Resolved ts.SourceFile
      */
-    sourceFile?: TS.SourceFile
-  }
+    sourceFile?: TS.SourceFile;
+  };
 
   /**
    * If the module resolves to a sub-package or external package, this contains that detail
@@ -191,7 +191,7 @@ export interface ResolutionContext {
      * // packageName = '@scope/package'
      * import '@scope/package/dist/index';
      */
-    packageName: string
+    packageName: string;
 
     /**
      * Package name as specified
@@ -210,21 +210,21 @@ export interface ResolutionContext {
      * // originalPackageName = 'aliased-typescript'
      * import 'aliased-typescript';
      */
-    originalPackageName?: string
+    originalPackageName?: string;
 
-    isExternalLibrary: boolean
-  }
+    isExternalLibrary: boolean;
+  };
 
   /**
    * Context for visitor
    * @see https://github.com/LeDDGroup/typescript-transform-paths/blob/master/src/types.ts
    */
-  visitorContext: VisitorContext
+  visitorContext: VisitorContext;
 
   /**
    * AST Node being transformed
    */
-  node: TS.Node
+  node: TS.Node;
 }
 
 // endregion
@@ -258,7 +258,7 @@ export interface TransformerContext {
   readonly emitHost: TS.EmitHost;
 
   /** @internal */
-  indexChecker: IndexChecker
+  indexChecker: IndexChecker;
   /** @internal */
   readonly elisionMap: Map<TS.SourceFile, Map<ImportOrExportDeclaration, ImportOrExportDeclaration>>;
   /** @internal */
@@ -289,12 +289,12 @@ export type TsTransformPathsConfig = TransformerOptions;
 /** Represents Extras type passed by ttypescript or ts-patch */
 export type TransformerExtras = {
   ts: typeof TS;
-}
+};
 
 /** @internal */
 export type ImportOrExportDeclaration = TS.ImportDeclaration | TS.ExportDeclaration;
 
 /** @internal */
-export type ImportOrExportClause = TS.ImportDeclaration["importClause"] | TS.ExportDeclaration["exportClause"];
+export type ImportOrExportClause = TS.ImportDeclaration['importClause'] | TS.ExportDeclaration['exportClause'];
 
 // endregion

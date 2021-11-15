@@ -1,7 +1,7 @@
-import TS from "typescript";
-import { GetCanonicalFileName, SourceFile } from "typescript";
-import { VisitorContext } from "../types";
-import type { REGISTER_INSTANCE } from "ts-node";
+import TS from 'typescript';
+import { GetCanonicalFileName, SourceFile } from 'typescript';
+import { VisitorContext } from '../types';
+import type { REGISTER_INSTANCE } from 'ts-node';
 
 /* ****************************************************************************************************************** */
 // region: TS Helpers
@@ -65,7 +65,7 @@ export function createSyntheticEmitHost(
 export function getTsNodeRegistrationProperties(tsInstance: typeof TS) {
   let tsNodeSymbol: typeof REGISTER_INSTANCE;
   try {
-    tsNodeSymbol = require("ts-node")?.["REGISTER_INSTANCE"];
+    tsNodeSymbol = require('ts-node')?.['REGISTER_INSTANCE'];
   } catch {
     return undefined;
   }
@@ -88,7 +88,12 @@ export function getTsNodeRegistrationProperties(tsInstance: typeof TS) {
 /**
  * Copies comment range from srcNode to destNode
  */
-export function copyNodeComments(tsInstance: typeof TS, srcSourceFile: TS.SourceFile, srcNode: TS.Node, destNode: TS.Node) {
+export function copyNodeComments(
+  tsInstance: typeof TS,
+  srcSourceFile: TS.SourceFile,
+  srcNode: TS.Node,
+  destNode: TS.Node
+) {
   // TS has a bugs which cause getLeadingTriviaWidth & getLeadingCommentRanges to exceed the proper boundaries.
   // This tends to happen in scenarios where there are more than one comment.
   //   - It often causes the final comment to include the full node text as well
@@ -107,11 +112,13 @@ export function copyNodeComments(tsInstance: typeof TS, srcSourceFile: TS.Source
   const commentRegex = /(?:\/\*([\s\S]*?)\*\/|\/\/([^\r\n]*))(\r?\n?)/gs;
 
   let match: RegExpExecArray | null;
-  while (match = commentRegex.exec(commentText)) {
+  while ((match = commentRegex.exec(commentText))) {
     const caption = match[1] || match[2];
     const isMultiLine = !!match[1];
     const hasTrailingNewLine = !!match[3];
-    const kind = isMultiLine ? tsInstance.SyntaxKind.MultiLineCommentTrivia : tsInstance.SyntaxKind.SingleLineCommentTrivia;
+    const kind = isMultiLine
+      ? tsInstance.SyntaxKind.MultiLineCommentTrivia
+      : tsInstance.SyntaxKind.SingleLineCommentTrivia;
 
     tsInstance.addSyntheticLeadingComment(destNode, kind, caption, hasTrailingNewLine);
   }
@@ -132,9 +139,11 @@ export function getTsPathsMatch(context: VisitorContext, moduleName: string): st
  * Throw if unsupported version
  */
 export function checkTsSupport(tsInstance: typeof TS) {
-  const [ major, minor ] = tsInstance.versionMajorMinor.split('.');
+  const [major, minor] = tsInstance.versionMajorMinor.split('.');
   if (+major < 4 || (+major === 4 && +minor < 2))
-    throw new Error(`The latest version of 'typescript-transform-paths' requires TS version 4.2.2 or higher. Either upgrade TS or use v3 of the plugin.`);
+    throw new Error(
+      `The latest version of 'typescript-transform-paths' requires TS version 4.2.2 or higher. Either upgrade TS or use v3 of the plugin.`
+    );
 }
 
 export function getOutputExtension(

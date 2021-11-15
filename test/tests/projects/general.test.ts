@@ -80,7 +80,7 @@ describe(`[Project: 'general'] - General Tests`, () => {
           transformed = transformedFiles[file];
           expected = {
             js: getExpected(ts, file, originalFiles[file].js, projectRoot),
-            ...(!skipDts && { dts: getExpected(ts, file, originalFiles[file].dts!, projectRoot) })
+            ...(!skipDts && { dts: getExpected(ts, file, originalFiles[file].dts!, projectRoot) }),
           };
         });
 

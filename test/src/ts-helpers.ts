@@ -1,8 +1,8 @@
-import { default as tstpTransform, TransformerOptions } from "typescript-transform-paths";
-import fs from "fs";
-import type * as TS from "typescript";
-import type { CompilerOptions, ParsedCommandLine, Program, SourceFile } from "typescript";
-import * as tsNode from "ts-node";
+import { default as tstpTransform, TransformerOptions } from 'typescript-transform-paths';
+import fs from 'fs';
+import type * as TS from 'typescript';
+import type { CompilerOptions, ParsedCommandLine, Program, SourceFile } from 'typescript';
+import * as tsNode from 'ts-node';
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -116,9 +116,12 @@ export function createTsSolutionBuilder(
         customTransformers?: TS.CustomTransformers
       ): TS.EmitResult => {
         customTransformers = {
-          before: [ ...(customTransformers?.before ?? []), ...(transformers.before ?? []) ],
-          after: [ ...(customTransformers?.after ?? []), ...(transformers.after ?? []) ],
-          afterDeclarations: [ ...(customTransformers?.afterDeclarations ?? []), ...(transformers.afterDeclarations ?? []) ],
+          before: [...(customTransformers?.before ?? []), ...(transformers.before ?? [])],
+          after: [...(customTransformers?.after ?? []), ...(transformers.after ?? [])],
+          afterDeclarations: [
+            ...(customTransformers?.afterDeclarations ?? []),
+            ...(transformers.afterDeclarations ?? []),
+          ],
         };
 
         return originalEmit(targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, customTransformers);
@@ -137,9 +140,11 @@ export function createTsSolutionBuilder(
   host.readFile = (p: string, enc: any) => virtualFiles.get(p) ?? originalReadFile(p, enc);
   host.writeFile = (p: string, data: string) => virtualFiles.set(p, data);
 
- return Object.assign(ts.createSolutionBuilder(host, [projectDir], { force: true }), {
-   restoreTs: () => { ts.createProgram = originalCreateProgram; }
- });
+  return Object.assign(ts.createSolutionBuilder(host, [projectDir], { force: true }), {
+    restoreTs: () => {
+      ts.createProgram = originalCreateProgram;
+    },
+  });
 }
 
 /**
@@ -203,7 +208,7 @@ export function getTsNodeEmitResult(
     const res: EmittedFiles = {};
     for (const fileName of pcl.fileNames.filter((f) => !/\.d\.ts$/.test(f)))
       res[fileName] = <any>{
-        js: compiler.compile(fs.readFileSync(fileName, 'utf8'), fileName).replace(/\/\/# sourceMappingURL.+$/g, '')
+        js: compiler.compile(fs.readFileSync(fileName, 'utf8'), fileName).replace(/\/\/# sourceMappingURL.+$/g, ''),
       };
 
     return res;

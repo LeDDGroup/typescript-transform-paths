@@ -7,7 +7,7 @@ import { ut } from '../../src';
 const testRuns = ut.loadProject({
   projectName: 'specific',
   pluginOptions: { exclude: ['**/excluded/**', 'excluded-file.*'] },
-  useGroups: true
+  useGroups: true,
 });
 
 /* ****************************************************************************************************************** *
@@ -20,6 +20,6 @@ describe(`[Project: 'specific'] - Specific Test Cases`, () => {
       test.each(tests)(`%s`, (_, { expects }) => {
         expects.forEach((exp) => expect(exp).toResolve());
       });
-    })
+    });
   });
 });

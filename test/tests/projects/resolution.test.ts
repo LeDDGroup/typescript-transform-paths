@@ -8,8 +8,8 @@ const testRuns = ut.loadProject({
   projectName: 'resolution',
   useGroups: true,
   configs: ut.createConfigSpread({
-    outputIndexes: [ 'auto', 'never', 'always' ],
-    outputExtensions: [ 'auto', 'never', 'always' ]
+    outputIndexes: ['auto', 'never', 'always'],
+    outputExtensions: ['auto', 'never', 'always'],
   }),
 });
 

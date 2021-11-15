@@ -1,7 +1,7 @@
-import type TS from "typescript";
-import { VisitorContext } from "../types";
-import { elideImportOrExportClause } from "./elide-import-export";
-import { resolvePathAndUpdateNode } from "../resolve";
+import type TS from 'typescript';
+import { VisitorContext } from '../types';
+import { elideImportOrExportClause } from './elide-import-export';
+import { resolvePathAndUpdateNode } from '../resolve';
 import { copyNodeComments } from '../ts';
 
 /* ****************************************************************************************************************** *
@@ -17,7 +17,7 @@ const isAsyncImport = ({ tsInstance }: VisitorContext, node: TS.Node): node is T
 const isRequire = ({ tsInstance }: VisitorContext, node: TS.Node): node is TS.CallExpression =>
   tsInstance.isCallExpression(node) &&
   tsInstance.isIdentifier(node.expression) &&
-  node.expression.text === "require" &&
+  node.expression.text === 'require' &&
   tsInstance.isStringLiteral(node.arguments[0]) &&
   node.arguments.length === 1;
 

@@ -1,4 +1,4 @@
-import { TestDetail, UnderscoreTestContext } from "./types";
+import { TestDetail, UnderscoreTestContext } from './types';
 
 /* ****************************************************************************************************************** *
  * Locals
@@ -11,10 +11,7 @@ const defaultNonGroupedTag = 'General';
  * ****************************************************************************************************************** */
 
 export class TestMap extends Map<string, TestDetail> {
-  constructor(
-    private testContext: UnderscoreTestContext,
-    private nonGroupedTag: string = defaultNonGroupedTag
-  ) {
+  constructor(private testContext: UnderscoreTestContext, private nonGroupedTag: string = defaultNonGroupedTag) {
     super();
   }
 
@@ -31,11 +28,10 @@ export class TestMap extends Map<string, TestDetail> {
   }
 
   private getTestsWorker(groupName?: string) {
-    const res = Array.from(this.values())
-      .map((detail) => <const>[
-        typeof detail.label === "string" ? detail.label : detail.label(this.testContext.runConfig),
-        detail,
-      ]);
+    const res = Array.from(this.values()).map(
+      (detail) =>
+        <const>[typeof detail.label === 'string' ? detail.label : detail.label(this.testContext.runConfig), detail]
+    );
 
     return !groupName
       ? res
@@ -43,11 +39,10 @@ export class TestMap extends Map<string, TestDetail> {
   }
 
   getGroups(): (string | undefined)[] {
-    let res = Array.from(new Set([ ...this.values() ].map(t => t.config?.group || this.nonGroupedTag)))
-    if (envOptions.testGroups) res = res.filter(g => envOptions.testGroups!.includes(g.toLowerCase()));
+    let res = Array.from(new Set([...this.values()].map((t) => t.config?.group || this.nonGroupedTag)));
+    if (envOptions.testGroups) res = res.filter((g) => envOptions.testGroups!.includes(g.toLowerCase()));
     return res;
   }
-
 
   /* ********************************************************* *
    * Internal
@@ -62,15 +57,14 @@ export class TestMap extends Map<string, TestDetail> {
     for (const [key, test] of this.entries()) {
       if (!test.enabled) this.delete(key);
       else if (test.expects.length < 1)
-        throw new Error(
-          `No expects found for '${test.testName}' in ${test.sourceFile.fileName} in TS: ${tsLabel}`
-        );
+        throw new Error(`No expects found for '${test.testName}' in ${test.sourceFile.fileName} in TS: ${tsLabel}`);
     }
 
-    if (!this.size) throw new Error(
-      `No tests enabled for current configuration in TS: ${tsLabel}! \n` +
-      JSON.stringify(this.testContext.projectConfig, null, 2)
-    );
+    if (!this.size)
+      throw new Error(
+        `No tests enabled for current configuration in TS: ${tsLabel}! \n` +
+          JSON.stringify(this.testContext.projectConfig, null, 2)
+      );
 
     return this;
   }

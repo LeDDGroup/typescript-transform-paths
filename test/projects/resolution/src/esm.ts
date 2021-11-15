@@ -1,4 +1,4 @@
-import { _test_esm_reject_unmapped } from "../tests";
+import { _test_esm_reject_unmapped } from '../tests';
 
 /* ****************************************************************************************************************** *
  * Index
@@ -26,4 +26,3 @@ import { _test_esm_reject_unmapped } from "../tests";
 
 _expect(_test_esm_reject_unmapped);
 import '@external/esm/dir/main.js';
-

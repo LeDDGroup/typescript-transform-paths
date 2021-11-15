@@ -1,1 +1,1 @@
-export * from './load-project'
+export * from './load-project';

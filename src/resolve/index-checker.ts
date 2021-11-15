@@ -1,28 +1,27 @@
-import type TS from "typescript";
-import fs from "fs";
-import { isImplicitExtension, stripImplicitExtension } from "./extensions";
-import { dirName, normalizePath, relativePath, resolvePath } from "../utils";
+import type TS from 'typescript';
+import fs from 'fs';
+import { isImplicitExtension, stripImplicitExtension } from './extensions';
+import { dirName, normalizePath, relativePath, resolvePath } from '../utils';
 
 /* ****************************************************************************************************************** */
 // region: Types
 /* ****************************************************************************************************************** */
 
 export interface IndexDetail {
-  flags: IndexFlags
-  indexPath?: string
+  flags: IndexFlags;
+  indexPath?: string;
 }
 
 export enum IndexFlags {
   None,
   Implicit = 1 << 0,
   Package = 1 << 1,
-  Node = 1 << 2
+  Node = 1 << 2,
 }
 
-type PackageIndexInfo = { packageIndex: string, packageDir: string }
+type PackageIndexInfo = { packageIndex: string; packageDir: string };
 
 // endregion
-
 
 /* ****************************************************************************************************************** *
  * IndexChecker (class)
@@ -40,8 +39,8 @@ export class IndexChecker {
       if (suppliedBaseNameNoExt !== baseNameNoExt) flags |= IndexFlags.Implicit;
       return {
         indexPath: baseNameNoExt + (ext ?? ''),
-        flags
-      }
+        flags,
+      };
     }
 
     return { flags: IndexFlags.None };
@@ -67,7 +66,10 @@ export class IndexChecker {
         if (fileNameStrippedExt.slice(-matchedStar.length) !== matchedStar) flags |= IndexFlags.Implicit;
       } else {
         if (suppliedPackageName)
-          if (!suppliedPathStrippedExt || fileNameStrippedExt.slice(-suppliedPathStrippedExt.length) !== suppliedPathStrippedExt)
+          if (
+            !suppliedPathStrippedExt ||
+            fileNameStrippedExt.slice(-suppliedPathStrippedExt.length) !== suppliedPathStrippedExt
+          )
             flags |= IndexFlags.Implicit;
       }
 
@@ -103,7 +105,7 @@ export class IndexChecker {
         packageIndex = resolvePath(dir, packageIndex);
 
         const res = { packageDir: dir, packageIndex };
-        pathStack.forEach(p => this.packageMap.set(p, res));
+        pathStack.forEach((p) => this.packageMap.set(p, res));
 
         return res;
       }

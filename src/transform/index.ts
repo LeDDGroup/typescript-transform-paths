@@ -1,1 +1,1 @@
-export { transformer } from './transformer'
+export { transformer } from './transformer';

@@ -1,12 +1,19 @@
-import { ResolutionContext, VisitorContext } from "../types";
+import { ResolutionContext, VisitorContext } from '../types';
 import {
-  baseName, dirName, isBaseDir, isURL, joinPaths, maybeAddRelativeLocalPrefix, normalizeSlashes, relativePath,
-  removeSuffix
-} from "../utils";
-import { Node, Pattern, removeFileExtension, ResolvedModuleFull, SourceFile } from "typescript";
-import { getOutputPathForSourceFile, getOutputExtension } from "../ts";
-import { getOutputPathDetail, OutputPathDetail } from "./output-path-detail";
-import { IndexFlags } from "./index-checker";
+  baseName,
+  dirName,
+  isBaseDir,
+  isURL,
+  joinPaths,
+  maybeAddRelativeLocalPrefix,
+  normalizeSlashes,
+  relativePath,
+  removeSuffix,
+} from '../utils';
+import { Node, Pattern, removeFileExtension, ResolvedModuleFull, SourceFile } from 'typescript';
+import { getOutputPathForSourceFile, getOutputExtension } from '../ts';
+import { getOutputPathDetail, OutputPathDetail } from './output-path-detail';
+import { IndexFlags } from './index-checker';
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -64,7 +71,7 @@ function getReturnPath(ctx: GetReturnPathContext) {
     config: { outputExtensions, outputIndexes },
     compilerOptions,
     tsInstance,
-    isDeclarationFile
+    isDeclarationFile,
   } = ctx.visitorContext;
   const { suppliedExt, resolvedPath, isImplicitExtension, indexDetail, isExternalLibraryImport } = ctx.pathDetail ?? {};
 
@@ -98,7 +105,8 @@ function getReturnPath(ctx: GetReturnPathContext) {
   if (resolver) {
     const { moduleName, node, visitorContext, isURL, resolvedModule } = ctx;
     const { resolvedFileName, originalPath } = resolvedModule ?? {};
-    const { packageName, suppliedPackageName, tsPathsKey, packageFileName, isExternalLibraryImport } = ctx.pathDetail ?? {};
+    const { packageName, suppliedPackageName, tsPathsKey, packageFileName, isExternalLibraryImport } =
+      ctx.pathDetail ?? {};
 
     const resolutionContext: ResolutionContext = {
       moduleExtName: suppliedExt,
@@ -186,7 +194,8 @@ export function resolveModuleName(
     const { suppliedPackageName, suppliedPackagePath, indexDetail } = pathDetail;
 
     let outputPath = joinPaths(suppliedPackageName, suppliedPackagePath && removeFileExtension(suppliedPackagePath));
-    if (indexDetail.flags & IndexFlags.Implicit) outputPath = joinPaths(outputPath, removeFileExtension(indexDetail.indexPath!));
+    if (indexDetail.flags & IndexFlags.Implicit)
+      outputPath = joinPaths(outputPath, removeFileExtension(indexDetail.indexPath!));
 
     return getReturnPath({
       moduleName,
@@ -195,7 +204,7 @@ export function resolveModuleName(
       resolvedModule,
       resolvedSourceFile,
       pathDetail,
-      outputPath
+      outputPath,
     });
   }
 

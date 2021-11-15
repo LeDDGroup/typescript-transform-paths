@@ -1,1 +1,1 @@
-export { resolvePathAndUpdateNode } from './resolve-path-update-node'
+export { resolvePathAndUpdateNode } from './resolve-path-update-node';

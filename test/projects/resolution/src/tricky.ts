@@ -1,5 +1,4 @@
-import { _test_tricky } from "../tests";
-
+import { _test_tricky } from '../tests';
 
 // Path match to package in node_modules:
 // isExternalLibrary = true, package, submodule = index.d.ts
@@ -30,4 +29,4 @@ import { _test_tricky } from "../tests";
 // Failed to resolve
 // import '#internal/esm'
 
-import 'pkg/external'
+import 'pkg/external';

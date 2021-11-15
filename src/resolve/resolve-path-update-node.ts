@@ -1,9 +1,8 @@
-import type TS from "typescript";
-import { VisitorContext } from "../types";
-import { isURL, maybeAddRelativeLocalPrefix, normalizePath } from "../utils";
-import { resolveModuleName } from "./resolve-module-name";
-import { getTsPathsMatch } from "../ts";
-
+import type TS from 'typescript';
+import { VisitorContext } from '../types';
+import { isURL, maybeAddRelativeLocalPrefix, normalizePath } from '../utils';
+import { resolveModuleName } from './resolve-module-name';
+import { getTsPathsMatch } from '../ts';
 
 /* ****************************************************************************************************************** *
  * Node Updater Util
@@ -18,7 +17,12 @@ export function resolvePathAndUpdateNode(
   moduleName: string,
   updaterFn: (newPath: TS.StringLiteral) => TS.Node | undefined
 ): TS.Node | undefined {
-  const { sourceFile, tsInstance, factory, config: { outputExtensions, outputIndexes, usePaths } } = context;
+  const {
+    sourceFile,
+    tsInstance,
+    factory,
+    config: { outputExtensions, outputIndexes, usePaths },
+  } = context;
 
   /* Handle JSDoc statement tags */
   const tags = getStatementTags();
@@ -39,7 +43,7 @@ export function resolvePathAndUpdateNode(
   const pathsMatch = usePaths ? getTsPathsMatch(context, moduleName) : undefined;
 
   // Skip if possible
-  const canSkip = !pathsMatch && !context.resolver && outputIndexes !== "always" && outputExtensions !== "always";
+  const canSkip = !pathsMatch && !context.resolver && outputIndexes !== 'always' && outputExtensions !== 'always';
   if (canSkip) return node;
 
   // Resolve
@@ -78,11 +82,11 @@ export function resolvePathAndUpdateNode(
       for (let match = regex.exec(trivia); match; match = regex.exec(trivia)) commentTags.set(match[1], match[2]);
     } catch {}
 
-    const overridePath = findTag("transform-path");
-    const shouldSkip = findTag("no-transform-path");
+    const overridePath = findTag('transform-path');
+    const shouldSkip = findTag('no-transform-path');
 
     return {
-      overridePath: typeof overridePath === "string" ? overridePath : void 0,
+      overridePath: typeof overridePath === 'string' ? overridePath : void 0,
       shouldSkip: !!shouldSkip,
     };
 
@@ -92,7 +96,7 @@ export function resolvePathAndUpdateNode(
 
       for (const tag of jsDocTags) {
         const tagName = tag.tagName.text.toLowerCase();
-        if (tagName === expected) return typeof tag.comment === "string" ? tag.comment : true;
+        if (tagName === expected) return typeof tag.comment === 'string' ? tag.comment : true;
       }
     }
   }
