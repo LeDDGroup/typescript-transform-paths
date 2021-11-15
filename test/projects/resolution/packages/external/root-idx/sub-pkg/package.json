@@ -1,5 +1,5 @@
 {
-  "name": "sub-pkg",
+  "name": "@external/sub-pkg",
   "version": "0.0.0-alpha",
   "private": "true",
   "main": "main.js"

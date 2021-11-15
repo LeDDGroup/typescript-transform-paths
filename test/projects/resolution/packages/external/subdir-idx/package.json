@@ -1,5 +1,5 @@
 {
-  "name": "subdir-idx",
+  "name": "@external/subdir-idx",
   "version": "0.0.0",
   "private": "true",
   "main": "./subdir/main.js"
