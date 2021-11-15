@@ -1,25 +1,51 @@
-export { b } from "#root/dir/gen-file";
-export { a } from "#root/dir/src-file";
+import {
+  _test_async_import_comments,
+  _test_exclude,
+  _test_explicit_extensions,
+  _test_type_only_import,
+} from '../tests';
 
-import type { A as ATypeOnly } from "#root/dir/src-file";
+/* ********************************************************* *
+ * TypeOnly
+ * ********************************************************* */
+
+_expect(_test_type_only_import, { path: './general', for: 'dts' });
+_expect(_test_type_only_import, { elided: true, for: 'js' });
+import type { GeneralTypeA as ATypeOnly } from './general';
 export { ATypeOnly };
 
-import(/* webpackChunkName: "Comment" */ "#root/dir/src-file");
+/* ********************************************************* *
+ * Async Import Comments
+ * ********************************************************* */
+
+_expect(_test_async_import_comments, { path: './general', extraCheck: (c) => /^import\(\/\* w/.test(c), for: 'js' });
+import(/* webpackChunkName: "Comment" */ './general');
+
+_expect(_test_async_import_comments, { path: './general', extraCheck: (c) => /^import\(\s*\/\/ c/.test(c), for: 'js' });
 import(
   // comment 1
   /*
-  comment 2
-   */
-  "#root/dir/src-file"
+comment 2
+*/
+  './general'
 );
 
-export { bb } from "#exclusion/ex";
-export { dd } from "#root/excluded-file";
+/* ********************************************************* *
+ * Exclusion
+ * ********************************************************* */
 
-export { JsonValue } from "#root/data.json";
-export { GeneralConstA } from "#root/general";
-export { GeneralConstB } from "#root/general.js";
+_expect(_test_exclude);
+export { bb } from '#exclusion/ex';
 
-export const b1 = 3;
+_expect(_test_exclude);
+export { dd } from '#root/excluded-file';
 
-export { ConstB } from "#elision";
+/* ********************************************************* *
+ * Explicit Extensions
+ * ********************************************************* */
+
+_expect(_test_explicit_extensions, { path: './data.json' });
+export { JsonValue } from '#root/data.json';
+
+_expect(_test_explicit_extensions, { path: './general.js' });
+export { GeneralConstB } from '#root/general.js';

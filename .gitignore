@@ -1,5 +1,6 @@
 # Yarn
 .yarn-cache
+./test/yarn.lock
 
 # Built
 *.js.map

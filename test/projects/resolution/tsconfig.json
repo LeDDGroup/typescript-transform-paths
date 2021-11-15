@@ -1,0 +1,25 @@
+{
+  "include": [ "src", "packages/internal", "tests.ts" ],
+
+  "compilerOptions": {
+    "noEmit": true,
+
+    "rootDir": ".",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "declaration": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "#root/*": [ "./src/*" ],
+      "#internal/*": [ "./packages/internal/*" ],
+      "#ext-root-idx-pkg": [ "../../node_modules/@external/root-idx" ],
+      "#ext-root-idx-pkg/*": [ "../../node_modules/@external/root-idx/*" ],
+      "#ext-root-named-idx-pkg": [ "../../node_modules/@external/root-named-idx" ],
+      "#ext-esm": [ "../../node_modules/@external/esm" ],
+      "#ext-esm/*": [ "../../node_modules/@external/esm/*" ],
+      "pkg/*": [ "./packages/*/root-idx" ]
+    }
+  }
+}

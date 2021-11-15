@@ -1,11 +1,11 @@
 {
   "extends": "./tsconfig.base",
   "include": [ "src" ],
-  "exclude": [ "src/declarations" ],
 
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "declaration": true
+    "declaration": true,
+    "stripInternal": true
   }
 }

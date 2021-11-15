@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "@tests/resolution",
+  "version": "0.0.0",
+  "dependencies": {
+    "@external/root-idx": "link:./packages/external/root-idx",
+    "@external/subdir-idx": "link:./packages/external/subdir-idx",
+    "@external/root-named-idx": "link:./packages/external/root-named-idx",
+    "@external/esm": "link:./packages/external/esm"
+  }
+}

@@ -1,2 +1,2 @@
 export type TypeA = string;
-export const ConstB = "hello";
+export const ConstB = 'hello';

@@ -1,10 +1,13 @@
 {
   "extends": "../tsconfig.base",
-  "include": [ "tests", "utils" ],
+  "include": [ "tests", "src" ],
+  "exclude": [ "src/ut-global" ],
 
   "compilerOptions": {
     "noEmit": true,
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
   }
 }

@@ -1,5 +1,5 @@
 {
-  "include": [ "src", "generated" ],
+  "include": [ "src", "tests.ts" ],
 
   "compilerOptions": {
     "noEmit": true,
@@ -10,15 +10,12 @@
     "moduleResolution": "node",
     "declaration": true,
 
-    "rootDirs": [ "src", "generated" ],
-
     "baseUrl": ".",
     "paths": {
-      "#root/*": [ "./src/*", "./generated/*" ],
+      "#root/*": [ "./src/*" ],
       "#exclusion/*": [ "./src/excluded/*" ],
       "#elision": [ "./src/type-elision" ],
-      "#elision/*": [ "./src/type-elision/*" ],
-      "#packages/*": [ "./src/packages/*" ]
+      "#elision/*": [ "./src/type-elision/*" ]
     },
     "resolveJsonModule": true
   }

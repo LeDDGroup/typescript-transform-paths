@@ -1,0 +1,7 @@
+{
+  "include": [ "globals.d.ts" ],
+  "compilerOptions": {
+    "types": [],
+    "typeRoots": []
+  }
+}
