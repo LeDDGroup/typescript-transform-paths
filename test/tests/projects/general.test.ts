@@ -26,6 +26,7 @@ const makeRelative = (tsInstance: typeof TS, fileName: string, p: string, rootDi
 
 const getExpected = (tsInstance: typeof TS, fileName: string, original: string, rootDir: string): string =>
   original
+    .replace(/'/g, '"')
     .replace(/"@(.*)"/g, (_, p) => makeRelative(tsInstance, fileName, p, rootDir))
     .replace(/"#utils\/(.*)"/g, (_, p) =>
       makeRelative(tsInstance, fileName, path.join(p === 'hello' ? 'secondary' : 'utils', p), rootDir)
@@ -77,7 +78,9 @@ describe(`[Project: 'general'] - General Tests`, () => {
         let transformed: EmittedFiles[string];
 
         beforeAll(() => {
-          transformed = transformedFiles[file];
+          transformed = transformedFiles[file]
+          transformed.js = transformed.js.replace(/'/g, '"');
+          transformed.dts = transformed.dts?.replace(/'/g, '"');
           expected = {
             js: getExpected(ts, file, originalFiles[file].js, projectRoot),
             ...(!skipDts && { dts: getExpected(ts, file, originalFiles[file].dts!, projectRoot) }),
