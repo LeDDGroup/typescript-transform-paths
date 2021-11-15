@@ -64,7 +64,7 @@
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.1",
     "ts-jest": "^27.0.4",
-    "ts-node": "^10.1.0",
+    "ts-node": "^10.4.0",
     "ts-patch": "^1.4.4",
     "ts3": "npm:typescript@3.7.7",
     "ts45": "npm:typescript@4.5.0-beta",

@@ -7,5 +7,4 @@ try {
   );
 }
 
-tsNode.register();
 require('./').nodeRegister();

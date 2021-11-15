@@ -60,6 +60,7 @@ describe(`[Compatibility: ts-node] Register script`, () => {
         registerSpy?.mockRestore();
       }
     });
+
     test(`Uses existing ts-node if found`, () => {
       const fakeInstance: any = {};
 
@@ -172,7 +173,7 @@ describe(`[Compatibility: ts-node] Register script`, () => {
           });
 
           const originalTsNodeInstance = global.process[instanceSymbol];
-          registerResult = nodeRegister()!;
+          registerResult = nodeRegister()!.options;
           instanceRegistrationResult = global.process[instanceSymbol]!;
           global.process[instanceSymbol] = originalTsNodeInstance;
 

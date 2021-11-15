@@ -68,7 +68,7 @@ export function mergeTransformers(
 // region: TsNode Registration Utility
 /* ****************************************************************************************************************** */
 
-export function nodeRegister(): TSNode.RegisterOptions | undefined {
+export function nodeRegister(): TSNode.Service | undefined {
   const { tsNodeInstance, tsNode } = nodeRegister.initialize();
 
   const transformerConfig = getProjectTransformerConfig(tsNodeInstance.config);
@@ -96,8 +96,7 @@ export function nodeRegister(): TSNode.RegisterOptions | undefined {
   }
 
   // Re-register with new transformers
-  tsNode.register(registerOptions);
-  return registerOptions;
+  return tsNode.register(registerOptions);
 }
 
 export namespace nodeRegister {
