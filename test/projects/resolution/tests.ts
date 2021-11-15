@@ -14,11 +14,6 @@ export const _test_external_package_index = _test({
 
 export const _test_local_index = _test(`Local index resolves properly`);
 
-export const _test_esm_index = _test({
-  label: `Resolves index`,
-  group: 'ESM'
-});
-
 // Not supported pre 4.5 - maybe supported after?
 
 // export const _test_esm_synthetic_path = _test({
@@ -31,6 +26,13 @@ export const _test_esm_reject_unmapped = _test({
   group: 'ESM',
   if: () => false
 });
+
+// --- TODO ----
+
+// export const _test_esm_index = _test({
+//   label: `Resolves index`,
+//   group: 'ESM'
+// });
 
 // export const _test_tricky = _test({
 //   label: 'Tricky'

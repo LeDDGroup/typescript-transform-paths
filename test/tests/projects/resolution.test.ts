@@ -7,14 +7,10 @@ import { ut } from '../../src';
 const testRuns = ut.loadProject({
   projectName: 'resolution',
   useGroups: true,
-  // configs: ut.createConfigSpread({
-  //   outputIndexes: [ 'auto', 'never', 'always' ],
-  //   outputExtensions: [ 'auto', 'never', 'always' ]
-  // })
   configs: ut.createConfigSpread({
-    outputIndexes: 'always',
+    outputIndexes: [ 'auto', 'never', 'always' ],
     outputExtensions: [ 'auto', 'never', 'always' ]
-  })
+  }),
 });
 
 /* ****************************************************************************************************************** *

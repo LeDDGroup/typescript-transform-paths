@@ -1,11 +1,12 @@
-import { _test_esm_index, _test_esm_reject_unmapped } from "../tests";
+import { _test_esm_reject_unmapped } from "../tests";
 
 /* ****************************************************************************************************************** *
  * Index
  * ****************************************************************************************************************** */
+// TODO - Implicit indexes are more tricky with ESM and are not presently supported
 
-_expect(_test_esm_index, _expect.index('@external/esm', 'dir/main'));
-import '@external/esm';
+// _expect(_test_esm_index, _expect.index('@external/esm', 'dir/main'));
+// import '@external/esm';
 
 /* ****************************************************************************************************************** *
  * Synthetic Paths

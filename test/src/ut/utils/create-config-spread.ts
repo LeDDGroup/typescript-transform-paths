@@ -30,5 +30,7 @@ export function createConfigSpread(config: SpreadableConfig) {
     }
   }
 
+  if (!res.length) res.push(staticProps);
+
   return res;
 }

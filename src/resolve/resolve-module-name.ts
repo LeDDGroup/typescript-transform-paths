@@ -86,7 +86,7 @@ function getReturnPath(ctx: GetReturnPathContext) {
         (indexDetail.flags & ~IndexFlags.Implicit && outputIndexes === 'never')
       ) {
         const indexPath = isExternalLibraryImport
-          ? baseName(indexDetail.indexPath!, true)
+          ? removeFileExtension(indexDetail.indexPath!)
           : normalizeSlashes(removeFileExtension(indexDetail.indexPath!), { removeTrailingSlash: true });
         res = normalizeSlashes(removeSuffix(res, indexPath), { removeTrailingSlash: true });
         usesStrippedIndex = true;
@@ -186,7 +186,7 @@ export function resolveModuleName(
     const { suppliedPackageName, suppliedPackagePath, indexDetail } = pathDetail;
 
     let outputPath = joinPaths(suppliedPackageName, suppliedPackagePath && removeFileExtension(suppliedPackagePath));
-    if (indexDetail.flags & IndexFlags.Implicit) outputPath = joinPaths(outputPath, baseName(indexDetail.indexPath!, true));
+    if (indexDetail.flags & IndexFlags.Implicit) outputPath = joinPaths(outputPath, removeFileExtension(indexDetail.indexPath!));
 
     return getReturnPath({
       moduleName,
