@@ -54,7 +54,7 @@ import { sum } from "@utils/sum";
 - **To compile with `tsc`** — Use [ts-patch](https://github.com/nonara/ts-patch)
 
 
-- **To use with ts-node** — Add `typescript-trasnsform-paths/register` to `require` config.  
+- **To use with ts-node** — Add `typescript-transform-paths/register` to `require` config.  
    
     `tsconfig.json`
   ```jsonc
