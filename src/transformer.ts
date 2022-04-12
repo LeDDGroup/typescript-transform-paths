@@ -62,7 +62,9 @@ export default function transformer(
     fileNames?: string[];
   }
 ) {
-  return (transformationContext: ts.TransformationContext) => {
+  const transformerFactory: ts.TransformerFactory<ts.SourceFile> = (
+    transformationContext: ts.TransformationContext
+  ) => {
     // prettier-ignore
     const {
       tsInstance,
@@ -128,6 +130,7 @@ export default function transformer(
       return tsInstance.visitEachChild(sourceFile, visitorContext.getVisitor(), transformationContext);
     };
   };
+  return transformerFactory;
 }
 
 // endregion

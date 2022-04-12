@@ -1,5 +1,6 @@
 import TSNode from 'ts-node'
 import ts from 'typescript'
+import { NXTransformerPlugin } from '../src/nxTransformerPlugin';
 
 /* ****************************************************************************************************************** *
  * Hardcoded declarations file for npm package
@@ -8,6 +9,7 @@ import ts from 'typescript'
 export interface TsTransformPathsConfig {
   readonly useRootDirs?: boolean;
   readonly exclude?: string[];
+  readonly before?: boolean;
   readonly afterDeclarations?: boolean;
   readonly tsConfig?: string;
   readonly transform?: string
@@ -34,3 +36,5 @@ export default function transformer(
     fileNames?: string[];
   }
 ): ts.CustomTransformer
+
+export const nxTransformerPlugin: NXTransformerPlugin
