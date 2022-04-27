@@ -1,0 +1,17 @@
+{
+  "name": "nx",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "nx build library1"
+  },
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@nrwl/cli": "^14.0.3",
+    "@nrwl/js": "^14.0.3",
+    "@nrwl/node": "^14.0.3",
+    "@nrwl/workspace": "^14.0.3",
+    "nx": "^14.0.3",
+    "typescript-transform-paths": "link:../../../"
+  }
+}

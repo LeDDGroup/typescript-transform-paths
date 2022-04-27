@@ -1,0 +1,31 @@
+{
+  "root": "packages/library1",
+  "sourceRoot": "packages/library1/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/library1",
+        "main": "packages/library1/src/index.ts",
+        "outputFileName": "index.js",
+        "tsConfig": "packages/library1/tsconfig.lib.json",
+        "sourceMap": false,
+        "transformers": [
+          {
+            "name": "typescript-transform-paths/nxTransformerPlugin",
+            "options": {
+              "afterDeclarations": true
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+      ]
+    }
+  },
+  "tags": [ ]
+}
