@@ -237,6 +237,13 @@ describe(`Specific Tests`, () => {
       );
     });
 
+    (!skipDts && tsVersion >= 38 ? test : test.skip)(`Resolves nested imports`, () => {
+      expect(subPackagesFile).transformedMatches(
+        `export declare type ImportWithChildren = import("./packages/pkg-a").PassThru<import("./packages/pkg-b").PackageBType>`,
+        { kind: ["dts"] }
+      );
+    });
+
     (!skipDts ? test : test.skip)(`Resolves module augmentation`, () => {
       expect(moduleAugmentFile).transformedMatches(`declare module "./general" {`, { kind: ["dts"] });
       expect(moduleAugmentFile).transformedMatches(`declare module "./excluded-file" {`, { kind: ["dts"] });

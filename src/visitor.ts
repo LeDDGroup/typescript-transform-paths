@@ -60,6 +60,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
           );
         tsInstance.addSyntheticLeadingComment(p, kind, caption, hasTrailingNewLine);
       }
+
       return res;
     });
 
@@ -77,6 +78,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    * Update ImportTypeNode
    *
    * typeof import("./bar");
+   * import ("package").MyType;
    */
   if (tsInstance.isImportTypeNode(node)) {
     const argument = node.argument as ts.LiteralTypeNode;
@@ -85,7 +87,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
     const { text } = argument.literal;
     if (!text) return node;
 
-    return resolvePathAndUpdateNode(this, node, text, (p) =>
+    const res = resolvePathAndUpdateNode(this, node, text, (p) =>
       factory.updateImportTypeNode(
         node,
         factory.updateLiteralTypeNode(argument, p),
@@ -95,6 +97,8 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
         node.isTypeOf
       )
     );
+
+    return tsInstance.visitEachChild(res, this.getVisitor(), transformationContext);
   }
 
   /**
