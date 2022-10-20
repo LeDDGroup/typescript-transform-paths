@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.3.1...v3.4.0) (2022-10-20)
+
+
+### Features
+
+* Added NX Transformer ([6619164](https://github.com/LeDDGroup/typescript-transform-paths/commit/66191641bcd023464198b1974a6c351c831dc803))
+* Updated library to support latest TypeScript & ts-node ([cbeb29c](https://github.com/LeDDGroup/typescript-transform-paths/commit/cbeb29cd3a62c205d7116a0ee5f0120d1696bd68))
+
+
+### Bug Fixes
+
+* Fixed incorrect signature return type for transformer (fixes [#156](https://github.com/LeDDGroup/typescript-transform-paths/issues/156)) ([a40b378](https://github.com/LeDDGroup/typescript-transform-paths/commit/a40b3785b61894f6f37b48018a00101ee27bcb09))
+
 ### [3.3.1](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.3.0...v3.3.1) (2021-08-16)
 
 
