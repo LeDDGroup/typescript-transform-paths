@@ -25,10 +25,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Setup Node.js 14.x to publish to npmjs.org
+      - name: Setup Node.js 18.x to publish to npmjs.org
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Packages
