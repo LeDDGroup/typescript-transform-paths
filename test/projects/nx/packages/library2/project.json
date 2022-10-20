@@ -1,0 +1,8 @@
+{
+  "root": "packages/library2",
+  "sourceRoot": "packages/library2/src",
+  "projectType": "library",
+  "targets": {
+  },
+  "tags": []
+}

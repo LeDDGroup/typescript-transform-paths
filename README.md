@@ -51,10 +51,10 @@ import { sum } from "@utils/sum";
 
 ### 3. Usage
 
-- **To compile with `tsc`** — Use [ts-patch](https://github.com/nonara/ts-patch)
+- **Compile with `tsc`** — Use [ts-patch](https://github.com/nonara/ts-patch)
 
 
-- **To use with ts-node** — Add `typescript-transform-paths/register` to `require` config.  
+- **Use with ts-node** — Add `typescript-transform-paths/register` to `require` config.  
    
     `tsconfig.json`
   ```jsonc
@@ -67,7 +67,30 @@ import { sum } from "@utils/sum";
   }
   ```
 
-- **To use with node** — Use the register script: `node -r typescript-transform-paths/register src/index.ts`
+- **Use with node** — Use the register script: `node -r typescript-transform-paths/register src/index.ts`
+
+- **Use with NX** — Add the `typescript-transform-paths/nx-transformer` to project config
+
+  `project.json`
+  ```jsonc
+  {
+    /* ... */
+    "targets": {
+      "build": {
+        /* ... */
+        "options": {
+          /* ... */
+          "transformers": [
+            { 
+              name": "typescript-transform-paths/nx-transformer",
+              "options": { "afterDeclarations": true }
+            }
+          ]
+        }
+      }
+    }
+  }
+  ```
 
 ## Virtual Directories
 TS allows defining

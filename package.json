@@ -11,12 +11,12 @@
     "release": "standard-version",
     "--------------": "",
     "format": "prettier --write \"{src,test}/**/{*.js,!(*.d).ts}\"",
-    "clean": "rimraf dist **/*.tsbuildinfo",
-    "clean:all": "yarn run clean && rimraf node_modules test/node_modules test/.yarn-cache",
+    "clean": "npx -y rimraf dist **/*.tsbuildinfo ./test/projects/nx/dist",
+    "clean:all": "yarn run clean && npx -y rimraf node_modules **/node_modules **/yarn.lock yarn.lock",
     "reset": "yarn run clean:all && yarn install",
     "-------------- ": "",
     "prebuild": "rimraf dist",
-    "install:tests": "cd test && yarn install && cd projects/extras && yarn install",
+    "install:tests": "cd test && yarn install",
     "prepare": "yarn run install:tests"
   },
   "keywords": [
@@ -48,7 +48,8 @@
     "types",
     "README.md",
     "CHANGELOG.md",
-    "register.js"
+    "register.js",
+    "nxTransformerPlugin.js"
   ],
   "devDependencies": {
     "@types/jest": "^29.2.0",

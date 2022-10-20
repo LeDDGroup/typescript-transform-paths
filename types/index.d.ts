@@ -34,3 +34,20 @@ export default function transformer(
     fileNames?: string[];
   }
 ): ts.CustomTransformer
+
+
+/* ****************************************************************************************************************** *
+ * NX
+ * ****************************************************************************************************************** */
+
+export type NxTransformerFactory = (
+  config?: Omit<TsTransformPathsConfig, "transform">,
+  program?: ts.Program
+) => ts.TransformerFactory<ts.SourceFile>;
+
+export interface NxTransformerPlugin {
+  before: NxTransformerFactory;
+  afterDeclarations: NxTransformerFactory;
+}
+
+export const nxTransformerPlugin: NxTransformerPlugin
