@@ -15,7 +15,7 @@
     "clean:all": "yarn run clean && npx -y rimraf node_modules **/node_modules **/yarn.lock yarn.lock",
     "reset": "yarn run clean:all && yarn install",
     "-------------- ": "",
-    "prebuild": "rimraf dist",
+    "prebuild": "npx -y rimraf dist",
     "install:tests": "cd test && yarn install",
     "prepare": "yarn run install:tests"
   },
