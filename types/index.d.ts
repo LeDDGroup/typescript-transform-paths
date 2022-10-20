@@ -33,7 +33,7 @@ export default function transformer(
     compilerOptions?: ts.CompilerOptions;
     fileNames?: string[];
   }
-): ts.CustomTransformer
+): ts.CustomTransformerFactory
 
 
 /* ****************************************************************************************************************** *
