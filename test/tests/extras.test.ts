@@ -34,7 +34,7 @@ describe(`Extra Tests`, () => {
     });
 
     test(`Register script transforms with ts-node`, () => {
-      const res = execSync("ts-node src/index.ts", { cwd: projectRoot }).toString();
+      const res = execSync("npx ts-node src/index.ts", { cwd: projectRoot }).toString();
       expect(res).toMatch(/^null($|\r?\n)/);
     });
   });

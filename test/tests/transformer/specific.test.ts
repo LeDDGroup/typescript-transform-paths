@@ -189,7 +189,7 @@ describe(`Specific Tests`, () => {
         kind: ["js"],
       });
       expect(indexFile).transformedMatches(
-        /\/\/ comment 1\r?\n\s*\r?\n\/\*\r?\n\s*comment 2\r?\n\s*\*\/\r?\n\s*"\.\/dir\/src-file"/,
+        /\/\/ comment 1\r?\n\s*\/\*\r?\n\s*comment 2\r?\n\s*\*\/\r?\n\s*"\.\/dir\/src-file"/,
         { kind: ["js"] }
       );
     });

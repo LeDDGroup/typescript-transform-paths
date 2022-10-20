@@ -7,8 +7,9 @@
   "devDependencies": {
     "typescript-transform-paths": "link:../src",
     "ts-expose-internals": "^4.1.2",
-    "typescript": "npm:typescript@latest",
     "typescript-three": "npm:typescript@3.6.5",
+    "typescript-four-seven": "npm:typescript@4.7.4",
+    "typescript": "latest",
     "ts-patch": "link:../node_modules/ts-patch"
   },
   "workspaces": [

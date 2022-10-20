@@ -14,10 +14,10 @@
     },
     "plugins": [
       {
-        "transform": "./src/index.ts",
+        "transform": "../../../../src/index.ts",
       },
       {
-        "transform": "./src/index.ts",
+        "transform": "../../../../src/index.ts",
         "afterDeclarations": true
       }
     ]

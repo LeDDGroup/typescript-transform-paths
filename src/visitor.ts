@@ -48,7 +48,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
 
         const caption = textNode
           .getFullText()
-          .substr(pos, end)
+          .substring(pos, end)
           .replace(
             /* searchValue */ kind === tsInstance.SyntaxKind.MultiLineCommentTrivia
               ? // Comment range in a multi-line comment with more than one line erroneously
@@ -89,6 +89,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
       factory.updateImportTypeNode(
         node,
         factory.updateLiteralTypeNode(argument, p),
+        node.assertions,
         node.qualifier,
         node.typeArguments,
         node.isTypeOf
@@ -111,7 +112,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
         importClause = updatedImportClause;
       }
 
-      return factory.updateImportDeclaration(node, node.decorators, node.modifiers, importClause, p);
+      return factory.updateImportDeclaration(node, node.modifiers, importClause, p, node.assertClause);
     });
 
   /**
@@ -129,7 +130,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
         exportClause = updatedExportClause;
       }
 
-      return factory.updateExportDeclaration(node, node.decorators, node.modifiers, node.isTypeOnly, exportClause, p);
+      return factory.updateExportDeclaration(node, node.modifiers, node.isTypeOnly, exportClause, p, node.assertClause);
     });
 
   /**
@@ -137,7 +138,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    */
   if (tsInstance.isModuleDeclaration(node) && tsInstance.isStringLiteral(node.name))
     return resolvePathAndUpdateNode(this, node, node.name.text, (p) =>
-      factory.updateModuleDeclaration(node, node.decorators, node.modifiers, p, node.body)
+      factory.updateModuleDeclaration(node, node.modifiers, p, node.body)
     );
 
   return tsInstance.visitEachChild(node, this.getVisitor(), transformationContext);

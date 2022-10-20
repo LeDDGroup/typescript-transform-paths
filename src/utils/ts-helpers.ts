@@ -26,7 +26,11 @@ export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: S
   const outputPath =
     sourceFile.path && sourceFile.resolvedPath && sourceFile.path !== sourceFile.resolvedPath
       ? sourceFile.resolvedPath
-      : getOwnEmitOutputFilePath(sourceFile.fileName, emitHost, getOutputExtension(sourceFile, compilerOptions));
+      : getOwnEmitOutputFilePath(
+          sourceFile.fileName,
+          emitHost,
+          getOutputExtension(sourceFile.fileName, compilerOptions)
+        );
 
   if (!outputPath)
     throw new Error(

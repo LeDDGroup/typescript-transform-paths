@@ -2,7 +2,8 @@ export { b } from "#root/dir/gen-file";
 export { a } from "#root/dir/src-file";
 
 import type { A as ATypeOnly } from "#root/dir/src-file";
-export { ATypeOnly };
+import type ATypeOnlyDefault from "#root/dir/src-file";
+export { ATypeOnly, ATypeOnlyDefault };
 
 import(/* webpackChunkName: "Comment" */ "#root/dir/src-file");
 import(
