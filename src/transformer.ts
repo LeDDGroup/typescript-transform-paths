@@ -1,6 +1,6 @@
 import path from "path";
 import ts, { CompilerOptions } from "typescript";
-import { RunMode, TsTransformPathsConfig, TsTransformPathsContext, VisitorContext } from "./types";
+import { RunMode, TsNodeState, TsTransformPathsConfig, TsTransformPathsContext, VisitorContext } from "./types";
 import { nodeVisitor } from "./visitor";
 import { createHarmonyFactory } from "./harmony";
 import { Minimatch } from "minimatch";
@@ -16,6 +16,7 @@ function getTsProperties(args: Parameters<typeof transformer>) {
   let fileNames: readonly string[] | undefined;
   let compilerOptions: CompilerOptions;
   let runMode: RunMode;
+  let tsNodeState: TsNodeState | undefined;
 
   const { 0: program, 2: extras, 3: manualTransformOptions } = args;
 
@@ -25,13 +26,11 @@ function getTsProperties(args: Parameters<typeof transformer>) {
 
   /* Determine RunMode & Setup */
   // Note: ts-node passes a Program with the paths property stripped, so we do some comparison to determine if it's the caller
-  const maybeIsTsNode =
-    tsNodeProps &&
-    (!program ||
-      (compilerOptions!.configFilePath === tsNodeProps.compilerOptions.configFilePath && !compilerOptions!.paths));
+  const isTsNode =
+    tsNodeProps && (!program || compilerOptions!.configFilePath === tsNodeProps.compilerOptions.configFilePath);
 
   // RunMode: Program
-  if (program && !maybeIsTsNode) {
+  if (program && !isTsNode) {
     runMode = RunMode.Program;
     compilerOptions = compilerOptions!;
   }
@@ -42,10 +41,24 @@ function getTsProperties(args: Parameters<typeof transformer>) {
     compilerOptions = manualTransformOptions.compilerOptions!;
   }
   // RunMode: TsNode
-  else if (maybeIsTsNode) {
-    runMode = RunMode.TsNode;
+  else if (isTsNode) {
     fileNames = tsNodeProps.fileNames;
-    compilerOptions = tsNodeProps.compilerOptions;
+    runMode = RunMode.TsNode;
+
+    tsNodeState =
+      !program ||
+      (fileNames.length > 1 && program?.getRootFileNames().length === 1) ||
+      (!compilerOptions!.paths && tsNodeProps!.compilerOptions.paths)
+        ? TsNodeState.Stripped
+        : TsNodeState.Full;
+
+    compilerOptions =
+      tsNodeState === TsNodeState.Full
+        ? compilerOptions!
+        : {
+            ...(program?.getCompilerOptions() ?? {}),
+            ...tsNodeProps!.compilerOptions,
+          };
   } else {
     throw new Error(
       `Cannot transform without a Program, ts-node instance, or manual parameters supplied. ` +
@@ -53,7 +66,7 @@ function getTsProperties(args: Parameters<typeof transformer>) {
     );
   }
 
-  return { tsInstance, compilerOptions, fileNames, runMode };
+  return { tsInstance, compilerOptions, fileNames, runMode, tsNodeState };
 }
 
 // endregion
@@ -80,7 +93,8 @@ export default function transformer(
       tsInstance,
       compilerOptions,
       fileNames,
-      runMode
+      runMode,
+      tsNodeState
     } = getTsProperties([ program, pluginConfig, transformerExtras, manualTransformOptions ]);
 
     const rootDirs = compilerOptions.rootDirs?.filter(path.isAbsolute);
@@ -89,14 +103,12 @@ export default function transformer(
 
     /* Add supplements for various run modes */
     let emitHost = transformationContext.getEmitHost();
-    if (!emitHost) {
+    if (!emitHost || tsNodeState === TsNodeState.Stripped) {
       if (!fileNames)
         throw new Error(
           `No EmitHost found and could not determine files to be processed. Please file an issue with a reproduction!`
         );
       emitHost = createSyntheticEmitHost(compilerOptions, tsInstance, getCanonicalFileName, fileNames as string[]);
-    } else if (runMode === RunMode.TsNode) {
-      Object.assign(emitHost, { getCompilerOptions: () => compilerOptions });
     }
 
     /* Create Visitor Context */
@@ -117,6 +129,7 @@ export default function transformer(
       tsVersionMinor,
       emitHost,
       runMode,
+      tsNodeState,
       excludeMatchers: config.exclude?.map((globPattern) => new Minimatch(globPattern, { matchBase: true })),
       outputFileNamesCache: new Map(),
       // Get paths patterns appropriate for TS compiler version

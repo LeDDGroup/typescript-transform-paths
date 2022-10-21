@@ -36,6 +36,7 @@ export interface TsTransformPathsContext {
   readonly tsVersionMinor: number;
   readonly tsFactory?: ts.NodeFactory;
   readonly runMode: RunMode;
+  readonly tsNodeState?: TsNodeState;
   readonly program?: ts.Program;
   readonly config: TsTransformPathsConfig;
   readonly compilerOptions: CompilerOptions;
@@ -66,6 +67,11 @@ export enum RunMode {
   TsNode = "ts-node",
   Manual = "manual",
   Program = "program",
+}
+
+export enum TsNodeState {
+  Full,
+  Stripped,
 }
 
 // endregion

@@ -2,12 +2,12 @@
   "include": [ "src" ],
 
   "ts-node": {
-    "transpileOnly": true,
     "require": [ "typescript-transform-paths/register" ]
   },
 
   "compilerOptions": {
     "noEmit": true,
+    "outDir": "dist",
 
     "rootDir": ".",
     "module": "CommonJS",
