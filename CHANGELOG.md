@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.3](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.2...v3.4.3) (2022-10-21)
+
+
+### Bug Fixes
+
+* More edge cases in ts-node (fixes [#163](https://github.com/LeDDGroup/typescript-transform-paths/issues/163)) ([b297431](https://github.com/LeDDGroup/typescript-transform-paths/commit/b297431b5bd88a9b9dce449ded9a241857aaf5c6))
+
 ### [3.4.2](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.1...v3.4.2) (2022-10-21)
 
 
