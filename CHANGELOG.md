@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.2](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.1...v3.4.2) (2022-10-21)
+
+
+### Bug Fixes
+
+* Edge cases exist which causes ts-node to fail with register script (fixes [#162](https://github.com/LeDDGroup/typescript-transform-paths/issues/162)) ([0dbe06e](https://github.com/LeDDGroup/typescript-transform-paths/commit/0dbe06efbf659f8d67df22d25296930f4ecd203f))
+
 ### [3.4.1](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.0...v3.4.1) (2022-10-20)
 
 
