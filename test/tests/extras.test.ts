@@ -43,6 +43,6 @@ describe(`Extra Tests`, () => {
         const res = execSync("npx ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString();
         expect(res).toMatch(/^null($|\r?\n)/);
       });
-    })
+    });
   });
 });
