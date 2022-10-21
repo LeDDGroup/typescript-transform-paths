@@ -33,9 +33,16 @@ describe(`Extra Tests`, () => {
       }
     });
 
-    test(`Register script transforms with ts-node`, () => {
-      const res = execSync("npx ts-node src/index.ts", { cwd: projectRoot }).toString();
-      expect(res).toMatch(/^null($|\r?\n)/);
-    });
+    describe(`ts-node register script`, () => {
+      test(`Works with --transpileOnly`, () => {
+        const res = execSync("npx ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString();
+        expect(res).toMatch(/^null($|\r?\n)/);
+      });
+
+      test(`Works with --typeCheck`, () => {
+        const res = execSync("npx ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString();
+        expect(res).toMatch(/^null($|\r?\n)/);
+      });
+    })
   });
 });

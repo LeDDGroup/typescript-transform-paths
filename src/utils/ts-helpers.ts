@@ -100,7 +100,7 @@ export function getTsNodeRegistrationProperties(tsInstance: typeof ts) {
   const fileNames = pcl?.fileNames || config.fileNames;
   const compilerOptions = Object.assign(config.options, options.compilerOptions, { outDir: pcl?.options.outDir });
 
-  return { compilerOptions, fileNames };
+  return { compilerOptions, fileNames, tsNodeOptions: options };
 }
 
 // endregion
