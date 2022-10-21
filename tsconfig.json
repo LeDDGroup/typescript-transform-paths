@@ -6,6 +6,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "declaration": true
+    "declaration": true,
+    "sourceMap": true
   }
 }
