@@ -49,7 +49,7 @@
     "README.md",
     "CHANGELOG.md",
     "register.js",
-    "nxTransformerPlugin.js"
+    "nx-transformer.js"
   ],
   "devDependencies": {
     "@types/jest": "^29.2.0",
