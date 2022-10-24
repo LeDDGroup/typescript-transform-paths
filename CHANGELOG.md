@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.4](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.3...v3.4.4) (2022-10-24)
+
+
+### Bug Fixes
+
+* NX Transformer entry script not included in NPM package (fixes [#166](https://github.com/LeDDGroup/typescript-transform-paths/issues/166)) ([4396e0c](https://github.com/LeDDGroup/typescript-transform-paths/commit/4396e0c27e679cef1bfe6d5faf397cc1b2f11992))
+
 ### [3.4.3](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.2...v3.4.3) (2022-10-21)
 
 

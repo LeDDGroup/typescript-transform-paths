@@ -1,6 +1,6 @@
 {
   "name": "typescript-transform-paths",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "description": "Transforms module resolution paths using TypeScript path mapping and/or custom paths",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
