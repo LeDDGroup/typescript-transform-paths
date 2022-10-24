@@ -82,7 +82,7 @@ import { sum } from "@utils/sum";
           /* ... */
           "transformers": [
             { 
-              name": "typescript-transform-paths/nx-transformer",
+              "name": "typescript-transform-paths/nx-transformer",
               "options": { "afterDeclarations": true }
             }
           ]
