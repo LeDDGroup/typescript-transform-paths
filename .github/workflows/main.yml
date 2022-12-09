@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
-        node-version: [ 16.x, 18.x ]
+        node-version: [ 16.10, 18.x ]
 
     steps:
       - name: Checkout
@@ -41,4 +41,4 @@ jobs:
         run: yarn test --runInBand=false --maxWorkers=2 --workerIdleMemoryLimit=1700MB # https://github.com/facebook/jest/issues/11956
         env:
           CI: true
-          NODE_OPTIONS: "--no-compilation-cache --expose-gc" # https://github.com/facebook/jest/issues/11956
+          # NODE_OPTIONS: "--no-compilation-cache --expose-gc" # https://github.com/facebook/jest/issues/11956
