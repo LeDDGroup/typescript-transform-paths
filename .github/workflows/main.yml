@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
-        node-version: [ 16.10, 18.x ]
+        node-version: [ 16.10.x, 18.x ]
 
     steps:
       - name: Checkout
