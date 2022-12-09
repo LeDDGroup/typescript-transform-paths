@@ -8,7 +8,8 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
-        node-version: [ 16.x, 18.x ]
+        # Node 16.10 due to https://github.com/facebook/jest/issues/11956
+        node-version: [ 16.10.x, 18.x ]
 
     steps:
       - name: Checkout
@@ -38,6 +39,6 @@ jobs:
         run: yarn build
 
       - name: Test
-        run: yarn test
+        run: yarn test --runInBand=false --maxWorkers=2 --workerIdleMemoryLimit=1700MB # https://github.com/facebook/jest/issues/11956
         env:
           CI: true
