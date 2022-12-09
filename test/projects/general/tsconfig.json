@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "es5",
     "module": "ESNext",
-    "outDir": "../__built",
+    "outDir": "__built",
+    "moduleResolution" : "node",
 
     "declaration": true,
     "baseUrl": "./",
@@ -16,8 +17,8 @@
     "esModuleInterop": true,
 
     "plugins": [
-      { "transform": "../../src/index.ts" },
-      { "transform": "../../src/index.ts", "afterDeclarations": true }
+      { "transform": "../../../src/index.ts" },
+      { "transform": "../../../src/index.ts", "afterDeclarations": true }
     ]
   }
 }

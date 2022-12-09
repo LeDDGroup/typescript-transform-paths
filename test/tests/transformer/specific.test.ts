@@ -239,7 +239,7 @@ describe(`Specific Tests`, () => {
 
     (!skipDts && tsVersion >= 38 ? test : test.skip)(`Resolves nested imports`, () => {
       expect(subPackagesFile).transformedMatches(
-        `export declare type ImportWithChildren = import("./packages/pkg-a").PassThru<import("./packages/pkg-b").PackageBType>`,
+        `export ${tsVersion < 49 ? `declare ` : ''}type ImportWithChildren = import("./packages/pkg-a").PassThru<import("./packages/pkg-b").PackageBType>`,
         { kind: ["dts"] }
       );
     });
