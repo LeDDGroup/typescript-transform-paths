@@ -701,10 +701,10 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
 
-"@types/ts-expose-internals@npm:ts-expose-internals@4.8.4":
-  version "4.8.4"
-  resolved "https://registry.yarnpkg.com/ts-expose-internals/-/ts-expose-internals-4.8.4.tgz#7bb1ef4ef0b42a22f4430f6e2b89fffc9fa6e7d1"
-  integrity sha512-DhGmD9ijXQ+2Zdz+MhVMKZIGFHx4imaHln1l+q8Bd7vNK2iuXRD88UujrJ7VEDZhI5mAr5gwrkQW0d3Wl9EsGw==
+"@types/ts-expose-internals@npm:ts-expose-internals@4.9.4":
+  version "4.9.4"
+  resolved "https://registry.yarnpkg.com/ts-expose-internals/-/ts-expose-internals-4.9.4.tgz#d7836b0ecd174af17ba0038c0840efa5a2d21654"
+  integrity sha512-qHR+gMYDv45VSikUwg7CG8NXXXED2EspZ/WnZN1eQJEIlyzUHw3YIrzrKv47NQCaXKGvp01kZFlQ3y8BCGTahw==
 
 "@types/yargs-parser@*":
   version "21.0.0"
@@ -2120,7 +2120,7 @@ jest-worker@^29.3.1:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-jest@^29.2.1:
+jest@^29.3.1:
   version "29.3.1"
   resolved "https://registry.yarnpkg.com/jest/-/jest-29.3.1.tgz#c130c0d551ae6b5459b8963747fed392ddbde122"
   integrity sha512-6iWfL5DTT0Np6UYs/y5Niu7WIfNv/wRTtN5RSXt2DIEft3dx3zPuw/3WJQBCJfmEzvDiEKwoqMbGD9n49+qLSA==
