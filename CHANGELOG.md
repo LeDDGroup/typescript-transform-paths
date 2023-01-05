@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.4.5](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.4...v3.4.5) (2023-01-05)
+
+
+### Bug Fixes
+
+* OSX paths can be rewritten improperly (fixes [#167](https://github.com/LeDDGroup/typescript-transform-paths/issues/167)) ([0ff48d7](https://github.com/LeDDGroup/typescript-transform-paths/commit/0ff48d740edc58bed72971f6ad0f2c7493c56def))
+
 ### [3.4.4](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.3...v3.4.4) (2022-10-24)
 
 
