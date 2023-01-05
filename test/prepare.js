@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const tsPatch = require("ts-patch");
-const tsp1 = require('tsp1');
+const tsp1 = require("tsp1");
 
 /* ****************************************************************************************************************** *
  * Config
@@ -22,6 +22,6 @@ for (const tsDirName of tsDirs) {
 }
 
 // Patch discovered modules
-for (const [ dirName, dir ] of baseDirs)
-  if (dirName === 'typescript-three') tsp1.patch(["tsc.js", "typescript.js"], { basedir: dir })
+for (const [dirName, dir] of baseDirs)
+  if (dirName === "typescript-three") tsp1.patch(["tsc.js", "typescript.js"], { basedir: dir });
   else tsPatch.patch(["tsc.js", "typescript.js"], { dir });
