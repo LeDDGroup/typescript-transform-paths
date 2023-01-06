@@ -1,8 +1,9 @@
 import { VisitorContext } from "../types";
-import { isBaseDir, isURL, maybeAddRelativeLocalPrefix, nativeRelativePath } from "./general-utils";
+import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
 import * as path from "path";
 import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } from "typescript";
 import { getOutputDirForSourceFile } from "./ts-helpers";
+import { getRelativePath } from "./get-relative-path";
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -167,12 +168,12 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
 
     /* Remove base dirs to make relative to root */
     if (fileRootDir && moduleRootDir) {
-      srcFileOutputDir = nativeRelativePath(fileRootDir, srcFileOutputDir);
-      moduleFileOutputDir = nativeRelativePath(moduleRootDir, moduleFileOutputDir);
+      srcFileOutputDir = getRelativePath(fileRootDir, srcFileOutputDir);
+      moduleFileOutputDir = getRelativePath(moduleRootDir, moduleFileOutputDir);
     }
   }
 
-  const outputDir = nativeRelativePath(srcFileOutputDir, moduleFileOutputDir);
+  const outputDir = getRelativePath(srcFileOutputDir, moduleFileOutputDir);
 
   /* Compose final output path */
   const outputPath = maybeAddRelativeLocalPrefix(tsInstance.normalizePath(path.join(outputDir, outputBaseName)));
