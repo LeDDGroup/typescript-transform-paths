@@ -106,7 +106,15 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    *
    * import ... 'module';
    */
-  if (tsInstance.isImportDeclaration(node) && node.moduleSpecifier && tsInstance.isStringLiteral(node.moduleSpecifier))
+  if (
+    tsInstance.isImportDeclaration(node) &&
+    node.moduleSpecifier &&
+    tsInstance.isStringLiteral(node.moduleSpecifier)
+  ) {
+    if (node.importClause?.isTypeOnly && !this.isDeclarationFile) {
+      return undefined;
+    }
+
     return resolvePathAndUpdateNode(this, node, node.moduleSpecifier.text, (p) => {
       let importClause = node.importClause;
 
@@ -118,6 +126,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
 
       return factory.updateImportDeclaration(node, node.modifiers, importClause, p, node.assertClause);
     });
+  }
 
   /**
    * Update ExportDeclaration

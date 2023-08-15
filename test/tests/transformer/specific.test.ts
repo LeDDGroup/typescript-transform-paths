@@ -112,20 +112,21 @@ describe(`Specific Tests`, () => {
         ) {
           const bases = opt?.base ?? [normalEmit, rootDirsEmit];
           const kinds = (opt?.kind ?? ["dts", "js"]).filter((k) => !skipDts || k !== "dts");
+          const isNot = this.isNot;
 
           let failed: boolean = false;
           const messages: string[] = [];
           for (const base of bases) {
             for (const kind of kinds) {
               const content = base[fileName][kind];
-              const isValid = typeof expected === "string" ? content.indexOf(expected) >= 0 : expected.test(content);
-              if (!isValid) {
-                failed = true;
-                messages.push(
-                  `File: ${fileName}\nKind: ${kind}\nrootDirs: ${base === normalEmit}\n\n` +
-                    `Expected: \`${expected}\`\nReceived:\n\t${content.replace(/(\r?\n)+/g, "$1\t")}`
-                );
-              }
+              const contentContains =
+                typeof expected === "string" ? content.indexOf(expected) >= 0 : expected.test(content);
+              const fileDesc = `File: ${fileName}\nKind: ${kind}\nrootDirs: ${base === normalEmit}\n\n`;
+              const expectDesc = `Expected: ${
+                isNot ? "not to contain" : ""
+              } \`${expected}\`\nReceived:\n\t${content.replace(/(\r?\n)+/g, "$1\t")}`;
+              messages.push(fileDesc + expectDesc);
+              if (!contentContains) failed = true;
             }
           }
 
@@ -182,6 +183,7 @@ describe(`Specific Tests`, () => {
 
     (!skipDts && tsVersion >= 38 ? test : test.skip)(`Import type-only transforms`, () => {
       expect(indexFile).transformedMatches(`import type { A as ATypeOnly } from "./dir/src-file"`, { kind: ["dts"] });
+      expect(indexFile).not.transformedMatches(`import type`, { kind: ["js"] });
     });
 
     test(`Copies comments in async import`, () => {
