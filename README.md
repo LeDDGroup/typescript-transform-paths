@@ -28,7 +28,8 @@ Add it to _plugins_ in your _tsconfig.json_
     "baseUrl": "./",
     // Configure your path mapping here
     "paths": {
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@types": ["types"],
     },
     // Note: To transform paths for both the output .js and .d.ts files, you need both of the below entries
     "plugins": [
@@ -47,6 +48,8 @@ Add it to _plugins_ in your _tsconfig.json_
 ```tsx
 // The following transforms path to '../utils/sum'
 import { sum } from "@utils/sum";
+// The following transforms path to '../types'
+import { sumType } from "@types";
 ```
 
 ### 3. Usage

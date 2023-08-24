@@ -26,11 +26,12 @@ export function resolvePathAndUpdateNode(
   // Skip if @no-transform-path specified
   if (tags.shouldSkip) return node;
 
-  // Accommodate direct override via @transform-path tag
-  if (tags.overridePath) {
-    const transformedPath = !isURL(tags.overridePath)
-      ? maybeAddRelativeLocalPrefix(normalizePath(tags.overridePath))
-      : tags.overridePath;
+  // Accommodate direct override via @transform-path tag or tsconfig paths.moduleName.[0]
+  const overridePath = tags.overridePath ?? context.compilerOptions.paths?.[moduleName]?.[0];
+  if (overridePath) {
+    const transformedPath = !isURL(overridePath)
+      ? maybeAddRelativeLocalPrefix(normalizePath(overridePath))
+      : overridePath;
     return updaterFn(factory.createStringLiteral(transformedPath));
   }
 
