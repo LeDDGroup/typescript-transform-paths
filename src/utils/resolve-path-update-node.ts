@@ -66,12 +66,14 @@ export function resolvePathAndUpdateNode(
     } catch {}
 
     const commentTags = new Map<string, string | undefined>();
-    try {
-      const trivia = targetNode.getFullText(sourceFile).slice(0, targetNode.getLeadingTriviaWidth(sourceFile));
-      const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gim;
+    if(targetNode.pos >= 0) {
+      try {
+        const trivia = targetNode.getFullText(sourceFile).slice(0, targetNode.getLeadingTriviaWidth(sourceFile));
+        const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gim;
 
-      for (let match = regex.exec(trivia); match; match = regex.exec(trivia)) commentTags.set(match[1], match[2]);
-    } catch {}
+        for (let match = regex.exec(trivia); match; match = regex.exec(trivia)) commentTags.set(match[1], match[2]);
+      } catch {}
+    }
 
     const overridePath = findTag("transform-path");
     const shouldSkip = findTag("no-transform-path");
