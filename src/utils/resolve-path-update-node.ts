@@ -66,7 +66,7 @@ export function resolvePathAndUpdateNode(
     } catch {}
 
     const commentTags = new Map<string, string | undefined>();
-    if(targetNode.pos >= 0) {
+    if (targetNode.pos >= 0) {
       try {
         const trivia = targetNode.getFullText(sourceFile).slice(0, targetNode.getLeadingTriviaWidth(sourceFile));
         const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gim;
