@@ -196,6 +196,11 @@ import 'normally-transformed' // This will remain 'normally-transformed', even t
 - Format before commit: `prettier` (`yarn run format`)
 - Releases: `standard-version` (`yarn run release`)
 
+## Alternatives
+
+- [NodeJS subpath imports](https://nodejs.org/api/packages.html#subpath-imports)
+- [Yarn link: protocol](https://yarnpkg.com/protocol/link)
+
 ## Maintainers
 
 <!-- prettier-ignore-start -->
