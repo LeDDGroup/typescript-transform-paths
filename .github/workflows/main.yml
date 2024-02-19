@@ -38,6 +38,7 @@ jobs:
         run: yarn build
 
       - name: Test
-        run: yarn test --runInBand=false --maxWorkers=2 --workerIdleMemoryLimit=1700MB # https://github.com/facebook/jest/issues/11956
+        run: yarn test --runInBand=false --maxWorkers=2 --workerIdleMemoryLimit=2GB # https://github.com/facebook/jest/issues/11956
         env:
           CI: true
+          NODE_OPTIONS: --max_old_space_size=4096
