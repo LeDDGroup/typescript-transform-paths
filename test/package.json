@@ -13,11 +13,13 @@
     "ts-patch": "link:../node_modules/ts-patch",
     "ts-node": "link:../node_modues/ts-node",
     "tsp1": "npm:ts-patch@1.*.*",
+    "tsp2": "npm:ts-patch@2.*.*",
     "@nrwl/cli": "^15.0.0",
     "@nrwl/js": "^15.0.0",
     "@nrwl/node": "^15.0.0",
     "@nrwl/workspace": "^15.0.0",
-    "nx": "^15.0.0"
+    "nx": "^15.0.0",
+    "strip-ansi": "^6.0.1"
   },
   "workspaces": [
     "projects/*"

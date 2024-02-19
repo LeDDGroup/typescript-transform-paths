@@ -20,7 +20,7 @@ const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "exclud
 
 /* Test Mapping */
 const modes = ["program", "manual", "ts-node"] as const;
-const testConfigs: { label: string; tsInstance: any; mode: typeof modes[number]; tsSpecifier: string }[] = [];
+const testConfigs: { label: string; tsInstance: any; mode: (typeof modes)[number]; tsSpecifier: string }[] = [];
 for (const cfg of tsModules)
   testConfigs.push(...modes.map((mode) => ({ label: cfg[0], tsInstance: cfg[1], mode, tsSpecifier: cfg[2] })));
 
@@ -178,6 +178,37 @@ describe(`Specific Tests`, () => {
         /import { ConstB, TypeA } from "\.\/a";\s*import { TypeA as TypeA2 } from "\.\/a";\s*export { ConstB, TypeA };\s*export { TypeA2 };/,
         { kind: ["dts"] }
       );
+
+      if (tsVersion >= 50) {
+        /* Import type-only keyword on import specifier */
+        expect(typeElisionIndex).transformedMatches(/import { ConstB as __ } from "\.\/a";\s*export { __ };/, {
+          kind: ["js"],
+        });
+
+        expect(typeElisionIndex).transformedMatches(
+          /import { type TypeAndConst, ConstB as __ } from "\.\/a";\s*export { TypeAndConst, __ };/,
+          {kind: ["dts"]}
+        );
+
+        /* Export Import type-only keyword on import specifier */
+        expect(typeElisionIndex).transformedMatches(
+          /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { type TypeAndConst2, ___ };/,
+          {kind: ["dts"]}
+        );
+
+        expect(typeElisionIndex).transformedMatches(
+          /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { ___ };/,
+          {kind: ["js"]}
+        );
+
+        /* Unreferenced w/ type-only keyword on import specifier */
+        expect(typeElisionIndex).not.transformedMatches(
+          /import { ConstB as ____, type TypeAndConst as TypeAndConst3 } from "\.\/a";\s/,
+          {kind: ["dts"]}
+        );
+
+        expect(typeElisionIndex).not.transformedMatches(/import { ConstB as ____ } from "\.\/a";\s/, {kind: ["js"]});
+      }
     });
 
     (!skipDts && tsVersion >= 38 ? test : test.skip)(`Import type-only transforms`, () => {

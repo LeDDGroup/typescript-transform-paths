@@ -4,6 +4,7 @@ import path from "path";
 import ts from "typescript";
 import * as config from "../config";
 import { execSync } from "child_process";
+import stripAnsi from "strip-ansi";
 
 /* ****************************************************************************************************************** *
  * Tests
@@ -36,12 +37,12 @@ describe(`Extra Tests`, () => {
     describe(`ts-node register script`, () => {
       test(`Works with --transpileOnly`, () => {
         const res = execSync("npx ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString();
-        expect(res).toMatch(/^null($|\r?\n)/);
+        expect(stripAnsi(res)).toMatch(/^null($|\r?\n)/m);
       });
 
       test(`Works with --typeCheck`, () => {
         const res = execSync("npx ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString();
-        expect(res).toMatch(/^null($|\r?\n)/);
+        expect(stripAnsi(res)).toMatch(/^null($|\r?\n)/);
       });
     });
   });
