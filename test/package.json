@@ -9,9 +9,9 @@
     "ts-expose-internals": "^4.1.2",
     "typescript-three": "npm:typescript@3.6.5",
     "typescript-four-seven": "npm:typescript@4.7.4",
-    "typescript": "latest",
-    "ts-patch": "link:../node_modules/ts-patch",
     "ts-node": "link:../node_modues/ts-node",
+    "typescript": "latest",
+    "ts-patch": "latest",
     "tsp1": "npm:ts-patch@1.*.*",
     "tsp2": "npm:ts-patch@2.*.*",
     "@nrwl/cli": "^15.0.0",
@@ -21,7 +21,13 @@
     "nx": "^15.0.0",
     "strip-ansi": "^6.0.1"
   },
-  "workspaces": [
-    "projects/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/semver/*",
+      "**/ts-patch/*"
+    ]
+  }
 }
