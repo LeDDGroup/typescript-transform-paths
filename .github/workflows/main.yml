@@ -8,8 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
-        # Node 16.10 due to https://github.com/facebook/jest/issues/11956
-        node-version: [ 16.10.x, 18.x ]
+        node-version: [ 18, 20, 21 ]
 
     steps:
       - name: Checkout
