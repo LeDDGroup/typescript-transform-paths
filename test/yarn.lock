@@ -3040,9 +3040,9 @@ ejs@^3.1.7:
     jake "^10.8.5"
 
 electron-to-chromium@^1.4.668:
-  version "1.4.674"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.674.tgz#6ddb629ae52c3192984423b54dc1fffe79e1b007"
-  integrity sha512-jZtIZxv9FlwTLX5kVZStUtXZywhEi3vqvY6iEzJnc57cNgHFQ5JCczElTs/062v6ODTT7eX8ZOTqQcxa3nMUWQ==
+  version "1.4.675"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.675.tgz#9e612a5339e3c9f884982478a8aaf2da3ab6ec7d"
+  integrity sha512-+1u3F/XPNIdUwv8i1lDxHAxCvNNU0QIqgb1Ycn+Jnng8ITzWSvUqixRSM7NOazJuwhf65IV17f/VbKj8DmL26A==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -6246,6 +6246,10 @@ typed-assert@^1.0.8:
   version "3.6.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.5.tgz#dae20114a7b4ff4bd642db9c8c699f2953e8bbdb"
   integrity sha512-BEjlc0Z06ORZKbtcxGrIvvwYs5hAnuo6TKdNFL55frVDlB+na3z5bsLhFaIxmT+dPWgBIjMo6aNnTOgHHmHgiQ==
+
+"typescript-transform-paths@link:..":
+  version "0.0.0"
+  uid ""
 
 "typescript-transform-paths@link:../src":
   version "0.0.0"

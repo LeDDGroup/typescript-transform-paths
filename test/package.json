@@ -23,7 +23,7 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*"
+      "projects/*"
     ],
     "nohoist": [
       "**/semver/*",
