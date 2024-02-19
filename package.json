@@ -11,11 +11,11 @@
     "release": "standard-version",
     "--------------": "",
     "format": "prettier --write \"{src,test}/**/{*.js,!(*.d).ts}\"",
-    "clean": "npx -y rimraf dist **/*.tsbuildinfo ./test/projects/nx/dist",
-    "clean:all": "yarn run clean && npx -y rimraf node_modules **/node_modules **/yarn.lock yarn.lock",
+    "clean": "npx -y rimraf -g dist **/*.tsbuildinfo ./test/projects/nx/dist",
+    "clean:all": "yarn run clean && npx -y rimraf -g node_modules **/node_modules **/yarn.lock yarn.lock",
     "reset": "yarn run clean:all && yarn install",
     "-------------- ": "",
-    "prebuild": "npx -y rimraf dist",
+    "prebuild": "npx -y rimraf -g dist",
     "install:tests": "cd test && yarn install",
     "prepare": "yarn run install:tests"
   },
@@ -40,9 +40,12 @@
   },
   "license": "MIT",
   "contributors": [
-    "Daniel Perez Alvarez <danielpza@protonmail.com>",
-    "Ron S. <ron@nonara.com>"
+    "Daniel Perez Alvarez <danielpza@protonmail.com>"
   ],
+  "author": {
+    "name": "Ron S.",
+    "url": "https://twitter.com/Ron"
+  },
   "files": [
     "dist",
     "types",
@@ -57,13 +60,13 @@
     "@types/node": "^18.11.2",
     "jest": "^29.3.1",
     "prettier": "^2.7.1",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5.0.5",
     "standard-version": "^9.5.0",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.4",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
-    "ts-patch": "^2.1.0",
-    "typescript": "^4.9.4"
+    "ts-patch": "^3.1.2",
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
     "typescript": ">=3.6.5"

@@ -1,6 +1,6 @@
 import ts from "typescript";
 import { VisitorContext } from "./types";
-import { elideImportOrExportClause, resolvePathAndUpdateNode } from "./utils";
+import { elideImportOrExportDeclaration, resolvePathAndUpdateNode } from "./utils";
 
 /* ****************************************************************************************************************** *
  * Helpers
@@ -108,15 +108,16 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    */
   if (tsInstance.isImportDeclaration(node) && node.moduleSpecifier && tsInstance.isStringLiteral(node.moduleSpecifier))
     return resolvePathAndUpdateNode(this, node, node.moduleSpecifier.text, (p) => {
-      let importClause = node.importClause;
-
-      if (!this.isDeclarationFile && importClause?.namedBindings) {
-        const updatedImportClause = elideImportOrExportClause(this, node);
-        if (!updatedImportClause) return undefined; // No imports left, elide entire declaration
-        importClause = updatedImportClause;
+      // TODO - In next major version, we can remove this entirely due to TS PR 57223
+      //   see: https://github.com/microsoft/TypeScript/pull/57223
+      //   We should at least skip this if doing a minor version update if the ts version is high enough to not need it
+      if (!this.isDeclarationFile && node.importClause?.namedBindings) {
+        const resolver = transformationContext.getEmitResolver();
+        // If run in "manual" mode without a Program, we won't have a resolver, so we can't elide
+        if (resolver) return elideImportOrExportDeclaration(this, node, p, resolver);
       }
 
-      return factory.updateImportDeclaration(node, node.modifiers, importClause, p, node.assertClause);
+      return factory.updateImportDeclaration(node, node.modifiers, node.importClause, p, node.assertClause);
     });
 
   /**
@@ -126,15 +127,23 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    */
   if (tsInstance.isExportDeclaration(node) && node.moduleSpecifier && tsInstance.isStringLiteral(node.moduleSpecifier))
     return resolvePathAndUpdateNode(this, node, node.moduleSpecifier.text, (p) => {
-      let exportClause = node.exportClause;
-
-      if (!this.isDeclarationFile && exportClause && tsInstance.isNamedExports(exportClause)) {
-        const updatedExportClause = elideImportOrExportClause(this, node);
-        if (!updatedExportClause) return undefined; // No export left, elide entire declaration
-        exportClause = updatedExportClause;
+      // TODO - In next major version, we can remove this entirely due to TS PR 57223
+      //   see: https://github.com/microsoft/TypeScript/pull/57223
+      //   We should at least skip this if doing a minor version update if the ts version is high enough to not need it
+      if (!this.isDeclarationFile && node.exportClause && tsInstance.isNamedExports(node.exportClause)) {
+        const resolver = transformationContext.getEmitResolver();
+        // If run in "manual" mode without a Program, we won't have a resolver, so we can't elide
+        if (resolver) return elideImportOrExportDeclaration(this, node, p, resolver);
       }
 
-      return factory.updateExportDeclaration(node, node.modifiers, node.isTypeOnly, exportClause, p, node.assertClause);
+      return factory.updateExportDeclaration(
+        node,
+        node.modifiers,
+        node.isTypeOnly,
+        node.exportClause,
+        p,
+        node.assertClause
+      );
     });
 
   /**
