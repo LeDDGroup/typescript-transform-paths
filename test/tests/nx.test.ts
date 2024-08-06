@@ -31,7 +31,7 @@ describe(`NX Transformer`, () => {
 
       nxTransformerPlugin.before(config, program);
 
-      expect(mockedTransformer).toBeCalledTimes(1);
+      expect(mockedTransformer).toHaveBeenCalledTimes(1);
       expect(mockedTransformer.mock.lastCall).toHaveLength(2);
 
       const [recProgram, recConfig] = mockedTransformer.mock.lastCall;
@@ -44,7 +44,7 @@ describe(`NX Transformer`, () => {
 
       nxTransformerPlugin.afterDeclarations(config, program);
 
-      expect(mockedTransformer).toBeCalledTimes(1);
+      expect(mockedTransformer).toHaveBeenCalledTimes(1);
       expect(mockedTransformer.mock.lastCall).toHaveLength(2);
 
       const [recProgram, recConfig] = mockedTransformer.mock.lastCall;
