@@ -6413,10 +6413,6 @@ typed-assert@^1.0.8:
   dependencies:
     minimatch "^3.0.4"
 
-"typescript-transform-paths@link:..":
-  version "0.0.0"
-  uid ""
-
 typescript@latest:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"

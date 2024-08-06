@@ -7,6 +7,6 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "typescript-transform-paths": "link:../../../"
+    "typescript-transform-paths": "file:../../../"
   }
 }
