@@ -12,6 +12,7 @@ jobs:
         with:
           node-version: 22
           cache: yarn
+      - run: yarn install
       - run: yarn prettier --check .
 
   build:
