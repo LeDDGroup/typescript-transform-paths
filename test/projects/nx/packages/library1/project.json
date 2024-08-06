@@ -5,9 +5,7 @@
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/library1",
         "main": "packages/library1/src/index.ts",
@@ -23,9 +21,8 @@
           }
         ]
       },
-      "dependsOn": [
-      ]
+      "dependsOn": []
     }
   },
-  "tags": [ ]
+  "tags": []
 }

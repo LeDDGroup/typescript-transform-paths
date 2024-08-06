@@ -1,6 +1,6 @@
 {
   "extends": "../tsconfig.base",
-  "include": [ "tests", "utils" ],
+  "include": ["tests", "utils"],
 
   "compilerOptions": {
     "noEmit": true,

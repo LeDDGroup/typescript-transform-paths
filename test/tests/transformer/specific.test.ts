@@ -187,27 +187,27 @@ describe(`Specific Tests`, () => {
 
         expect(typeElisionIndex).transformedMatches(
           /import { type TypeAndConst, ConstB as __ } from "\.\/a";\s*export { TypeAndConst, __ };/,
-          {kind: ["dts"]}
+          { kind: ["dts"] }
         );
 
         /* Export Import type-only keyword on import specifier */
         expect(typeElisionIndex).transformedMatches(
           /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { type TypeAndConst2, ___ };/,
-          {kind: ["dts"]}
+          { kind: ["dts"] }
         );
 
         expect(typeElisionIndex).transformedMatches(
           /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { ___ };/,
-          {kind: ["js"]}
+          { kind: ["js"] }
         );
 
         /* Unreferenced w/ type-only keyword on import specifier */
         expect(typeElisionIndex).not.transformedMatches(
           /import { ConstB as ____, type TypeAndConst as TypeAndConst3 } from "\.\/a";\s/,
-          {kind: ["dts"]}
+          { kind: ["dts"] }
         );
 
-        expect(typeElisionIndex).not.transformedMatches(/import { ConstB as ____ } from "\.\/a";\s/, {kind: ["js"]});
+        expect(typeElisionIndex).not.transformedMatches(/import { ConstB as ____ } from "\.\/a";\s/, { kind: ["js"] });
       }
     });
 

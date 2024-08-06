@@ -1,8 +1,8 @@
 {
-  "files": [ "index.ts", "local/index.ts" ],
+  "files": ["index.ts", "local/index.ts"],
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../lib/b",
+    "outDir": "../lib/b"
   },
   "references": [
     {

@@ -94,7 +94,8 @@ export function elideImportOrExportDeclaration(
     isExportSpecifier,
   } = tsInstance;
 
-  const isNamespaceExport = tsInstance.isNamespaceExport ?? ((node: Node): node is NamespaceExport => node.kind === SyntaxKind.NamespaceExport);
+  const isNamespaceExport =
+    tsInstance.isNamespaceExport ?? ((node: Node): node is NamespaceExport => node.kind === SyntaxKind.NamespaceExport);
 
   if (tsInstance.isImportDeclaration(node)) {
     // Do not elide a side-effect only import declaration.

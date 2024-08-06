@@ -9,12 +9,12 @@
 
     "baseUrl": ".",
     "paths": {
-      "#a/*": [ "./a/*" ],
-      "#b/*": [ "./b/*" ]
+      "#a/*": ["./a/*"],
+      "#b/*": ["./b/*"]
     },
     "plugins": [
       {
-        "transform": "../../../../src/index.ts",
+        "transform": "../../../../src/index.ts"
       },
       {
         "transform": "../../../../src/index.ts",
