@@ -6146,7 +6146,6 @@ ts-node@10.9.1:
 
 "ts-node@link:../node_modues/ts-node":
   version "0.0.0"
-  uid ""
 
 ts-patch@latest:
   version "3.1.2"
@@ -6248,12 +6247,12 @@ typed-assert@^1.0.8:
   integrity sha512-BEjlc0Z06ORZKbtcxGrIvvwYs5hAnuo6TKdNFL55frVDlB+na3z5bsLhFaIxmT+dPWgBIjMo6aNnTOgHHmHgiQ==
 
 "typescript-transform-paths@link:..":
-  version "0.0.0"
-  uid ""
+  version "3.4.7"
+  dependencies:
+    minimatch "^3.0.4"
 
 "typescript-transform-paths@link:../src":
   version "0.0.0"
-  uid ""
 
 typescript@latest:
   version "5.3.3"
@@ -6519,9 +6518,9 @@ write-file-atomic@^4.0.2:
     signal-exit "^3.0.7"
 
 ws@^8.13.0:
-  version "8.16.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.16.0.tgz#d1cd774f36fbc07165066a60e40323eab6446fd4"
-  integrity sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==
+  version "8.18.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.0.tgz#0d7505a6eafe2b0e712d232b42279f53bc289bbc"
+  integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
 
 y18n@^5.0.5:
   version "5.0.8"
