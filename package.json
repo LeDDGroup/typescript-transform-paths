@@ -7,7 +7,7 @@
   "scripts": {
     "compile": "tsc",
     "build": "yarn run clean && yarn run compile",
-    "test": "jest",
+    "test": "yarn --cwd test install && yarn --cwd test jest",
     "release": "standard-version",
     "--------------": "",
     "format": "prettier --write .",
@@ -15,9 +15,7 @@
     "clean:all": "yarn run clean && npx -y rimraf -g node_modules **/node_modules **/yarn.lock yarn.lock",
     "reset": "yarn run clean:all && yarn install && yarn build",
     "-------------- ": "",
-    "prebuild": "npx -y rimraf -g dist",
-    "install:tests": "cd test && yarn install",
-    "prepare": "yarn run install:tests"
+    "prebuild": "npx -y rimraf -g dist"
   },
   "keywords": [
     "typescript",
@@ -55,15 +53,12 @@
     "nx-transformer.js"
   ],
   "devDependencies": {
-    "@types/jest": "^29.2.0",
     "@types/minimatch": "^5.1.2",
     "@types/node": "^18.11.2",
-    "jest": "^29.7.0",
     "prettier": "^3.3.3",
     "rimraf": "^5.0.5",
     "standard-version": "^9.5.0",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.4",
-    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
     "ts-patch": "^3.1.2",
     "typescript": "^5.3.3"
