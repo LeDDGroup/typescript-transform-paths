@@ -51,7 +51,7 @@ describe(`Register script`, () => {
 
         register.initialize();
 
-        expect(registerSpy).toBeCalledTimes(1);
+        expect(registerSpy).toHaveBeenCalledTimes(1);
         expect(registerSpy.mock.calls[0]).toHaveLength(0);
         expect(global.process[instanceSymbol]).not.toBeUndefined();
       } finally {
@@ -70,7 +70,7 @@ describe(`Register script`, () => {
 
         const { tsNodeInstance } = register.initialize();
 
-        expect(registerSpy).not.toBeCalled();
+        expect(registerSpy).not.toHaveBeenCalled();
         expect(tsNodeInstance).toBe(fakeInstance);
       } finally {
         global.process[instanceSymbol] = originalTsNodeInstance;
@@ -193,8 +193,8 @@ describe(`Register script`, () => {
 
         if (existingTransformers === transformerFactoryFn)
           test(`Factory config instantiated with program`, () => {
-            expect(transformerFactoryFn).toBeCalledTimes(1);
-            expect(transformerFactoryFn).toBeCalledWith(fakeProgram);
+            expect(transformerFactoryFn).toHaveBeenCalledTimes(1);
+            expect(transformerFactoryFn).toHaveBeenCalledWith(fakeProgram);
           });
 
         test(`Registers correct transformers`, () => {
@@ -221,7 +221,7 @@ describe(`Register script`, () => {
           existingTransformers === transformerFactoryFn ? " & Program" : ""
         }`, () => {
           const callTimes = +hasBefore + +hasAfterDeclarations;
-          expect(mockTransformer).toBeCalledTimes(callTimes);
+          expect(mockTransformer).toHaveBeenCalledTimes(callTimes);
 
           const afterDeclarationsConfig = transformers.find(
             (t) => t.transform === "typescript-transform-paths" && t.afterDeclarations,
