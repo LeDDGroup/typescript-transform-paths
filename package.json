@@ -7,7 +7,7 @@
   "scripts": {
     "compile": "tsc",
     "build": "yarn run clean && yarn run compile",
-    "test": "yarn --cwd test install && yarn --cwd test jest",
+    "test": "yarn --cwd test test",
     "release": "standard-version",
     "--------------": "",
     "format": "prettier --write .",
@@ -15,6 +15,7 @@
     "clean:all": "yarn run clean && npx -y rimraf -g node_modules **/node_modules **/yarn.lock yarn.lock",
     "reset": "yarn run clean:all && yarn install && yarn build",
     "-------------- ": "",
+    "pretest": "yarn --cwd test install",
     "prebuild": "npx -y rimraf -g dist"
   },
   "keywords": [
