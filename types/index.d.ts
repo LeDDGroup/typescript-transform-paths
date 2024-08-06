@@ -32,7 +32,7 @@ export default function transformer(
   manualTransformOptions?: {
     compilerOptions?: ts.CompilerOptions;
     fileNames?: string[];
-  }
+  },
 ): ts.CustomTransformerFactory;
 
 /* ****************************************************************************************************************** *
@@ -41,7 +41,7 @@ export default function transformer(
 
 export type NxTransformerFactory = (
   config?: Omit<TsTransformPathsConfig, "transform">,
-  program?: ts.Program
+  program?: ts.Program,
 ) => ts.TransformerFactory<ts.SourceFile>;
 
 export interface NxTransformerPlugin {

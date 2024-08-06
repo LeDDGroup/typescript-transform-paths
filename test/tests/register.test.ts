@@ -93,7 +93,7 @@ describe(`Register script`, () => {
         () => {
           require("sdf0s39rf3333d@fake-module");
         },
-        { virtual: true }
+        { virtual: true },
       );
       expect(() => register()).toThrow(`Cannot resolve ts-node`);
       jest.dontMock("ts-node");
@@ -224,10 +224,10 @@ describe(`Register script`, () => {
           expect(mockTransformer).toBeCalledTimes(callTimes);
 
           const afterDeclarationsConfig = transformers.find(
-            (t) => t.transform === "typescript-transform-paths" && t.afterDeclarations
+            (t) => t.transform === "typescript-transform-paths" && t.afterDeclarations,
           );
           const beforeConfig = transformers.find(
-            (t) => t.transform === "typescript-transform-paths" && !t.afterDeclarations
+            (t) => t.transform === "typescript-transform-paths" && !t.afterDeclarations,
           );
 
           if (hasBefore) expect(beforeConfig).not.toBeUndefined();
@@ -236,7 +236,7 @@ describe(`Register script`, () => {
           const expectedCfg = [beforeConfig, afterDeclarationsConfig].filter((c) => !!c);
           for (let i = 0; i < callTimes; i++) {
             expect(mockTransformer.mock.calls[i][0]).toBe(
-              existingTransformers === transformerFactoryFn ? fakeProgram : void 0
+              existingTransformers === transformerFactoryFn ? fakeProgram : void 0,
             );
             expect(mockTransformer.mock.calls[i][1]).toBe(expectedCfg[i]);
           }

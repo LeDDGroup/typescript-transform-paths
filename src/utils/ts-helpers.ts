@@ -29,13 +29,13 @@ export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: S
       : getOwnEmitOutputFilePath(
           sourceFile.fileName,
           emitHost,
-          getOutputExtension(sourceFile.fileName, compilerOptions)
+          getOutputExtension(sourceFile.fileName, compilerOptions),
         );
 
   if (!outputPath)
     throw new Error(
       `Could not resolve output path for ${sourceFile.fileName}. Please report a GH issue at: ` +
-        `https://github.com/LeDDGroup/typescript-transform-paths/issues`
+        `https://github.com/LeDDGroup/typescript-transform-paths/issues`,
     );
 
   const res = path.dirname(outputPath);
@@ -63,7 +63,7 @@ export function createSyntheticEmitHost(
   compilerOptions: ts.CompilerOptions,
   tsInstance: typeof ts,
   getCanonicalFileName: GetCanonicalFileName,
-  fileNames: string[]
+  fileNames: string[],
 ) {
   return {
     getCompilerOptions: () => compilerOptions,
@@ -71,7 +71,7 @@ export function createSyntheticEmitHost(
     getCommonSourceDirectory: () =>
       tsInstance.getCommonSourceDirectoryOfConfig(
         { options: compilerOptions, fileNames: fileNames } as ts.ParsedCommandLine,
-        !tsInstance.sys.useCaseSensitiveFileNames
+        !tsInstance.sys.useCaseSensitiveFileNames,
       ),
     getCanonicalFileName,
   } as unknown as ts.EmitHost;

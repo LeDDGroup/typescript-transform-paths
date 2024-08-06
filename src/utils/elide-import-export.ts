@@ -69,14 +69,14 @@ export function elideImportOrExportDeclaration<T extends ImportOrExportDeclarati
   context: VisitorContext,
   node: T,
   newModuleSpecifier: StringLiteral,
-  resolver: EmitResolver
+  resolver: EmitResolver,
 ): T | undefined;
 
 export function elideImportOrExportDeclaration(
   context: VisitorContext,
   node: ImportOrExportDeclaration,
   newModuleSpecifier: StringLiteral,
-  resolver: EmitResolver
+  resolver: EmitResolver,
 ): ImportOrExportDeclaration | undefined {
   const { tsInstance, factory } = context;
   const { compilerOptions } = context;
@@ -118,7 +118,7 @@ export function elideImportOrExportDeclaration(
         importClause,
         newModuleSpecifier,
         // This will be changed in the next release of TypeScript, but by that point we can drop elision entirely
-        (node as any).attributes || node.assertClause
+        (node as any).attributes || node.assertClause,
       );
     else return undefined;
   } else {
@@ -140,7 +140,7 @@ export function elideImportOrExportDeclaration(
     const exportClause = visitNode(
       node.exportClause,
       <Visitor>((bindings: NamedExportBindings) => visitNamedExportBindings(bindings, allowEmpty)),
-      isNamedExportBindings
+      isNamedExportBindings,
     );
 
     return exportClause
@@ -151,7 +151,7 @@ export function elideImportOrExportDeclaration(
           exportClause,
           newModuleSpecifier,
           // This will be changed in the next release of TypeScript, but by that point we can drop elision entirely
-          (node as any).attributes || node.assertClause
+          (node as any).attributes || node.assertClause,
         )
       : undefined;
   }
@@ -220,7 +220,7 @@ export function elideImportOrExportDeclaration(
 
   function visitNamedExportBindings(
     node: NamedExportBindings,
-    allowEmpty: boolean
+    allowEmpty: boolean,
   ): VisitResult<NamedExportBindings> | undefined {
     return isNamespaceExport(node) ? visitNamespaceExports(node) : visitNamedExports(node, allowEmpty);
   }

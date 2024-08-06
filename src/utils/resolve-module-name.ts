@@ -99,7 +99,7 @@ function getResolvedSourceFile(context: VisitorContext, fileName: string): Sourc
 
     /* Attempt to find without extension */
     res = (program.getSourceFiles() as SourceFile[]).find(
-      (s) => removeFileExtension(s.fileName) === removeFileExtension(fileName)
+      (s) => removeFileExtension(s.fileName) === removeFileExtension(fileName),
     );
     if (res) return res;
   }
@@ -128,7 +128,7 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
     moduleName,
     sourceFile.fileName,
     compilerOptions,
-    tsInstance.sys
+    tsInstance.sys,
   );
 
   // Handle non-resolvable module

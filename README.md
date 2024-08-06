@@ -28,7 +28,7 @@ Add it to _plugins_ in your _tsconfig.json_
     "baseUrl": "./",
     // Configure your path mapping here
     "paths": {
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
     },
     // Note: To transform paths for both the output .js and .d.ts files, you need both of the below entries
     "plugins": [
@@ -36,9 +36,9 @@ Add it to _plugins_ in your _tsconfig.json_
       { "transform": "typescript-transform-paths" },
 
       // Transform paths in output .d.ts files (Include this line if you output declarations files)
-      { "transform": "typescript-transform-paths", "afterDeclarations": true }
-    ]
-  }
+      { "transform": "typescript-transform-paths", "afterDeclarations": true },
+    ],
+  },
 }
 ```
 
@@ -86,12 +86,12 @@ import { sum } from "@utils/sum";
           "transformers": [
             {
               "name": "typescript-transform-paths/nx-transformer",
-              "options": { "afterDeclarations": true }
-            }
-          ]
-        }
-      }
-    }
+              "options": { "afterDeclarations": true },
+            },
+          ],
+        },
+      },
+    },
   }
   ```
 
@@ -108,13 +108,13 @@ To enable virtual directory mapping, use the `useRootDirs` plugin option.
     "rootDirs": ["src", "generated"],
     "baseUrl": ".",
     "paths": {
-      "#root/*": ["./src/*", "./generated/*"]
+      "#root/*": ["./src/*", "./generated/*"],
     },
     "plugins": [
       { "transform": "typescript-transform-paths", "useRootDirs": true },
-      { "transform": "typescript-transform-paths", "useRootDirs": true, "afterDeclarations": true }
-    ]
-  }
+      { "transform": "typescript-transform-paths", "useRootDirs": true, "afterDeclarations": true },
+    ],
+  },
 }
 ```
 
@@ -158,15 +158,15 @@ Example:
   "compilerOptions": {
     "paths": {
       "sub-module1/*": ["../../node_modules/sub-module1/*"],
-      "sub-module2/*": ["../../node_modules/sub-module2/*"]
+      "sub-module2/*": ["../../node_modules/sub-module2/*"],
     },
     "plugins": [
       {
         "transform": "typescript-transform-paths",
-        "exclude": ["**/node_modules/**"]
-      }
-    ]
-  }
+        "exclude": ["**/node_modules/**"],
+      },
+    ],
+  },
 }
 ```
 

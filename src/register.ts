@@ -23,7 +23,7 @@ function getProjectTransformerConfig(pcl: ts.ParsedCommandLine) {
 function getTransformers(
   program?: ts.Program,
   beforeConfig?: Record<string, string>,
-  afterDeclarationsConfig?: Record<string, string>
+  afterDeclarationsConfig?: Record<string, string>,
 ): ts.CustomTransformers {
   return {
     ...(beforeConfig && { before: [transformer(program, beforeConfig)] }),
@@ -33,7 +33,7 @@ function getTransformers(
 
 export function mergeTransformers(
   baseTransformers: ts.CustomTransformers,
-  transformers: ts.CustomTransformers
+  transformers: ts.CustomTransformers,
 ): ts.CustomTransformers {
   const res = {
     ...((baseTransformers.before || transformers.before) && {
@@ -77,7 +77,7 @@ export function register(): TSNode.RegisterOptions | undefined {
     } else {
       registerOptions.transformers = mergeTransformers(
         registerOptions.transformers,
-        getTransformers(undefined, beforeConfig, afterDeclarationsConfig)
+        getTransformers(undefined, beforeConfig, afterDeclarationsConfig),
       );
     }
   } else {
@@ -100,7 +100,7 @@ export namespace register {
       tsNode = require("ts-node");
     } catch {
       throw new Error(
-        `Cannot resolve ts-node. Make sure ts-node is installed before using typescript-transform-paths/register`
+        `Cannot resolve ts-node. Make sure ts-node is installed before using typescript-transform-paths/register`,
       );
     }
 

@@ -18,7 +18,7 @@ const getExpected = (tsInstance: typeof ts, fileName: string, original: string, 
   original
     .replace(/"@(.*)"/g, (_, p) => makeRelative(tsInstance, fileName, p, rootDir))
     .replace(/"#utils\/(.*)"/g, (_, p) =>
-      makeRelative(tsInstance, fileName, path.join(p === "hello" ? "secondary" : "utils", p), rootDir)
+      makeRelative(tsInstance, fileName, path.join(p === "hello" ? "secondary" : "utils", p), rootDir),
     )
     .replace('"path"', '"https://external.url/path.js"')
     .replace('"circular/a"', '"../circular/a"');

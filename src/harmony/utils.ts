@@ -13,9 +13,8 @@ export type DownSampleTsTypes<TypeMap extends [any, any][], Tuple extends [...un
 };
 
 // @prettier-ignore
-type DownSampleTsType<TypeMap extends [any, any][], T> = T extends Exclude<TypeMap[number][0], undefined>
-  ? Extract<TypeMap[number], [T, any]>[1]
-  : T;
+type DownSampleTsType<TypeMap extends [any, any][], T> =
+  T extends Exclude<TypeMap[number][0], undefined> ? Extract<TypeMap[number], [T, any]>[1] : T;
 
 // @formatter:on
 // endregion

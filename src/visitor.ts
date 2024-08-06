@@ -56,7 +56,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
                 // selector in capture group and dismiss anything after the final comment close tag
                 /^\/\*(.+)\*\/.*/s
               : /^\/\/(.+)/s,
-            /* replaceValue */ "$1"
+            /* replaceValue */ "$1",
           );
         tsInstance.addSyntheticLeadingComment(p, kind, caption, hasTrailingNewLine);
       }
@@ -71,7 +71,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    */
   if (tsInstance.isExternalModuleReference(node) && tsInstance.isStringLiteral(node.expression))
     return resolvePathAndUpdateNode(this, node, node.expression.text, (p) =>
-      factory.updateExternalModuleReference(node, p)
+      factory.updateExternalModuleReference(node, p),
     );
 
   /**
@@ -94,8 +94,8 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
         node.assertions,
         node.qualifier,
         node.typeArguments,
-        node.isTypeOf
-      )
+        node.isTypeOf,
+      ),
     );
 
     return tsInstance.visitEachChild(res, this.getVisitor(), transformationContext);
@@ -142,7 +142,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
         node.isTypeOnly,
         node.exportClause,
         p,
-        node.assertClause
+        node.assertClause,
       );
     });
 
@@ -151,7 +151,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    */
   if (tsInstance.isModuleDeclaration(node) && tsInstance.isStringLiteral(node.name))
     return resolvePathAndUpdateNode(this, node, node.name.text, (p) =>
-      factory.updateModuleDeclaration(node, node.modifiers, p, node.body)
+      factory.updateModuleDeclaration(node, node.modifiers, p, node.body),
     );
 
   return tsInstance.visitEachChild(node, this.getVisitor(), transformationContext);
