@@ -12,6 +12,7 @@ jobs:
         with:
           node-version: 22
           cache: yarn
+          cache-dependency-path: "**/yarn.lock"
       - run: yarn install
       - run: yarn prettier --check .
 
@@ -23,34 +24,22 @@ jobs:
         node-version: [18, 20, 22]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Determine Yarn Cache Path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v4
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+      - run: corepack enable
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
+          cache-dependency-path: "**/yarn.lock"
 
-      - name: Install Packages
-        run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
 
-      - name: Build
-        run: yarn build
+      - run: yarn build
 
       - name: Test
         run: yarn test --runInBand=false --maxWorkers=2 --workerIdleMemoryLimit=2GB # https://github.com/facebook/jest/issues/11956
         env:
-          CI: true
           NODE_OPTIONS: --max_old_space_size=4096
