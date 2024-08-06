@@ -24,8 +24,8 @@ export const tsModules = <const>[
 ];
 
 export const projectsPaths = path.join(__dirname, "./projects");
-export const transformerPath = path.resolve(__dirname, "../src/index.ts");
-export const builtTransformerPath = path.resolve(__dirname, "../dist/index.js");
+export const transformerPath = require.resolve("typescript-transform-paths");
+export const builtTransformerPath = require.resolve("typescript-transform-paths");
 
 Error.stackTraceLimit = 120;
 

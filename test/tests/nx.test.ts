@@ -1,10 +1,10 @@
 import ts from "typescript";
-import { nxTransformerPlugin } from "../../src";
+import { nxTransformerPlugin } from "typescript-transform-paths";
 import path from "path";
 import { projectsPaths } from "../config";
 import { execSync } from "child_process";
 import { readFileSync, rmSync } from "fs";
-import * as transformerModule from "../../src/transformer";
+import * as transformerModule from "typescript-transform-paths/dist/transformer";
 
 /* ****************************************************************************************************************** *
  * Tests
