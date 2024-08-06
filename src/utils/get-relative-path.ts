@@ -39,7 +39,7 @@ function getIsFsCaseSensitive() {
   }
 
   console.warn(
-    `Could not determine filesystem's case sensitivity. Please file a bug report with your system's details`
+    `Could not determine filesystem's case sensitivity. Please file a bug report with your system's details`,
   );
   isCaseSensitiveFilesystem = false;
 

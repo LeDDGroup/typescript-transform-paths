@@ -15,7 +15,7 @@ export function resolvePathAndUpdateNode(
   context: VisitorContext,
   node: ts.Node,
   moduleName: string,
-  updaterFn: (newPath: ts.StringLiteral) => ts.Node | undefined
+  updaterFn: (newPath: ts.StringLiteral) => ts.Node | undefined,
 ): ts.Node | undefined {
   const { sourceFile, tsInstance, factory } = context;
   const { normalizePath } = tsInstance;
@@ -57,7 +57,7 @@ export function resolvePathAndUpdateNode(
   function getStatementTags() {
     let targetNode = tsInstance.isStatement(node)
       ? node
-      : tsInstance.findAncestor(node, tsInstance.isStatement) ?? node;
+      : (tsInstance.findAncestor(node, tsInstance.isStatement) ?? node);
     targetNode = tsInstance.getOriginalNode(targetNode);
 
     let jsDocTags: readonly ts.JSDocTag[] | undefined;

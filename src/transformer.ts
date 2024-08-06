@@ -62,7 +62,7 @@ function getTsProperties(args: Parameters<typeof transformer>) {
   } else {
     throw new Error(
       `Cannot transform without a Program, ts-node instance, or manual parameters supplied. ` +
-        `Make sure you're using ts-patch or ts-node with transpileOnly.`
+        `Make sure you're using ts-patch or ts-node with transpileOnly.`,
     );
   }
 
@@ -85,7 +85,7 @@ export default function transformer(
   manualTransformOptions?: {
     compilerOptions?: ts.CompilerOptions;
     fileNames?: string[];
-  }
+  },
 ) {
   return (transformationContext: ts.TransformationContext) => {
     // prettier-ignore
@@ -106,7 +106,7 @@ export default function transformer(
     if (!emitHost || tsNodeState === TsNodeState.Stripped) {
       if (!fileNames)
         throw new Error(
-          `No EmitHost found and could not determine files to be processed. Please file an issue with a reproduction!`
+          `No EmitHost found and could not determine files to be processed. Please file an issue with a reproduction!`,
         );
       emitHost = createSyntheticEmitHost(compilerOptions, tsInstance, getCanonicalFileName, fileNames as string[]);
     }

@@ -86,7 +86,7 @@ describe(`Specific Tests`, () => {
           const pcl = tsInstance.getParsedCommandLineOfConfigFile(
             tsConfigFile,
             {},
-            <any>tsInstance.sys
+            <any>tsInstance.sys,
           )! as TS.ParsedCommandLine;
           normalEmit = getManualEmitResult({ ...baseConfig, useRootDirs: false }, tsInstance, pcl);
           rootDirsEmit = getManualEmitResult({ ...baseConfig, useRootDirs: true }, tsInstance, pcl);
@@ -96,7 +96,7 @@ describe(`Specific Tests`, () => {
           const pcl = tsInstance.getParsedCommandLineOfConfigFile(
             tsConfigFile,
             {},
-            <any>tsInstance.sys
+            <any>tsInstance.sys,
           )! as TS.ParsedCommandLine;
           skipDts = true;
           normalEmit = getTsNodeEmitResult({ ...baseConfig, useRootDirs: false }, pcl, tsSpecifier);
@@ -108,7 +108,7 @@ describe(`Specific Tests`, () => {
         transformedMatches(
           fileName: string,
           expected: RegExp | string,
-          opt?: { base?: EmittedFiles[]; kind?: ("dts" | "js")[] }
+          opt?: { base?: EmittedFiles[]; kind?: ("dts" | "js")[] },
         ) {
           const bases = opt?.base ?? [normalEmit, rootDirsEmit];
           const kinds = (opt?.kind ?? ["dts", "js"]).filter((k) => !skipDts || k !== "dts");
@@ -123,7 +123,7 @@ describe(`Specific Tests`, () => {
                 failed = true;
                 messages.push(
                   `File: ${fileName}\nKind: ${kind}\nrootDirs: ${base === normalEmit}\n\n` +
-                    `Expected: \`${expected}\`\nReceived:\n\t${content.replace(/(\r?\n)+/g, "$1\t")}`
+                    `Expected: \`${expected}\`\nReceived:\n\t${content.replace(/(\r?\n)+/g, "$1\t")}`,
                 );
               }
             }
@@ -151,7 +151,7 @@ describe(`Specific Tests`, () => {
 
       test(`(exclude) Doesn't transform for exclusion patterns`, () => {
         expect(indexFile).transformedMatches(
-          /export { bb } from "#exclusion\/ex";\s*export { dd } from "#root\/excluded-file"/
+          /export { bb } from "#exclusion\/ex";\s*export { dd } from "#root\/excluded-file"/,
         );
       });
     });
@@ -176,7 +176,7 @@ describe(`Specific Tests`, () => {
       });
       expect(typeElisionIndex).transformedMatches(
         /import { ConstB, TypeA } from "\.\/a";\s*import { TypeA as TypeA2 } from "\.\/a";\s*export { ConstB, TypeA };\s*export { TypeA2 };/,
-        { kind: ["dts"] }
+        { kind: ["dts"] },
       );
 
       if (tsVersion >= 50) {
@@ -187,24 +187,24 @@ describe(`Specific Tests`, () => {
 
         expect(typeElisionIndex).transformedMatches(
           /import { type TypeAndConst, ConstB as __ } from "\.\/a";\s*export { TypeAndConst, __ };/,
-          { kind: ["dts"] }
+          { kind: ["dts"] },
         );
 
         /* Export Import type-only keyword on import specifier */
         expect(typeElisionIndex).transformedMatches(
           /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { type TypeAndConst2, ___ };/,
-          { kind: ["dts"] }
+          { kind: ["dts"] },
         );
 
         expect(typeElisionIndex).transformedMatches(
           /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { ___ };/,
-          { kind: ["js"] }
+          { kind: ["js"] },
         );
 
         /* Unreferenced w/ type-only keyword on import specifier */
         expect(typeElisionIndex).not.transformedMatches(
           /import { ConstB as ____, type TypeAndConst as TypeAndConst3 } from "\.\/a";\s/,
-          { kind: ["dts"] }
+          { kind: ["dts"] },
         );
 
         expect(typeElisionIndex).not.transformedMatches(/import { ConstB as ____ } from "\.\/a";\s/, { kind: ["js"] });
@@ -221,7 +221,7 @@ describe(`Specific Tests`, () => {
       });
       expect(indexFile).transformedMatches(
         /\/\/ comment 1\r?\n\s*\/\*\r?\n\s*comment 2\r?\n\s*\*\/\r?\n\s*"\.\/dir\/src-file"/,
-        { kind: ["js"] }
+        { kind: ["js"] },
       );
     });
 
@@ -261,10 +261,10 @@ describe(`Specific Tests`, () => {
       expect(subPackagesFile).transformedMatches(`export { packageCConst as C2 } from "./packages/pkg-c/main"`);
       expect(subPackagesFile).transformedMatches(`export { packageCConst as C3 } from "./packages/pkg-c/main.js"`);
       expect(subPackagesFile).transformedMatches(
-        `export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`
+        `export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`,
       );
       expect(subPackagesFile).transformedMatches(
-        `export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`
+        `export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`,
       );
     });
 
@@ -273,7 +273,7 @@ describe(`Specific Tests`, () => {
         `export ${
           tsVersion < 49 ? `declare ` : ""
         }type ImportWithChildren = import("./packages/pkg-a").PassThru<import("./packages/pkg-b").PackageBType>`,
-        { kind: ["dts"] }
+        { kind: ["dts"] },
       );
     });
 

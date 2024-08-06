@@ -23,7 +23,7 @@ describe(`Extra Tests`, () => {
         () => {
           require("sdf0s39rf3333d@fake-module");
         },
-        { virtual: true }
+        { virtual: true },
       );
       try {
         const program = createTsProgram({ tsInstance: ts, tsConfigFile }, config.builtTransformerPath);

@@ -65,7 +65,7 @@ function createReadFile(outputFiles: EmittedFiles, originalReadFile: Function) {
  */
 export function createTsProgram(
   opt: CreateTsProgramOptions,
-  transformerPath: string = config.transformerPath
+  transformerPath: string = config.transformerPath,
 ): ts.Program {
   const { disablePlugin, additionalOptions, pluginOptions } = opt;
   const tsInstance: typeof ts = opt.tsInstance;
@@ -97,10 +97,13 @@ export function createTsProgram(
     compilerOptions = pcl.options;
     fileNames = pcl.fileNames;
   } else {
-    const files = Object.entries(compilerOptions.files!).reduce((p, [fileName, data]) => {
-      p[tsInstance.normalizePath(fileName)] = data;
-      return p;
-    }, <any>{});
+    const files = Object.entries(compilerOptions.files!).reduce(
+      (p, [fileName, data]) => {
+        p[tsInstance.normalizePath(fileName)] = data;
+        return p;
+      },
+      <any>{},
+    );
     fileNames = Object.keys(files);
 
     host = tsInstance.createCompilerHost(compilerOptions);
@@ -119,7 +122,7 @@ export function createTsProgram(
 }
 
 export function createTsSolutionBuilder(
-  opt: CreateTsSolutionBuilderOptions
+  opt: CreateTsSolutionBuilderOptions,
 ): ts.SolutionBuilder<ts.BuilderProgram> & { getEmitFiles(): EmittedFiles } {
   const { tsInstance, projectDir } = opt;
 
@@ -157,10 +160,10 @@ export function getManualEmitResult(pluginConfig: TsTransformPathsConfig, tsInst
 
   const { transformed } = tsInstance.transform(
     fileNames.map((f) =>
-      tsInstance.createSourceFile(f, fs.readFileSync(f, "utf8"), tsInstance.ScriptTarget.ESNext, true)
+      tsInstance.createSourceFile(f, fs.readFileSync(f, "utf8"), tsInstance.ScriptTarget.ESNext, true),
     ),
     [transformer],
-    compilerOptions
+    compilerOptions,
   );
 
   const printer = tsInstance.createPrinter();
@@ -174,7 +177,7 @@ export function getManualEmitResult(pluginConfig: TsTransformPathsConfig, tsInst
 export function getTsNodeEmitResult(
   pluginConfig: TsTransformPathsConfig,
   pcl: ts.ParsedCommandLine,
-  tsSpecifier: string
+  tsSpecifier: string,
 ) {
   const compiler = tsNode.create({
     transpileOnly: true,

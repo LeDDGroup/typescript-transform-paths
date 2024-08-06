@@ -51,7 +51,7 @@ export namespace TsThreeEight {
     [TsCurrentModule.Expression, TsThreeEightModule.Expression],
     [TsCurrentModule.ModuleBody, TsThreeEightModule.ModuleBody],
     [TsCurrentModule.ModuleName, TsThreeEightModule.ModuleName],
-    [TsCurrentModule.ExportDeclaration["exportClause"], TsThreeEightModule.ExportDeclaration["exportClause"]]
+    [TsCurrentModule.ExportDeclaration["exportClause"], TsThreeEightModule.ExportDeclaration["exportClause"]],
   ];
 }
 
@@ -75,7 +75,7 @@ export namespace TsThreeEight {
           node: ImportClause,
           isTypeOnly: boolean,
           name: Identifier | undefined,
-          namedBindings: NamedImportBindings | undefined
+          namedBindings: NamedImportBindings | undefined,
         ) {
           return ts.updateImportClause.apply(void 0, downSample(node, name, namedBindings));
         };
@@ -84,7 +84,7 @@ export namespace TsThreeEight {
           node: ImportDeclaration,
           modifiers: readonly Modifier[] | undefined,
           importClause: ImportClause | undefined,
-          moduleSpecifier: Expression
+          moduleSpecifier: Expression,
         ) {
           const [dsNode, dsImportClause, dsModuleSpecifier] = downSample(node, importClause, moduleSpecifier);
 
@@ -93,7 +93,7 @@ export namespace TsThreeEight {
             dsNode.decorators,
             dsNode.modifiers,
             dsImportClause,
-            dsModuleSpecifier
+            dsModuleSpecifier,
           );
         };
       case "updateExportDeclaration":
@@ -102,7 +102,7 @@ export namespace TsThreeEight {
           modifiers: readonly Modifier[] | undefined,
           isTypeOnly: boolean,
           exportClause: NamedExportBindings | undefined,
-          moduleSpecifier: Expression | undefined
+          moduleSpecifier: Expression | undefined,
         ) {
           const [dsNode, dsModuleSpecifier, dsExportClause] = downSample(node, moduleSpecifier, exportClause);
           return ts.updateExportDeclaration(
@@ -112,7 +112,7 @@ export namespace TsThreeEight {
             dsExportClause,
             dsModuleSpecifier,
             // @ts-ignore - This was added in later versions of 3.x
-            dsNode.isTypeOnly
+            dsNode.isTypeOnly,
           );
         };
       case "updateModuleDeclaration":
@@ -120,7 +120,7 @@ export namespace TsThreeEight {
           node: ModuleDeclaration,
           modifiers: readonly Modifier[] | undefined,
           name: ModuleName,
-          body: ModuleBody | undefined
+          body: ModuleBody | undefined,
         ) {
           const [dsNode, dsName, dsBody] = downSample(node, name, body);
 
@@ -133,13 +133,13 @@ export namespace TsThreeEight {
           assertions: ImportTypeAssertionContainer | undefined,
           qualifier: EntityName | undefined,
           typeArguments: readonly TypeNode[] | undefined,
-          isTypeOf?: boolean
+          isTypeOf?: boolean,
         ) {
           const [dsNode, dsArgument, dsQualifier, dsTypeArguments] = downSample(
             node,
             argument,
             qualifier,
-            typeArguments
+            typeArguments,
           );
 
           return ts.updateImportTypeNode(dsNode, dsArgument, dsQualifier, dsTypeArguments, isTypeOf);

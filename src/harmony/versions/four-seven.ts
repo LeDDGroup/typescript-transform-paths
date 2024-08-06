@@ -32,7 +32,7 @@ export namespace TsFourSeven {
     [TsCurrentModule.NamedExportBindings, TsFourSevenModule.NamedExportBindings],
     [TsCurrentModule.ModuleDeclaration, TsFourSevenModule.ModuleDeclaration],
     [TsCurrentModule.ModuleName, TsFourSevenModule.ModuleName],
-    [TsCurrentModule.ModuleBody, TsFourSevenModule.ModuleBody]
+    [TsCurrentModule.ModuleBody, TsFourSevenModule.ModuleBody],
   ];
 }
 
@@ -56,13 +56,13 @@ export namespace TsFourSeven {
           modifiers: readonly Modifier[] | undefined,
           importClause: ImportClause | undefined,
           moduleSpecifier: Expression,
-          assertClause: AssertClause | undefined
+          assertClause: AssertClause | undefined,
         ) {
           const [dsNode, dsImportClause, dsModuleSpecifier, dsAssertClause] = downSample(
             node,
             importClause,
             moduleSpecifier,
-            assertClause
+            assertClause,
           );
 
           return factory.updateImportDeclaration(
@@ -71,7 +71,7 @@ export namespace TsFourSeven {
             dsNode.modifiers,
             dsImportClause,
             dsModuleSpecifier,
-            dsAssertClause
+            dsAssertClause,
           );
         };
       case "updateExportDeclaration":
@@ -81,13 +81,13 @@ export namespace TsFourSeven {
           isTypeOnly: boolean,
           exportClause: NamedExportBindings | undefined,
           moduleSpecifier: Expression | undefined,
-          assertClause: AssertClause | undefined
+          assertClause: AssertClause | undefined,
         ) {
           const [dsNode, dsExportClause, dsModuleSpecifier, dsAssertClause] = downSample(
             node,
             exportClause,
             moduleSpecifier,
-            assertClause
+            assertClause,
           );
 
           return factory.updateExportDeclaration(
@@ -97,7 +97,7 @@ export namespace TsFourSeven {
             isTypeOnly,
             dsExportClause,
             dsModuleSpecifier,
-            dsAssertClause
+            dsAssertClause,
           );
         };
       case "updateModuleDeclaration":
@@ -105,7 +105,7 @@ export namespace TsFourSeven {
           node: ModuleDeclaration,
           modifiers: readonly Modifier[] | undefined,
           name: ModuleName,
-          body: ModuleBody | undefined
+          body: ModuleBody | undefined,
         ) {
           const [dsNode, dsName, dsBody] = downSample(node, name, body);
 
