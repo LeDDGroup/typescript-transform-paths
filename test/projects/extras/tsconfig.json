@@ -1,8 +1,8 @@
 {
-  "include": [ "src" ],
+  "include": ["src"],
 
   "ts-node": {
-    "require": [ "typescript-transform-paths/register" ]
+    "require": ["typescript-transform-paths/register"]
   },
 
   "compilerOptions": {
@@ -17,7 +17,7 @@
 
     "baseUrl": "./src",
     "paths": {
-      "#identifier": [ "./id.ts" ]
+      "#identifier": ["./id.ts"]
     },
 
     "plugins": [

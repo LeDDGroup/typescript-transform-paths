@@ -1,2 +1,2 @@
-'use strict'
-module.exports = require('./').nxTransformerPlugin;
+"use strict";
+module.exports = require("./").nxTransformerPlugin;
