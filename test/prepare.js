@@ -9,11 +9,7 @@ const tsp2 = require("tsp2");
  * ****************************************************************************************************************** */
 
 const rootDir = __dirname;
-const tsDirs = [
-  "typescript-three",
-  "typescript-four-seven",
-  "typescript",
-];
+const tsDirs = ["typescript-three", "typescript-four-seven", "typescript"];
 
 /* ****************************************************************************************************************** *
  * Patch TS Modules

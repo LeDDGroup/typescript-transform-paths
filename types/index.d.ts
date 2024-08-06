@@ -1,5 +1,5 @@
-import TSNode from 'ts-node'
-import ts from 'typescript'
+import TSNode from "ts-node";
+import ts from "typescript";
 
 /* ****************************************************************************************************************** *
  * Hardcoded declarations file for npm package
@@ -10,7 +10,7 @@ export interface TsTransformPathsConfig {
   readonly exclude?: string[];
   readonly afterDeclarations?: boolean;
   readonly tsConfig?: string;
-  readonly transform?: string
+  readonly transform?: string;
 }
 
 export interface TransformerExtras {
@@ -20,7 +20,7 @@ export interface TransformerExtras {
   ts: typeof ts;
 }
 
-export function register(): TSNode.RegisterOptions | undefined
+export function register(): TSNode.RegisterOptions | undefined;
 
 export default function transformer(
   program?: ts.Program,
@@ -33,8 +33,7 @@ export default function transformer(
     compilerOptions?: ts.CompilerOptions;
     fileNames?: string[];
   }
-): ts.CustomTransformerFactory
-
+): ts.CustomTransformerFactory;
 
 /* ****************************************************************************************************************** *
  * NX
@@ -50,4 +49,4 @@ export interface NxTransformerPlugin {
   afterDeclarations: NxTransformerFactory;
 }
 
-export const nxTransformerPlugin: NxTransformerPlugin
+export const nxTransformerPlugin: NxTransformerPlugin;
