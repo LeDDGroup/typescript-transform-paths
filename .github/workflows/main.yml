@@ -28,9 +28,10 @@ jobs:
 
       - run: corepack enable
 
-      - uses: actions/setup-node@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ matrix.node-version }}
           cache: yarn
           cache-dependency-path: "**/yarn.lock"
 
