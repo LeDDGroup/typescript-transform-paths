@@ -26,7 +26,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Setup Node.js 18.x to publish to npmjs.org
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
