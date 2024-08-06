@@ -6408,11 +6408,12 @@ typed-assert@^1.0.8:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.5.tgz#dae20114a7b4ff4bd642db9c8c699f2953e8bbdb"
   integrity sha512-BEjlc0Z06ORZKbtcxGrIvvwYs5hAnuo6TKdNFL55frVDlB+na3z5bsLhFaIxmT+dPWgBIjMo6aNnTOgHHmHgiQ==
 
-"typescript-transform-paths@link:..":
-  version "0.0.0"
-  uid ""
+"typescript-transform-paths@file:..":
+  version "3.4.7"
+  dependencies:
+    minimatch "^3.0.4"
 
-"typescript-transform-paths@link:../src":
+"typescript-transform-paths@link:..":
   version "0.0.0"
   uid ""
 
