@@ -10,7 +10,7 @@
     "test": "jest",
     "release": "standard-version",
     "--------------": "",
-    "format": "prettier --write \"{src,test}/**/{*.js,!(*.d).ts}\"",
+    "format": "prettier --write .",
     "clean": "npx -y rimraf -g dist **/*.tsbuildinfo ./test/projects/nx/dist",
     "clean:all": "yarn run clean && npx -y rimraf -g node_modules **/node_modules **/yarn.lock yarn.lock",
     "reset": "yarn run clean:all && yarn install && yarn build",
