@@ -8088,7 +8088,7 @@ __metadata:
     typescript: "npm:^5.5.4"
     typescript-four-seven: "npm:typescript@4.7.4"
     typescript-three: "npm:typescript@3.6.5"
-    typescript-transform-paths: "file:../"
+    typescript-transform-paths: "portal:../"
   languageName: unknown
   linkType: soft
 
@@ -9257,16 +9257,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-transform-paths@file:../::locator=root-workspace-0b6124%40workspace%3A.":
-  version: 3.4.7
-  resolution: "typescript-transform-paths@file:../#../::hash=eb137e&locator=root-workspace-0b6124%40workspace%3A."
+"typescript-transform-paths@portal:../::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "typescript-transform-paths@portal:../::locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     minimatch: "npm:^3.1.2"
   peerDependencies:
     typescript: ">=3.6.5"
-  checksum: 10c0/7762741bdef9f4dbabc04f50c48453503a609a1e5eb64284c4364658d2a64a8c7c29f15b907fa2953464d58f4c02e38604916dec1d823dd99fa7abc04cdcc366
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "typescript@npm:^5.5.4":
   version: 5.5.4
