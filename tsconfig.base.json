@@ -5,7 +5,7 @@
     "declaration": false,
 
     "lib": ["esnext"],
-    "target": "es2015",
+    "target": "es2018",
     "module": "CommonJS",
     "moduleResolution": "node",
 
