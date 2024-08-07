@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "noErrorTruncation": false,
-    "incremental": true,
     "declaration": false,
 
     "lib": ["esnext"],
@@ -11,6 +10,7 @@
 
     "strict": true,
     "preserveConstEnums": true,
+    "skipLibCheck": true,
     "removeComments": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

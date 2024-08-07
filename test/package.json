@@ -3,7 +3,9 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "prepare": "node prepare.js"
+    "g:ts-node": "cd $INIT_CWD && ts-node",
+    "add-package": "yarn ../ pack && yarn add ../package.tgz",
+    "postinstall": "node prepare.js"
   },
   "devDependencies": {
     "@nrwl/cli": "^15.9.7",
@@ -23,15 +25,9 @@
     "typescript": "^5.5.4",
     "typescript-four-seven": "npm:typescript@4.7.4",
     "typescript-three": "npm:typescript@3.6.5",
-    "typescript-transform-paths": "file:../"
+    "typescript-transform-paths": "../package.tgz"
   },
-  "workspaces": {
-    "packages": [
-      "projects/*"
-    ],
-    "nohoist": [
-      "**/semver/*",
-      "**/ts-patch/*"
-    ]
-  }
+  "workspaces": [
+    "projects/*"
+  ]
 }

@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: corepack enable
+      - run: corepack enable ${{ matrix.os == 'windows-latest' && '--install-directory C:\npm\prefix' || '' }}
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -35,13 +35,18 @@ jobs:
           cache: yarn
           cache-dependency-path: "**/yarn.lock"
 
-      - run: yarn install --frozen-lockfiles
+      - run: yarn install
 
       - run: yarn build
 
+      - name: Generate package archive
+        run: yarn pack
+
       - name: Install dependencies for testing
-        run: yarn install --frozen-lockfiles
+        run: yarn install
         working-directory: test
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
       - name: Test
         working-directory: test
