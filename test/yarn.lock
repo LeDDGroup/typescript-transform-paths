@@ -8051,7 +8051,7 @@ __metadata:
     typescript: "npm:^5.5.4"
     typescript-four-seven: "npm:typescript@4.7.4"
     typescript-three: "npm:typescript@3.6.5"
-    typescript-transform-paths: "file:../"
+    typescript-transform-paths: ../package.tgz
   languageName: unknown
   linkType: soft
 
@@ -9220,14 +9220,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-transform-paths@file:../::locator=root-workspace-0b6124%40workspace%3A.":
+"typescript-transform-paths@file:../package.tgz::locator=root-workspace-0b6124%40workspace%3A.":
   version: 3.4.7
-  resolution: "typescript-transform-paths@file:../#../::hash=5cc814&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "typescript-transform-paths@file:../package.tgz#../package.tgz::hash=d3c1d5&locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     minimatch: "npm:^3.1.2"
   peerDependencies:
     typescript: ">=3.6.5"
-  checksum: 10c0/00aa47c56faf7a914ba99648ef97aed10fabd00b76992c24a68b666cbb2e7063cbe6a8b304cb46a6f7acc66ba34c4ee87e3fc853fe9a667da6ee49e6fccaadd6
+  checksum: 10c0/e42d1d5761f05707ebedf0e6ea8c20d6897696de963ed165c40d6177791a04a4a655dbf072be8bb152749a48f1844b815beb365f319ab6ae44f981f59582af11
   languageName: node
   linkType: hard
 

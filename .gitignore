@@ -76,4 +76,4 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
-test/out.tgz
+package.tgz
