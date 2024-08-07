@@ -25,13 +25,7 @@
     "typescript-three": "npm:typescript@3.6.5",
     "typescript-transform-paths": "file:../"
   },
-  "workspaces": {
-    "packages": [
-      "projects/*"
-    ],
-    "nohoist": [
-      "**/semver/*",
-      "**/ts-patch/*"
-    ]
-  }
+  "workspaces": [
+    "projects/*"
+  ]
 }
