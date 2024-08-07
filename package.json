@@ -61,7 +61,7 @@
     "prettier": "^3.3.3",
     "rimraf": "^5.0.10",
     "standard-version": "^9.5.0",
-    "ts-node": "^10.9.2",
+    "@types/ts-node": "npm:ts-node@^10.9.2",
     "ts-patch": "^3.2.1",
     "typescript": "^5.5.4"
   },
