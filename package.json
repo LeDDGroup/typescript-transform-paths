@@ -6,7 +6,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "compile": "tsc",
-    "build": "yarn run clean && yarn run compile",
+    "build": "rm -rf dist && yarn run clean && yarn run compile",
     "test": "yarn test/ test",
     "release": "standard-version",
     "--------------": "",
@@ -15,9 +15,7 @@
     "clean:all": "yarn run clean && rimraf -g node_modules \"**/node_modules\" \"**/yarn.lock\" yarn.lock",
     "reset": "yarn run clean:all && yarn install && yarn build",
     "-------------- ": "",
-    "prepack": "yarn build",
-    "pretest": "yarn test/ install",
-    "prebuild": "rimraf -g dist"
+    "prepack": "yarn build"
   },
   "keywords": [
     "typescript",
