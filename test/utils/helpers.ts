@@ -1,4 +1,4 @@
-import { default as tstpTransform, TsTransformPathsConfig } from "../../src";
+import { default as tstpTransform, TsTransformPathsConfig } from "typescript-transform-paths";
 import fs from "fs";
 import ts from "typescript";
 import * as tsNode from "ts-node";

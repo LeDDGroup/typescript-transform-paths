@@ -9,7 +9,7 @@ import {
   getTsNodeEmitResult,
 } from "../../utils";
 import { projectsPaths, ts, tsModules } from "../../config";
-import { TsTransformPathsConfig } from "../../../src";
+import { TsTransformPathsConfig } from "typescript-transform-paths";
 import TS from "typescript";
 
 /* ****************************************************************************************************************** *

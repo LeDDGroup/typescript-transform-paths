@@ -1,5 +1,5 @@
-import TSNode from "ts-node";
 import ts from "typescript";
+export { default as register } from "./register";
 
 /* ****************************************************************************************************************** *
  * Hardcoded declarations file for npm package
@@ -19,8 +19,6 @@ export interface TransformerExtras {
    */
   ts: typeof ts;
 }
-
-export function register(): TSNode.RegisterOptions | undefined;
 
 export default function transformer(
   program?: ts.Program,

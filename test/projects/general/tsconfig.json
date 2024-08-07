@@ -17,8 +17,8 @@
     "esModuleInterop": true,
 
     "plugins": [
-      { "transform": "../../../src/index.ts" },
-      { "transform": "../../../src/index.ts", "afterDeclarations": true }
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   }
 }

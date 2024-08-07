@@ -1,4 +1,4 @@
-import { JestConfigWithTsJest } from "ts-jest/dist/types";
+import type { JestConfigWithTsJest } from "ts-jest";
 
 const config: JestConfigWithTsJest = {
   testEnvironment: "node",
@@ -9,7 +9,7 @@ const config: JestConfigWithTsJest = {
     "^.+\\.tsx?$": [
       "ts-jest",
       {
-        tsconfig: "<rootDir>/test/tsconfig.json",
+        tsconfig: "<rootDir>/tsconfig.json",
       },
     ],
   },
