@@ -53,6 +53,7 @@
     "nx-transformer.js"
   ],
   "devDependencies": {
+    "@tsconfig/node18": "^18.2.4",
     "@types/minimatch": "^5.1.2",
     "@types/node": "^18.19.43",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",

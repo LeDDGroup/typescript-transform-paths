@@ -102,6 +102,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tsconfig/node18@npm:^18.2.4":
+  version: 18.2.4
+  resolution: "@tsconfig/node18@npm:18.2.4"
+  checksum: 10c0/cdfd17f212660374eb2765cd5907b2252e43cfa2623cd52307a49f004327ef49bbe7d53c78b0aca57f33e9a5cb0d7d2eb5ded9be1235e6212f65c9f0699322b6
+  languageName: node
+  linkType: hard
+
 "@types/minimatch@npm:^5.1.2":
   version: 5.1.2
   resolution: "@types/minimatch@npm:5.1.2"
@@ -1823,6 +1830,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "typescript-transform-paths@workspace:."
   dependencies:
+    "@tsconfig/node18": "npm:^18.2.4"
     "@types/minimatch": "npm:^5.1.2"
     "@types/node": "npm:^18.19.43"
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5"
