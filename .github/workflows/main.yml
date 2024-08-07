@@ -40,7 +40,7 @@ jobs:
       - run: yarn build
 
       - name: Install dependencies for testing
-        run: yarn install --frozen-lockfiles
+        run: yarn install
         working-directory: test
 
       - name: Test
