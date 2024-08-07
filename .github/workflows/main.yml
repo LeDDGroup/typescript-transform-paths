@@ -40,7 +40,9 @@ jobs:
       - run: yarn build
 
       - name: Install dependencies for testing
-        run: yarn install
+        run: |
+          yarn install-ttp
+          yarn install
         working-directory: test
 
       - name: Test
