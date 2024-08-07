@@ -11,6 +11,7 @@
 
     "strict": true,
     "preserveConstEnums": true,
+    "skipLibCheck": true,
     "removeComments": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
