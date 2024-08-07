@@ -1,7 +1,7 @@
-import { register } from "../../src";
+import { register } from "typescript-transform-paths";
 import { PluginConfig } from "ts-patch";
 import * as tsNode from "ts-node";
-import * as transformerModule from "../../src/transformer";
+import * as transformerModule from "typescript-transform-paths/dist/transformer";
 import { REGISTER_INSTANCE } from "ts-node";
 import { CustomTransformers, PluginImport, Program } from "typescript";
 
