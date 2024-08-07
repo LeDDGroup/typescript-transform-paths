@@ -40,7 +40,7 @@ const moduleAugmentFile = ts.normalizePath(path.join(projectRoot, "src/module-au
  * ****************************************************************************************************************** */
 
 declare global {
-  namespace jest {
+  namespace vi {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- no way to extend type definitions without using the same declaration as the original types
     interface Matchers<R> {
       transformedMatches(expected: RegExp | string, opt?: { base?: EmittedFiles[]; kind?: ("dts" | "js")[] }): void;
