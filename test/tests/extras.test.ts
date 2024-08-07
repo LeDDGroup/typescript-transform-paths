@@ -36,12 +36,12 @@ describe(`Extra Tests`, () => {
 
     describe(`ts-node register script`, () => {
       test(`Works with --transpileOnly`, () => {
-        const res = execSync("npx ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString();
+        const res = execSync("yarn run --silent ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString();
         expect(stripAnsi(res)).toMatch(/^null($|\r?\n)/m);
       });
 
       test(`Works with --typeCheck`, () => {
-        const res = execSync("npx ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString();
+        const res = execSync("yarn run --silent ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString();
         expect(stripAnsi(res)).toMatch(/^null($|\r?\n)/);
       });
     });
