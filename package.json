@@ -7,7 +7,7 @@
   "scripts": {
     "compile": "tsc",
     "build": "rm -rf dist && yarn run clean && yarn run compile",
-    "test": "yarn test/ test",
+    "test": "yarn test/ add-package && yarn test/ test",
     "release": "standard-version",
     "--------------": "",
     "format": "prettier --write .",
