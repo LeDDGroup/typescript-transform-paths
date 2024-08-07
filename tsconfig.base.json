@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "noErrorTruncation": false,
-    "incremental": true,
     "declaration": false,
 
     "lib": ["esnext"],
