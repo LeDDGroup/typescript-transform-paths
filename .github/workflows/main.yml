@@ -26,9 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: |
-          corepack enable
-          corepack prepare --activate
+      - run: corepack enable ${{ matrix.ok === windows-latest && '--install-directory C:\npm\prefix' }}
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
