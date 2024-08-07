@@ -18,7 +18,7 @@ describe(`Extra Tests`, () => {
   describe(`Built Tests`, () => {
     // see: https://github.com/LeDDGroup/typescript-transform-paths/issues/130
     test(`Transformer works without ts-node being present`, () => {
-      jest.doMock(
+      vi.doMock(
         "ts-node",
         () => {
           throw new ModuleNotFoundError("ts-node");
@@ -30,7 +30,7 @@ describe(`Extra Tests`, () => {
         const res = getEmitResultFromProgram(program);
         expect(res[indexFile].js).toMatch(`var _identifier_1 = require("./id")`);
       } finally {
-        jest.dontMock("ts-node");
+        vi.dontMock("ts-node");
       }
     });
 

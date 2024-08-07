@@ -45,9 +45,9 @@ describe(`Register script`, () => {
     test(`Registers initial ts-node if none found`, () => {
       const originalTsNodeInstance = global.process[instanceSymbol];
       global.process[instanceSymbol] = void 0;
-      let registerSpy: jest.SpyInstance | undefined;
+      let registerSpy: vi.SpyInstance | undefined;
       try {
-        registerSpy = jest.spyOn(tsNode, "register");
+        registerSpy = vi.spyOn(tsNode, "register");
         expect(global.process[instanceSymbol]).toBeUndefined();
 
         register.initialize();
@@ -65,9 +65,9 @@ describe(`Register script`, () => {
 
       const originalTsNodeInstance = global.process[instanceSymbol];
       global.process[instanceSymbol] = fakeInstance;
-      let registerSpy: jest.SpyInstance | undefined;
+      let registerSpy: vi.SpyInstance | undefined;
       try {
-        registerSpy = jest.spyOn(tsNode, "register");
+        registerSpy = vi.spyOn(tsNode, "register");
 
         const { tsNodeInstance } = register.initialize();
 
@@ -89,7 +89,7 @@ describe(`Register script`, () => {
 
   describe(`Register`, () => {
     test(`Throws without ts-node`, () => {
-      jest.doMock(
+      vi.doMock(
         "ts-node",
         () => {
           throw new ModuleNotFoundError("ts-node");
@@ -97,18 +97,18 @@ describe(`Register script`, () => {
         { virtual: true },
       );
       expect(() => register()).toThrow(`Cannot resolve ts-node`);
-      jest.dontMock("ts-node");
+      vi.dontMock("ts-node");
     });
 
     test(`Throws if can't register ts-node`, () => {
-      jest.doMock("ts-node", () => ({ register: () => {} }), { virtual: true });
+      vi.doMock("ts-node", () => ({ register: () => {} }), { virtual: true });
       expect(() => register()).toThrow(`Could not register ts-node instance!`);
-      jest.dontMock("ts-node");
+      vi.dontMock("ts-node");
     });
 
     test(`No transformers in tsConfig exits quietly`, () => {
       const originalInitialize = register.initialize;
-      const initializeSpy = jest.spyOn(register, "initialize");
+      const initializeSpy = vi.spyOn(register, "initialize");
       try {
         initializeSpy.mockImplementation(() => {
           const res = originalInitialize();
@@ -133,7 +133,7 @@ describe(`Register script`, () => {
         after: [fakeExistingTransformer],
         afterDeclarations: [fakeExistingTransformer],
       };
-      const transformerFactoryFn = jest.fn().mockReturnValue(fakeTransformerConfig);
+      const transformerFactoryFn = vi.fn().mockReturnValue(fakeTransformerConfig);
       const fakeProgram: any = {};
 
       let existingTransformers: CustomTransformers | ((p: Program) => CustomTransformers) | undefined;
@@ -149,19 +149,19 @@ describe(`Register script`, () => {
       }
 
       describe.each(configMap)(`$label`, ({ transformers, hasBefore, hasAfterDeclarations }) => {
-        let mockTransformer: jest.SpyInstance;
-        let initializeSpy: jest.SpyInstance;
+        let mockTransformer: vi.SpyInstance;
+        let initializeSpy: vi.SpyInstance;
         let registerResult: tsNode.RegisterOptions;
         let instanceRegistrationResult: tsNode.Service;
         let mergedTransformers: CustomTransformers;
 
         beforeAll(() => {
-          mockTransformer = jest.spyOn(transformerModule, "default").mockReturnValue(fakeTransformer);
+          mockTransformer = vi.spyOn(transformerModule, "default").mockReturnValue(fakeTransformer);
 
           global.process[instanceSymbol] = void 0;
 
           const originalInitialize = register.initialize;
-          initializeSpy = jest.spyOn(register, "initialize");
+          initializeSpy = vi.spyOn(register, "initialize");
           initializeSpy.mockImplementation(() => {
             const res = originalInitialize();
             if (existingTransformers) res.tsNodeInstance.options.transformers = existingTransformers;
