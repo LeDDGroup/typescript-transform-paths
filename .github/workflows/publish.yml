@@ -19,6 +19,7 @@ jobs:
           node-version: 22
           cache: yarn
           cache-dependency-path: "**/yarn.lock"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install Packages
         run: yarn install
@@ -30,9 +31,10 @@ jobs:
         run: npx extract-changelog-release > RELEASE_BODY.md
 
       - name: Publish to NPM
-        run: npm publish
+        run: yarn npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
