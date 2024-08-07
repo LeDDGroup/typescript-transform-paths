@@ -11,8 +11,8 @@
     "release": "standard-version",
     "--------------": "",
     "format": "prettier --write .",
-    "clean": "rimraf -g dist \"**/*.tsbuildinfo\" ./test/projects/nx/dist",
-    "clean:all": "yarn run clean && rimraf -g node_modules \"**/node_modules\" \"**/yarn.lock\" yarn.lock",
+    "clean": "rm -rf dist \"**/*.tsbuildinfo\" ./test/projects/nx/dist",
+    "clean:all": "yarn run clean && rm -rf node_modules \"**/node_modules\" \"**/yarn.lock\" yarn.lock",
     "reset": "yarn run clean:all && yarn install && yarn build",
     "-------------- ": "",
     "prepack": "yarn build"
@@ -58,7 +58,6 @@
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "@types/ts-node": "npm:ts-node@^10.9.2",
     "prettier": "^3.3.3",
-    "rimraf": "^5.0.10",
     "standard-version": "^9.5.0",
     "ts-patch": "^3.2.1",
     "typescript": "^5.5.4"
