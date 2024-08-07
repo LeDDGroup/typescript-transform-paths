@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "prepare": "node prepare.js"
+    "postinstall": "node prepare.js"
   },
   "devDependencies": {
     "@nrwl/cli": "^15.9.7",
