@@ -31,7 +31,7 @@ jobs:
         run: npx extract-changelog-release > RELEASE_BODY.md
 
       - name: Publish to NPM
-        run: npm publish
+        run: yarn npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
