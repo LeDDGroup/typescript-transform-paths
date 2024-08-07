@@ -3,6 +3,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
+    "g:ts-node": "cd $INIT_CWD && ts-node",
     "add-package": "yarn ../ pack && yarn add ../package.tgz",
     "postinstall": "node prepare.js"
   },
