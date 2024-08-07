@@ -17,7 +17,7 @@
     "strip-ansi": "^6.0.1",
     "ts-expose-internals": "^4.1.2",
     "ts-jest": "^29.2.4",
-    "ts-node": "link:../node_modules/ts-node",
+    "ts-node": "^10.9.2",
     "ts-patch": "latest",
     "tsp1": "npm:ts-patch@1.*.*",
     "tsp2": "npm:ts-patch@2.*.*",
