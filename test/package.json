@@ -23,7 +23,7 @@
     "typescript": "^5.5.4",
     "typescript-four-seven": "npm:typescript@4.7.4",
     "typescript-three": "npm:typescript@3.6.5",
-    "typescript-transform-paths": "portal:../"
+    "typescript-transform-paths": "file:../"
   },
   "workspaces": [
     "projects/*"
