@@ -39,7 +39,12 @@ jobs:
 
       - run: yarn build
 
+      - name: Install dependencies for testing
+        run: yarn install
+        working-directory: test
+
       - name: Test
+        working-directory: test
         run: yarn test --runInBand=false --maxWorkers=2 --workerIdleMemoryLimit=2GB # https://github.com/facebook/jest/issues/11956
         env:
           NODE_OPTIONS: --max_old_space_size=4096
