@@ -4,9 +4,5 @@
   "scripts": {
     "build": "nx build library1 --skip-nx-cache"
   },
-  "private": true,
-  "dependencies": {},
-  "devDependencies": {
-    "typescript-transform-paths": "file:../../../"
-  }
+  "private": true
 }

@@ -2,6 +2,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "preinstall": "yarn pack --cwd ../ --filename out.tgz",
     "test": "jest",
     "prepare": "node prepare.js"
   },
@@ -23,7 +24,7 @@
     "typescript": "latest",
     "typescript-four-seven": "npm:typescript@4.7.4",
     "typescript-three": "npm:typescript@3.6.5",
-    "typescript-transform-paths": "file:../"
+    "typescript-transform-paths": "file:./out.tgz"
   },
   "workspaces": {
     "packages": [
