@@ -56,7 +56,7 @@
   ],
   "devDependencies": {
     "@types/minimatch": "^5.1.2",
-    "@types/node": "^18.19.43",
+    "@types/node": "^22.1.0",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "prettier": "^3.3.3",
     "rimraf": "^5.0.10",
