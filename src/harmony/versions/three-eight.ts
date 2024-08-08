@@ -1,7 +1,8 @@
 /**
  * Changes after this point: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-40
  */
-import TsCurrentModule, {
+import type {
+  default as TsCurrentModule,
   EntityName,
   ExportDeclaration,
   Expression,
@@ -19,8 +20,8 @@ import TsCurrentModule, {
   TypeNode,
 } from "typescript";
 import type TsThreeEightModule from "typescript-3";
-import { TsTransformPathsContext } from "../../types";
-import { DownSampleTsTypes } from "../utils";
+import type { TsTransformPathsContext } from "../../types";
+import type { DownSampleTsTypes } from "../utils";
 
 /* ****************************************************************************************************************** */
 // region: Mapping
