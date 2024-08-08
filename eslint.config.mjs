@@ -17,7 +17,6 @@ export default [
       "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-unsafe-function-type": "warn",
       "@typescript-eslint/no-unused-vars": "warn",
-      "no-case-declarations": "warn",
       "no-empty": "warn",
       "prefer-const": "off",
     },

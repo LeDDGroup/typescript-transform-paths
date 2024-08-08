@@ -60,7 +60,7 @@ describe(`Specific Tests`, () => {
 
     beforeAll(() => {
       switch (mode) {
-        case "program":
+        case "program": {
           const program = createTsProgram({
             tsInstance,
             tsConfigFile,
@@ -81,6 +81,7 @@ describe(`Specific Tests`, () => {
           });
           rootDirsEmit = getEmitResultFromProgram(rootDirsProgram);
           break;
+        }
         case "manual": {
           skipDts = true;
           const pcl = tsInstance.getParsedCommandLineOfConfigFile(
