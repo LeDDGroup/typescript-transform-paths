@@ -58,6 +58,7 @@
     "@types/node": "^18.19.43",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "@types/ts-node": "npm:ts-node@^10.9.2",
+    "changelogen": "^0.5.5",
     "prettier": "^3.3.3",
     "standard-version": "^9.5.0",
     "ts-patch": "^3.2.1",
