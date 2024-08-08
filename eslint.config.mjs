@@ -11,8 +11,12 @@ export default [
   {
     rules: {
       "@typescript-eslint/no-empty-object-type": ["error", { allowInterfaces: "with-single-extends" }],
-      "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
+    },
+  },
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-unused-vars": "warn",
       "no-empty": "warn",
