@@ -4,6 +4,7 @@ import * as tsNode from "ts-node";
 import * as transformerModule from "typescript-transform-paths/dist/transformer";
 import { REGISTER_INSTANCE } from "ts-node";
 import { CustomTransformers, PluginImport, Program } from "typescript";
+import { ModuleNotFoundError } from "../utils";
 
 /* ****************************************************************************************************************** *
  * Config
@@ -88,7 +89,13 @@ describe(`Register script`, () => {
 
   describe(`Register`, () => {
     test(`Throws without ts-node`, () => {
-      jest.doMock("ts-node", () => ({}), { virtual: true });
+      jest.doMock(
+        "ts-node",
+        () => {
+          throw new ModuleNotFoundError("ts-node");
+        },
+        { virtual: true },
+      );
       expect(() => register()).toThrow(`Cannot resolve ts-node`);
       jest.dontMock("ts-node");
     });

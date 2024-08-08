@@ -1,4 +1,4 @@
-import { createTsProgram, getEmitResultFromProgram } from "../utils";
+import { createTsProgram, getEmitResultFromProgram, ModuleNotFoundError } from "../utils";
 import { projectsPaths } from "../config";
 import path from "path";
 import ts from "typescript";
@@ -18,7 +18,13 @@ describe(`Extra Tests`, () => {
   describe(`Built Tests`, () => {
     // see: https://github.com/LeDDGroup/typescript-transform-paths/issues/130
     test(`Transformer works without ts-node being present`, () => {
-      jest.doMock("ts-node", () => ({}), { virtual: true });
+      jest.doMock(
+        "ts-node",
+        () => {
+          throw new ModuleNotFoundError("ts-node");
+        },
+        { virtual: true },
+      );
       try {
         const program = createTsProgram({ tsInstance: ts, tsConfigFile }, config.builtTransformerPath);
         const res = getEmitResultFromProgram(program);
