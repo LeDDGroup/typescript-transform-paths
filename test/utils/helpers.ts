@@ -36,7 +36,7 @@ function createWriteFile(outputFiles: EmittedFiles) {
     if (!ext) return;
     rootName = `${rootName}.ts`;
     const key = ext.replace(".", "") as keyof EmittedFiles[string];
-    if (!outputFiles[rootName]) outputFiles[rootName] = <any>{};
+    outputFiles[rootName] ??= {} as EmittedFiles[string];
     outputFiles[rootName][key] = data;
   };
 }
@@ -96,24 +96,26 @@ export function createTsProgram(
   let host: ts.CompilerHost | undefined;
 
   if (opt.tsConfigFile) {
-    const pcl = tsInstance.getParsedCommandLineOfConfigFile(opt.tsConfigFile, extendOptions, <any>tsInstance.sys)!;
+    const pcl = tsInstance.getParsedCommandLineOfConfigFile(
+      opt.tsConfigFile,
+      extendOptions,
+      // @ts-expect-error
+      tsInstance.sys,
+    )!;
     compilerOptions = pcl.options;
     fileNames = pcl.fileNames;
   } else {
-    const files = Object.entries(compilerOptions.files!).reduce(
-      (p, [fileName, data]) => {
-        p[tsInstance.normalizePath(fileName)] = data;
-        return p;
-      },
-      <any>{},
-    );
+    const files = Object.entries(compilerOptions.files!).reduce((p, [fileName, data]) => {
+      p[tsInstance.normalizePath(fileName)] = data;
+      return p;
+    }, {});
     fileNames = Object.keys(files);
 
     host = tsInstance.createCompilerHost(compilerOptions);
     compilerOptions = extendOptions;
 
     /* Patch host to feed mock files */
-    const originalGetSourceFile: any = host.getSourceFile;
+    const originalGetSourceFile: unknown = host.getSourceFile;
     host.getSourceFile = function (fileName: string, scriptTarget: ts.ScriptTarget, ...rest) {
       if (Object.keys(files).includes(fileName))
         return tsInstance.createSourceFile(fileName, files[fileName], scriptTarget);
@@ -157,9 +159,16 @@ export function getEmitResultFromProgram(program: ts.Program): EmittedFiles {
   return outputFiles;
 }
 
-export function getManualEmitResult(pluginConfig: TsTransformPathsConfig, tsInstance: any, pcl: ts.ParsedCommandLine) {
+export function getManualEmitResult(
+  pluginConfig: TsTransformPathsConfig,
+  tsInstance: unknown,
+  pcl: ts.ParsedCommandLine,
+) {
   const { options: compilerOptions, fileNames } = pcl;
-  const transformer = tstpTransform(void 0, pluginConfig, { ts: tsInstance } as any, { compilerOptions, fileNames });
+  const transformer = tstpTransform(void 0, pluginConfig, { ts: tsInstance } as unknown, {
+    compilerOptions,
+    fileNames,
+  });
 
   const { transformed } = tsInstance.transform(
     fileNames.map((f) =>
@@ -172,7 +181,7 @@ export function getManualEmitResult(pluginConfig: TsTransformPathsConfig, tsInst
   const printer = tsInstance.createPrinter();
 
   const res: EmittedFiles = {};
-  for (const sourceFile of transformed) res[sourceFile.fileName] = <any>{ js: printer.printFile(sourceFile) };
+  for (const sourceFile of transformed) res[sourceFile.fileName] = <unknown>{ js: printer.printFile(sourceFile) };
 
   return res;
 }
@@ -186,7 +195,7 @@ export function getTsNodeEmitResult(
     transpileOnly: true,
     transformers: {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      before: [tstpTransform(void 0, pluginConfig, <any>{ ts: require(tsSpecifier) })],
+      before: [tstpTransform(void 0, pluginConfig, <unknown>{ ts: require(tsSpecifier) })],
     },
     project: pcl.options.configFilePath,
     compiler: tsSpecifier,
@@ -199,7 +208,7 @@ export function getTsNodeEmitResult(
   try {
     const res: EmittedFiles = {};
     for (const fileName of pcl.fileNames.filter((f) => !/\.d\.ts$/.test(f)))
-      res[fileName] = <any>{ js: compiler.compile(fs.readFileSync(fileName, "utf8"), fileName) };
+      res[fileName] = <unknown>{ js: compiler.compile(fs.readFileSync(fileName, "utf8"), fileName) };
 
     return res;
   } finally {
