@@ -11,6 +11,7 @@
     "release": "changelogen --release --push",
     "--------------": "",
     "format": "prettier --write .",
+    "lint": "prettier --check . && eslint .",
     "clean": "rm -rf \"**/dist\"",
     "clean:all": "yarn clean && rm -rf node_modules \"**/node_modules\" \"**/yarn.lock\" yarn.lock",
     "reset": "yarn clean:all && yarn install && yarn build",
