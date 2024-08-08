@@ -89,33 +89,31 @@ export function register(): TSNode.RegisterOptions | undefined {
   return registerOptions;
 }
 
-export namespace register {
-  export function initialize(): {
-    tsNode: typeof TSNode;
-    instanceSymbol: typeof REGISTER_INSTANCE;
-    tsNodeInstance: TSNode.Service;
-  } {
-    let tsNode: typeof TSNode;
-    try {
-      tsNode = require("ts-node");
-    } catch {
-      throw new Error(
-        `Cannot resolve ts-node. Make sure ts-node is installed before using typescript-transform-paths/register`,
-      );
-    }
-
-    const instanceSymbol: typeof REGISTER_INSTANCE = tsNode["REGISTER_INSTANCE"];
-
-    let tsNodeInstance = global.process[instanceSymbol];
-    if (!tsNodeInstance) {
-      tsNode.register(); // Register initially
-      tsNodeInstance = global.process[instanceSymbol];
-    }
-    if (!tsNodeInstance) throw new Error(`Could not register ts-node instance!`);
-
-    return { tsNode, instanceSymbol, tsNodeInstance };
+register.initialize = function initialize(): {
+  tsNode: typeof TSNode;
+  instanceSymbol: typeof REGISTER_INSTANCE;
+  tsNodeInstance: TSNode.Service;
+} {
+  let tsNode: typeof TSNode;
+  try {
+    tsNode = require("ts-node");
+  } catch {
+    throw new Error(
+      `Cannot resolve ts-node. Make sure ts-node is installed before using typescript-transform-paths/register`,
+    );
   }
-}
+
+  const instanceSymbol: typeof REGISTER_INSTANCE = tsNode["REGISTER_INSTANCE"];
+
+  let tsNodeInstance = global.process[instanceSymbol];
+  if (!tsNodeInstance) {
+    tsNode.register(); // Register initially
+    tsNodeInstance = global.process[instanceSymbol];
+  }
+  if (!tsNodeInstance) throw new Error(`Could not register ts-node instance!`);
+
+  return { tsNode, instanceSymbol, tsNodeInstance };
+};
 
 export default register;
 
