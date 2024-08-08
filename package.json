@@ -3,7 +3,7 @@
   "version": "3.4.10",
   "description": "Transforms module resolution paths using TypeScript path mapping and/or custom paths",
   "main": "dist/index.js",
-  "types": "types/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "compile": "tsc",
     "build": "yarn clean && yarn compile",
