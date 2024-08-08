@@ -217,6 +217,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tsconfig/strictest@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "@tsconfig/strictest@npm:2.0.5"
+  checksum: 10c0/cfc86da2d57f7b4b0827701b132c37a4974284e5c40649656c0e474866dfd8a69f57c6718230d8a8139967e2a95438586b8224c13ab0ff9d3a43eda771c50cc4
+  languageName: node
+  linkType: hard
+
 "@types/debug@npm:^4.0.0":
   version: 4.1.12
   resolution: "@types/debug@npm:4.1.12"
@@ -3019,6 +3026,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.8.0"
     "@tsconfig/node18": "npm:^18.2.4"
+    "@tsconfig/strictest": "npm:^2.0.5"
     "@types/eslint": "npm:^9"
     "@types/minimatch": "npm:^5.1.2"
     "@types/node": "npm:^22.2.0"

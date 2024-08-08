@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node18",
+  "extends": ["@tsconfig/strictest", "@tsconfig/node18"],
   "include": ["src"],
   "exclude": ["src/declarations"],
   "compilerOptions": {
