@@ -38,7 +38,7 @@ enum IndexType {
 /* ****************************************************************************************************************** */
 
 function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
-  let resolvedFileName = resolvedModule.originalPath ?? resolvedModule.resolvedFileName;
+  const resolvedFileName = resolvedModule.originalPath ?? resolvedModule.resolvedFileName;
   const implicitPackageIndex = resolvedModule.packageId?.subModuleName;
 
   const resolvedDir = implicitPackageIndex
