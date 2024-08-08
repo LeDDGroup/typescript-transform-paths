@@ -1,6 +1,6 @@
 {
   "files": ["index.ts", "local/index.ts"],
-  "extends": "@tsconfig/node18",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../lib/b"
   },
