@@ -91,21 +91,17 @@ describe(`Register script`, () => {
 
   describe(`Register`, () => {
     test(`Throws without ts-node`, () => {
-      vi.doMock(
-        "ts-node",
-        () => {
-          throw new ModuleNotFoundError("ts-node");
-        },
-        { virtual: true },
-      );
+      vi.doMock("ts-node", () => {
+        throw new ModuleNotFoundError("ts-node");
+      });
       expect(() => register()).toThrow(`Cannot resolve ts-node`);
-      vi.dontMock("ts-node");
+      vi.doUnmock("ts-node");
     });
 
     test(`Throws if can't register ts-node`, () => {
-      vi.doMock("ts-node", () => ({ register: () => {} }), { virtual: true });
+      vi.doMock("ts-node", () => ({ register: () => {} }));
       expect(() => register()).toThrow(`Could not register ts-node instance!`);
-      vi.dontMock("ts-node");
+      vi.doUnmock("ts-node");
     });
 
     test(`No transformers in tsConfig exits quietly`, () => {
