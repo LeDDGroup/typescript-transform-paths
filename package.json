@@ -39,12 +39,9 @@
   },
   "license": "MIT",
   "contributors": [
-    "Daniel Perez Alvarez <danielpza@protonmail.com>"
+    "Daniel Perez",
+    "Ron S. (https://twitter.com/Ron)"
   ],
-  "author": {
-    "name": "Ron S.",
-    "url": "https://twitter.com/Ron"
-  },
   "files": [
     "dist",
     "types",
