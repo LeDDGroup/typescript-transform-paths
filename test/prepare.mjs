@@ -16,7 +16,7 @@ async function symlinkTsNode() {
   const target = resolve(__dirname, "node_modules/ts-node");
   const path = resolve(__dirname, "../node_modules/ts-node");
 
-  if (!existsSync(path)) await symlink(target, path, "function");
+  if (!existsSync(path)) await symlink(target, path, "junction");
 }
 
 function patchTsModules() {
