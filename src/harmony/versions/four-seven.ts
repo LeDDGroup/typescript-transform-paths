@@ -1,7 +1,8 @@
 /**
  * Changes after this point: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-48
  */
-import TsCurrentModule, {
+import type {
+  default as TsCurrentModule,
   AssertClause,
   ExportDeclaration,
   Expression,
@@ -13,9 +14,9 @@ import TsCurrentModule, {
   ModuleName,
   NamedExportBindings,
 } from "typescript";
-import TsFourSevenModule from "../../declarations/typescript4.7";
-import { TsTransformPathsContext } from "../../types";
-import { DownSampleTsTypes } from "../utils";
+import type TsFourSevenModule from "typescript-4.7";
+import type { TsTransformPathsContext } from "../../types";
+import type { DownSampleTsTypes } from "../utils";
 
 /* ****************************************************************************************************************** */
 // region: Mapping
