@@ -88,13 +88,7 @@ describe(`Register script`, () => {
 
   describe(`Register`, () => {
     test(`Throws without ts-node`, () => {
-      jest.doMock(
-        "ts-node",
-        () => {
-          require("sdf0s39rf3333d@fake-module");
-        },
-        { virtual: true },
-      );
+      jest.doMock("ts-node", () => ({}), { virtual: true });
       expect(() => register()).toThrow(`Cannot resolve ts-node`);
       jest.dontMock("ts-node");
     });

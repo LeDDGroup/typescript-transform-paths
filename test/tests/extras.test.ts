@@ -18,13 +18,7 @@ describe(`Extra Tests`, () => {
   describe(`Built Tests`, () => {
     // see: https://github.com/LeDDGroup/typescript-transform-paths/issues/130
     test(`Transformer works without ts-node being present`, () => {
-      jest.doMock(
-        "ts-node",
-        () => {
-          require("sdf0s39rf3333d@fake-module");
-        },
-        { virtual: true },
-      );
+      jest.doMock("ts-node", () => ({}), { virtual: true });
       try {
         const program = createTsProgram({ tsInstance: ts, tsConfigFile }, config.builtTransformerPath);
         const res = getEmitResultFromProgram(program);
