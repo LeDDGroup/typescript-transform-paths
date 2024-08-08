@@ -13,7 +13,7 @@ import TsCurrentModule, {
   ModuleName,
   NamedExportBindings,
 } from "typescript";
-import TsFourSevenModule from "../../declarations/typescript4.7";
+import TsFourSevenModule from "typescript-4.7";
 import { TsTransformPathsContext } from "../../types";
 import { DownSampleTsTypes } from "../utils";
 
