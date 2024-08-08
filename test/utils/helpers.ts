@@ -41,7 +41,10 @@ function createWriteFile(outputFiles: EmittedFiles) {
   };
 }
 
-function createReadFile(outputFiles: EmittedFiles, originalReadFile: Function) {
+function createReadFile(
+  outputFiles: EmittedFiles,
+  originalReadFile: (path: string, encoding?: string) => string | undefined,
+) {
   return (fileName: string) => {
     let { 1: rootName, 2: ext } = fileName.match(/(.+)\.((d.ts)|(js))$/) ?? [];
     if (ext) {

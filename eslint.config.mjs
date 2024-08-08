@@ -15,7 +15,6 @@ export default [
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
       "@typescript-eslint/no-require-imports": "off",
-      "@typescript-eslint/no-unsafe-function-type": "warn",
       "@typescript-eslint/no-unused-vars": "warn",
       "no-empty": "warn",
       "prefer-const": "off",
