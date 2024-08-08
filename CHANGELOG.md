@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.4.10
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.9...v3.4.10)
+
+### 🏡 Chore
+
+- Update dependencies ([#226](https://github.com/LeDDGroup/typescript-transform-paths/pull/226))
+- Replace standard-version with changelogen ([#227](https://github.com/LeDDGroup/typescript-transform-paths/pull/227))
+
+### 🤖 CI
+
+- Generate provenance on npm publish ([#229](https://github.com/LeDDGroup/typescript-transform-paths/pull/229))
+
+### ❤️ Contributors
+
+- Daniel Perez Alvarez <danielpza@protonmail.com>
+
 ### [3.4.9](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.8...v3.4.9) (2024-08-07)
 
 ### [3.4.8](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.7...v3.4.8) (2024-08-07)
