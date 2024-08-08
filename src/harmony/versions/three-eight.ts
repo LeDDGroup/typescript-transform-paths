@@ -18,7 +18,7 @@ import TsCurrentModule, {
   NamedImportBindings,
   TypeNode,
 } from "typescript";
-import TsThreeEightModule from "typescript-3";
+import type TsThreeEightModule from "typescript-3";
 import { TsTransformPathsContext } from "../../types";
 import { DownSampleTsTypes } from "../utils";
 
