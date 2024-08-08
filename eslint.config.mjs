@@ -10,7 +10,7 @@ export default [
   ...tseslint.configs.recommended,
   {
     rules: {
-      "@typescript-eslint/no-empty-object-type": "warn",
+      "@typescript-eslint/no-empty-object-type": ["error", { allowInterfaces: "with-single-extends" }],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
       "@typescript-eslint/no-require-imports": "off",
