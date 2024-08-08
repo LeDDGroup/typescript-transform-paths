@@ -8,7 +8,7 @@
     "compile": "tsc",
     "build": "rm -rf dist && yarn run clean && yarn run compile",
     "test": "yarn test/ install && yarn test/ add-package && yarn test/ test",
-    "release": "standard-version",
+    "release": "changelogen --release --push",
     "--------------": "",
     "format": "prettier --write .",
     "clean": "rm -rf dist \"**/*.tsbuildinfo\" ./test/projects/nx/dist",
