@@ -21,8 +21,6 @@ export default [
       "no-empty": "warn",
       "no-useless-escape": "warn",
       "prefer-const": "off",
-      "prefer-rest-params": "warn",
-      "prefer-spread": "warn",
     },
   },
 ];

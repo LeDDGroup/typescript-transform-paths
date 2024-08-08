@@ -111,10 +111,10 @@ export function createTsProgram(
 
     /* Patch host to feed mock files */
     const originalGetSourceFile: any = host.getSourceFile;
-    host.getSourceFile = function (fileName: string, scriptTarget: ts.ScriptTarget) {
+    host.getSourceFile = function (fileName: string, scriptTarget: ts.ScriptTarget, ...rest) {
       if (Object.keys(files).includes(fileName))
         return tsInstance.createSourceFile(fileName, files[fileName], scriptTarget);
-      else originalGetSourceFile.apply(undefined, arguments);
+      else originalGetSourceFile(fileName, scriptTarget, ...rest);
     };
   }
 
