@@ -1,4 +1,4 @@
-import { createTsProgram, getEmitResultFromProgram } from "../utils";
+import { createTsProgram, getEmitResultFromProgram, ModuleNotFoundError } from "../utils";
 import { projectsPaths } from "../config";
 import path from "path";
 import ts from "typescript";
@@ -21,7 +21,7 @@ describe(`Extra Tests`, () => {
       jest.doMock(
         "ts-node",
         () => {
-          require("sdf0s39rf3333d@fake-module");
+          throw new ModuleNotFoundError("ts-node");
         },
         { virtual: true },
       );

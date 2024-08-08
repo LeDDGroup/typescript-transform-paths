@@ -1,15 +1,13 @@
 import ts from "typescript";
-import TypeScriptThree from "typescript-three";
-import TypeScriptFourSeven from "typescript-four-seven";
+import tsThree from "typescript-three";
+import tsFourSeven from "typescript-four-seven";
 import path from "path";
 
 /* ****************************************************************************************************************** */
 // region: TS Instances
 /* ****************************************************************************************************************** */
 
-export { ts };
-export const tsThree: typeof TypeScriptThree = require("typescript-three");
-export const tsFourSeven: typeof TypeScriptFourSeven = require("typescript-four-seven");
+export { ts, tsThree, tsFourSeven };
 
 // endregion
 

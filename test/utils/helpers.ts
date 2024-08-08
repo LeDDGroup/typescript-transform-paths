@@ -185,6 +185,7 @@ export function getTsNodeEmitResult(
   const compiler = tsNode.create({
     transpileOnly: true,
     transformers: {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       before: [tstpTransform(void 0, pluginConfig, <any>{ ts: require(tsSpecifier) })],
     },
     project: pcl.options.configFilePath,
