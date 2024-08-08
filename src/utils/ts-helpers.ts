@@ -83,6 +83,7 @@ export function createSyntheticEmitHost(
 export function getTsNodeRegistrationProperties(tsInstance: typeof ts) {
   let tsNodeSymbol: typeof REGISTER_INSTANCE;
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     tsNodeSymbol = require("ts-node")?.["REGISTER_INSTANCE"];
   } catch {
     return undefined;
