@@ -2210,6 +2210,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tsconfig/node18@npm:^18.2.4":
+  version: 18.2.4
+  resolution: "@tsconfig/node18@npm:18.2.4"
+  checksum: 10c0/cdfd17f212660374eb2765cd5907b2252e43cfa2623cd52307a49f004327ef49bbe7d53c78b0aca57f33e9a5cb0d7d2eb5ded9be1235e6212f65c9f0699322b6
+  languageName: node
+  linkType: hard
+
 "@types/babel__core@npm:^7.1.14":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -8065,6 +8072,7 @@ __metadata:
     "@nrwl/js": "npm:^15.9.7"
     "@nrwl/node": "npm:^15.9.7"
     "@nrwl/workspace": "npm:^15.9.7"
+    "@tsconfig/node18": "npm:^18.2.4"
     "@types/jest": "npm:^29.5.12"
     jest: "npm:^29.7.0"
     nx: "npm:^15.9.7"
@@ -8078,7 +8086,7 @@ __metadata:
     typescript: "npm:^5.5.4"
     typescript-four-seven: "npm:typescript@4.7.4"
     typescript-three: "npm:typescript@3.6.5"
-    typescript-transform-paths: ../package.tgz
+    typescript-transform-paths: "portal:../"
   languageName: unknown
   linkType: soft
 
@@ -9243,16 +9251,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-transform-paths@file:../package.tgz::locator=root-workspace-0b6124%40workspace%3A.":
-  version: 3.4.9
-  resolution: "typescript-transform-paths@file:../package.tgz#../package.tgz::hash=396016&locator=root-workspace-0b6124%40workspace%3A."
+"typescript-transform-paths@portal:../::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "typescript-transform-paths@portal:../::locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     minimatch: "npm:^3.1.2"
   peerDependencies:
     typescript: ">=3.6.5"
-  checksum: 10c0/14b7936f4491a916375e3aa18bc771d3b02c8267526ad04e5562414098b29e07be9fa2ca0b46207c412ba5c5d0a35ae9543d56634a6c8672d92ca8ff46e3610f
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "typescript@npm:^5.5.4":
   version: 5.5.4

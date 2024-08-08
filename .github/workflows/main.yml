@@ -39,14 +39,9 @@ jobs:
 
       - run: yarn build
 
-      - name: Generate package archive
-        run: yarn pack
-
       - name: Install dependencies for testing
         run: yarn install
         working-directory: test
-        env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
       - name: Test
         working-directory: test

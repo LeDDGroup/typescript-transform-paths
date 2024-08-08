@@ -1,8 +1,9 @@
 {
-  "extends": "../tsconfig.base",
+  "extends": "@tsconfig/node18",
   "include": ["tests", "utils"],
 
   "compilerOptions": {
+    "types": ["jest", "node"],
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true
