@@ -11,21 +11,14 @@ export default [
   {
     rules: {
       "@typescript-eslint/ban-ts-comment": "warn",
-      "@typescript-eslint/no-duplicate-enum-values": "warn",
       "@typescript-eslint/no-empty-object-type": "warn",
-      "@typescript-eslint/no-unused-expressions": "warn",
-      "@typescript-eslint/no-unused-vars": "warn",
-      "@typescript-eslint/no-wrapper-object-types": "warn",
-      "no-empty": "warn",
-    },
-  },
-  {
-    rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-unsafe-function-type": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
       "no-case-declarations": "off",
+      "no-empty": "warn",
       "no-useless-escape": "off",
       "prefer-const": "off",
       "prefer-rest-params": "off",
