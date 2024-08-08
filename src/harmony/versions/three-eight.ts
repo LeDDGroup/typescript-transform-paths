@@ -108,7 +108,7 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsNode.modifiers,
           dsExportClause,
           dsModuleSpecifier,
-          // @ts-ignore - This was added in later versions of 3.x
+          // @ts-expect-error - This was added in later versions of 3.x
           dsNode.isTypeOnly,
         );
       };

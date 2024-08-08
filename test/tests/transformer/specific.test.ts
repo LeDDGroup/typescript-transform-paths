@@ -60,7 +60,7 @@ describe(`Specific Tests`, () => {
 
     beforeAll(() => {
       switch (mode) {
-        case "program":
+        case "program": {
           const program = createTsProgram({
             tsInstance,
             tsConfigFile,
@@ -81,6 +81,7 @@ describe(`Specific Tests`, () => {
           });
           rootDirsEmit = getEmitResultFromProgram(rootDirsProgram);
           break;
+        }
         case "manual": {
           skipDts = true;
           const pcl = tsInstance.getParsedCommandLineOfConfigFile(
@@ -159,7 +160,7 @@ describe(`Specific Tests`, () => {
     describe(`Tags`, () => {
       test(`(@no-transform-path) Doesn't transform path`, () => {
         for (let i = 1; i <= 4; i++)
-          expect(tagFile).transformedMatches(`import * as skipTransform${i} from "#root\/index`);
+          expect(tagFile).transformedMatches(`import * as skipTransform${i} from "#root/index`);
       });
 
       test(`(@transform-path) Transforms path with explicit value`, () => {

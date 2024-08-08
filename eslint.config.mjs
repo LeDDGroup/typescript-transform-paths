@@ -10,19 +10,17 @@ export default [
   ...tseslint.configs.recommended,
   {
     rules: {
-      "@typescript-eslint/ban-ts-comment": "warn",
-      "@typescript-eslint/no-empty-object-type": "warn",
-      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": ["error", { allowInterfaces: "with-single-extends" }],
       "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
+      "no-empty": ["error", { allowEmptyCatch: true }],
+      "prefer-const": ["error", { destructuring: "all" }],
+    },
+  },
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-require-imports": "off",
-      "@typescript-eslint/no-unsafe-function-type": "warn",
       "@typescript-eslint/no-unused-vars": "warn",
-      "no-case-declarations": "warn",
-      "no-empty": "warn",
-      "no-useless-escape": "warn",
-      "prefer-const": "off",
-      "prefer-rest-params": "warn",
-      "prefer-spread": "warn",
     },
   },
 ];

@@ -68,7 +68,7 @@ export function register(): TSNode.RegisterOptions | undefined {
   const registerOptions: TSNode.RegisterOptions = Object.assign({}, tsNodeInstance.options);
   if (registerOptions.transformers) {
     if (typeof registerOptions.transformers === "function") {
-      let oldTransformersFactory = registerOptions.transformers;
+      const oldTransformersFactory = registerOptions.transformers;
       registerOptions.transformers = (program) => {
         const transformers = getTransformers(program, beforeConfig, afterDeclarationsConfig);
         const baseTransformers = oldTransformersFactory(program);
