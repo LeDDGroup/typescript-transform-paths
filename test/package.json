@@ -2,7 +2,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "vitest --globals",
     "g:ts-node": "cd $INIT_CWD && ts-node",
     "postinstall": "node prepare.mjs"
   },
@@ -25,7 +25,8 @@
     "typescript": "^5.5.4",
     "typescript-four-seven": "npm:typescript@4.7.4",
     "typescript-three": "npm:typescript@3.6.5",
-    "typescript-transform-paths": "portal:../"
+    "typescript-transform-paths": "portal:../",
+    "vitest": "^2.0.5"
   },
   "workspaces": [
     "projects/*"
