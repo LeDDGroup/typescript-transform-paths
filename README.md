@@ -200,9 +200,13 @@ import "normally-transformed"; // This will remain 'normally-transformed', even 
 ## Project Guidelines for Contributors
 
 - Package Manager: `yarn` (`yarn install`)
+- Format before commit: `prettier` (`yarn format`)
 - Commit messages: [Conventional Commit Specs](https://www.conventionalcommits.org/en/v1.0.0/)
-- Format before commit: `prettier` (`yarn run format`)
-- Releases: `standard-version` (`yarn run release`)
+- Releases: `changelogen` (`yarn release`)
+
+```shell
+GH_TOKEN=$(gh auth token) yarn release
+```
 
 ## Alternatives
 
