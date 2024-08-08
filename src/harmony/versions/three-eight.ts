@@ -18,7 +18,7 @@ import TsCurrentModule, {
   NamedImportBindings,
   TypeNode,
 } from "typescript";
-import type TsThreeEightModule from "../../declarations/typescript3";
+import TsThreeEightModule from "typescript-3";
 import { TsTransformPathsContext } from "../../types";
 import { DownSampleTsTypes } from "../utils";
 
@@ -30,6 +30,7 @@ export type TypeMap = [
   [TsCurrentModule.SourceFile, TsThreeEightModule.SourceFile],
   [TsCurrentModule.StringLiteral, TsThreeEightModule.StringLiteral],
   [TsCurrentModule.CompilerOptions, TsThreeEightModule.CompilerOptions],
+  // @ts-expect-error typescript 3 doesn't export EmitResolver
   [TsCurrentModule.EmitResolver, TsThreeEightModule.EmitResolver],
   [TsCurrentModule.CallExpression, TsThreeEightModule.CallExpression],
   [TsCurrentModule.ExternalModuleReference, TsThreeEightModule.ExternalModuleReference],
@@ -74,6 +75,7 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
         name: Identifier | undefined,
         namedBindings: NamedImportBindings | undefined,
       ) {
+        // @ts-expect-error TODO investigate type issue
         return ts.updateImportClause.apply(void 0, downSample(node, name, namedBindings));
       };
     case "updateImportDeclaration":
@@ -108,7 +110,7 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsNode.modifiers,
           dsExportClause,
           dsModuleSpecifier,
-          // @ts-expect-error - This was added in later versions of 3.x
+          // @ts-ignore - This was added in later versions of 3.x
           dsNode.isTypeOnly,
         );
       };

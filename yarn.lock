@@ -302,6 +302,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/typescript-3@npm:typescript@3.x":
+  version: 3.9.10
+  resolution: "typescript@npm:3.9.10"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/863cc06070fa18a0f9c6a83265fb4922a8b51bf6f2c6760fb0b73865305ce617ea4bc6477381f9f4b7c3a8cb4a455b054f5469e6e41307733fe6a2bd9aae82f8
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:8.0.1":
   version: 8.0.1
   resolution: "@typescript-eslint/eslint-plugin@npm:8.0.1"
@@ -2634,6 +2644,7 @@ __metadata:
     "@types/node": "npm:^18.19.43"
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5"
     "@types/ts-node": "npm:ts-node@^10.9.2"
+    "@types/typescript-3": "npm:typescript@3.x"
     changelogen: "npm:^0.5.5"
     eslint: "npm:9.x"
     globals: "npm:^15.9.0"
