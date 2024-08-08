@@ -11,12 +11,12 @@ export default [
   {
     rules: {
       "@typescript-eslint/ban-ts-comment": "warn",
+      "@typescript-eslint/no-duplicate-enum-values": "warn",
+      "@typescript-eslint/no-empty-object-type": "warn",
       "@typescript-eslint/no-unused-expressions": "warn",
       "@typescript-eslint/no-unused-vars": "warn",
-      "no-empty": "warn",
-      "@typescript-eslint/no-empty-object-type": "warn",
       "@typescript-eslint/no-wrapper-object-types": "warn",
-      "@typescript-eslint/no-duplicate-enum-values": "warn",
+      "no-empty": "warn",
     },
   },
   {
