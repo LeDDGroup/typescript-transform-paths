@@ -12,7 +12,6 @@ import { TransformerExtras } from "ts-patch";
 /* ****************************************************************************************************************** */
 
 function getTsProperties(args: Parameters<typeof transformer>) {
-  let tsInstance: typeof ts;
   let fileNames: readonly string[] | undefined;
   let compilerOptions: CompilerOptions;
   let runMode: RunMode;
@@ -20,7 +19,8 @@ function getTsProperties(args: Parameters<typeof transformer>) {
 
   const { 0: program, 2: extras, 3: manualTransformOptions } = args;
 
-  tsInstance = extras?.ts ?? ts;
+  const tsInstance = extras?.ts ?? ts;
+
   if (program) compilerOptions = program.getCompilerOptions();
   const tsNodeProps = getTsNodeRegistrationProperties(tsInstance);
 
