@@ -8,7 +8,7 @@
     "compile": "tsc",
     "build": "rm -rf dist && yarn run clean && yarn run compile",
     "test": "yarn test/ install && yarn test/ add-package && yarn test/ test",
-    "release": "standard-version",
+    "release": "changelogen --release --push",
     "--------------": "",
     "format": "prettier --write .",
     "clean": "rm -rf dist \"**/*.tsbuildinfo\" ./test/projects/nx/dist",
@@ -58,8 +58,8 @@
     "@types/node": "^18.19.43",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "@types/ts-node": "npm:ts-node@^10.9.2",
+    "changelogen": "^0.5.5",
     "prettier": "^3.3.3",
-    "standard-version": "^9.5.0",
     "ts-patch": "^3.2.1",
     "typescript": "^5.5.4"
   },
