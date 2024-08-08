@@ -19,7 +19,6 @@ export default [
       "@typescript-eslint/no-unused-vars": "warn",
       "no-case-declarations": "warn",
       "no-empty": "warn",
-      "no-useless-escape": "warn",
       "prefer-const": "off",
     },
   },

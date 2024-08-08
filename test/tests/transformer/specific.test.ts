@@ -159,7 +159,7 @@ describe(`Specific Tests`, () => {
     describe(`Tags`, () => {
       test(`(@no-transform-path) Doesn't transform path`, () => {
         for (let i = 1; i <= 4; i++)
-          expect(tagFile).transformedMatches(`import * as skipTransform${i} from "#root\/index`);
+          expect(tagFile).transformedMatches(`import * as skipTransform${i} from "#root/index`);
       });
 
       test(`(@transform-path) Transforms path with explicit value`, () => {
