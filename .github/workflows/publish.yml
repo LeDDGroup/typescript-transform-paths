@@ -27,17 +27,8 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Generate Release Body
-        run: npx extract-changelog-release > RELEASE_BODY.md
-
       - name: Publish to NPM
         run: yarn npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Create GitHub Release
-        uses: ncipollo/release-action@v1
-        with:
-          bodyFile: "RELEASE_BODY.md"
-          token: ${{ secrets.GITHUB_TOKEN }}
