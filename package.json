@@ -11,6 +11,7 @@
     "release": "changelogen --release --push",
     "--------------": "",
     "format": "prettier --write .",
+    "lint": "prettier --check . && eslint .",
     "clean": "rm -rf \"**/dist\"",
     "clean:all": "yarn clean && rm -rf node_modules \"**/node_modules\" \"**/yarn.lock\" yarn.lock",
     "reset": "yarn clean:all && yarn install && yarn build",
@@ -53,15 +54,20 @@
     "nx-transformer.js"
   ],
   "devDependencies": {
+    "@eslint/js": "^9.8.0",
     "@tsconfig/node18": "^18.2.4",
+    "@types/eslint": "^9",
     "@types/minimatch": "^5.1.2",
     "@types/node": "^18.19.43",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "@types/ts-node": "npm:ts-node@^10.9.2",
     "changelogen": "^0.5.5",
+    "eslint": "9.x",
+    "globals": "^15.9.0",
     "prettier": "^3.3.3",
     "ts-patch": "^3.2.1",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.0.1"
   },
   "peerDependencies": {
     "typescript": ">=3.6.5"

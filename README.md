@@ -199,7 +199,7 @@ import "normally-transformed"; // This will remain 'normally-transformed', even 
 ## Project Guidelines for Contributors
 
 - Package Manager: `yarn` (`yarn install`)
-- Format before commit: `prettier` (`yarn format`)
+- Format and lint the code before commit: `prettier` (`yarn format && yarn lint`)
 - Commit messages: [Conventional Commit Specs](https://www.conventionalcommits.org/en/v1.0.0/)
 - Releases: `changelogen` (`yarn release`)
 
