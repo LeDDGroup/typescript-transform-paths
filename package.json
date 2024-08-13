@@ -55,7 +55,7 @@
     "@tsconfig/node18": "^18.2.4",
     "@types/eslint": "^9",
     "@types/minimatch": "^5.1.2",
-    "@types/node": "^18.19.43",
+    "@types/node": "^22.2.0",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "@types/ts-node": "npm:ts-node@^10.9.2",
     "@types/typescript-3": "npm:typescript@3.x",
