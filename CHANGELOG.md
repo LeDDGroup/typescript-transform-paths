@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.4.11
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.10...v3.4.11)
+
+### 💅 Refactors
+
+- Remove namespaces in favor of modules ([#236](https://github.com/LeDDGroup/typescript-transform-paths/pull/236))
+- Fix eslint warnings ([#238](https://github.com/LeDDGroup/typescript-transform-paths/pull/238))
+- Fix no-require-imports eslint warning ([#239](https://github.com/LeDDGroup/typescript-transform-paths/pull/239))
+- Enable no-unused-vars eslint rule ([2e3b9d6](https://github.com/LeDDGroup/typescript-transform-paths/commit/2e3b9d6))
+- Remove tsconfig.base.json in favor of @tsconfig/node18 ([#235](https://github.com/LeDDGroup/typescript-transform-paths/pull/235))
+- Unvendor typescript types definitions ([#234](https://github.com/LeDDGroup/typescript-transform-paths/pull/234))
+- Remove hardcoded types ([#240](https://github.com/LeDDGroup/typescript-transform-paths/pull/240))
+
+### 📖 Documentation
+
+- Remove all contributors badge ([#230](https://github.com/LeDDGroup/typescript-transform-paths/pull/230))
+- Remove articles section ([02d7d6c](https://github.com/LeDDGroup/typescript-transform-paths/commit/02d7d6c))
+
+### 🏡 Chore
+
+- Update eslint config to remove old src/declarations path ([0ab8ebc](https://github.com/LeDDGroup/typescript-transform-paths/commit/0ab8ebc))
+- Update package.json contributors ([b79f96d](https://github.com/LeDDGroup/typescript-transform-paths/commit/b79f96d))
+- **deps-dev:** Bump @types/node from 18.19.43 to 22.2.0 ([#241](https://github.com/LeDDGroup/typescript-transform-paths/pull/241))
+- **deps-dev:** Bump typescript-eslint from 8.0.1 to 8.1.0 ([#243](https://github.com/LeDDGroup/typescript-transform-paths/pull/243))
+- **deps-dev:** Bump @eslint/js from 9.8.0 to 9.9.0 ([#242](https://github.com/LeDDGroup/typescript-transform-paths/pull/242))
+- **deps-dev:** Bump eslint from 9.8.0 to 9.9.0 ([#245](https://github.com/LeDDGroup/typescript-transform-paths/pull/245))
+
+### ✅ Tests
+
+- Remove yarn pack workaround ([#232](https://github.com/LeDDGroup/typescript-transform-paths/pull/232))
+
+### 🎨 Styles
+
+- Add eslint ([#237](https://github.com/LeDDGroup/typescript-transform-paths/pull/237))
+
+### ❤️ Contributors
+
+- Daniel Perez Alvarez <danielpza@protonmail.com>
+
 ## v3.4.10
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.9...v3.4.10)
