@@ -98,7 +98,7 @@ import { sum } from "@utils/sum";
 
 TS allows defining
 [virtual directories](https://www.typescriptlang.org/docs/handbook/module-resolution.html#virtual-directories-with-rootdirs)
-via the `rootDirs` compiler option.  
+via the `rootDirs` compiler option.
 To enable virtual directory mapping, use the `useRootDirs` plugin option.
 
 ```jsonc
@@ -191,10 +191,6 @@ Use the `@no-transform-path` tag to explicitly disable transformation for a sing
 // @no-transform-path
 import "normally-transformed"; // This will remain 'normally-transformed', even though it has a different value in paths config
 ```
-
-## Articles
-
-- [Node Consumable Modules With Typescript Paths](https://medium.com/@ole.ersoy/node-consumable-modules-with-typescript-paths-ed88a5f332fa?postPublishedType=initial) by [oleersoy](https://github.com/oleersoy)
 
 ## Project Guidelines for Contributors
 
