@@ -2,8 +2,25 @@
   "name": "typescript-transform-paths",
   "version": "3.4.11",
   "description": "Transforms module resolution paths using TypeScript path mapping and/or custom paths",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./register": "./register.js",
+    "./nx-transformer": "./nx-transformer.js"
+  },
+  "files": [
+    "dist",
+    "types",
+    "README.md",
+    "CHANGELOG.md",
+    "register.js",
+    "nx-transformer.js"
+  ],
   "scripts": {
     "compile": "tsc",
     "build": "yarn clean && yarn compile",
@@ -41,14 +58,6 @@
   "contributors": [
     "Daniel Perez",
     "Ron S. (https://twitter.com/Ron)"
-  ],
-  "files": [
-    "dist",
-    "types",
-    "README.md",
-    "CHANGELOG.md",
-    "register.js",
-    "nx-transformer.js"
   ],
   "devDependencies": {
     "@eslint/js": "^9.8.0",
