@@ -1,10 +1,13 @@
+import { execSync } from "node:child_process";
+import { readFileSync, rmSync } from "node:fs";
+import path from "node:path";
+
 import ts from "typescript";
+
 import { nxTransformerPlugin } from "typescript-transform-paths";
-import path from "path";
+import * as transformerModule from "../../dist/transformer";
+
 import { projectsPaths } from "../config";
-import { execSync } from "child_process";
-import { readFileSync, rmSync } from "fs";
-import * as transformerModule from "typescript-transform-paths/dist/transformer";
 
 /* ****************************************************************************************************************** *
  * Tests
