@@ -1824,6 +1824,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "minimatch@npm:10.0.1"
+  dependencies:
+    brace-expansion: "npm:^2.0.1"
+  checksum: 10c0/e6c29a81fe83e1877ad51348306be2e8aeca18c88fdee7a99df44322314279e15799e41d7cb274e4e8bb0b451a3bc622d6182e157dfa1717d6cda75e9cd8cd5d
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
@@ -2664,7 +2673,7 @@ __metadata:
     changelogen: "npm:^0.5.5"
     eslint: "npm:9.x"
     globals: "npm:^15.9.0"
-    minimatch: "npm:^3.1.2"
+    minimatch: "npm:^10.0.1"
     prettier: "npm:^3.3.3"
     ts-patch: "npm:^3.2.1"
     typescript: "npm:^5.5.4"

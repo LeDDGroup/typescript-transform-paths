@@ -1,7 +1,8 @@
 import ts, { CompilerOptions, EmitHost, Pattern, SourceFile } from "typescript";
 import { PluginConfig } from "ts-patch";
+import { Minimatch } from "minimatch";
+
 import { HarmonyFactory } from "./harmony";
-import { IMinimatch } from "minimatch";
 
 /* ****************************************************************************************************************** */
 // region: TS Types
@@ -43,7 +44,7 @@ export interface TsTransformPathsContext {
   readonly elisionMap: Map<ts.SourceFile, Map<ImportOrExportDeclaration, ImportOrExportDeclaration>>;
   readonly transformationContext: ts.TransformationContext;
   readonly rootDirs?: string[];
-  readonly excludeMatchers: IMinimatch[] | undefined;
+  readonly excludeMatchers: Minimatch[] | undefined;
   readonly outputFileNamesCache: Map<SourceFile, string>;
   readonly pathsPatterns: readonly (string | Pattern)[] | undefined;
   readonly emitHost: EmitHost;
