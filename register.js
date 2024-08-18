@@ -1,11 +1,5 @@
-let tsNode;
-try {
-  tsNode = require("ts-node");
-} catch {
-  throw new Error(
-    `Cannot resolve ts-node. Make sure ts-node is installed before using typescript-transform-paths/register`,
-  );
-}
-
-tsNode.register();
-require("./").register();
+// Keeping register here in the root for backwards compatibiliy, TODO remove in the next major version
+console.warn(
+  "typescript-transform-paths: Calling the top level register file is deprecated and will be removed in the future. Use a tool that supports package.json exports",
+);
+require("./dist/register-entry");

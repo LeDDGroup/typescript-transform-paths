@@ -1,1 +1,1 @@
-export * from "./nx-transformer-plugin";
+export * as nxTransformerPlugin from "./nx-transformer-plugin";

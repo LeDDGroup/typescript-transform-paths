@@ -10,8 +10,8 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./register": "./register.js",
-    "./nx-transformer": "./nx-transformer.js"
+    "./register": "./dist/register-entry.js",
+    "./nx-transformer": "./dist/plugins/nx-transformer-plugin.js"
   },
   "files": [
     "dist",
