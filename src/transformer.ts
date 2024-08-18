@@ -79,9 +79,7 @@ export default function transformer(
   program?: ts.Program,
   pluginConfig?: TsTransformPathsConfig,
   transformerExtras?: TransformerExtras,
-  /**
-   * Supply if manually transforming with compiler API via 'transformNodes' / 'transformModule'
-   */
+  /** Supply if manually transforming with compiler API via 'transformNodes' / 'transformModule' */
   manualTransformOptions?: {
     compilerOptions?: ts.CompilerOptions;
     fileNames?: string[];

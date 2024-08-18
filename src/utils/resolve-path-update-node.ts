@@ -8,9 +8,7 @@ import { resolveModuleName } from "./resolve-module-name";
 // region: Node Updater Utility
 /* ****************************************************************************************************************** */
 
-/**
- * Gets proper path and calls updaterFn to get the new node if it should be updated
- */
+/** Gets proper path and calls updaterFn to get the new node if it should be updated */
 export function resolvePathAndUpdateNode(
   context: VisitorContext,
   node: ts.Node,

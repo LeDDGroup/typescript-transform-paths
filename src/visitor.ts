@@ -23,17 +23,16 @@ const isRequire = ({ tsInstance }: VisitorContext, node: ts.Node): node is ts.Ca
  * Node Visitor
  * ****************************************************************************************************************** */
 
-/**
- * Visit and replace nodes with module specifiers
- */
+/** Visit and replace nodes with module specifiers */
 export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | undefined {
   const { factory, tsInstance, transformationContext } = this;
 
   /**
    * Update require / import functions
    *
-   * require('module')
-   * import('module')
+   * @example
+   *   require("module");
+   *   import("module");
    */
   if (isRequire(this, node) || isAsyncImport(this, node))
     return resolvePathAndUpdateNode(this, node, (<ts.StringLiteral>node.arguments[0]).text, (p) => {
@@ -67,7 +66,8 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
   /**
    * Update ExternalModuleReference
    *
-   * import foo = require("foo");
+   * @example
+   *   import foo = require("foo");
    */
   if (tsInstance.isExternalModuleReference(node) && tsInstance.isStringLiteral(node.expression))
     return resolvePathAndUpdateNode(this, node, node.expression.text, (p) =>
@@ -77,8 +77,9 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
   /**
    * Update ImportTypeNode
    *
-   * typeof import("./bar");
-   * import ("package").MyType;
+   * @example
+   *   typeof import("./bar");
+   *   import("package").MyType;
    */
   if (tsInstance.isImportTypeNode(node)) {
     const argument = node.argument as ts.LiteralTypeNode;
@@ -104,7 +105,8 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
   /**
    * Update ImportDeclaration
    *
-   * import ... 'module';
+   * @example
+   *   import ... 'module';
    */
   if (tsInstance.isImportDeclaration(node) && node.moduleSpecifier && tsInstance.isStringLiteral(node.moduleSpecifier))
     return resolvePathAndUpdateNode(this, node, node.moduleSpecifier.text, (p) => {
@@ -123,7 +125,8 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
   /**
    * Update ExportDeclaration
    *
-   * export ... 'module';
+   * @example
+   *   export ... 'module';
    */
   if (tsInstance.isExportDeclaration(node) && node.moduleSpecifier && tsInstance.isStringLiteral(node.moduleSpecifier))
     return resolvePathAndUpdateNode(this, node, node.moduleSpecifier.text, (p) => {
@@ -146,9 +149,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
       );
     });
 
-  /**
-   * Update module augmentation
-   */
+  /** Update module augmentation */
   if (tsInstance.isModuleDeclaration(node) && tsInstance.isStringLiteral(node.name))
     return resolvePathAndUpdateNode(this, node, node.name.text, (p) =>
       factory.updateModuleDeclaration(node, node.modifiers, p, node.body),

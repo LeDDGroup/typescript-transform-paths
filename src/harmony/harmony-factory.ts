@@ -14,9 +14,7 @@ export interface HarmonyFactory extends TS.NodeFactory {}
 // region: Utilities
 /* ****************************************************************************************************************** */
 
-/**
- * Creates a node factory compatible with TS v3+
- */
+/** Creates a node factory compatible with TS v3+ */
 export function createHarmonyFactory(context: TsTransformPathsContext): HarmonyFactory {
   return new Proxy(context.tsFactory ?? context.tsInstance, {
     get(target, prop) {

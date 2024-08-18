@@ -7,9 +7,7 @@ import type { REGISTER_INSTANCE } from "ts-node";
 // region: TS Helpers
 /* ****************************************************************************************************************** */
 
-/**
- * Determine output file path for source file
- */
+/** Determine output file path for source file */
 export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: SourceFile): string {
   const {
     tsInstance,
@@ -45,9 +43,7 @@ export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: S
   return tsInstance.normalizePath(res);
 }
 
-/**
- * Determine if moduleName matches config in paths
- */
+/** Determine if moduleName matches config in paths */
 export function isModulePathsMatch(context: VisitorContext, moduleName: string): boolean {
   const {
     pathsPatterns,
@@ -56,9 +52,7 @@ export function isModulePathsMatch(context: VisitorContext, moduleName: string):
   return !!(pathsPatterns && matchPatternOrExact(pathsPatterns as readonly string[], moduleName));
 }
 
-/**
- * Create barebones EmitHost (for no-Program transform)
- */
+/** Create barebones EmitHost (for no-Program transform) */
 export function createSyntheticEmitHost(
   compilerOptions: ts.CompilerOptions,
   tsInstance: typeof ts,
@@ -77,9 +71,7 @@ export function createSyntheticEmitHost(
   } as unknown as ts.EmitHost;
 }
 
-/**
- * Get ts-node register info
- */
+/** Get ts-node register info */
 export function getTsNodeRegistrationProperties(tsInstance: typeof ts) {
   let tsNodeSymbol: typeof REGISTER_INSTANCE;
   try {

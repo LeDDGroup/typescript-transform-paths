@@ -63,9 +63,7 @@ function createReadFile(
 // region: Utilities
 /* ****************************************************************************************************************** */
 
-/**
- * Create TS Program with faux files and options
- */
+/** Create TS Program with faux files and options */
 export function createTsProgram(
   opt: CreateTsProgramOptions,
   transformerPath: string = config.transformerPath,
@@ -148,9 +146,7 @@ export function createTsSolutionBuilder(
   });
 }
 
-/**
- * Get emitted files for program
- */
+/** Get emitted files for program */
 export function getEmitResultFromProgram(program: ts.Program): EmittedFiles {
   const outputFiles: EmittedFiles = {};
   program.emit(undefined, createWriteFile(outputFiles));

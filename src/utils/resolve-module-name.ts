@@ -10,17 +10,11 @@ import { getRelativePath } from "./get-relative-path";
 /* ****************************************************************************************************************** */
 
 export interface ResolvedModule {
-  /**
-   * Absolute path to resolved module
-   */
+  /** Absolute path to resolved module */
   resolvedPath: string | undefined;
-  /**
-   * Output path
-   */
+  /** Output path */
   outputPath: string;
-  /**
-   * Resolved to URL
-   */
+  /** Resolved to URL */
   isURL: boolean;
 }
 
@@ -117,9 +111,7 @@ function getResolvedSourceFile(context: VisitorContext, fileName: string): Sourc
 // region: Utils
 /* ****************************************************************************************************************** */
 
-/**
- * Resolve a module name
- */
+/** Resolve a module name */
 export function resolveModuleName(context: VisitorContext, moduleName: string): ResolvedModule | undefined {
   const { tsInstance, compilerOptions, sourceFile, config, rootDirs } = context;
 

@@ -1,6 +1,4 @@
-/**
- * Changes after this point: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-48
- */
+/** Changes after this point: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-48 */
 import type {
   default as TsCurrentModule,
   AssertClause,
