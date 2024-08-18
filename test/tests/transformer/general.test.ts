@@ -1,5 +1,4 @@
 // noinspection ES6UnusedImports
-import {} from "ts-expose-internals";
 import * as path from "path";
 import { createTsProgram, EmittedFiles, getEmitResultFromProgram } from "../../utils";
 import { ts, tsModules, projectsPaths } from "../../config";
