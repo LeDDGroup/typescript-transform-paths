@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.5.0
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.11...v3.5.0)
+
+### 🚀 Enhancements
+
+- Add package.json exports ([#218](https://github.com/LeDDGroup/typescript-transform-paths/pull/218))
+
+### 💅 Refactors
+
+- Move top level register and nx-transformer to src/ ([6f0a280](https://github.com/LeDDGroup/typescript-transform-paths/commit/6f0a280))
+- Add prettier-plugin-jsdoc ([0b5fd4c](https://github.com/LeDDGroup/typescript-transform-paths/commit/0b5fd4c))
+- Remove ts-expose-internals imports ([7b66926](https://github.com/LeDDGroup/typescript-transform-paths/commit/7b66926))
+- Update ts-expose-internals -> @types/ts-expose-internals ([56d62d2](https://github.com/LeDDGroup/typescript-transform-paths/commit/56d62d2))
+
+### 🏡 Chore
+
+- **deps-dev:** Remove strip-ansi ([2fc9901](https://github.com/LeDDGroup/typescript-transform-paths/commit/2fc9901))
+
+### ❤️ Contributors
+
+- Daniel Perez Alvarez <danielpza@protonmail.com>
+
 ## v3.4.11
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.10...v3.4.11)
