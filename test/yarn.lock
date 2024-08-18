@@ -8085,7 +8085,6 @@ __metadata:
     "@types/jest": "npm:^29.5.12"
     jest: "npm:^29.7.0"
     nx: "npm:^15.9.7"
-    strip-ansi: "npm:^6.0.1"
     ts-expose-internals: "npm:^4.9.5"
     ts-jest: "npm:^29.2.4"
     ts-node: "npm:^10.9.2"

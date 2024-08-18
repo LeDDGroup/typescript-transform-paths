@@ -15,7 +15,6 @@
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
     "nx": "^15.9.7",
-    "strip-ansi": "^6.0.1",
     "ts-expose-internals": "^4.9.5",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
