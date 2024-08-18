@@ -15,12 +15,12 @@ import { projectsPaths } from "../config";
 
 describe(`NX Transformer`, () => {
   describe("Plugin", () => {
-    let mockedTransformer: jest.SpyInstance;
+    let mockedTransformer: vi.SpyInstance;
 
     const program: any = { x: 1 };
 
     beforeAll(async () => {
-      mockedTransformer = jest.spyOn(transformerModule, "default").mockReturnValue(<any>(() => {}));
+      mockedTransformer = vi.spyOn(transformerModule, "default").mockReturnValue(<any>(() => {}));
     });
     afterAll(() => {
       mockedTransformer.mockClear();
