@@ -2513,6 +2513,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/ts-expose-internals@npm:ts-expose-internals@^4.9.5":
+  version: 4.9.5
+  resolution: "ts-expose-internals@npm:4.9.5"
+  checksum: 10c0/3f5b24f30c1f31a982f2a93b72de18c70da3e4c26d90afdc9428d00c7eef42d91beac7a0fa564f8af815c044ae26ca6da4d9e3aea21a2f479511397ead4d0c8e
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^8.5.5":
   version: 8.5.12
   resolution: "@types/ws@npm:8.5.12"
@@ -8083,9 +8090,9 @@ __metadata:
     "@nrwl/workspace": "npm:^15.9.7"
     "@tsconfig/node18": "npm:^18.2.4"
     "@types/jest": "npm:^29.5.12"
+    "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5"
     jest: "npm:^29.7.0"
     nx: "npm:^15.9.7"
-    ts-expose-internals: "npm:^4.9.5"
     ts-jest: "npm:^29.2.4"
     ts-node: "npm:^10.9.2"
     ts-patch: "npm:^3.2.1"
@@ -8978,13 +8985,6 @@ __metadata:
   bin:
     tree-kill: cli.js
   checksum: 10c0/7b1b7c7f17608a8f8d20a162e7957ac1ef6cd1636db1aba92f4e072dc31818c2ff0efac1e3d91064ede67ed5dc57c565420531a8134090a12ac10cf792ab14d2
-  languageName: node
-  linkType: hard
-
-"ts-expose-internals@npm:^4.9.5":
-  version: 4.9.5
-  resolution: "ts-expose-internals@npm:4.9.5"
-  checksum: 10c0/3f5b24f30c1f31a982f2a93b72de18c70da3e4c26d90afdc9428d00c7eef42d91beac7a0fa564f8af815c044ae26ca6da4d9e3aea21a2f479511397ead4d0c8e
   languageName: node
   linkType: hard
 
