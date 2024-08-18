@@ -3,8 +3,6 @@
   "version": "3.5.2",
   "description": "Transforms module resolution paths using TypeScript path mapping and/or custom paths",
   "type": "commonjs",
-  "main": "./dist/index.js",
-  "types": "types/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
