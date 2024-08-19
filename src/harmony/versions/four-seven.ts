@@ -49,7 +49,7 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
     case "updateImportDeclaration":
       return function (
         node: ImportDeclaration,
-        modifiers: readonly Modifier[] | undefined,
+        _modifiers: readonly Modifier[] | undefined,
         importClause: ImportClause | undefined,
         moduleSpecifier: Expression,
         assertClause: AssertClause | undefined,
@@ -73,7 +73,7 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
     case "updateExportDeclaration":
       return function (
         node: ExportDeclaration,
-        modifiers: readonly Modifier[] | undefined,
+        _modifiers: readonly Modifier[] | undefined,
         isTypeOnly: boolean,
         exportClause: NamedExportBindings | undefined,
         moduleSpecifier: Expression | undefined,
@@ -99,7 +99,7 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
     case "updateModuleDeclaration":
       return function (
         node: ModuleDeclaration,
-        modifiers: readonly Modifier[] | undefined,
+        _modifiers: readonly Modifier[] | undefined,
         name: ModuleName,
         body: ModuleBody | undefined,
       ) {
