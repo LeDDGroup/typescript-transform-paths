@@ -89,19 +89,15 @@ describe(`Register script`, () => {
 
   describe(`Register`, () => {
     test(`Throws without ts-node`, () => {
-      jest.doMock(
-        "ts-node",
-        () => {
-          throw new ModuleNotFoundError("ts-node");
-        },
-        { virtual: true },
-      );
+      jest.doMock("ts-node", () => {
+        throw new ModuleNotFoundError("ts-node");
+      });
       expect(() => register()).toThrow(`Cannot resolve ts-node`);
       jest.dontMock("ts-node");
     });
 
     test(`Throws if can't register ts-node`, () => {
-      jest.doMock("ts-node", () => ({ register: () => {} }), { virtual: true });
+      jest.doMock("ts-node", () => ({ register: () => {} }));
       expect(() => register()).toThrow(`Could not register ts-node instance!`);
       jest.dontMock("ts-node");
     });
