@@ -1,10 +1,8 @@
 {
+  "extends": "@tsconfig/node18",
   "compilerOptions": {
-    "target": "es5",
-    "module": "ESNext",
+    "target": "esnext",
     "outDir": "__built",
-    "moduleResolution": "node",
-
     "declaration": true,
     "baseUrl": "./",
     "paths": {
@@ -13,9 +11,7 @@
       "#utils/*": ["./utils/*", "./secondary/*"],
       "*": ["*"]
     },
-
     "esModuleInterop": true,
-
     "plugins": [
       { "transform": "typescript-transform-paths" },
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
