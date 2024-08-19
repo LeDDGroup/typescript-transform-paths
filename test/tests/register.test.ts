@@ -35,7 +35,7 @@ const configMap = Object.entries(configs).map(([label, cfg]) => {
 });
 
 const instanceSymbol: typeof REGISTER_INSTANCE = tsNode["REGISTER_INSTANCE"];
-const originalTsNodeInstance = global.process[instanceSymbol];
+const originalTsNodeInstance = globalThis.process[instanceSymbol];
 
 const fakeExistingTransformer = jest.fn();
 const fakeTransformer = jest.fn();
@@ -52,25 +52,25 @@ const registerSpy: jest.SpyInstance = jest.spyOn(tsNode, "register");
 
 afterEach(() => {
   jest.restoreAllMocks();
-  global.process[instanceSymbol] = originalTsNodeInstance;
+  globalThis.process[instanceSymbol] = originalTsNodeInstance;
 });
 
 describe(`Register script`, () => {
   describe(`Initialize`, () => {
     test(`Registers initial ts-node if none found`, () => {
-      global.process[instanceSymbol] = undefined;
-      expect(global.process[instanceSymbol]).toBeUndefined();
+      globalThis.process[instanceSymbol] = undefined;
+      expect(globalThis.process[instanceSymbol]).toBeUndefined();
       register.initialize();
       expect(registerSpy).toHaveBeenCalledTimes(1);
       expect(registerSpy.mock.calls[0]).toHaveLength(0);
-      expect(global.process[instanceSymbol]).not.toBeUndefined();
+      expect(globalThis.process[instanceSymbol]).not.toBeUndefined();
     });
 
     test(`Uses existing ts-node if found`, () => {
       const fakeInstance = {};
 
       // @ts-expect-error TS(2740) FIXME: Type '{}' is missing the following properties from type 'Service': ts, config, options, enabled, and 3 more.
-      global.process[instanceSymbol] = fakeInstance;
+      globalThis.process[instanceSymbol] = fakeInstance;
       const registerSpy = jest.spyOn(tsNode, "register");
 
       const { tsNodeInstance } = register.initialize();
@@ -82,7 +82,7 @@ describe(`Register script`, () => {
     test(`Returns instance, tsNode, and symbol`, () => {
       const res = register.initialize();
       expect(res.tsNode).toEqual(tsNode);
-      expect(res.tsNodeInstance).toEqual(global.process[instanceSymbol]);
+      expect(res.tsNodeInstance).toEqual(globalThis.process[instanceSymbol]);
       expect(res.instanceSymbol).toEqual(instanceSymbol);
     });
   });
@@ -132,7 +132,7 @@ describe(`Register script`, () => {
         beforeAll(() => {
           mockTransformer = jest.spyOn(transformerModule, "default").mockReturnValue(fakeTransformer);
 
-          global.process[instanceSymbol] = void 0;
+          globalThis.process[instanceSymbol] = void 0;
 
           const originalInitialize = register.initialize;
           initializeSpy = jest.spyOn(register, "initialize");
@@ -145,10 +145,10 @@ describe(`Register script`, () => {
             return res;
           });
 
-          const originalTsNodeInstance = global.process[instanceSymbol];
+          const originalTsNodeInstance = globalThis.process[instanceSymbol];
           registerResult = register()!;
-          instanceRegistrationResult = global.process[instanceSymbol]!;
-          global.process[instanceSymbol] = originalTsNodeInstance;
+          instanceRegistrationResult = globalThis.process[instanceSymbol]!;
+          globalThis.process[instanceSymbol] = originalTsNodeInstance;
 
           mergedTransformers =
             typeof registerResult.transformers === "function"
