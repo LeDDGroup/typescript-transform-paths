@@ -7,10 +7,6 @@ import { Minimatch } from "minimatch";
 import { createSyntheticEmitHost, getTsNodeRegistrationProperties } from "./utils/ts-helpers";
 import { TransformerExtras } from "ts-patch";
 
-/* ****************************************************************************************************************** */
-// region: Helpers
-/* ****************************************************************************************************************** */
-
 function getTsProperties(args: Parameters<typeof transformer>) {
   let fileNames: readonly string[] | undefined;
   let compilerOptions: CompilerOptions;
@@ -69,12 +65,6 @@ function getTsProperties(args: Parameters<typeof transformer>) {
   return { tsInstance, compilerOptions, fileNames, runMode, tsNodeState };
 }
 
-// endregion
-
-/* ****************************************************************************************************************** */
-// region: Transformer
-/* ****************************************************************************************************************** */
-
 export default function transformer(
   program?: ts.Program,
   pluginConfig?: TsTransformPathsConfig,
@@ -113,6 +103,8 @@ export default function transformer(
     const { configFile, paths } = compilerOptions;
     const { tryParsePatterns } = tsInstance;
     const [tsVersionMajor, tsVersionMinor] = tsInstance.versionMajorMinor.split(".").map((v) => +v);
+
+    if (!tsVersionMajor || !tsVersionMinor) throw new Error("Expected version to be parsed");
 
     const tsTransformPathsContext: TsTransformPathsContext = {
       compilerOptions,
@@ -154,5 +146,3 @@ export default function transformer(
     };
   };
 }
-
-// endregion
