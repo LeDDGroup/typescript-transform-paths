@@ -5,7 +5,7 @@ import path from "path";
  * General Utilities & Helpers
  * ****************************************************************************************************************** */
 
-export const isURL = (s: string): boolean => !!s && (!!url.parse(s).host || !!url.parse(s).hostname);
+export const isURL = (s: string | undefined): s is string => !!s && (!!url.parse(s).host || !!url.parse(s).hostname);
 
 export const isBaseDir = (baseDir: string, testDir: string): boolean => {
   const relative = path.relative(baseDir, testDir);

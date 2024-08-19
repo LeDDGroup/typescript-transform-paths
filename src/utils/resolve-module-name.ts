@@ -5,10 +5,6 @@ import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } fro
 import { getOutputDirForSourceFile } from "./ts-helpers";
 import { getRelativePath } from "./get-relative-path";
 
-/* ****************************************************************************************************************** */
-// region: Types
-/* ****************************************************************************************************************** */
-
 export interface ResolvedModule {
   /** Absolute path to resolved module */
   resolvedPath: string | undefined;
@@ -24,12 +20,6 @@ enum IndexType {
   Implicit,
   ImplicitPackage,
 }
-
-// endregion
-
-/* ****************************************************************************************************************** */
-// region: Helpers
-/* ****************************************************************************************************************** */
 
 function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
   const resolvedFileName = resolvedModule.originalPath ?? resolvedModule.resolvedFileName;
@@ -105,12 +95,6 @@ function getResolvedSourceFile(context: VisitorContext, fileName: string): Sourc
   return tsInstance.createSourceFile(fileName, ``, tsInstance.ScriptTarget.ESNext, /* setParentNodes */ false);
 }
 
-// endregion
-
-/* ****************************************************************************************************************** */
-// region: Utils
-/* ****************************************************************************************************************** */
-
 /** Resolve a module name */
 export function resolveModuleName(context: VisitorContext, moduleName: string): ResolvedModule | undefined {
   const { tsInstance, compilerOptions, sourceFile, config, rootDirs } = context;
@@ -126,10 +110,10 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
   // Handle non-resolvable module
   if (!resolvedModule) {
     const maybeURL = failedLookupLocations[0];
-    if (!isURL(maybeURL)) return void 0;
+    if (!isURL(maybeURL)) return undefined;
     return {
       isURL: true,
-      resolvedPath: void 0,
+      resolvedPath: undefined,
       outputPath: maybeURL,
     };
   }
@@ -172,5 +156,3 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
 
   return { isURL: false, outputPath, resolvedPath: resolvedFileName };
 }
-
-// endregion

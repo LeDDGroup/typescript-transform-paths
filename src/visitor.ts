@@ -2,13 +2,10 @@ import ts from "typescript";
 import { VisitorContext } from "./types";
 import { elideImportOrExportDeclaration, resolvePathAndUpdateNode } from "./utils";
 
-/* ****************************************************************************************************************** *
- * Helpers
- * ****************************************************************************************************************** */
-
 const isAsyncImport = ({ tsInstance }: VisitorContext, node: ts.Node): node is ts.CallExpression =>
   tsInstance.isCallExpression(node) &&
   node.expression.kind === tsInstance.SyntaxKind.ImportKeyword &&
+  !!node.arguments[0] &&
   tsInstance.isStringLiteral(node.arguments[0]) &&
   node.arguments.length === 1;
 
@@ -16,12 +13,9 @@ const isRequire = ({ tsInstance }: VisitorContext, node: ts.Node): node is ts.Ca
   tsInstance.isCallExpression(node) &&
   tsInstance.isIdentifier(node.expression) &&
   node.expression.text === "require" &&
+  !!node.arguments[0] &&
   tsInstance.isStringLiteral(node.arguments[0]) &&
   node.arguments.length === 1;
-
-/* ****************************************************************************************************************** *
- * Node Visitor
- * ****************************************************************************************************************** */
 
 /** Visit and replace nodes with module specifiers */
 export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | undefined {
@@ -40,7 +34,8 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
 
       /* Handle comments */
       const textNode = node.arguments[0];
-      const commentRanges = tsInstance.getLeadingCommentRanges(textNode.getFullText(), 0) || [];
+      if (!textNode) throw new Error("Expected textNode");
+      const commentRanges = tsInstance.getLeadingCommentRanges(textNode.getFullText(), 0) ?? [];
 
       for (const range of commentRanges) {
         const { kind, pos, end, hasTrailingNewLine } = range;

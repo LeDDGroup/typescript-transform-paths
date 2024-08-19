@@ -4,10 +4,6 @@ import { isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
 import { isModulePathsMatch } from "./ts-helpers";
 import { resolveModuleName } from "./resolve-module-name";
 
-/* ****************************************************************************************************************** */
-// region: Node Updater Utility
-/* ****************************************************************************************************************** */
-
 /** Gets proper path and calls updaterFn to get the new node if it should be updated */
 export function resolvePathAndUpdateNode(
   context: VisitorContext,
@@ -69,7 +65,8 @@ export function resolvePathAndUpdateNode(
         const trivia = targetNode.getFullText(sourceFile).slice(0, targetNode.getLeadingTriviaWidth(sourceFile));
         const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gim;
 
-        for (let match = regex.exec(trivia); match; match = regex.exec(trivia)) commentTags.set(match[1], match[2]);
+        for (let match = regex.exec(trivia); match; match = regex.exec(trivia))
+          if (match[1]) commentTags.set(match[1], match[2]);
       } catch {}
     }
 
@@ -83,7 +80,7 @@ export function resolvePathAndUpdateNode(
 
     function findTag(expected: string): boolean | string | undefined {
       if (commentTags.has(expected)) return commentTags.get(expected) || true;
-      if (!jsDocTags?.length) return void 0;
+      if (!jsDocTags?.length) return undefined;
 
       for (const tag of jsDocTags) {
         const tagName = tag.tagName.text.toLowerCase();
@@ -103,8 +100,8 @@ export function resolvePathAndUpdateNode(
             : void 0;
         }
       }
+
+      return undefined;
     }
   }
 }
-
-// endregion
