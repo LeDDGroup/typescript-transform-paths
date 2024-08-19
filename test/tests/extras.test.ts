@@ -5,10 +5,6 @@ import ts from "typescript";
 import * as config from "../config";
 import { execSync } from "node:child_process";
 
-/* ****************************************************************************************************************** *
- * Tests
- * ****************************************************************************************************************** */
-
 describe(`Extra Tests`, () => {
   const projectRoot = ts.normalizePath(path.join(projectsPaths, "extras"));
   const indexFile = ts.normalizePath(path.join(projectRoot, "src/index.ts"));
