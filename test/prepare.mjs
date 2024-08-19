@@ -28,8 +28,8 @@ function patchTsModules() {
     tspatch(["tsc.js", "typescript.js"], { basedir, dir: basedir });
   }
 
-  patchTypescript("typescript-three", patch1);
-  patchTypescript("typescript-four-seven", patch2);
+  patchTypescript("typescript-3", patch1);
+  patchTypescript("typescript-4.7", patch2);
   patchTypescript("typescript", patch);
 }
 

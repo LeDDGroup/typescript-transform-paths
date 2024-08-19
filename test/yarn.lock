@@ -8099,8 +8099,8 @@ __metadata:
     tsp1: "npm:ts-patch@1.*.*"
     tsp2: "npm:ts-patch@2.*.*"
     typescript: "npm:^5.5.4"
-    typescript-four-seven: "npm:typescript@4.7.4"
-    typescript-three: "npm:typescript@3.6.5"
+    typescript-3: "npm:typescript@3.6.5"
+    typescript-4.7: "npm:typescript@4.7.4"
     typescript-transform-paths: "portal:../"
   languageName: unknown
   linkType: soft
@@ -9239,23 +9239,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-four-seven@npm:typescript@4.7.4":
-  version: 4.7.4
-  resolution: "typescript@npm:4.7.4"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/8c1c4007b6ce5b24c49f0e89173ab9e82687cc6ae54418d1140bb63b82d6598d085ac0f993fe3d3d1fbf87a2c76f1f81d394dc76315bc72c7a9f8561c5d8d205
-  languageName: node
-  linkType: hard
-
-"typescript-three@npm:typescript@3.6.5":
+"typescript-3@npm:typescript@3.6.5":
   version: 3.6.5
   resolution: "typescript@npm:3.6.5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/b6f0d5d2e2325b28460b8cf3a4a1237d79aec9951ad727014d4ca570327cc5947decec5d262044979cc0a9ab63746b58e6d8438d73d33ce8415e5369d0490dff
+  languageName: node
+  linkType: hard
+
+"typescript-4.7@npm:typescript@4.7.4":
+  version: 4.7.4
+  resolution: "typescript@npm:4.7.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/8c1c4007b6ce5b24c49f0e89173ab9e82687cc6ae54418d1140bb63b82d6598d085ac0f993fe3d3d1fbf87a2c76f1f81d394dc76315bc72c7a9f8561c5d8d205
   languageName: node
   linkType: hard
 
