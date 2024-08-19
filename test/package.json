@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@nrwl/cli": "^15.9.7",
-    "@nrwl/js": "^15.9.7",
+    "@nrwl/js": "^19.6.1",
     "@nrwl/node": "^15.9.7",
     "@nrwl/workspace": "^15.9.7",
     "@tsconfig/node18": "^18.2.4",
