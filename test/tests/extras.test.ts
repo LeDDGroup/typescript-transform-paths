@@ -13,13 +13,9 @@ describe(`Extra Tests`, () => {
   describe(`Built Tests`, () => {
     // see: https://github.com/LeDDGroup/typescript-transform-paths/issues/130
     test(`Transformer works without ts-node being present`, () => {
-      jest.doMock(
-        "ts-node",
-        () => {
-          throw new ModuleNotFoundError("ts-node");
-        },
-        { virtual: true },
-      );
+      jest.doMock("ts-node", () => {
+        throw new ModuleNotFoundError("ts-node");
+      });
       try {
         const program = createTsProgram({ tsInstance: ts, tsConfigFile }, config.builtTransformerPath);
         const res = getEmitResultFromProgram(program);
@@ -32,12 +28,18 @@ describe(`Extra Tests`, () => {
     describe(`ts-node register script`, () => {
       test(`Works with --transpileOnly`, () => {
         const res = execSync("yarn g:ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString();
-        expect(res).toMatch(/^null($|\r?\n)/m);
+        expect(res).toMatchInlineSnapshot(`
+"null
+"
+`);
       });
 
       test(`Works with --typeCheck`, () => {
         const res = execSync("yarn g:ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString();
-        expect(res).toMatch(/^null($|\r?\n)/);
+        expect(res).toMatchInlineSnapshot(`
+"null
+"
+`);
       });
     });
   });
