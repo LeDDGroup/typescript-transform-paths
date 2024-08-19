@@ -8,10 +8,6 @@ import * as transformerModule from "../../dist/transformer";
 
 import { ModuleNotFoundError } from "../utils";
 
-/* ****************************************************************************************************************** *
- * Config
- * ****************************************************************************************************************** */
-
 const pluginOptions = { opt1: true, opt2: 3 };
 const otherTransformer = { transform: "fake-transformer@23904" };
 const configs = {
@@ -50,10 +46,6 @@ const fakeTransformerConfig = {
 const transformerFactoryFn = jest.fn().mockReturnValue(fakeTransformerConfig);
 
 const fakeProgram = {};
-
-/* ****************************************************************************************************************** *
- * Tests
- * ****************************************************************************************************************** */
 
 describe(`Register script`, () => {
   describe(`Initialize`, () => {
