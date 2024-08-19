@@ -65,9 +65,10 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
   const ts = context.tsInstance as unknown as typeof TsThreeEightModule;
 
   switch (prop) {
-    case "updateCallExpression":
+    case "updateCallExpression": {
       return (...args: any) => ts.updateCall.apply(void 0, args);
-    case "updateImportClause":
+    }
+    case "updateImportClause": {
       return function (
         node: ImportClause,
         _isTypeOnly: boolean,
@@ -77,7 +78,8 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
         // @ts-expect-error TODO investigate type issue
         return ts.updateImportClause.apply(void 0, downSample(node, name, namedBindings));
       };
-    case "updateImportDeclaration":
+    }
+    case "updateImportDeclaration": {
       return function (
         node: ImportDeclaration,
         _modifiers: readonly Modifier[] | undefined,
@@ -94,7 +96,8 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsModuleSpecifier,
         );
       };
-    case "updateExportDeclaration":
+    }
+    case "updateExportDeclaration": {
       return function (
         node: ExportDeclaration,
         _modifiers: readonly Modifier[] | undefined,
@@ -112,7 +115,8 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsNode.isTypeOnly,
         );
       };
-    case "updateModuleDeclaration":
+    }
+    case "updateModuleDeclaration": {
       return function (
         node: ModuleDeclaration,
         _modifiers: readonly Modifier[] | undefined,
@@ -123,7 +127,8 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
 
         return ts.updateModuleDeclaration(dsNode, dsNode.decorators, dsNode.modifiers, dsName, dsBody);
       };
-    case "updateImportTypeNode":
+    }
+    case "updateImportTypeNode": {
       return function (
         node: ImportTypeNode,
         argument: TypeNode,
@@ -136,8 +141,10 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
 
         return ts.updateImportTypeNode(dsNode, dsArgument, dsQualifier, dsTypeArguments, isTypeOf);
       };
-    default:
+    }
+    default: {
       return (...args: any) => (<any>ts)[prop](...args);
+    }
   }
 }
 

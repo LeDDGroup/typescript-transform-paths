@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path";
 import ts, { CompilerOptions } from "typescript";
 import { RunMode, TsNodeState, TsTransformPathsConfig, TsTransformPathsContext, VisitorContext } from "./types";
 import { nodeVisitor } from "./visitor";
@@ -52,7 +52,7 @@ function getTsProperties(args: Parameters<typeof transformer>) {
       tsNodeState === TsNodeState.Full
         ? compilerOptions!
         : {
-            ...(program?.getCompilerOptions() ?? {}),
+            ...program?.getCompilerOptions(),
             ...tsNodeProps!.compilerOptions,
           };
   } else {

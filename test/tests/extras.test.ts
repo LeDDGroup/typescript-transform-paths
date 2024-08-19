@@ -1,9 +1,9 @@
 import { createTsProgram, getEmitResultFromProgram, ModuleNotFoundError } from "../utils";
 import { projectsPaths } from "../config";
-import path from "path";
+import path from "node:path";
 import ts from "typescript";
 import * as config from "../config";
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 
 /* ****************************************************************************************************************** *
  * Tests

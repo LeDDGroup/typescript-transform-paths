@@ -1,5 +1,5 @@
 import { default as tstpTransform, TsTransformPathsConfig } from "typescript-transform-paths";
-import fs from "fs";
+import fs from "node:fs";
 import ts from "typescript";
 import * as tsNode from "ts-node";
 import * as config from "../config";

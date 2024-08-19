@@ -1,5 +1,5 @@
 // noinspection ES6UnusedImports
-import * as path from "path";
+import * as path from "node:path";
 import { createTsSolutionBuilder, EmittedFiles } from "../utils";
 import { projectsPaths, ts } from "../config";
 

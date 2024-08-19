@@ -24,14 +24,13 @@ const configs = {
 const configMap = Object.entries(configs).map(([label, cfg]) => {
   let hasBefore: boolean = false;
   let hasAfterDeclarations: boolean = false;
-  const transformers = [cfg]
+  const transformers = [...[cfg]
     .flat()
     .map((c) => {
       if ((<any>c).before || !(<any>c).afterDeclarations) hasBefore = true;
       if ((<any>c).afterDeclarations) hasAfterDeclarations = true;
       return { transform: "typescript-transform-paths", ...c, ...pluginOptions } as PluginConfig;
-    })
-    .concat([otherTransformer]);
+    }), otherTransformer];
 
   return { label, transformers, hasBefore, hasAfterDeclarations };
 });
@@ -140,14 +139,17 @@ describe(`Register script`, () => {
 
       let existingTransformers: CustomTransformers | ((p: Program) => CustomTransformers) | undefined;
       switch (configKind) {
-        case "Existing Transformer Config Factory":
+        case "Existing Transformer Config Factory": {
           existingTransformers = transformerFactoryFn;
           break;
-        case "Existing Transformer Config":
+        }
+        case "Existing Transformer Config": {
           existingTransformers = { ...fakeTransformerConfig };
           break;
-        case "No Existing Transformers":
+        }
+        case "No Existing Transformers": {
           existingTransformers = void 0;
+        }
       }
 
       describe.each(configMap)(`$label`, ({ transformers, hasBefore, hasAfterDeclarations }) => {

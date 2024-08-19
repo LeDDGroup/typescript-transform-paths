@@ -33,4 +33,4 @@ export const before: NxTransformerFactory = (pluginConfig, program) =>
   pluginConfig?.afterDeclarations ? voidTransformer : transformer(program, { ...pluginConfig });
 
 export const afterDeclarations: NxTransformerFactory = (pluginConfig, program) =>
-  !pluginConfig?.afterDeclarations ? voidTransformer : transformer(program, { ...pluginConfig });
+  pluginConfig?.afterDeclarations ? transformer(program, { ...pluginConfig }) : voidTransformer;

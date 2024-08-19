@@ -1,5 +1,5 @@
 // noinspection ES6UnusedImports
-import * as path from "path";
+import * as path from "node:path";
 import { createTsProgram, EmittedFiles, getEmitResultFromProgram } from "../../utils";
 import { ts, tsModules, projectsPaths } from "../../config";
 
@@ -15,8 +15,8 @@ const makeRelative = (tsInstance: typeof ts, fileName: string, p: string, rootDi
 
 const getExpected = (tsInstance: typeof ts, fileName: string, original: string, rootDir: string): string =>
   original
-    .replace(/"@(.*)"/g, (_, p) => makeRelative(tsInstance, fileName, p, rootDir))
-    .replace(/"#utils\/(.*)"/g, (_, p) =>
+    .replaceAll(/"@(.*)"/g, (_, p) => makeRelative(tsInstance, fileName, p, rootDir))
+    .replaceAll(/"#utils\/(.*)"/g, (_, p) =>
       makeRelative(tsInstance, fileName, path.join(p === "hello" ? "secondary" : "utils", p), rootDir),
     )
     .replace('"path"', '"https://external.url/path.js"')

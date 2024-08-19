@@ -1,5 +1,5 @@
 import ts, { GetCanonicalFileName, SourceFile } from "typescript";
-import path from "path";
+import path from "node:path";
 import { VisitorContext } from "../types";
 import type { REGISTER_INSTANCE } from "ts-node";
 
@@ -78,10 +78,10 @@ export function getTsNodeRegistrationProperties(tsInstance: typeof ts) {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     tsNodeSymbol = require("ts-node")?.["REGISTER_INSTANCE"];
   } catch {
-    return undefined;
+    return;
   }
 
-  if (!global.process[tsNodeSymbol]) return undefined;
+  if (!global.process[tsNodeSymbol]) return;
 
   const { config, options } = global.process[tsNodeSymbol]!;
 

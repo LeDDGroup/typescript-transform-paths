@@ -46,7 +46,7 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
   const factory = context.tsFactory as unknown as TsFourSevenModule.NodeFactory;
 
   switch (prop) {
-    case "updateImportDeclaration":
+    case "updateImportDeclaration": {
       return function (
         node: ImportDeclaration,
         _modifiers: readonly Modifier[] | undefined,
@@ -70,7 +70,8 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsAssertClause,
         );
       };
-    case "updateExportDeclaration":
+    }
+    case "updateExportDeclaration": {
       return function (
         node: ExportDeclaration,
         _modifiers: readonly Modifier[] | undefined,
@@ -96,7 +97,8 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsAssertClause,
         );
       };
-    case "updateModuleDeclaration":
+    }
+    case "updateModuleDeclaration": {
       return function (
         node: ModuleDeclaration,
         _modifiers: readonly Modifier[] | undefined,
@@ -107,8 +109,10 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
 
         return factory.updateModuleDeclaration(dsNode, dsNode.decorators, dsNode.modifiers, dsName, dsBody);
       };
-    default:
+    }
+    default: {
       return (...args: any) => (<any>factory)[prop](...args);
+    }
   }
 }
 

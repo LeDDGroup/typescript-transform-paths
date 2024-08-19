@@ -1,6 +1,6 @@
 import { VisitorContext } from "../types";
 import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
-import * as path from "path";
+import * as path from "node:path";
 import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } from "typescript";
 import { getOutputDirForSourceFile } from "./ts-helpers";
 import { getRelativePath } from "./get-relative-path";
@@ -32,7 +32,7 @@ function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
   const resolvedBaseNameNoExtension = resolvedBaseName && removeFileExtension(resolvedBaseName);
   const resolvedExtName = resolvedBaseName && path.extname(resolvedFileName);
 
-  let baseName = !implicitPackageIndex ? path.basename(moduleName) : void 0;
+  let baseName = implicitPackageIndex ? void 0 : path.basename(moduleName);
   let baseNameNoExtension = baseName && removeFileExtension(baseName);
   let extName = baseName && path.extname(moduleName);
 
