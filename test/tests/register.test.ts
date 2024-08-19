@@ -31,7 +31,7 @@ const configMap = Object.entries(configs).map(([label, cfg]) => {
       return { transform: "typescript-transform-paths", ...c, ...pluginOptions } as PluginConfig;
     }),
     otherTransformer,
-  ];
+  ] as PluginConfig[];
 
   return { label, transformers, hasBefore, hasAfterDeclarations };
 });
