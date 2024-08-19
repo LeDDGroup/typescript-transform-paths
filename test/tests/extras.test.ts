@@ -5,6 +5,10 @@ import ts from "typescript";
 import * as config from "../config";
 import { execSync } from "node:child_process";
 
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
 describe(`Extra Tests`, () => {
   const projectRoot = ts.normalizePath(path.join(projectsPaths, "extras"));
   const tsConfigFile = ts.normalizePath(path.join(projectRoot, "tsconfig.json"));
@@ -15,10 +19,9 @@ describe(`Extra Tests`, () => {
       jest.doMock("ts-node", () => {
         throw new ModuleNotFoundError("ts-node");
       });
-      try {
-        const program = createTsProgram({ tsInstance: ts, tsConfigFile }, config.builtTransformerPath);
-        const res = getEmitResultFromProgram(program);
-        expect(getRelativeEmittedFiles(projectRoot, res)).toMatchInlineSnapshot(`
+      const program = createTsProgram({ tsInstance: ts, tsConfigFile }, config.builtTransformerPath);
+      const res = getEmitResultFromProgram(program);
+      expect(getRelativeEmittedFiles(projectRoot, res)).toMatchInlineSnapshot(`
 {
   "src/id.ts": {
     "dts": "export declare const b: any;
@@ -36,9 +39,6 @@ console.log(b);
   },
 }
 `);
-      } finally {
-        jest.dontMock("ts-node");
-      }
     });
 
     describe(`ts-node register script`, () => {
