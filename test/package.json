@@ -10,7 +10,7 @@
     "@nrwl/cli": "^15.9.7",
     "@nrwl/js": "^15.9.7",
     "@nrwl/node": "^15.9.7",
-    "@nrwl/workspace": "^15.9.7",
+    "@nrwl/workspace": "^19.6.1",
     "@tsconfig/node18": "^18.2.4",
     "@types/jest": "^29.5.12",
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5",
