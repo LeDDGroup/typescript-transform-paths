@@ -38,6 +38,7 @@ export default [
       "unicorn/prefer-regexp-test": "warn",
       "unicorn/prefer-string-slice": "warn",
       // disable strict rules/not applicable
+      "unicorn/empty-brace-spaces": "off", // conflict with prettier
       "unicorn/no-array-callback-reference": "off",
       "unicorn/prefer-module": "off",
       "unicorn/prefer-ternary": "off",
