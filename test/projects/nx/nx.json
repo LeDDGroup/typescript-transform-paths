@@ -1,6 +1,6 @@
 {
   "extends": "@nrwl/workspace/presets/core.json",
-  "npmScope": "nx",
+  "npmScope": "project-nx",
   "affected": {
     "defaultBase": "main"
   },

@@ -1,5 +1,5 @@
 {
-  "name": "nx",
+  "name": "project-nx",
   "version": "0.0.0",
   "scripts": {
     "build": "nx build library1 --skip-nx-cache"
