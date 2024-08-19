@@ -9,10 +9,6 @@ import * as transformerModule from "../../dist/transformer";
 
 import { projectsPaths } from "../config";
 
-/* ****************************************************************************************************************** *
- * Tests
- * ****************************************************************************************************************** */
-
 describe(`NX Transformer`, () => {
   describe("Plugin", () => {
     let mockedTransformer: jest.SpyInstance;
