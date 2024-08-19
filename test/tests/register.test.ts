@@ -35,6 +35,7 @@ const configMap = Object.entries(configs).map(([label, cfg]) => {
 });
 
 const instanceSymbol: typeof REGISTER_INSTANCE = tsNode["REGISTER_INSTANCE"];
+const originalTsNodeInstance = global.process[instanceSymbol];
 
 const fakeExistingTransformer = jest.fn();
 const fakeTransformer = jest.fn();
@@ -47,44 +48,35 @@ const transformerFactoryFn = jest.fn().mockReturnValue(fakeTransformerConfig);
 
 const fakeProgram = {};
 
+const registerSpy: jest.SpyInstance = jest.spyOn(tsNode, "register");
+
+afterEach(() => {
+  jest.restoreAllMocks();
+  global.process[instanceSymbol] = originalTsNodeInstance;
+});
+
 describe(`Register script`, () => {
   describe(`Initialize`, () => {
     test(`Registers initial ts-node if none found`, () => {
-      const originalTsNodeInstance = global.process[instanceSymbol];
-      global.process[instanceSymbol] = void 0;
-      let registerSpy: jest.SpyInstance | undefined;
-      try {
-        registerSpy = jest.spyOn(tsNode, "register");
-        expect(global.process[instanceSymbol]).toBeUndefined();
-
-        register.initialize();
-
-        expect(registerSpy).toHaveBeenCalledTimes(1);
-        expect(registerSpy.mock.calls[0]).toHaveLength(0);
-        expect(global.process[instanceSymbol]).not.toBeUndefined();
-      } finally {
-        global.process[instanceSymbol] = originalTsNodeInstance;
-        registerSpy?.mockRestore();
-      }
+      global.process[instanceSymbol] = undefined;
+      expect(global.process[instanceSymbol]).toBeUndefined();
+      register.initialize();
+      expect(registerSpy).toHaveBeenCalledTimes(1);
+      expect(registerSpy.mock.calls[0]).toHaveLength(0);
+      expect(global.process[instanceSymbol]).not.toBeUndefined();
     });
+
     test(`Uses existing ts-node if found`, () => {
       const fakeInstance = {};
 
-      const originalTsNodeInstance = global.process[instanceSymbol];
       // @ts-expect-error TS(2740) FIXME: Type '{}' is missing the following properties from type 'Service': ts, config, options, enabled, and 3 more.
       global.process[instanceSymbol] = fakeInstance;
-      let registerSpy: jest.SpyInstance | undefined;
-      try {
-        registerSpy = jest.spyOn(tsNode, "register");
+      const registerSpy = jest.spyOn(tsNode, "register");
 
-        const { tsNodeInstance } = register.initialize();
+      const { tsNodeInstance } = register.initialize();
 
-        expect(registerSpy).not.toHaveBeenCalled();
-        expect(tsNodeInstance).toBe(fakeInstance);
-      } finally {
-        global.process[instanceSymbol] = originalTsNodeInstance;
-        registerSpy?.mockRestore();
-      }
+      expect(registerSpy).not.toHaveBeenCalled();
+      expect(tsNodeInstance).toBe(fakeInstance);
     });
 
     test(`Returns instance, tsNode, and symbol`, () => {
