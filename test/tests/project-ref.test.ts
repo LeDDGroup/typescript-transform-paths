@@ -1,36 +1,49 @@
-// noinspection ES6UnusedImports
-import * as path from "node:path";
+import path from "node:path";
 import { createTsSolutionBuilder, EmittedFiles } from "../utils";
 import { projectsPaths, ts } from "../config";
 
-/* ****************************************************************************************************************** *
- * Config
- * ****************************************************************************************************************** */
-
 /* File Paths */
 const projectDir = ts.normalizePath(path.join(projectsPaths, "project-ref"));
-const indexFile = ts.normalizePath(path.join(projectDir, "lib/b/index.ts"));
 
-/* ****************************************************************************************************************** *
- * Tests
- * ****************************************************************************************************************** */
+/**
+ * @exapmle
+ *   const builder = createTsSolutionBuilder({ tsInstance: ts, projectDir });
+ *   const emittedFiles = getRelativeEmittedFiles(builder.getEmitFiles());
+ */
+function getRelativeEmittedFiles(pathRecord: EmittedFiles) {
+  const result = {} as EmittedFiles;
+  for (const key in pathRecord) {
+    result[path.relative(projectDir, key)] = pathRecord[key];
+  }
+  return result;
+}
 
 // see: https://github.com/LeDDGroup/typescript-transform-paths/issues/125
-describe(`Project References`, () => {
-  let emittedFiles: EmittedFiles;
-
-  beforeAll(() => {
-    const builder = createTsSolutionBuilder({ tsInstance: ts, projectDir });
-    emittedFiles = builder.getEmitFiles();
-  });
-
-  test(`Specifier for referenced project file resolves properly`, () => {
-    expect(emittedFiles[indexFile].js).toMatch(`export { AReffedConst } from "../a/index"`);
-    expect(emittedFiles[indexFile].dts).toMatch(`export { AReffedConst } from "../a/index"`);
-  });
-
-  test(`Specifier for local file resolves properly`, () => {
-    expect(emittedFiles[indexFile].js).toMatch(`export { LocalConst } from "./local/index"`);
-    expect(emittedFiles[indexFile].dts).toMatch(`export { LocalConst } from "./local/index"`);
-  });
+test("project references", () => {
+  const builder = createTsSolutionBuilder({ tsInstance: ts, projectDir });
+  const emittedFiles = getRelativeEmittedFiles(builder.getEmitFiles());
+  expect(emittedFiles).toMatchInlineSnapshot(`
+{
+  "lib/a/index.ts": {
+    "dts": "export declare const AReffedConst = 43;
+",
+    "js": "export const AReffedConst = 43;
+",
+  },
+  "lib/b/index.ts": {
+    "dts": "export { AReffedConst } from "../a/index";
+export { LocalConst } from "./local/index";
+",
+    "js": "export { AReffedConst } from "../a/index";
+export { LocalConst } from "./local/index";
+",
+  },
+  "lib/b/local/index.ts": {
+    "dts": "export declare const LocalConst = 55;
+",
+    "js": "export const LocalConst = 55;
+",
+  },
+}
+`);
 });
