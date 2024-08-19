@@ -1,11 +1,6 @@
-// noinspection ES6UnusedImports
-import * as path from "node:path";
+import path from "node:path";
 import { createTsProgram, EmittedFiles, getEmitResultFromProgram } from "../../utils";
 import { ts, tsModules, projectsPaths } from "../../config";
-
-/* ****************************************************************************************************************** *
- * Helpers
- * ****************************************************************************************************************** */
 
 const makeRelative = (tsInstance: typeof ts, fileName: string, p: string, rootDir: string) => {
   let rel = tsInstance.normalizePath(path.relative(path.dirname(fileName), path.join(rootDir, p)));
@@ -22,16 +17,13 @@ const getExpected = (tsInstance: typeof ts, fileName: string, original: string, 
     .replace('"path"', '"https://external.url/path.js"')
     .replace('"circular/a"', '"../circular/a"');
 
-/* ****************************************************************************************************************** *
- * Tests
- * ****************************************************************************************************************** */
-
 describe(`Transformer -> General Tests`, () => {
   const projectRoot = path.join(projectsPaths, "general");
   const tsConfigFile = path.join(projectRoot, "tsconfig.json");
 
   describe.each(tsModules)(`TypeScript %s`, (s, tsInstance) => {
     let originalFiles: EmittedFiles = {};
+
     let transformedFiles: EmittedFiles = {};
 
     const program = createTsProgram({ tsInstance: tsInstance as typeof ts, tsConfigFile, disablePlugin: true });
