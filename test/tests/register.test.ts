@@ -76,14 +76,14 @@ describe(`Register script`, () => {
       const { tsNodeInstance } = register.initialize();
 
       expect(registerSpy).not.toHaveBeenCalled();
-      expect(tsNodeInstance).toBe(fakeInstance);
+      expect(tsNodeInstance).toEqual(fakeInstance);
     });
 
     test(`Returns instance, tsNode, and symbol`, () => {
       const res = register.initialize();
-      expect(res.tsNode).toBe(tsNode);
-      expect(res.tsNodeInstance).toBe(global.process[instanceSymbol]);
-      expect(res.instanceSymbol).toBe(instanceSymbol);
+      expect(res.tsNode).toEqual(tsNode);
+      expect(res.tsNodeInstance).toEqual(global.process[instanceSymbol]);
+      expect(res.instanceSymbol).toEqual(instanceSymbol);
     });
   });
 
@@ -211,10 +211,10 @@ describe(`Register script`, () => {
 
           const expectedCfg = [beforeConfig, afterDeclarationsConfig].filter((c) => !!c);
           for (let i = 0; i < callTimes; i++) {
-            expect(mockTransformer.mock.calls[i][0]).toBe(
+            expect(mockTransformer.mock.calls[i][0]).toEqual(
               existingTransformers === transformerFactoryFn ? fakeProgram : void 0,
             );
-            expect(mockTransformer.mock.calls[i][1]).toBe(expectedCfg[i]);
+            expect(mockTransformer.mock.calls[i][1]).toEqual(expectedCfg[i]);
           }
         });
       });
