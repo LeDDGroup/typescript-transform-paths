@@ -205,9 +205,9 @@ describe(`Register script`, () => {
           ];
 
           const expected = {
-            ...(expectedBefore.length && { before: expectedBefore }),
-            ...(expectedAfter.length && { after: expectedAfter }),
-            ...(expectedAfterDeclarations.length && { afterDeclarations: expectedAfterDeclarations }),
+            ...(expectedBefore.length > 0 && { before: expectedBefore }),
+            ...(expectedAfter.length > 0 && { after: expectedAfter }),
+            ...(expectedAfterDeclarations.length > 0 && { afterDeclarations: expectedAfterDeclarations }),
           };
 
           expect(mergedTransformers).toStrictEqual(expected);
