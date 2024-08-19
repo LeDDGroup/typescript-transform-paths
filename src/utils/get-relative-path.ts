@@ -32,7 +32,8 @@ function getIsFsCaseSensitive() {
       fs.writeFileSync(tmpFileName, "");
       isCaseSensitiveFilesystem = !fs.existsSync(tmpFileName.replace("tstp", "TSTP"));
       return isCaseSensitiveFilesystem;
-    } catch {} finally {
+    } catch {
+    } finally {
       tryRmFile(tmpFileName);
     }
   }

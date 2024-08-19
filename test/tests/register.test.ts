@@ -24,13 +24,14 @@ const configs = {
 const configMap = Object.entries(configs).map(([label, cfg]) => {
   let hasBefore: boolean = false;
   let hasAfterDeclarations: boolean = false;
-  const transformers = [...[cfg]
-    .flat()
-    .map((c) => {
+  const transformers = [
+    ...[cfg].flat().map((c) => {
       if ((<any>c).before || !(<any>c).afterDeclarations) hasBefore = true;
       if ((<any>c).afterDeclarations) hasAfterDeclarations = true;
       return { transform: "typescript-transform-paths", ...c, ...pluginOptions } as PluginConfig;
-    }), otherTransformer];
+    }),
+    otherTransformer,
+  ];
 
   return { label, transformers, hasBefore, hasAfterDeclarations };
 });
