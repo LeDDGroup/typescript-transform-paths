@@ -1,4 +1,4 @@
-import { createTsProgram, getEmitResultFromProgram, ModuleNotFoundError } from "../utils";
+import { createTsProgram, getEmitResultFromProgram, getRelativeEmittedFiles, ModuleNotFoundError } from "../utils";
 import { projectsPaths } from "../config";
 import path from "node:path";
 import ts from "typescript";
@@ -7,7 +7,6 @@ import { execSync } from "node:child_process";
 
 describe(`Extra Tests`, () => {
   const projectRoot = ts.normalizePath(path.join(projectsPaths, "extras"));
-  const indexFile = ts.normalizePath(path.join(projectRoot, "src/index.ts"));
   const tsConfigFile = ts.normalizePath(path.join(projectRoot, "tsconfig.json"));
 
   describe(`Built Tests`, () => {
@@ -19,7 +18,24 @@ describe(`Extra Tests`, () => {
       try {
         const program = createTsProgram({ tsInstance: ts, tsConfigFile }, config.builtTransformerPath);
         const res = getEmitResultFromProgram(program);
-        expect(res[indexFile].js).toMatch(`var _identifier_1 = require("./id")`);
+        expect(getRelativeEmittedFiles(projectRoot, res)).toMatchInlineSnapshot(`
+{
+  "src/id.ts": {
+    "dts": "export declare const b: any;
+",
+    "js": "export const b = null;
+",
+  },
+  "src/index.ts": {
+    "dts": "export * from "./id";
+",
+    "js": "export * from "./id";
+import { b } from "./id";
+console.log(b);
+",
+  },
+}
+`);
       } finally {
         jest.dontMock("ts-node");
       }
@@ -27,19 +43,15 @@ describe(`Extra Tests`, () => {
 
     describe(`ts-node register script`, () => {
       test(`Works with --transpileOnly`, () => {
-        const res = execSync("yarn g:ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString();
-        expect(res).toMatchInlineSnapshot(`
-"null
-"
-`);
+        expect(
+          execSync("yarn g:ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString().trim(),
+        ).toMatchInlineSnapshot(`"null"`);
       });
 
       test(`Works with --typeCheck`, () => {
-        const res = execSync("yarn g:ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString();
-        expect(res).toMatchInlineSnapshot(`
-"null
-"
-`);
+        expect(
+          execSync("yarn g:ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString().trim(),
+        ).toMatchInlineSnapshot(`"null"`);
       });
     });
   });

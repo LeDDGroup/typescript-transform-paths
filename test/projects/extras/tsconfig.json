@@ -1,33 +1,23 @@
 {
+  // "extends": "@tsconfig/node18",
   "include": ["src"],
-
   "ts-node": {
     "require": ["typescript-transform-paths/register"]
   },
-
   "compilerOptions": {
+    "target": "esnext",
     "noEmit": true,
     "outDir": "dist",
-
     "rootDir": ".",
-    "module": "CommonJS",
     "esModuleInterop": true,
-    "moduleResolution": "node",
     "declaration": true,
-
     "baseUrl": "./src",
     "paths": {
       "#identifier": ["./id.ts"]
     },
-
     "plugins": [
-      {
-        "transform": "typescript-transform-paths"
-      },
-      {
-        "transform": "typescript-transform-paths",
-        "afterDeclarations": true
-      }
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   }
 }
