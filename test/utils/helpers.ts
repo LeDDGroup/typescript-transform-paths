@@ -1,12 +1,9 @@
+import path from "node:path";
 import { default as tstpTransform, TsTransformPathsConfig } from "typescript-transform-paths";
 import fs from "node:fs";
 import ts from "typescript";
 import * as tsNode from "ts-node";
 import * as config from "../config";
-
-/* ****************************************************************************************************************** */
-// region: Types
-/* ****************************************************************************************************************** */
 
 export type EmittedFiles = { [fileName: string]: { js: string; dts: string } };
 
@@ -23,12 +20,6 @@ export interface CreateTsSolutionBuilderOptions {
   tsInstance: typeof ts;
   projectDir: string;
 }
-
-// endregion
-
-/* ****************************************************************************************************************** */
-// region: Helpers
-/* ****************************************************************************************************************** */
 
 function createWriteFile(outputFiles: EmittedFiles) {
   return (fileName: string, data: string) => {
@@ -56,12 +47,6 @@ function createReadFile(
     return originalReadFile(fileName);
   };
 }
-
-// endregion
-
-/* ****************************************************************************************************************** */
-// region: Utilities
-/* ****************************************************************************************************************** */
 
 /** Create TS Program with faux files and options */
 export function createTsProgram(
@@ -219,4 +204,16 @@ export function getTsNodeEmitResult(
   }
 }
 
-// endregion
+/**
+ * @exapmle
+ *   const projectDir = ts.normalizePath(path.join(projectsPaths, "project-ref"));
+ *   const builder = createTsSolutionBuilder({ tsInstance: ts, projectDir });
+ *   const emittedFiles = getRelativeEmittedFiles(projectDir, builder.getEmitFiles());
+ */
+export function getRelativeEmittedFiles(projectDir: string, pathRecord: EmittedFiles) {
+  const result = {} as EmittedFiles;
+  for (const key in pathRecord) {
+    result[path.relative(projectDir, key)] = pathRecord[key];
+  }
+  return result;
+}
