@@ -131,7 +131,7 @@ export function elideImportOrExportDeclaration(
     }
 
     const allowEmpty =
-      !!compilerOptions.verbatimModuleSyntax ||
+      !!compilerOptions["verbatimModuleSyntax"] ||
       (!!node.moduleSpecifier &&
         (compilerOptions.importsNotUsedAsValues === ImportsNotUsedAsValues.Preserve ||
           compilerOptions.importsNotUsedAsValues === ImportsNotUsedAsValues.Error));
@@ -187,7 +187,7 @@ export function elideImportOrExportDeclaration(
     } else {
       // Elide named imports if all of its import specifiers are elided.
       const allowEmpty =
-        compilerOptions.verbatimModuleSyntax ||
+        compilerOptions["verbatimModuleSyntax"] ||
         (compilerOptions.preserveValueImports &&
           (compilerOptions.importsNotUsedAsValues === ImportsNotUsedAsValues.Preserve ||
             compilerOptions.importsNotUsedAsValues === ImportsNotUsedAsValues.Error));
@@ -234,14 +234,14 @@ export function elideImportOrExportDeclaration(
    */
   function visitExportSpecifier(node: ExportSpecifier): VisitResult<ExportSpecifier> {
     // Elide an export specifier if it does not reference a value.
-    return !node.isTypeOnly && (compilerOptions.verbatimModuleSyntax || resolver.isValueAliasDeclaration(node))
+    return !node.isTypeOnly && (compilerOptions["verbatimModuleSyntax"] || resolver.isValueAliasDeclaration(node))
       ? node
       : undefined;
   }
 
   function shouldEmitAliasDeclaration(node: Node): boolean {
     return (
-      !!compilerOptions.verbatimModuleSyntax ||
+      !!compilerOptions["verbatimModuleSyntax"] ||
       isInJSFile(node) ||
       (compilerOptions.preserveValueImports
         ? resolver.isValueAliasDeclaration(node)
