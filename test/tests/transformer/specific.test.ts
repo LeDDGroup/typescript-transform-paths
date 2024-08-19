@@ -1,5 +1,4 @@
-// noinspection ES6UnusedImports
-import * as path from "node:path";
+import path from "node:path";
 import {
   createTsProgram,
   EmittedFiles,
@@ -10,10 +9,6 @@ import {
 import { projectsPaths, ts, tsModules } from "../../config";
 import { TsTransformPathsConfig } from "typescript-transform-paths";
 import TS from "typescript";
-
-/* ****************************************************************************************************************** *
- * Config
- * ****************************************************************************************************************** */
 
 const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "excluded-file.*"] };
 
@@ -34,10 +29,6 @@ const typeElisionIndex = ts.normalizePath(path.join(projectRoot, "src/type-elisi
 const subPackagesFile = ts.normalizePath(path.join(projectRoot, "src/sub-packages.ts"));
 const moduleAugmentFile = ts.normalizePath(path.join(projectRoot, "src/module-augment.ts"));
 
-/* ****************************************************************************************************************** *
- * Types
- * ****************************************************************************************************************** */
-
 declare global {
   namespace jest {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- no way to extend type definitions without using the same declaration as the original types
@@ -46,10 +37,6 @@ declare global {
     }
   }
 }
-
-/* ****************************************************************************************************************** *
- * Tests
- * ****************************************************************************************************************** */
 
 describe(`Specific Tests`, () => {
   describe.each(testConfigs)(`TypeScript $label - Mode: $mode`, ({ tsInstance, mode, tsSpecifier }) => {
