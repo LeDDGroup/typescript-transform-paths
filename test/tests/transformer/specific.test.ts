@@ -1,5 +1,5 @@
 // noinspection ES6UnusedImports
-import * as path from "path";
+import * as path from "node:path";
 import {
   createTsProgram,
   EmittedFiles,
@@ -119,12 +119,12 @@ describe(`Specific Tests`, () => {
           for (const base of bases) {
             for (const kind of kinds) {
               const content = base[fileName][kind];
-              const isValid = typeof expected === "string" ? content.indexOf(expected) >= 0 : expected.test(content);
+              const isValid = typeof expected === "string" ? content.includes(expected) : expected.test(content);
               if (!isValid) {
                 failed = true;
                 messages.push(
                   `File: ${fileName}\nKind: ${kind}\nrootDirs: ${base === normalEmit}\n\n` +
-                    `Expected: \`${expected}\`\nReceived:\n\t${content.replace(/(\r?\n)+/g, "$1\t")}`,
+                    `Expected: \`${expected}\`\nReceived:\n\t${content.replaceAll(/(\r?\n)+/g, "$1\t")}`,
                 );
               }
             }
@@ -204,11 +204,11 @@ describe(`Specific Tests`, () => {
 
         /* Unreferenced w/ type-only keyword on import specifier */
         expect(typeElisionIndex).not.transformedMatches(
-          /import { ConstB as ____, type TypeAndConst as TypeAndConst3 } from "\.\/a";\s/,
+          /import { ConstB as _{4}, type TypeAndConst as TypeAndConst3 } from "\.\/a";\s/,
           { kind: ["dts"] },
         );
 
-        expect(typeElisionIndex).not.transformedMatches(/import { ConstB as ____ } from "\.\/a";\s/, { kind: ["js"] });
+        expect(typeElisionIndex).not.transformedMatches(/import { ConstB as _{4} } from "\.\/a";\s/, { kind: ["js"] });
       }
     });
 
@@ -255,7 +255,7 @@ describe(`Specific Tests`, () => {
       };
 
       for (const exp of [a, b, c, sub]) {
-        expect(subPackagesFile).transformedMatches(mode !== "program" ? exp.full : exp.js, { kind: ["js"] });
+        expect(subPackagesFile).transformedMatches(mode === "program" ? exp.js : exp.full, { kind: ["js"] });
         if (!skipDts) expect(subPackagesFile).transformedMatches(exp.full, { kind: ["dts"] });
       }
 
@@ -278,7 +278,7 @@ describe(`Specific Tests`, () => {
       );
     });
 
-    (!skipDts ? test : test.skip)(`Resolves module augmentation`, () => {
+    (skipDts ? test.skip : test)(`Resolves module augmentation`, () => {
       expect(moduleAugmentFile).transformedMatches(`declare module "./general" {`, { kind: ["dts"] });
       expect(moduleAugmentFile).transformedMatches(`declare module "./excluded-file" {`, { kind: ["dts"] });
     });

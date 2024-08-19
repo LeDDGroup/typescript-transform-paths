@@ -22,9 +22,9 @@ export function resolvePathAndUpdateNode(
 
   // Accommodate direct override via @transform-path tag
   if (tags.overridePath) {
-    const transformedPath = !isURL(tags.overridePath)
-      ? maybeAddRelativeLocalPrefix(normalizePath(tags.overridePath))
-      : tags.overridePath;
+    const transformedPath = isURL(tags.overridePath)
+      ? tags.overridePath
+      : maybeAddRelativeLocalPrefix(normalizePath(tags.overridePath));
     return updaterFn(factory.createStringLiteral(transformedPath));
   }
 
@@ -63,7 +63,7 @@ export function resolvePathAndUpdateNode(
     if (targetNode.pos >= 0) {
       try {
         const trivia = targetNode.getFullText(sourceFile).slice(0, targetNode.getLeadingTriviaWidth(sourceFile));
-        const regex = /^\s*\/\/\/?\s*@(transform-path|no-transform-path)(?:[^\S\r\n](.+?))?$/gim;
+        const regex = /^\s*\/{2,3}\s*@(transform-path|no-transform-path)(?:[^\S\n\r](.+?))?$/gim;
 
         for (let match = regex.exec(trivia); match; match = regex.exec(trivia))
           if (match[1]) commentTags.set(match[1], match[2]);

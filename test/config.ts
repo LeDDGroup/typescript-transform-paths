@@ -1,9 +1,7 @@
 import ts from "typescript";
 import tsThree from "typescript-3";
 import tsFourSeven from "typescript-4.7";
-import path from "path";
-
-export { ts };
+import path from "node:path";
 
 export const tsModules = <const>[
   ["3.6.5", tsThree, "typescript-3"],
@@ -16,3 +14,5 @@ export const transformerPath = require.resolve("typescript-transform-paths");
 export const builtTransformerPath = require.resolve("typescript-transform-paths");
 
 Error.stackTraceLimit = 120;
+
+export { default as ts } from "typescript";
