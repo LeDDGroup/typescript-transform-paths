@@ -1,6 +1,6 @@
 import path from "node:path";
 import { default as tstpTransform, TsTransformPathsConfig } from "typescript-transform-paths";
-import fs from "node:fs";
+import fs, { readdirSync, readFileSync, statSync } from "node:fs";
 import ts from "typescript";
 import * as tsNode from "ts-node";
 import * as config from "../config";
@@ -214,6 +214,21 @@ export function getRelativeEmittedFiles(projectDir: string, pathRecord: EmittedF
   const result = {} as EmittedFiles;
   for (const key in pathRecord) {
     result[path.relative(projectDir, key)] = pathRecord[key];
+  }
+  return result;
+}
+
+/** Returns an snapshot of the whole directory */
+export function readTree(rootDir: string, prefix = "", result: Record<string, string> = {}) {
+  const content = readdirSync(rootDir);
+  for (const child of content) {
+    const realpath = path.join(rootDir, child);
+    const relativepath = path.join(prefix, child);
+    if (statSync(realpath).isDirectory()) {
+      readTree(realpath, relativepath, result);
+    } else {
+      result[relativepath] = readFileSync(realpath).toString("utf8");
+    }
   }
   return result;
 }
