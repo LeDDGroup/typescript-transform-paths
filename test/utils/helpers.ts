@@ -227,7 +227,7 @@ export function readTree(rootDir: string, prefix = "", result: Record<string, st
     if (statSync(realpath).isDirectory()) {
       readTree(realpath, relativepath, result);
     } else {
-      result[relativepath] = readFileSync(realpath).toString("utf8");
+      result[ts.normalizePath(relativepath)] = readFileSync(realpath).toString("utf8");
     }
   }
   return result;
