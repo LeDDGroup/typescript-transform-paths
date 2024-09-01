@@ -89,10 +89,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.9.0, @eslint/js@npm:^9.8.0":
+"@eslint/js@npm:9.9.0":
   version: 9.9.0
   resolution: "@eslint/js@npm:9.9.0"
   checksum: 10c0/6ec9f1f0d576132444d6a5c66a8a08b0be9444e3ebb563fa6a6bebcf5299df3da7e454dc04c0fa601bb811197f00764b3a04430d8458cdb8e3a4677993d23f30
+  languageName: node
+  linkType: hard
+
+"@eslint/js@npm:^9.9.1":
+  version: 9.9.1
+  resolution: "@eslint/js@npm:9.9.1"
+  checksum: 10c0/a3a91de2ce78469f7c4eee78c1eba77360706e1d0fa0ace2e19102079bcf237b851217c85ea501dc92c4c3719d60d9df966977abc8554d4c38e3638c1f53dcb2
   languageName: node
   linkType: hard
 
@@ -309,12 +316,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.2.0":
-  version: 22.5.0
-  resolution: "@types/node@npm:22.5.0"
+"@types/node@npm:^22.5.2":
+  version: 22.5.2
+  resolution: "@types/node@npm:22.5.2"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10c0/45aa75c5e71645fac42dced4eff7f197c3fdfff6e8a9fdacd0eb2e748ff21ee70ffb73982f068a58e8d73b2c088a63613142c125236cdcf3c072ea97eada1559
+  checksum: 10c0/624a7fd76229eacc6c158eb3b9afd55b811d7f01976c5f92c630d5b9d47047cc218928c343988484a165ac400e5eb6fe70ea300fc7242deeb0e920c7724290f6
   languageName: node
   linkType: hard
 
@@ -3426,7 +3433,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-eslint@npm:^8.0.1":
+"typescript-eslint@npm:^8.3.0":
   version: 8.3.0
   resolution: "typescript-eslint@npm:8.3.0"
   dependencies:
@@ -3444,12 +3451,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "typescript-transform-paths@workspace:."
   dependencies:
-    "@eslint/js": "npm:^9.8.0"
+    "@eslint/js": "npm:^9.9.1"
     "@tsconfig/node18": "npm:^18.2.4"
     "@tsconfig/strictest": "npm:^2.0.5"
     "@types/eslint": "npm:^9"
     "@types/minimatch": "npm:^5.1.2"
-    "@types/node": "npm:^22.2.0"
+    "@types/node": "npm:^22.5.2"
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5"
     "@types/ts-node": "npm:ts-node@^10.9.2"
     "@types/typescript-3": "npm:typescript@3.x"
@@ -3463,7 +3470,7 @@ __metadata:
     prettier-plugin-jsdoc: "npm:^1.3.0"
     ts-patch: "npm:^3.2.1"
     typescript: "npm:^5.5.4"
-    typescript-eslint: "npm:^8.0.1"
+    typescript-eslint: "npm:^8.3.0"
   peerDependencies:
     typescript: ">=3.6.5"
   languageName: unknown
