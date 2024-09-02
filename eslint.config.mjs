@@ -24,10 +24,4 @@ export default [
       "@typescript-eslint/no-require-imports": "off",
     },
   },
-  {
-    rules: {
-      // fix these warnings
-      "@typescript-eslint/no-explicit-any": "warn",
-    },
-  },
 ];

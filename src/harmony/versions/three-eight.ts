@@ -66,7 +66,8 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
 
   switch (prop) {
     case "updateCallExpression": {
-      return (...args: any) => ts.updateCall.apply(void 0, args);
+      // @ts-expect-error TS(7019) FIXME: Rest parameter 'args' implicitly has an 'any[]' type.
+      return (...args) => ts.updateCall.apply(void 0, args);
     }
     case "updateImportClause": {
       return function (
@@ -143,13 +144,15 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
       };
     }
     default: {
-      return (...args: any) => (<any>ts)[prop](...args);
+      // @ts-expect-error TS(7019) FIXME: Rest parameter 'args' implicitly has an 'any[]' type.
+      return (...args) => ts[prop](...args);
     }
   }
 }
 
 export function downSample<T extends [...unknown[]]>(...args: T): DownSampleTsTypes<TypeMap, T> {
-  return <any>args;
+  // @ts-expect-error TS(2322) FIXME: Type 'T' is not assignable to type 'DownSampleTsTypes<TypeMap, T>'.
+  return args;
 }
 
 // endregion

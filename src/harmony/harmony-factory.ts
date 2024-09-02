@@ -23,7 +23,8 @@ export function createHarmonyFactory(context: TsTransformPathsContext): HarmonyF
       } else if (TsFourSeven.predicate(context)) {
         return TsFourSeven.handler(context, prop);
       } else {
-        return (<any>target)[prop];
+        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expression of type 'string | symbol' can't be used to index type 'typeof import("typescript") | NodeFactory'.
+        return target[prop];
       }
     },
   }) as HarmonyFactory;

@@ -26,8 +26,10 @@ const configMap = Object.entries(configs).map(([label, cfg]) => {
   let hasAfterDeclarations: boolean = false;
   const transformers = [
     ...[cfg].flat().map((c) => {
-      if ((<any>c).before || !(<any>c).afterDeclarations) hasBefore = true;
-      if ((<any>c).afterDeclarations) hasAfterDeclarations = true;
+      // @ts-expect-error TS(2339) FIXME: Property 'before' does not exist on type '{} | { readonly before: true; } | { readonly afterDeclarations: true; } | {} | { readonly afterDeclarations: true; } | { readonly before: true; } | { readonly afterDeclarations: true; }'.
+      if (c.before || !c.afterDeclarations) hasBefore = true;
+      // @ts-expect-error TS(2339) FIXME: Property 'afterDeclarations' does not exist on type '{} | { readonly before: true; } | { readonly afterDeclarations: true; } | {} | { readonly afterDeclarations: true; } | { readonly before: true; } | { readonly afterDeclarations: true; }'.
+      if (c.afterDeclarations) hasAfterDeclarations = true;
       return { transform: "typescript-transform-paths", ...c, ...pluginOptions } as PluginConfig;
     }),
     otherTransformer,
@@ -63,9 +65,10 @@ describe(`Register script`, () => {
       }
     });
     test(`Uses existing ts-node if found`, () => {
-      const fakeInstance: any = {};
+      const fakeInstance: unknown = {};
 
       const originalTsNodeInstance = global.process[instanceSymbol];
+      // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'Service | undefined'.
       global.process[instanceSymbol] = fakeInstance;
       let registerSpy: jest.SpyInstance | undefined;
       try {
@@ -128,15 +131,17 @@ describe(`Register script`, () => {
       "Existing Transformer Config Factory",
       "No Existing Transformers",
     ] as const)(`%s`, (configKind) => {
-      const fakeExistingTransformer = function fakeExistingTransformer(): any {};
-      const fakeTransformer = function fakeTransformer(): any {};
+      // @ts-expect-error TS(2355) FIXME: A function whose declared type is neither 'undefined', 'void', nor 'any' must return a value.
+      const fakeExistingTransformer = function fakeExistingTransformer(): unknown {};
+      // @ts-expect-error TS(2355) FIXME: A function whose declared type is neither 'undefined', 'void', nor 'any' must return a value.
+      const fakeTransformer = function fakeTransformer(): unknown {};
       const fakeTransformerConfig = {
         before: [fakeExistingTransformer],
         after: [fakeExistingTransformer],
         afterDeclarations: [fakeExistingTransformer],
       };
       const transformerFactoryFn = jest.fn().mockReturnValue(fakeTransformerConfig);
-      const fakeProgram: any = {};
+      const fakeProgram: unknown = {};
 
       let existingTransformers: CustomTransformers | ((p: Program) => CustomTransformers) | undefined;
       switch (configKind) {
@@ -145,6 +150,7 @@ describe(`Register script`, () => {
           break;
         }
         case "Existing Transformer Config": {
+          // @ts-expect-error TS(2322) FIXME: Type '{ before: (() => unknown)[]; after: (() => unknown)[]; afterDeclarations: (() => unknown)[]; }' is not assignable to type 'CustomTransformers | ((p: Program) => CustomTransformers) | undefined'.
           existingTransformers = { ...fakeTransformerConfig };
           break;
         }
@@ -161,6 +167,7 @@ describe(`Register script`, () => {
         let mergedTransformers: CustomTransformers;
 
         beforeAll(() => {
+          // @ts-expect-error TS(2345) FIXME: Argument of type '() => unknown' is not assignable to parameter of type '(transformationContext: TransformationContext) => (sourceFile: SourceFile) => SourceFile'.
           mockTransformer = jest.spyOn(transformerModule, "default").mockReturnValue(fakeTransformer);
 
           global.process[instanceSymbol] = void 0;
@@ -183,7 +190,8 @@ describe(`Register script`, () => {
 
           mergedTransformers =
             typeof registerResult.transformers === "function"
-              ? registerResult.transformers(fakeProgram)
+              ? // @ts-expect-error TS(2345) FIXME: Argument of type 'unknown' is not assignable to parameter of type 'Program'.
+                registerResult.transformers(fakeProgram)
               : registerResult.transformers!;
         });
         afterAll(() => {

@@ -111,13 +111,15 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
       };
     }
     default: {
-      return (...args: any) => (<any>factory)[prop](...args);
+      // @ts-expect-error TS(7019) FIXME: Rest parameter 'args' implicitly has an 'any[]' type.
+      return (...args) => factory[prop](...args);
     }
   }
 }
 
 export function downSample<T extends [...unknown[]]>(...args: T): DownSampleTsTypes<TypeMap, T> {
-  return <any>args;
+  // @ts-expect-error TS(2322) FIXME: Type 'T' is not assignable to type 'DownSampleTsTypes<TypeMap, T>'.
+  return args;
 }
 
 // endregion

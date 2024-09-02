@@ -19,7 +19,7 @@ const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "exclud
 
 /* Test Mapping */
 const modes = ["program", "manual", "ts-node"] as const;
-const testConfigs: { label: string; tsInstance: any; mode: (typeof modes)[number]; tsSpecifier: string }[] = [];
+const testConfigs: { label: string; tsInstance: unknown; mode: (typeof modes)[number]; tsSpecifier: string }[] = [];
 for (const cfg of tsModules)
   testConfigs.push(...modes.map((mode) => ({ label: cfg[0], tsInstance: cfg[1], mode, tsSpecifier: cfg[2] })));
 
@@ -53,6 +53,7 @@ declare global {
 
 describe(`Specific Tests`, () => {
   describe.each(testConfigs)(`TypeScript $label - Mode: $mode`, ({ tsInstance, mode, tsSpecifier }) => {
+    // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
     const tsVersion = +tsInstance.versionMajorMinor.split(".").slice(0, 2).join("");
     let normalEmit: EmittedFiles;
     let rootDirsEmit: EmittedFiles;
@@ -62,6 +63,7 @@ describe(`Specific Tests`, () => {
       switch (mode) {
         case "program": {
           const program = createTsProgram({
+            // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'typeof import("typescript")'.
             tsInstance,
             tsConfigFile,
             pluginOptions: {
@@ -72,6 +74,7 @@ describe(`Specific Tests`, () => {
           normalEmit = getEmitResultFromProgram(program);
 
           const rootDirsProgram = createTsProgram({
+            // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'typeof import("typescript")'.
             tsInstance,
             tsConfigFile,
             pluginOptions: {
@@ -84,20 +87,24 @@ describe(`Specific Tests`, () => {
         }
         case "manual": {
           skipDts = true;
+          // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
           const pcl = tsInstance.getParsedCommandLineOfConfigFile(
             tsConfigFile,
             {},
-            <any>tsInstance.sys,
+            // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
+            <unknown>tsInstance.sys,
           )! as TS.ParsedCommandLine;
           normalEmit = getManualEmitResult({ ...baseConfig, useRootDirs: false }, tsInstance, pcl);
           rootDirsEmit = getManualEmitResult({ ...baseConfig, useRootDirs: true }, tsInstance, pcl);
           break;
         }
         case "ts-node": {
+          // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
           const pcl = tsInstance.getParsedCommandLineOfConfigFile(
             tsConfigFile,
             {},
-            <any>tsInstance.sys,
+            // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
+            <unknown>tsInstance.sys,
           )! as TS.ParsedCommandLine;
           skipDts = true;
           normalEmit = getTsNodeEmitResult({ ...baseConfig, useRootDirs: false }, pcl, tsSpecifier);

@@ -68,7 +68,7 @@ export function createSyntheticEmitHost(
         !tsInstance.sys.useCaseSensitiveFileNames,
       ),
     getCanonicalFileName,
-  } as unknown as ts.EmitHost;
+  } as ts.EmitHost;
 }
 
 /** Get ts-node register info */
@@ -86,9 +86,8 @@ export function getTsNodeRegistrationProperties(tsInstance: typeof ts) {
   const { config, options } = global.process[tsNodeSymbol]!;
 
   const { configFilePath } = config.options;
-  const pcl = configFilePath
-    ? tsInstance.getParsedCommandLineOfConfigFile(configFilePath, {}, <any>tsInstance.sys)
-    : void 0;
+  // @ts-expect-error TS(2345) FIXME: Argument of type 'System' is not assignable to parameter of type 'ParseConfigFileHost'.
+  const pcl = configFilePath ? tsInstance.getParsedCommandLineOfConfigFile(configFilePath, {}, tsInstance.sys) : void 0;
 
   const fileNames = pcl?.fileNames || config.fileNames;
   const compilerOptions = Object.assign({}, config.options, options.compilerOptions, { outDir: pcl?.options.outDir });

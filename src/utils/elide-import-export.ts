@@ -117,7 +117,8 @@ export function elideImportOrExportDeclaration(
         importClause,
         newModuleSpecifier,
         // This will be changed in the next release of TypeScript, but by that point we can drop elision entirely
-        (node as any).attributes || node.assertClause,
+        // @ts-expect-error TS(2339) FIXME: Property 'attributes' does not exist on type 'ImportDeclaration'.
+        node.attributes || node.assertClause,
       );
     else return undefined;
   } else {
@@ -150,7 +151,8 @@ export function elideImportOrExportDeclaration(
           exportClause,
           newModuleSpecifier,
           // This will be changed in the next release of TypeScript, but by that point we can drop elision entirely
-          (node as any).attributes || node.assertClause,
+          // @ts-expect-error TS(2339) FIXME: Property 'attributes' does not exist on type 'ExportDeclaration'.
+          node.attributes || node.assertClause,
         )
       : undefined;
   }
