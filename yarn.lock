@@ -74,10 +74,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.17.0, @eslint/js@npm:^9.9.1":
+"@eslint/js@npm:9.17.0":
   version: 9.17.0
   resolution: "@eslint/js@npm:9.17.0"
   checksum: 10c0/a0fda8657a01c60aa540f95397754267ba640ffb126e011b97fd65c322a94969d161beeaef57c1441c495da2f31167c34bd38209f7c146c7225072378c3a933d
+  languageName: node
+  linkType: hard
+
+"@eslint/js@npm:^9.9.1":
+  version: 9.15.0
+  resolution: "@eslint/js@npm:9.15.0"
+  checksum: 10c0/56552966ab1aa95332f70d0e006db5746b511c5f8b5e0c6a9b2d6764ff6d964e0b2622731877cbc4e3f0e74c5b39191290d5f48147be19175292575130d499ab
   languageName: node
   linkType: hard
 
@@ -388,23 +395,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/typescript-3@npm:typescript@3.x":
-  version: 3.9.10
-  resolution: "typescript@npm:3.9.10"
+"@types/typescript-4.7@npm:typescript@4.7.x":
+  version: 4.7.4
+  resolution: "typescript@npm:4.7.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/863cc06070fa18a0f9c6a83265fb4922a8b51bf6f2c6760fb0b73865305ce617ea4bc6477381f9f4b7c3a8cb4a455b054f5469e6e41307733fe6a2bd9aae82f8
-  languageName: node
-  linkType: hard
-
-"@types/typescript-4.7@npm:typescript@4.9.x":
-  version: 4.9.5
-  resolution: "typescript@npm:4.9.5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/5f6cad2e728a8a063521328e612d7876e12f0d8a8390d3b3aaa452a6a65e24e9ac8ea22beb72a924fd96ea0a49ea63bb4e251fb922b12eedfb7f7a26475e5c56
+  checksum: 10c0/8c1c4007b6ce5b24c49f0e89173ab9e82687cc6ae54418d1140bb63b82d6598d085ac0f993fe3d3d1fbf87a2c76f1f81d394dc76315bc72c7a9f8561c5d8d205
   languageName: node
   linkType: hard
 
@@ -2931,8 +2928,7 @@ __metadata:
     "@types/node": "npm:^22.5.2"
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5"
     "@types/ts-node": "npm:ts-node@^10.9.2"
-    "@types/typescript-3": "npm:typescript@3.x"
-    "@types/typescript-4.7": "npm:typescript@4.9.x"
+    "@types/typescript-4.7": "npm:typescript@4.7.x"
     changelogen: "npm:^0.5.5"
     eslint: "npm:9.x"
     globals: "npm:^15.9.0"
@@ -2943,7 +2939,7 @@ __metadata:
     typescript: "npm:^5.5.4"
     typescript-eslint: "npm:^8.3.0"
   peerDependencies:
-    typescript: ">=3.6.5"
+    typescript: ">=4"
   languageName: unknown
   linkType: soft
 
