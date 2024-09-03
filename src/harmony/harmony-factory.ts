@@ -1,6 +1,6 @@
 import TS from "typescript";
 import { TsTransformPathsContext } from "../types";
-import { TsFourSeven, TsThreeEight } from "./versions";
+import { TsFourSeven } from "./versions";
 
 /* ****************************************************************************************************************** */
 // region: Types
@@ -18,9 +18,7 @@ export interface HarmonyFactory extends TS.NodeFactory {}
 export function createHarmonyFactory(context: TsTransformPathsContext): HarmonyFactory {
   return new Proxy(context.tsFactory ?? context.tsInstance, {
     get(target, prop) {
-      if (TsThreeEight.predicate(context)) {
-        return TsThreeEight.handler(context, prop);
-      } else if (TsFourSeven.predicate(context)) {
+      if (TsFourSeven.predicate(context)) {
         return TsFourSeven.handler(context, prop);
       } else {
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expression of type 'string | symbol' can't be used to index type 'typeof import("typescript") | NodeFactory'.
