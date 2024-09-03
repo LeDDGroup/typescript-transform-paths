@@ -4992,7 +4992,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.0.0, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6, glob@npm:^7.1.7":
+"glob@npm:^7.0.0, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6":
   version: 7.2.3
   resolution: "glob@npm:7.2.3"
   dependencies:
@@ -6606,7 +6606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.0, minimist@npm:^1.2.5, minimist@npm:^1.2.6, minimist@npm:^1.2.8":
+"minimist@npm:^1.2.0, minimist@npm:^1.2.6, minimist@npm:^1.2.8":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
   checksum: 10c0/19d3fcdca050087b84c2029841a093691a91259a47def2f18222f41e7645a0b7c44ef4b40e88a1e58a40c84d2ef0ee6047c55594d298146d0eb3f6b737c20ce6
@@ -8067,10 +8067,8 @@ __metadata:
     ts-jest: "npm:^29.2.4"
     ts-node: "npm:^10.9.2"
     ts-patch: "npm:^3.2.1"
-    tsp1: "npm:ts-patch@1.*.*"
     tsp2: "npm:ts-patch@2.*.*"
     typescript: "npm:^5.5.4"
-    typescript-3: "npm:typescript@3.6.5"
     typescript-4.7: "npm:typescript@4.7.4"
     typescript-transform-paths: "portal:../"
   languageName: unknown
@@ -8353,7 +8351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shelljs@npm:^0.8.4, shelljs@npm:^0.8.5":
+"shelljs@npm:^0.8.5":
   version: 0.8.5
   resolution: "shelljs@npm:0.8.5"
   dependencies:
@@ -9141,25 +9139,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsp1@npm:ts-patch@1.*.*":
-  version: 1.4.5
-  resolution: "ts-patch@npm:1.4.5"
-  dependencies:
-    chalk: "npm:^4.1.0"
-    glob: "npm:^7.1.7"
-    global-prefix: "npm:^3.0.0"
-    minimist: "npm:^1.2.5"
-    resolve: "npm:^1.20.0"
-    shelljs: "npm:^0.8.4"
-    strip-ansi: "npm:^6.0.0"
-  peerDependencies:
-    typescript: ">2.7.0"
-  bin:
-    ts-patch: bin/cli.js
-  checksum: 10c0/3e9b0d3838d0fc930f89000206c586485582c7f7f2746f1e4227a6777b10c06c7642395cd88cbd2950a3938da4146d4e8a1fbe0e02f46624764b9d42a01d7470
-  languageName: node
-  linkType: hard
-
 "tsp2@npm:ts-patch@2.*.*":
   version: 2.1.0
   resolution: "ts-patch@npm:2.1.0"
@@ -9210,16 +9189,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-3@npm:typescript@3.6.5":
-  version: 3.6.5
-  resolution: "typescript@npm:3.6.5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/b6f0d5d2e2325b28460b8cf3a4a1237d79aec9951ad727014d4ca570327cc5947decec5d262044979cc0a9ab63746b58e6d8438d73d33ce8415e5369d0490dff
-  languageName: node
-  linkType: hard
-
 "typescript-4.7@npm:typescript@4.7.4":
   version: 4.7.4
   resolution: "typescript@npm:4.7.4"
@@ -9236,7 +9205,7 @@ __metadata:
   dependencies:
     minimatch: "npm:^9.0.5"
   peerDependencies:
-    typescript: ">=3.6.5"
+    typescript: ">=4"
   languageName: node
   linkType: soft
 
