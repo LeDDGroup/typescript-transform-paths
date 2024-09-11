@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.5.1
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.0...v3.5.1)
+
+### 🩹 Fixes
+
+- Downgrade minimatch from 10.0.1 to 9.0.5 ([#272](https://github.com/LeDDGroup/typescript-transform-paths/pull/272))
+
+### 💅 Refactors
+
+- Always patch ([ed3ed1f](https://github.com/LeDDGroup/typescript-transform-paths/commit/ed3ed1f))
+- Rename typescript-number to typescript-x ([36643ff](https://github.com/LeDDGroup/typescript-transform-paths/commit/36643ff))
+- Use strictest typescript configuration ([a67e739](https://github.com/LeDDGroup/typescript-transform-paths/commit/a67e739))
+- Enable @typescript-eslint/no-explicit-any warning ([1cddaac](https://github.com/LeDDGroup/typescript-transform-paths/commit/1cddaac))
+- Add eslint-plugin-unicorn ([44ad2e0](https://github.com/LeDDGroup/typescript-transform-paths/commit/44ad2e0))
+- Remove anys ([07e5c27](https://github.com/LeDDGroup/typescript-transform-paths/commit/07e5c27))
+
+### 🏡 Chore
+
+- Rename nx test project to avoid conflict with package name ([3ee03d1](https://github.com/LeDDGroup/typescript-transform-paths/commit/3ee03d1))
+- **deps-dev:** Bump typescript-eslint from 8.1.0 to 8.2.0 ([#249](https://github.com/LeDDGroup/typescript-transform-paths/pull/249))
+- **deps-dev:** Bump @types/node from 22.2.0 to 22.4.1 ([#248](https://github.com/LeDDGroup/typescript-transform-paths/pull/248))
+- Add danielpza to funding.yml ([9aa6941](https://github.com/LeDDGroup/typescript-transform-paths/commit/9aa6941))
+- **deps-dev:** Bump typescript-eslint from 8.2.0 to 8.3.0 ([#254](https://github.com/LeDDGroup/typescript-transform-paths/pull/254))
+- **deps-dev:** Bump @types/node from 22.4.1 to 22.5.0 ([#253](https://github.com/LeDDGroup/typescript-transform-paths/pull/253))
+- **deps-dev:** Update some dependencies ([164aeac](https://github.com/LeDDGroup/typescript-transform-paths/commit/164aeac))
+- Remove eslint-plugin-unicorn ([8c6ccf4](https://github.com/LeDDGroup/typescript-transform-paths/commit/8c6ccf4))
+
+### ❤️ Contributors
+
+- Spdaley <seadaley@cisco.com>
+- Daniel Perez Alvarez <danielpza@protonmail.com>
+
 ## v3.5.0
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.11...v3.5.0)
