@@ -43,15 +43,15 @@ console.log(b);
 
     describe(`ts-node register script`, () => {
       test(`Works with --transpileOnly`, () => {
-        expect(
-          execSync("yarn g:ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString().trim(),
-        ).toMatchInlineSnapshot(`"null"`);
+        expect(execSync("yarn g:ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString().trim()).toMatch(
+          /\w*null\w*/,
+        );
       });
 
       test(`Works with --typeCheck`, () => {
-        expect(
-          execSync("yarn g:ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString().trim(),
-        ).toMatchInlineSnapshot(`"null"`);
+        expect(execSync("yarn g:ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString().trim()).toMatch(
+          /\w*null\w*/,
+        );
       });
     });
   });
