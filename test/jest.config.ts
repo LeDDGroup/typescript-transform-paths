@@ -5,6 +5,7 @@ const config: JestConfigWithTsJest = {
   preset: "ts-jest",
   testRegex: String.raw`.*(test|spec)\.tsx?$`,
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  prettierPath: undefined,
 };
 
 export default config;
