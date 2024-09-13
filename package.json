@@ -1,6 +1,6 @@
 {
   "name": "typescript-transform-paths",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "Transforms module resolution paths using TypeScript path mapping and/or custom paths",
   "type": "commonjs",
   "main": "./dist/index.js",
@@ -83,7 +83,7 @@
     "typescript": ">=3.6.5"
   },
   "dependencies": {
-    "minimatch": "^10.0.1"
+    "minimatch": "^9.0.5"
   },
   "prettier": {
     "plugins": [
