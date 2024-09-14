@@ -8095,9 +8095,6 @@ __metadata:
     tsp1: "npm:ts-patch@1.*.*"
     tsp2: "npm:ts-patch@2.*.*"
     typescript: "npm:^5.7.2"
-    typescript-4.7: "npm:typescript@4.7.4"
-    typescript-5.5: "npm:typescript@5.5.4"
-    typescript-5.6: "npm:typescript@5.6.3"
     typescript-transform-paths: "portal:../"
   languageName: unknown
   linkType: soft
@@ -9236,43 +9233,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-4.7@npm:typescript@4.7.4":
-  version: 4.7.4
-  resolution: "typescript@npm:4.7.4"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/8c1c4007b6ce5b24c49f0e89173ab9e82687cc6ae54418d1140bb63b82d6598d085ac0f993fe3d3d1fbf87a2c76f1f81d394dc76315bc72c7a9f8561c5d8d205
-  languageName: node
-  linkType: hard
-
-"typescript-5.5@npm:typescript@5.5.4":
-  version: 5.5.4
-  resolution: "typescript@npm:5.5.4"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/422be60f89e661eab29ac488c974b6cc0a660fb2228003b297c3d10c32c90f3bcffc1009b43876a082515a3c376b1eefcce823d6e78982e6878408b9a923199c
-  languageName: node
-  linkType: hard
-
-"typescript-5.6@npm:typescript@5.6.3":
-  version: 5.6.3
-  resolution: "typescript@npm:5.6.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/44f61d3fb15c35359bc60399cb8127c30bae554cd555b8e2b46d68fa79d680354b83320ad419ff1b81a0bdf324197b29affe6cc28988cd6a74d4ac60c94f9799
-  languageName: node
-  linkType: hard
-
 "typescript-transform-paths@portal:../::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "typescript-transform-paths@portal:../::locator=root-workspace-0b6124%40workspace%3A."
   dependencies:
     minimatch: "npm:^9.0.5"
   peerDependencies:
-    typescript: ">=4"
+    typescript: ">=5"
   languageName: node
   linkType: soft
 
