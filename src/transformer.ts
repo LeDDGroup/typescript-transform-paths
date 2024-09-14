@@ -2,7 +2,6 @@ import path from "node:path";
 import ts, { CompilerOptions } from "typescript";
 import { RunMode, TsNodeState, TsTransformPathsConfig, TsTransformPathsContext, VisitorContext } from "./types";
 import { nodeVisitor } from "./visitor";
-import { createHarmonyFactory } from "./harmony";
 import { Minimatch } from "minimatch";
 import { createSyntheticEmitHost, getTsNodeRegistrationProperties } from "./utils/ts-helpers";
 import { TransformerExtras } from "ts-patch";
@@ -139,7 +138,7 @@ export default function transformer(
         getVisitor() {
           return nodeVisitor.bind(this);
         },
-        factory: createHarmonyFactory(tsTransformPathsContext),
+        factory: (tsTransformPathsContext.tsFactory ?? tsTransformPathsContext.tsInstance) as ts.NodeFactory,
       };
 
       return tsInstance.visitEachChild(sourceFile, visitorContext.getVisitor(), transformationContext);
