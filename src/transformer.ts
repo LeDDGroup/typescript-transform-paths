@@ -135,9 +135,9 @@ export default function transformer(
         ...tsTransformPathsContext,
         sourceFile,
         isDeclarationFile: sourceFile.isDeclarationFile,
-        originalSourceFile: (<typeof ts>tsInstance).getOriginalSourceFile(sourceFile),
+        originalSourceFile: tsInstance.getSourceFileOfNode(sourceFile),
         getVisitor() {
-          return nodeVisitor.bind(this);
+          return nodeVisitor.bind(this) as (node: ts.Node) => ts.VisitResult<ts.Node>;
         },
         factory: createHarmonyFactory(tsTransformPathsContext),
       };
