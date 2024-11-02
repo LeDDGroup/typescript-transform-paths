@@ -8073,6 +8073,7 @@ __metadata:
     typescript-3: "npm:typescript@3.6.5"
     typescript-4.7: "npm:typescript@4.7.4"
     typescript-5.5: "npm:typescript@5.5.4"
+    typescript-5.6: "npm:typescript@5.6.3"
     typescript-transform-paths: "portal:../"
   languageName: unknown
   linkType: soft
@@ -9238,6 +9239,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/422be60f89e661eab29ac488c974b6cc0a660fb2228003b297c3d10c32c90f3bcffc1009b43876a082515a3c376b1eefcce823d6e78982e6878408b9a923199c
+  languageName: node
+  linkType: hard
+
+"typescript-5.6@npm:typescript@5.6.3":
+  version: 5.6.3
+  resolution: "typescript@npm:5.6.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/44f61d3fb15c35359bc60399cb8127c30bae554cd555b8e2b46d68fa79d680354b83320ad419ff1b81a0bdf324197b29affe6cc28988cd6a74d4ac60c94f9799
   languageName: node
   linkType: hard
 
