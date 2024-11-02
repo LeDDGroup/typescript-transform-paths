@@ -1,11 +1,13 @@
 import ts from "typescript";
 import tsThree from "typescript-3";
 import tsFourSeven from "typescript-4.7";
+import tsFiveFive from "typescript-5.5";
 import path from "node:path";
 
 export const tsModules = <const>[
   ["3.6.5", tsThree, "typescript-3"],
   ["4.7.4", tsFourSeven, "typescript-4.7"],
+  ["5.5.4", tsFiveFive, "typescript-5.5"],
   ["Latest", ts, "typescript"],
 ];
 

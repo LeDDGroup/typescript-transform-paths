@@ -8072,6 +8072,7 @@ __metadata:
     typescript: "npm:^5.5.4"
     typescript-3: "npm:typescript@3.6.5"
     typescript-4.7: "npm:typescript@4.7.4"
+    typescript-5.5: "npm:typescript@5.5.4"
     typescript-transform-paths: "portal:../"
   languageName: unknown
   linkType: soft
@@ -9230,6 +9231,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript-5.5@npm:typescript@5.5.4, typescript@npm:^5.5.4":
+  version: 5.5.4
+  resolution: "typescript@npm:5.5.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/422be60f89e661eab29ac488c974b6cc0a660fb2228003b297c3d10c32c90f3bcffc1009b43876a082515a3c376b1eefcce823d6e78982e6878408b9a923199c
+  languageName: node
+  linkType: hard
+
 "typescript-transform-paths@portal:../::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "typescript-transform-paths@portal:../::locator=root-workspace-0b6124%40workspace%3A."
@@ -9239,16 +9250,6 @@ __metadata:
     typescript: ">=3.6.5"
   languageName: node
   linkType: soft
-
-"typescript@npm:^5.5.4":
-  version: 5.5.4
-  resolution: "typescript@npm:5.5.4"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/422be60f89e661eab29ac488c974b6cc0a660fb2228003b297c3d10c32c90f3bcffc1009b43876a082515a3c376b1eefcce823d6e78982e6878408b9a923199c
-  languageName: node
-  linkType: hard
 
 "typescript@patch:typescript@npm%3A^5.5.4#optional!builtin<compat/typescript>":
   version: 5.5.4
