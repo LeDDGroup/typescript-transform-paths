@@ -135,7 +135,9 @@ export default function transformer(
         ...tsTransformPathsContext,
         sourceFile,
         isDeclarationFile: sourceFile.isDeclarationFile,
-        originalSourceFile: (<typeof ts>tsInstance).getOriginalSourceFile(sourceFile),
+        originalSourceFile: (<typeof ts>tsInstance).getSourceFileOfNode
+          ? (<typeof ts>tsInstance).getSourceFileOfNode(sourceFile)
+          : (<typeof ts>tsInstance).getOriginalSourceFile(sourceFile),
         getVisitor() {
           return nodeVisitor.bind(this);
         },
