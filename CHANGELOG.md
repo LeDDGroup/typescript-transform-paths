@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.5.2
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.1...v3.5.2)
+
+### 🩹 Fixes
+
+- Restore typescript 5.6 compatibility ([#301](https://github.com/LeDDGroup/typescript-transform-paths/pull/301))
+
+### 🏡 Chore
+
+- **deps-dev:** Bump eslint and @types/eslint ([#273](https://github.com/LeDDGroup/typescript-transform-paths/pull/273))
+- **deps-dev:** Bump @types/node from 22.5.2 to 22.8.7 ([#303](https://github.com/LeDDGroup/typescript-transform-paths/pull/303))
+- **deps-dev:** Bump typescript-eslint from 8.3.0 to 8.13.0 ([#302](https://github.com/LeDDGroup/typescript-transform-paths/pull/302))
+
+### ❤️ Contributors
+
+- Ben Limmer ([@blimmer](http://github.com/blimmer))
+
 ## v3.5.1
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.0...v3.5.1)
