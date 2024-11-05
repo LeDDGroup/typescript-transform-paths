@@ -30,6 +30,8 @@ function patchTsModules() {
 
   patchTypescript("typescript-3", patch1);
   patchTypescript("typescript-4.7", patch2);
+  patchTypescript("typescript-5.5", patch);
+  patchTypescript("typescript-5.6", patch);
   patchTypescript("typescript", patch);
 }
 
