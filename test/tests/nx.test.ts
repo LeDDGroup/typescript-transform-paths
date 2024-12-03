@@ -15,13 +15,12 @@ import { projectsPaths } from "../config";
 
 describe(`NX Transformer`, () => {
   describe("Plugin", () => {
-    let mockedTransformer: jest.SpyInstance;
+    let mockedTransformer: vi.SpyInstance;
 
     const program = { x: 1 };
 
     beforeAll(async () => {
-      // @ts-expect-error TS(2345) FIXME: Argument of type '() => void' is not assignable to parameter of type '(transformationContext: TransformationContext) => (sourceFile: SourceFile) => SourceFile'.
-      mockedTransformer = jest.spyOn(transformerModule, "default").mockReturnValue(() => {});
+      mockedTransformer = vi.spyOn(transformerModule, "default").mockReturnValue(<any>(() => {}));
     });
     afterAll(() => {
       mockedTransformer.mockClear();
