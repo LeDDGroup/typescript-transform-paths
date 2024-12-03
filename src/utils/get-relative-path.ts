@@ -1,6 +1,6 @@
-import fs from "fs";
-import * as os from "os";
-import path from "path";
+import fs from "node:fs";
+import * as os from "node:os";
+import path from "node:path";
 
 /* ****************************************************************************************************************** */
 // region: Locals
@@ -21,7 +21,7 @@ function tryRmFile(fileName: string) {
 }
 
 function getIsFsCaseSensitive() {
-  if (isCaseSensitiveFilesystem != null) return isCaseSensitiveFilesystem;
+  if (isCaseSensitiveFilesystem != undefined) return isCaseSensitiveFilesystem;
 
   for (let i = 0; i < 1000; i++) {
     const tmpFileName = path.join(os.tmpdir(), `tstp~${i}.tmp`);

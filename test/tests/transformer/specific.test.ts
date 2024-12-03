@@ -1,6 +1,5 @@
 // noinspection ES6UnusedImports
-import {} from "ts-expose-internals";
-import * as path from "path";
+import * as path from "node:path";
 import {
   createTsProgram,
   EmittedFiles,
@@ -20,7 +19,7 @@ const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "exclud
 
 /* Test Mapping */
 const modes = ["program", "manual", "ts-node"] as const;
-const testConfigs: { label: string; tsInstance: any; mode: (typeof modes)[number]; tsSpecifier: string }[] = [];
+const testConfigs: { label: string; tsInstance: unknown; mode: (typeof modes)[number]; tsSpecifier: string }[] = [];
 for (const cfg of tsModules)
   testConfigs.push(...modes.map((mode) => ({ label: cfg[0], tsInstance: cfg[1], mode, tsSpecifier: cfg[2] })));
 
@@ -54,6 +53,7 @@ declare global {
 
 describe(`Specific Tests`, () => {
   describe.each(testConfigs)(`TypeScript $label - Mode: $mode`, ({ tsInstance, mode, tsSpecifier }) => {
+    // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
     const tsVersion = +tsInstance.versionMajorMinor.split(".").slice(0, 2).join("");
     let normalEmit: EmittedFiles;
     let rootDirsEmit: EmittedFiles;
@@ -63,6 +63,7 @@ describe(`Specific Tests`, () => {
       switch (mode) {
         case "program": {
           const program = createTsProgram({
+            // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'typeof import("typescript")'.
             tsInstance,
             tsConfigFile,
             pluginOptions: {
@@ -73,6 +74,7 @@ describe(`Specific Tests`, () => {
           normalEmit = getEmitResultFromProgram(program);
 
           const rootDirsProgram = createTsProgram({
+            // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'typeof import("typescript")'.
             tsInstance,
             tsConfigFile,
             pluginOptions: {
@@ -85,20 +87,24 @@ describe(`Specific Tests`, () => {
         }
         case "manual": {
           skipDts = true;
+          // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
           const pcl = tsInstance.getParsedCommandLineOfConfigFile(
             tsConfigFile,
             {},
-            <any>tsInstance.sys,
+            // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
+            <unknown>tsInstance.sys,
           )! as TS.ParsedCommandLine;
           normalEmit = getManualEmitResult({ ...baseConfig, useRootDirs: false }, tsInstance, pcl);
           rootDirsEmit = getManualEmitResult({ ...baseConfig, useRootDirs: true }, tsInstance, pcl);
           break;
         }
         case "ts-node": {
+          // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
           const pcl = tsInstance.getParsedCommandLineOfConfigFile(
             tsConfigFile,
             {},
-            <any>tsInstance.sys,
+            // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
+            <unknown>tsInstance.sys,
           )! as TS.ParsedCommandLine;
           skipDts = true;
           normalEmit = getTsNodeEmitResult({ ...baseConfig, useRootDirs: false }, pcl, tsSpecifier);
@@ -120,12 +126,12 @@ describe(`Specific Tests`, () => {
           for (const base of bases) {
             for (const kind of kinds) {
               const content = base[fileName][kind];
-              const isValid = typeof expected === "string" ? content.indexOf(expected) >= 0 : expected.test(content);
+              const isValid = typeof expected === "string" ? content.includes(expected) : expected.test(content);
               if (!isValid) {
                 failed = true;
                 messages.push(
                   `File: ${fileName}\nKind: ${kind}\nrootDirs: ${base === normalEmit}\n\n` +
-                    `Expected: \`${expected}\`\nReceived:\n\t${content.replace(/(\r?\n)+/g, "$1\t")}`,
+                    `Expected: \`${expected}\`\nReceived:\n\t${content.replaceAll(/(\r?\n)+/g, "$1\t")}`,
                 );
               }
             }
@@ -205,11 +211,11 @@ describe(`Specific Tests`, () => {
 
         /* Unreferenced w/ type-only keyword on import specifier */
         expect(typeElisionIndex).not.transformedMatches(
-          /import { ConstB as ____, type TypeAndConst as TypeAndConst3 } from "\.\/a";\s/,
+          /import { ConstB as _{4}, type TypeAndConst as TypeAndConst3 } from "\.\/a";\s/,
           { kind: ["dts"] },
         );
 
-        expect(typeElisionIndex).not.transformedMatches(/import { ConstB as ____ } from "\.\/a";\s/, { kind: ["js"] });
+        expect(typeElisionIndex).not.transformedMatches(/import { ConstB as _{4} } from "\.\/a";\s/, { kind: ["js"] });
       }
     });
 
@@ -256,7 +262,7 @@ describe(`Specific Tests`, () => {
       };
 
       for (const exp of [a, b, c, sub]) {
-        expect(subPackagesFile).transformedMatches(mode !== "program" ? exp.full : exp.js, { kind: ["js"] });
+        expect(subPackagesFile).transformedMatches(mode === "program" ? exp.js : exp.full, { kind: ["js"] });
         if (!skipDts) expect(subPackagesFile).transformedMatches(exp.full, { kind: ["dts"] });
       }
 
@@ -279,7 +285,7 @@ describe(`Specific Tests`, () => {
       );
     });
 
-    (!skipDts ? test : test.skip)(`Resolves module augmentation`, () => {
+    (skipDts ? test.skip : test)(`Resolves module augmentation`, () => {
       expect(moduleAugmentFile).transformedMatches(`declare module "./general" {`, { kind: ["dts"] });
       expect(moduleAugmentFile).transformedMatches(`declare module "./excluded-file" {`, { kind: ["dts"] });
     });

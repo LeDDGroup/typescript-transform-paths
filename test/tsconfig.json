@@ -3,7 +3,7 @@
   "include": ["tests", "utils"],
 
   "compilerOptions": {
-    "types": ["vitest/globals", "node"],
+    "types": ["vitest/globals", "node", "ts-expose-internals"],
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true

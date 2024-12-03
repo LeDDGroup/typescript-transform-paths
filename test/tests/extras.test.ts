@@ -1,10 +1,9 @@
 import { createTsProgram, getEmitResultFromProgram, ModuleNotFoundError } from "../utils";
 import { projectsPaths } from "../config";
-import path from "path";
+import path from "node:path";
 import ts from "typescript";
 import * as config from "../config";
-import { execSync } from "child_process";
-import stripAnsi from "strip-ansi";
+import { execSync } from "node:child_process";
 
 /* ****************************************************************************************************************** *
  * Tests
@@ -31,14 +30,20 @@ describe(`Extra Tests`, () => {
     });
 
     describe(`ts-node register script`, () => {
+      /** Yarn sometimes outputs bold text, which makes these tests flakey */
+      function stripAnsi(str: string) {
+        // eslint-disable-next-line no-control-regex
+        return str.replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, "");
+      }
+
       test(`Works with --transpileOnly`, () => {
         const res = execSync("yarn g:ts-node --transpileOnly src/index.ts", { cwd: projectRoot }).toString();
-        expect(stripAnsi(res)).toMatch(/^null($|\r?\n)/m);
+        expect(stripAnsi(res.trim())).toEqual("null");
       });
 
       test(`Works with --typeCheck`, () => {
         const res = execSync("yarn g:ts-node --typeCheck src/index.ts", { cwd: projectRoot }).toString();
-        expect(stripAnsi(res)).toMatch(/^null($|\r?\n)/);
+        expect(stripAnsi(res.trim())).toEqual("null");
       });
     });
   });

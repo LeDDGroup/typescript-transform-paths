@@ -29,9 +29,7 @@ export interface TsTransformPathsConfig extends PluginConfig {
 /* ****************************************************************************************************************** */
 
 export interface TsTransformPathsContext {
-  /**
-   * TS Instance passed from ts-patch / ttypescript
-   */
+  /** TS Instance passed from ts-patch / ttypescript */
   readonly tsInstance: typeof ts;
   readonly tsVersionMajor: number;
   readonly tsVersionMinor: number;

@@ -1,6 +1,4 @@
-/**
- * Changes after this point: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-48
- */
+/** Changes after this point: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-48 */
 import type {
   default as TsCurrentModule,
   AssertClause,
@@ -48,10 +46,10 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
   const factory = context.tsFactory as unknown as TsFourSevenModule.NodeFactory;
 
   switch (prop) {
-    case "updateImportDeclaration":
+    case "updateImportDeclaration": {
       return function (
         node: ImportDeclaration,
-        modifiers: readonly Modifier[] | undefined,
+        _modifiers: readonly Modifier[] | undefined,
         importClause: ImportClause | undefined,
         moduleSpecifier: Expression,
         assertClause: AssertClause | undefined,
@@ -72,10 +70,11 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsAssertClause,
         );
       };
-    case "updateExportDeclaration":
+    }
+    case "updateExportDeclaration": {
       return function (
         node: ExportDeclaration,
-        modifiers: readonly Modifier[] | undefined,
+        _modifiers: readonly Modifier[] | undefined,
         isTypeOnly: boolean,
         exportClause: NamedExportBindings | undefined,
         moduleSpecifier: Expression | undefined,
@@ -98,10 +97,11 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsAssertClause,
         );
       };
-    case "updateModuleDeclaration":
+    }
+    case "updateModuleDeclaration": {
       return function (
         node: ModuleDeclaration,
-        modifiers: readonly Modifier[] | undefined,
+        _modifiers: readonly Modifier[] | undefined,
         name: ModuleName,
         body: ModuleBody | undefined,
       ) {
@@ -109,13 +109,17 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
 
         return factory.updateModuleDeclaration(dsNode, dsNode.decorators, dsNode.modifiers, dsName, dsBody);
       };
-    default:
-      return (...args: any) => (<any>factory)[prop](...args);
+    }
+    default: {
+      // @ts-expect-error TS(7019) FIXME: Rest parameter 'args' implicitly has an 'any[]' type.
+      return (...args) => factory[prop](...args);
+    }
   }
 }
 
 export function downSample<T extends [...unknown[]]>(...args: T): DownSampleTsTypes<TypeMap, T> {
-  return <any>args;
+  // @ts-expect-error TS(2322) FIXME: Type 'T' is not assignable to type 'DownSampleTsTypes<TypeMap, T>'.
+  return args;
 }
 
 // endregion

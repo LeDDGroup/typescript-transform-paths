@@ -17,7 +17,7 @@ describe(`NX Transformer`, () => {
   describe("Plugin", () => {
     let mockedTransformer: vi.SpyInstance;
 
-    const program: any = { x: 1 };
+    const program = { x: 1 };
 
     beforeAll(async () => {
       mockedTransformer = vi.spyOn(transformerModule, "default").mockReturnValue(<any>(() => {}));
@@ -30,8 +30,9 @@ describe(`NX Transformer`, () => {
     });
 
     test(`Before properly routes transform`, () => {
-      const config: any = { a: 2 };
+      const config = { a: 2 };
 
+      // @ts-expect-error TS(2559) FIXME: Type '{ a: number; }' has no properties in common with type 'Omit<TsTransformPathsConfig, "transform">'.
       nxTransformerPlugin.before(config, program);
 
       expect(mockedTransformer).toHaveBeenCalledTimes(1);
@@ -43,8 +44,9 @@ describe(`NX Transformer`, () => {
     });
 
     test(`After properly routes transform`, () => {
-      const config: any = { a: 2, afterDeclarations: true };
+      const config = { a: 2, afterDeclarations: true };
 
+      // @ts-expect-error TS(2345) FIXME: Argument of type '{ x: number; }' is not assignable to parameter of type 'Program'.
       nxTransformerPlugin.afterDeclarations(config, program);
 
       expect(mockedTransformer).toHaveBeenCalledTimes(1);

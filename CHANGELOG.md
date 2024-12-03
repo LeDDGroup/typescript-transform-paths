@@ -2,6 +2,80 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.5.2
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.1...v3.5.2)
+
+### 🩹 Fixes
+
+- Restore typescript 5.6 compatibility ([#301](https://github.com/LeDDGroup/typescript-transform-paths/pull/301))
+
+### 🏡 Chore
+
+- **deps-dev:** Bump eslint and @types/eslint ([#273](https://github.com/LeDDGroup/typescript-transform-paths/pull/273))
+- **deps-dev:** Bump @types/node from 22.5.2 to 22.8.7 ([#303](https://github.com/LeDDGroup/typescript-transform-paths/pull/303))
+- **deps-dev:** Bump typescript-eslint from 8.3.0 to 8.13.0 ([#302](https://github.com/LeDDGroup/typescript-transform-paths/pull/302))
+
+### ❤️ Contributors
+
+- Ben Limmer ([@blimmer](http://github.com/blimmer))
+
+## v3.5.1
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.0...v3.5.1)
+
+### 🩹 Fixes
+
+- Downgrade minimatch from 10.0.1 to 9.0.5 ([#272](https://github.com/LeDDGroup/typescript-transform-paths/pull/272))
+
+### 💅 Refactors
+
+- Always patch ([ed3ed1f](https://github.com/LeDDGroup/typescript-transform-paths/commit/ed3ed1f))
+- Rename typescript-number to typescript-x ([36643ff](https://github.com/LeDDGroup/typescript-transform-paths/commit/36643ff))
+- Use strictest typescript configuration ([a67e739](https://github.com/LeDDGroup/typescript-transform-paths/commit/a67e739))
+- Enable @typescript-eslint/no-explicit-any warning ([1cddaac](https://github.com/LeDDGroup/typescript-transform-paths/commit/1cddaac))
+- Add eslint-plugin-unicorn ([44ad2e0](https://github.com/LeDDGroup/typescript-transform-paths/commit/44ad2e0))
+- Remove anys ([07e5c27](https://github.com/LeDDGroup/typescript-transform-paths/commit/07e5c27))
+
+### 🏡 Chore
+
+- Rename nx test project to avoid conflict with package name ([3ee03d1](https://github.com/LeDDGroup/typescript-transform-paths/commit/3ee03d1))
+- **deps-dev:** Bump typescript-eslint from 8.1.0 to 8.2.0 ([#249](https://github.com/LeDDGroup/typescript-transform-paths/pull/249))
+- **deps-dev:** Bump @types/node from 22.2.0 to 22.4.1 ([#248](https://github.com/LeDDGroup/typescript-transform-paths/pull/248))
+- Add danielpza to funding.yml ([9aa6941](https://github.com/LeDDGroup/typescript-transform-paths/commit/9aa6941))
+- **deps-dev:** Bump typescript-eslint from 8.2.0 to 8.3.0 ([#254](https://github.com/LeDDGroup/typescript-transform-paths/pull/254))
+- **deps-dev:** Bump @types/node from 22.4.1 to 22.5.0 ([#253](https://github.com/LeDDGroup/typescript-transform-paths/pull/253))
+- **deps-dev:** Update some dependencies ([164aeac](https://github.com/LeDDGroup/typescript-transform-paths/commit/164aeac))
+- Remove eslint-plugin-unicorn ([8c6ccf4](https://github.com/LeDDGroup/typescript-transform-paths/commit/8c6ccf4))
+
+### ❤️ Contributors
+
+- Spdaley <seadaley@cisco.com>
+- Daniel Perez Alvarez <danielpza@protonmail.com>
+
+## v3.5.0
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.11...v3.5.0)
+
+### 🚀 Enhancements
+
+- Add package.json exports ([#218](https://github.com/LeDDGroup/typescript-transform-paths/pull/218))
+
+### 💅 Refactors
+
+- Move top level register and nx-transformer to src/ ([6f0a280](https://github.com/LeDDGroup/typescript-transform-paths/commit/6f0a280))
+- Add prettier-plugin-jsdoc ([0b5fd4c](https://github.com/LeDDGroup/typescript-transform-paths/commit/0b5fd4c))
+- Remove ts-expose-internals imports ([7b66926](https://github.com/LeDDGroup/typescript-transform-paths/commit/7b66926))
+- Update ts-expose-internals -> @types/ts-expose-internals ([56d62d2](https://github.com/LeDDGroup/typescript-transform-paths/commit/56d62d2))
+
+### 🏡 Chore
+
+- **deps-dev:** Remove strip-ansi ([2fc9901](https://github.com/LeDDGroup/typescript-transform-paths/commit/2fc9901))
+
+### ❤️ Contributors
+
+- Daniel Perez Alvarez <danielpza@protonmail.com>
+
 ## v3.4.11
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.4.10...v3.4.11)

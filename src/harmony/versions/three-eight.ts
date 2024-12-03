@@ -1,6 +1,4 @@
-/**
- * Changes after this point: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-40
- */
+/** Changes after this point: https://github.com/microsoft/TypeScript/wiki/API-Breaking-Changes#typescript-40 */
 import type {
   default as TsCurrentModule,
   EntityName,
@@ -67,22 +65,25 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
   const ts = context.tsInstance as unknown as typeof TsThreeEightModule;
 
   switch (prop) {
-    case "updateCallExpression":
-      return (...args: any) => ts.updateCall.apply(void 0, args);
-    case "updateImportClause":
+    case "updateCallExpression": {
+      // @ts-expect-error TS(7019) FIXME: Rest parameter 'args' implicitly has an 'any[]' type.
+      return (...args) => ts.updateCall.apply(void 0, args);
+    }
+    case "updateImportClause": {
       return function (
         node: ImportClause,
-        isTypeOnly: boolean,
+        _isTypeOnly: boolean,
         name: Identifier | undefined,
         namedBindings: NamedImportBindings | undefined,
       ) {
         // @ts-expect-error TODO investigate type issue
         return ts.updateImportClause.apply(void 0, downSample(node, name, namedBindings));
       };
-    case "updateImportDeclaration":
+    }
+    case "updateImportDeclaration": {
       return function (
         node: ImportDeclaration,
-        modifiers: readonly Modifier[] | undefined,
+        _modifiers: readonly Modifier[] | undefined,
         importClause: ImportClause | undefined,
         moduleSpecifier: Expression,
       ) {
@@ -96,11 +97,12 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsModuleSpecifier,
         );
       };
-    case "updateExportDeclaration":
+    }
+    case "updateExportDeclaration": {
       return function (
         node: ExportDeclaration,
-        modifiers: readonly Modifier[] | undefined,
-        isTypeOnly: boolean,
+        _modifiers: readonly Modifier[] | undefined,
+        _isTypeOnly: boolean,
         exportClause: NamedExportBindings | undefined,
         moduleSpecifier: Expression | undefined,
       ) {
@@ -114,10 +116,11 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsNode.isTypeOnly,
         );
       };
-    case "updateModuleDeclaration":
+    }
+    case "updateModuleDeclaration": {
       return function (
         node: ModuleDeclaration,
-        modifiers: readonly Modifier[] | undefined,
+        _modifiers: readonly Modifier[] | undefined,
         name: ModuleName,
         body: ModuleBody | undefined,
       ) {
@@ -125,11 +128,12 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
 
         return ts.updateModuleDeclaration(dsNode, dsNode.decorators, dsNode.modifiers, dsName, dsBody);
       };
-    case "updateImportTypeNode":
+    }
+    case "updateImportTypeNode": {
       return function (
         node: ImportTypeNode,
         argument: TypeNode,
-        assertions: ImportTypeAssertionContainer | undefined,
+        _assertions: ImportTypeAssertionContainer | undefined,
         qualifier: EntityName | undefined,
         typeArguments: readonly TypeNode[] | undefined,
         isTypeOf?: boolean,
@@ -138,13 +142,17 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
 
         return ts.updateImportTypeNode(dsNode, dsArgument, dsQualifier, dsTypeArguments, isTypeOf);
       };
-    default:
-      return (...args: any) => (<any>ts)[prop](...args);
+    }
+    default: {
+      // @ts-expect-error TS(7019) FIXME: Rest parameter 'args' implicitly has an 'any[]' type.
+      return (...args) => ts[prop](...args);
+    }
   }
 }
 
 export function downSample<T extends [...unknown[]]>(...args: T): DownSampleTsTypes<TypeMap, T> {
-  return <any>args;
+  // @ts-expect-error TS(2322) FIXME: Type 'T' is not assignable to type 'DownSampleTsTypes<TypeMap, T>'.
+  return args;
 }
 
 // endregion

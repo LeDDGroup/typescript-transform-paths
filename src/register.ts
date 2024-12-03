@@ -1,4 +1,4 @@
-import type TSNode from "ts-node";
+import TSNode from "ts-node";
 import type { REGISTER_INSTANCE } from "ts-node";
 import ts from "typescript";
 import transformer from "./transformer";
@@ -7,11 +7,18 @@ import transformer from "./transformer";
 // region: Helpers
 /* ****************************************************************************************************************** */
 
+type PluginExtended = ts.PluginImport & {
+  transform?: string;
+  after?: boolean;
+  before?: boolean;
+  afterDeclarations?: boolean;
+};
+
 function getProjectTransformerConfig(pcl: ts.ParsedCommandLine) {
-  const plugins = pcl.options.plugins as Record<string, string>[] | undefined;
+  const plugins = pcl.options.plugins as PluginExtended[];
   if (!plugins) return;
 
-  const res: { afterDeclarations?: Record<string, string>; before?: Record<string, string> } = {};
+  const res: { afterDeclarations?: PluginExtended; before?: PluginExtended } = {};
   for (const plugin of plugins) {
     if (plugin.transform === "typescript-transform-paths" && !plugin.after)
       res[plugin.afterDeclarations ? "afterDeclarations" : "before"] = plugin;
@@ -22,8 +29,8 @@ function getProjectTransformerConfig(pcl: ts.ParsedCommandLine) {
 
 function getTransformers(
   program?: ts.Program,
-  beforeConfig?: Record<string, string>,
-  afterDeclarationsConfig?: Record<string, string>,
+  beforeConfig?: PluginExtended,
+  afterDeclarationsConfig?: PluginExtended,
 ): ts.CustomTransformers {
   return {
     ...(beforeConfig && { before: [transformer(program, beforeConfig)] }),

@@ -29,9 +29,8 @@ const voidTransformer: ts.TransformerFactory<ts.SourceFile> = () => (s: ts.Sourc
  * Transformer
  * ****************************************************************************************************************** */
 
-export const nxTransformerPlugin: NxTransformerPlugin = {
-  before: (pluginConfig, program) =>
-    pluginConfig?.afterDeclarations ? voidTransformer : transformer(program, { ...pluginConfig }),
-  afterDeclarations: (pluginConfig, program) =>
-    !pluginConfig?.afterDeclarations ? voidTransformer : transformer(program, { ...pluginConfig }),
-};
+export const before: NxTransformerFactory = (pluginConfig, program) =>
+  pluginConfig?.afterDeclarations ? voidTransformer : transformer(program, { ...pluginConfig });
+
+export const afterDeclarations: NxTransformerFactory = (pluginConfig, program) =>
+  pluginConfig?.afterDeclarations ? transformer(program, { ...pluginConfig }) : voidTransformer;

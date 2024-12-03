@@ -14,9 +14,7 @@ export interface HarmonyFactory extends TS.NodeFactory {}
 // region: Utilities
 /* ****************************************************************************************************************** */
 
-/**
- * Creates a node factory compatible with TS v3+
- */
+/** Creates a node factory compatible with TS v3+ */
 export function createHarmonyFactory(context: TsTransformPathsContext): HarmonyFactory {
   return new Proxy(context.tsFactory ?? context.tsInstance, {
     get(target, prop) {
@@ -25,7 +23,8 @@ export function createHarmonyFactory(context: TsTransformPathsContext): HarmonyF
       } else if (TsFourSeven.predicate(context)) {
         return TsFourSeven.handler(context, prop);
       } else {
-        return (<any>target)[prop];
+        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expression of type 'string | symbol' can't be used to index type 'typeof import("typescript") | NodeFactory'.
+        return target[prop];
       }
     },
   }) as HarmonyFactory;

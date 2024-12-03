@@ -1,26 +1,16 @@
 import { VisitorContext } from "../types";
 import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
-import * as path from "path";
+import * as path from "node:path";
 import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } from "typescript";
 import { getOutputDirForSourceFile } from "./ts-helpers";
 import { getRelativePath } from "./get-relative-path";
 
-/* ****************************************************************************************************************** */
-// region: Types
-/* ****************************************************************************************************************** */
-
 export interface ResolvedModule {
-  /**
-   * Absolute path to resolved module
-   */
+  /** Absolute path to resolved module */
   resolvedPath: string | undefined;
-  /**
-   * Output path
-   */
+  /** Output path */
   outputPath: string;
-  /**
-   * Resolved to URL
-   */
+  /** Resolved to URL */
   isURL: boolean;
 }
 
@@ -30,12 +20,6 @@ enum IndexType {
   Implicit,
   ImplicitPackage,
 }
-
-// endregion
-
-/* ****************************************************************************************************************** */
-// region: Helpers
-/* ****************************************************************************************************************** */
 
 function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
   const resolvedFileName = resolvedModule.originalPath ?? resolvedModule.resolvedFileName;
@@ -48,7 +32,7 @@ function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
   const resolvedBaseNameNoExtension = resolvedBaseName && removeFileExtension(resolvedBaseName);
   const resolvedExtName = resolvedBaseName && path.extname(resolvedFileName);
 
-  let baseName = !implicitPackageIndex ? path.basename(moduleName) : void 0;
+  let baseName = implicitPackageIndex ? void 0 : path.basename(moduleName);
   let baseNameNoExtension = baseName && removeFileExtension(baseName);
   let extName = baseName && path.extname(moduleName);
 
@@ -111,15 +95,7 @@ function getResolvedSourceFile(context: VisitorContext, fileName: string): Sourc
   return tsInstance.createSourceFile(fileName, ``, tsInstance.ScriptTarget.ESNext, /* setParentNodes */ false);
 }
 
-// endregion
-
-/* ****************************************************************************************************************** */
-// region: Utils
-/* ****************************************************************************************************************** */
-
-/**
- * Resolve a module name
- */
+/** Resolve a module name */
 export function resolveModuleName(context: VisitorContext, moduleName: string): ResolvedModule | undefined {
   const { tsInstance, compilerOptions, sourceFile, config, rootDirs } = context;
 
@@ -134,10 +110,10 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
   // Handle non-resolvable module
   if (!resolvedModule) {
     const maybeURL = failedLookupLocations[0];
-    if (!isURL(maybeURL)) return void 0;
+    if (!isURL(maybeURL)) return undefined;
     return {
       isURL: true,
-      resolvedPath: void 0,
+      resolvedPath: undefined,
       outputPath: maybeURL,
     };
   }
@@ -180,5 +156,3 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
 
   return { isURL: false, outputPath, resolvedPath: resolvedFileName };
 }
-
-// endregion

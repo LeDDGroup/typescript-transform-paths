@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path";
 import ts, { CompilerOptions } from "typescript";
 import { RunMode, TsNodeState, TsTransformPathsConfig, TsTransformPathsContext, VisitorContext } from "./types";
 import { nodeVisitor } from "./visitor";
@@ -6,10 +6,6 @@ import { createHarmonyFactory } from "./harmony";
 import { Minimatch } from "minimatch";
 import { createSyntheticEmitHost, getTsNodeRegistrationProperties } from "./utils/ts-helpers";
 import { TransformerExtras } from "ts-patch";
-
-/* ****************************************************************************************************************** */
-// region: Helpers
-/* ****************************************************************************************************************** */
 
 function getTsProperties(args: Parameters<typeof transformer>) {
   let fileNames: readonly string[] | undefined;
@@ -56,7 +52,7 @@ function getTsProperties(args: Parameters<typeof transformer>) {
       tsNodeState === TsNodeState.Full
         ? compilerOptions!
         : {
-            ...(program?.getCompilerOptions() ?? {}),
+            ...program?.getCompilerOptions(),
             ...tsNodeProps!.compilerOptions,
           };
   } else {
@@ -69,19 +65,11 @@ function getTsProperties(args: Parameters<typeof transformer>) {
   return { tsInstance, compilerOptions, fileNames, runMode, tsNodeState };
 }
 
-// endregion
-
-/* ****************************************************************************************************************** */
-// region: Transformer
-/* ****************************************************************************************************************** */
-
 export default function transformer(
   program?: ts.Program,
   pluginConfig?: TsTransformPathsConfig,
   transformerExtras?: TransformerExtras,
-  /**
-   * Supply if manually transforming with compiler API via 'transformNodes' / 'transformModule'
-   */
+  /** Supply if manually transforming with compiler API via 'transformNodes' / 'transformModule' */
   manualTransformOptions?: {
     compilerOptions?: ts.CompilerOptions;
     fileNames?: string[];
@@ -116,6 +104,8 @@ export default function transformer(
     const { tryParsePatterns } = tsInstance;
     const [tsVersionMajor, tsVersionMinor] = tsInstance.versionMajorMinor.split(".").map((v) => +v);
 
+    if (!tsVersionMajor || !tsVersionMinor) throw new Error("Expected version to be parsed");
+
     const tsTransformPathsContext: TsTransformPathsContext = {
       compilerOptions,
       config,
@@ -145,7 +135,7 @@ export default function transformer(
         ...tsTransformPathsContext,
         sourceFile,
         isDeclarationFile: sourceFile.isDeclarationFile,
-        originalSourceFile: (<typeof ts>tsInstance).getOriginalSourceFile(sourceFile),
+        originalSourceFile: ts.getParseTreeNode(sourceFile, ts.isSourceFile) || sourceFile,
         getVisitor() {
           return nodeVisitor.bind(this);
         },
@@ -156,5 +146,3 @@ export default function transformer(
     };
   };
 }
-
-// endregion

@@ -1,7 +1,7 @@
 // @ts-check
 import { existsSync } from "node:fs";
 import { symlink } from "node:fs/promises";
-import { dirname, join, resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { patch } from "ts-patch";
 import { patch as patch1 } from "tsp1";
@@ -20,27 +20,19 @@ async function symlinkTsNode() {
 }
 
 function patchTsModules() {
-  /* ****************************************************************************************************************** *
-   * Config
-   * ****************************************************************************************************************** */
   const rootDir = __dirname;
-  const tsDirs = ["typescript-three", "typescript-four-seven", "typescript"];
-  /* ****************************************************************************************************************** *
-   * Patch TS Modules
-   * ****************************************************************************************************************** */
 
-  const baseDirs = new Map();
-
-  for (const tsDirName of tsDirs) {
-    const mainDir = resolve(rootDir, "node_modules", tsDirName);
-    if (!existsSync(join(mainDir, "lib-backup"))) baseDirs.set(tsDirName, mainDir);
+  /** @param {string} moduleName */
+  function patchTypescript(moduleName, tspatch) {
+    const basedir = resolve(rootDir, "node_modules", moduleName);
+    tspatch(["tsc.js", "typescript.js"], { basedir, dir: basedir });
   }
 
-  // Patch discovered modules
-  for (const [dirName, dir] of baseDirs)
-    if (dirName === "typescript-three") patch1(["tsc.js", "typescript.js"], { basedir: dir });
-    else if (dirName === "typescript-four-seven") patch2(["tsc.js", "typescript.js"], { dir });
-    else patch(["tsc.js", "typescript.js"], { dir });
+  patchTypescript("typescript-3", patch1);
+  patchTypescript("typescript-4.7", patch2);
+  patchTypescript("typescript-5.5", patch);
+  patchTypescript("typescript-5.6", patch);
+  patchTypescript("typescript", patch);
 }
 
 patchTsModules();

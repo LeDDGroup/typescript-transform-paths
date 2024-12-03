@@ -1,6 +1,5 @@
 // noinspection ES6UnusedImports
-import {} from "ts-expose-internals";
-import * as path from "path";
+import * as path from "node:path";
 import { createTsProgram, EmittedFiles, getEmitResultFromProgram } from "../../utils";
 import { ts, tsModules, projectsPaths } from "../../config";
 
@@ -16,8 +15,8 @@ const makeRelative = (tsInstance: typeof ts, fileName: string, p: string, rootDi
 
 const getExpected = (tsInstance: typeof ts, fileName: string, original: string, rootDir: string): string =>
   original
-    .replace(/"@(.*)"/g, (_, p) => makeRelative(tsInstance, fileName, p, rootDir))
-    .replace(/"#utils\/(.*)"/g, (_, p) =>
+    .replaceAll(/"@(.*)"/g, (_, p) => makeRelative(tsInstance, fileName, p, rootDir))
+    .replaceAll(/"#utils\/(.*)"/g, (_, p) =>
       makeRelative(tsInstance, fileName, path.join(p === "hello" ? "secondary" : "utils", p), rootDir),
     )
     .replace('"path"', '"https://external.url/path.js"')
@@ -51,8 +50,10 @@ describe(`Transformer -> General Tests`, () => {
       beforeAll(() => {
         transformed = transformedFiles[file];
         expected = {
-          js: getExpected(<any>tsInstance, file, originalFiles[file].js, projectRoot),
-          dts: getExpected(<any>tsInstance, file, originalFiles[file].dts, projectRoot),
+          // @ts-expect-error TS(2345) FIXME: Argument of type 'typeof ts | typeof ts | typeof import("typescript")' is not assignable to parameter of type 'typeof import("typescript")'.
+          js: getExpected(tsInstance, file, originalFiles[file].js, projectRoot),
+          // @ts-expect-error TS(2345) FIXME: Argument of type 'typeof ts | typeof ts | typeof import("typescript")' is not assignable to parameter of type 'typeof import("typescript")'.
+          dts: getExpected(tsInstance, file, originalFiles[file].dts, projectRoot),
         };
       });
 

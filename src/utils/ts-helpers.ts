@@ -1,5 +1,5 @@
 import ts, { GetCanonicalFileName, SourceFile } from "typescript";
-import path from "path";
+import path from "node:path";
 import { VisitorContext } from "../types";
 import type { REGISTER_INSTANCE } from "ts-node";
 
@@ -7,9 +7,7 @@ import type { REGISTER_INSTANCE } from "ts-node";
 // region: TS Helpers
 /* ****************************************************************************************************************** */
 
-/**
- * Determine output file path for source file
- */
+/** Determine output file path for source file */
 export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: SourceFile): string {
   const {
     tsInstance,
@@ -45,9 +43,7 @@ export function getOutputDirForSourceFile(context: VisitorContext, sourceFile: S
   return tsInstance.normalizePath(res);
 }
 
-/**
- * Determine if moduleName matches config in paths
- */
+/** Determine if moduleName matches config in paths */
 export function isModulePathsMatch(context: VisitorContext, moduleName: string): boolean {
   const {
     pathsPatterns,
@@ -56,9 +52,7 @@ export function isModulePathsMatch(context: VisitorContext, moduleName: string):
   return !!(pathsPatterns && matchPatternOrExact(pathsPatterns as readonly string[], moduleName));
 }
 
-/**
- * Create barebones EmitHost (for no-Program transform)
- */
+/** Create barebones EmitHost (for no-Program transform) */
 export function createSyntheticEmitHost(
   compilerOptions: ts.CompilerOptions,
   tsInstance: typeof ts,
@@ -74,29 +68,26 @@ export function createSyntheticEmitHost(
         !tsInstance.sys.useCaseSensitiveFileNames,
       ),
     getCanonicalFileName,
-  } as unknown as ts.EmitHost;
+  } as ts.EmitHost;
 }
 
-/**
- * Get ts-node register info
- */
+/** Get ts-node register info */
 export function getTsNodeRegistrationProperties(tsInstance: typeof ts) {
   let tsNodeSymbol: typeof REGISTER_INSTANCE;
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     tsNodeSymbol = require("ts-node")?.["REGISTER_INSTANCE"];
   } catch {
-    return undefined;
+    return;
   }
 
-  if (!global.process[tsNodeSymbol]) return undefined;
+  if (!global.process[tsNodeSymbol]) return;
 
   const { config, options } = global.process[tsNodeSymbol]!;
 
   const { configFilePath } = config.options;
-  const pcl = configFilePath
-    ? tsInstance.getParsedCommandLineOfConfigFile(configFilePath, {}, <any>tsInstance.sys)
-    : void 0;
+  // @ts-expect-error TS(2345) FIXME: Argument of type 'System' is not assignable to parameter of type 'ParseConfigFileHost'.
+  const pcl = configFilePath ? tsInstance.getParsedCommandLineOfConfigFile(configFilePath, {}, tsInstance.sys) : void 0;
 
   const fileNames = pcl?.fileNames || config.fileNames;
   const compilerOptions = Object.assign({}, config.options, options.compilerOptions, { outDir: pcl?.options.outDir });

@@ -1,5 +1,5 @@
 import { default as tstpTransform, TsTransformPathsConfig } from "typescript-transform-paths";
-import fs from "fs";
+import fs from "node:fs";
 import ts from "typescript";
 import * as tsNode from "ts-node";
 import * as config from "../config";
@@ -36,7 +36,7 @@ function createWriteFile(outputFiles: EmittedFiles) {
     if (!ext) return;
     rootName = `${rootName}.ts`;
     const key = ext.replace(".", "") as keyof EmittedFiles[string];
-    if (!outputFiles[rootName]) outputFiles[rootName] = <any>{};
+    outputFiles[rootName] ??= {} as EmittedFiles[string];
     outputFiles[rootName][key] = data;
   };
 }
@@ -63,9 +63,7 @@ function createReadFile(
 // region: Utilities
 /* ****************************************************************************************************************** */
 
-/**
- * Create TS Program with faux files and options
- */
+/** Create TS Program with faux files and options */
 export function createTsProgram(
   opt: CreateTsProgramOptions,
   transformerPath: string = config.transformerPath,
@@ -96,27 +94,28 @@ export function createTsProgram(
   let host: ts.CompilerHost | undefined;
 
   if (opt.tsConfigFile) {
-    const pcl = tsInstance.getParsedCommandLineOfConfigFile(opt.tsConfigFile, extendOptions, <any>tsInstance.sys)!;
+    // @ts-expect-error TS(2345) FIXME: Argument of type 'System' is not assignable to parameter of type 'ParseConfigFileHost'.
+    const pcl = tsInstance.getParsedCommandLineOfConfigFile(opt.tsConfigFile, extendOptions, tsInstance.sys)!;
     compilerOptions = pcl.options;
     fileNames = pcl.fileNames;
   } else {
-    const files = Object.entries(compilerOptions.files!).reduce(
-      (p, [fileName, data]) => {
-        p[tsInstance.normalizePath(fileName)] = data;
-        return p;
-      },
-      <any>{},
-    );
+    const files = Object.entries(compilerOptions.files!).reduce((p, [fileName, data]) => {
+      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+      p[tsInstance.normalizePath(fileName)] = data;
+      return p;
+    }, {});
     fileNames = Object.keys(files);
 
     host = tsInstance.createCompilerHost(compilerOptions);
     compilerOptions = extendOptions;
 
     /* Patch host to feed mock files */
-    const originalGetSourceFile: any = host.getSourceFile;
+    const originalGetSourceFile: unknown = host.getSourceFile;
     host.getSourceFile = function (fileName: string, scriptTarget: ts.ScriptTarget, ...rest) {
       if (Object.keys(files).includes(fileName))
+        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
         return tsInstance.createSourceFile(fileName, files[fileName], scriptTarget);
+      // @ts-expect-error TS(18046) FIXME: 'originalGetSourceFile' is of type 'unknown'.
       else originalGetSourceFile(fileName, scriptTarget, ...rest);
     };
   }
@@ -148,31 +147,41 @@ export function createTsSolutionBuilder(
   });
 }
 
-/**
- * Get emitted files for program
- */
+/** Get emitted files for program */
 export function getEmitResultFromProgram(program: ts.Program): EmittedFiles {
   const outputFiles: EmittedFiles = {};
   program.emit(undefined, createWriteFile(outputFiles));
   return outputFiles;
 }
 
-export function getManualEmitResult(pluginConfig: TsTransformPathsConfig, tsInstance: any, pcl: ts.ParsedCommandLine) {
+export function getManualEmitResult(
+  pluginConfig: TsTransformPathsConfig,
+  tsInstance: unknown,
+  pcl: ts.ParsedCommandLine,
+) {
   const { options: compilerOptions, fileNames } = pcl;
-  const transformer = tstpTransform(void 0, pluginConfig, { ts: tsInstance } as any, { compilerOptions, fileNames });
+  // @ts-expect-error TS(2345) FIXME: Argument of type 'unknown' is not assignable to parameter of type 'TransformerExtras | undefined'.
+  const transformer = tstpTransform(void 0, pluginConfig, { ts: tsInstance } as unknown, {
+    compilerOptions,
+    fileNames,
+  });
 
+  // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
   const { transformed } = tsInstance.transform(
     fileNames.map((f) =>
+      // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
       tsInstance.createSourceFile(f, fs.readFileSync(f, "utf8"), tsInstance.ScriptTarget.ESNext, true),
     ),
     [transformer],
     compilerOptions,
   );
 
+  // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
   const printer = tsInstance.createPrinter();
 
   const res: EmittedFiles = {};
-  for (const sourceFile of transformed) res[sourceFile.fileName] = <any>{ js: printer.printFile(sourceFile) };
+  // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type '{ js: string; dts: string; }'.
+  for (const sourceFile of transformed) res[sourceFile.fileName] = <unknown>{ js: printer.printFile(sourceFile) };
 
   return res;
 }
@@ -185,8 +194,9 @@ export function getTsNodeEmitResult(
   const compiler = tsNode.create({
     transpileOnly: true,
     transformers: {
+      // @ts-expect-error TS(2345) FIXME: Argument of type 'unknown' is not assignable to parameter of type 'TransformerExtras | undefined'.
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      before: [tstpTransform(void 0, pluginConfig, <any>{ ts: require(tsSpecifier) })],
+      before: [tstpTransform(void 0, pluginConfig, <unknown>{ ts: require(tsSpecifier) })],
     },
     project: pcl.options.configFilePath,
     compiler: tsSpecifier,
@@ -198,8 +208,10 @@ export function getTsNodeEmitResult(
   global.process[tsNode.REGISTER_INSTANCE] = compiler;
   try {
     const res: EmittedFiles = {};
-    for (const fileName of pcl.fileNames.filter((f) => !/\.d\.ts$/.test(f)))
-      res[fileName] = <any>{ js: compiler.compile(fs.readFileSync(fileName, "utf8"), fileName) };
+    for (const fileName of pcl.fileNames.filter((f) => !/\.d\.ts$/.test(f))) {
+      // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type '{ js: string; dts: string; }'.
+      res[fileName] = <unknown>{ js: compiler.compile(fs.readFileSync(fileName, "utf8"), fileName) };
+    }
 
     return res;
   } finally {
