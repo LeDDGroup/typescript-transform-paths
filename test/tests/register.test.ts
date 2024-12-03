@@ -137,7 +137,7 @@ describe(`Register script`, () => {
         afterDeclarations: [fakeExistingTransformer],
       };
       const transformerFactoryFn = vi.fn().mockReturnValue(fakeTransformerConfig);
-      const fakeProgram: unknown  = {};
+      const fakeProgram: unknown = {};
 
       let existingTransformers: CustomTransformers | ((p: Program) => CustomTransformers) | undefined;
       switch (configKind) {
@@ -163,12 +163,8 @@ describe(`Register script`, () => {
         let mergedTransformers: CustomTransformers;
 
         beforeAll(() => {
-<<<<<<< HEAD
-          mockTransformer = vi.spyOn(transformerModule, "default").mockReturnValue(fakeTransformer);
-=======
           // @ts-expect-error TS(2345) FIXME: Argument of type '() => unknown' is not assignable to parameter of type '(transformationContext: TransformationContext) => (sourceFile: SourceFile) => SourceFile'.
-          mockTransformer = jest.spyOn(transformerModule, "default").mockReturnValue(fakeTransformer);
->>>>>>> master
+          mockTransformer = vi.spyOn(transformerModule, "default").mockReturnValue(fakeTransformer);
 
           global.process[instanceSymbol] = void 0;
 
