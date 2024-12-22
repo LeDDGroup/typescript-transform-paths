@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.5.3
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.2...v3.5.3)
+
+### 📖 Documentation
+
+- Add version compatibility matrix in readme ([#338](https://github.com/LeDDGroup/typescript-transform-paths/pull/338))
+
+### 🏡 Chore
+
+- **deps-dev:** Bump @eslint/js from 9.9.1 to 9.15.0 ([#310](https://github.com/LeDDGroup/typescript-transform-paths/pull/310))
+- **deps-dev:** Bump typescript-eslint from 8.13.0 to 8.15.0 ([#308](https://github.com/LeDDGroup/typescript-transform-paths/pull/308))
+- **deps-dev:** Bump eslint from 9.10.0 to 9.15.0 ([#309](https://github.com/LeDDGroup/typescript-transform-paths/pull/309))
+- **deps-dev:** Bump changelogen from 0.5.5 to 0.5.7 ([#316](https://github.com/LeDDGroup/typescript-transform-paths/pull/316))
+- **deps-dev:** Bump @types/node from 22.8.7 to 22.9.3 ([#314](https://github.com/LeDDGroup/typescript-transform-paths/pull/314))
+- **deps-dev:** Bump typescript from 5.6.3 to 5.7.2 in /test ([#317](https://github.com/LeDDGroup/typescript-transform-paths/pull/317))
+- **deps-dev:** Bump typescript-eslint from 8.15.0 to 8.16.0 ([#313](https://github.com/LeDDGroup/typescript-transform-paths/pull/313))
+- **deps-dev:** Bump eslint from 9.15.0 to 9.16.0 ([#319](https://github.com/LeDDGroup/typescript-transform-paths/pull/319))
+- **deps-dev:** Bump typescript-eslint from 8.16.0 to 8.17.0 ([#320](https://github.com/LeDDGroup/typescript-transform-paths/pull/320))
+- **deps-dev:** Update yarn from 4.4.0 to 4.5.3 ([f6ccab1](https://github.com/LeDDGroup/typescript-transform-paths/commit/f6ccab1))
+- Update yarn.lock ([b958778](https://github.com/LeDDGroup/typescript-transform-paths/commit/b958778))
+- **deps-dev:** Bump ts-patch from 3.2.1 to 3.3.0 ([#322](https://github.com/LeDDGroup/typescript-transform-paths/pull/322))
+- **deps-dev:** Bump typescript-eslint from 8.17.0 to 8.18.0 ([#323](https://github.com/LeDDGroup/typescript-transform-paths/pull/323))
+- **deps-dev:** Bump typescript from 5.5.4 to 5.7.2 ([#315](https://github.com/LeDDGroup/typescript-transform-paths/pull/315))
+- **deps-dev:** Bump ts-patch from 3.2.1 to 3.3.0 in /test ([#324](https://github.com/LeDDGroup/typescript-transform-paths/pull/324))
+- Configure Renovate ([#330](https://github.com/LeDDGroup/typescript-transform-paths/pull/330))
+- Update renovate config to auto merge minor updates ([b3f3f31](https://github.com/LeDDGroup/typescript-transform-paths/commit/b3f3f31))
+
+### 🤖 CI
+
+- Adjust publish workflow ([1039e07](https://github.com/LeDDGroup/typescript-transform-paths/commit/1039e07))
+- Fix changelogen not pushing code ([221136a](https://github.com/LeDDGroup/typescript-transform-paths/commit/221136a))
+
+### ❤️ Contributors
+
+- Daniel Perez Alvarez <danielpza@protonmail.com>
+
 ## v3.5.2
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.1...v3.5.2)
