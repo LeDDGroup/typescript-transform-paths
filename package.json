@@ -69,7 +69,7 @@
     "@tsconfig/node18": "^18.2.4",
     "@tsconfig/strictest": "^2.0.5",
     "@types/eslint": "^9",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.14",
     "@types/minimatch": "^5.1.2",
     "@types/node": "^22.5.2",
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5",
@@ -81,12 +81,13 @@
     "nx": "^15.9.7",
     "prettier": "^3.3.3",
     "prettier-plugin-jsdoc": "^1.3.0",
-    "ts-jest": "^29.2.4",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "ts-patch": "^3.3.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.3.0"
+    "typescript-eslint": "^8.3.0",
+    "typescript-transform-paths": "workspace:*"
   },
   "peerDependencies": {
     "typescript": ">=5"

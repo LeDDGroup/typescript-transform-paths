@@ -2800,7 +2800,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^29.5.12":
+"@types/jest@npm:^29.5.14":
   version: 29.5.14
   resolution: "@types/jest@npm:29.5.14"
   dependencies:
@@ -10709,7 +10709,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^29.2.4":
+"ts-jest@npm:^29.2.5":
   version: 29.2.5
   resolution: "ts-jest@npm:29.2.5"
   dependencies:
@@ -10923,7 +10923,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-transform-paths@workspace:.":
+"typescript-transform-paths@workspace:*, typescript-transform-paths@workspace:.":
   version: 0.0.0-use.local
   resolution: "typescript-transform-paths@workspace:."
   dependencies:
@@ -10936,7 +10936,7 @@ __metadata:
     "@tsconfig/node18": "npm:^18.2.4"
     "@tsconfig/strictest": "npm:^2.0.5"
     "@types/eslint": "npm:^9"
-    "@types/jest": "npm:^29.5.12"
+    "@types/jest": "npm:^29.5.14"
     "@types/minimatch": "npm:^5.1.2"
     "@types/node": "npm:^22.5.2"
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5"
@@ -10949,12 +10949,13 @@ __metadata:
     nx: "npm:^15.9.7"
     prettier: "npm:^3.3.3"
     prettier-plugin-jsdoc: "npm:^1.3.0"
-    ts-jest: "npm:^29.2.4"
+    ts-jest: "npm:^29.2.5"
     ts-node: "npm:^10.9.2"
     ts-patch: "npm:^3.3.0"
     tsx: "npm:^4.19.2"
     typescript: "npm:^5.7.2"
     typescript-eslint: "npm:^8.3.0"
+    typescript-transform-paths: "workspace:*"
   peerDependencies:
     typescript: ">=5"
   languageName: unknown
