@@ -15,7 +15,7 @@
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5",
     "nx": "^15.9.7",
     "ts-node": "^10.9.2",
-    "ts-patch": "^3.2.1",
+    "ts-patch": "^3.3.0",
     "tsp1": "npm:ts-patch@1.*.*",
     "tsp2": "npm:ts-patch@2.*.*",
     "typescript": "^5.7.2",
