@@ -343,10 +343,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ts-expose-internals@npm:ts-expose-internals@4.9.5":
-  version: 4.9.5
-  resolution: "ts-expose-internals@npm:4.9.5"
-  checksum: 10c0/3f5b24f30c1f31a982f2a93b72de18c70da3e4c26d90afdc9428d00c7eef42d91beac7a0fa564f8af815c044ae26ca6da4d9e3aea21a2f479511397ead4d0c8e
+"@types/ts-expose-internals@npm:ts-expose-internals@5.6.3":
+  version: 5.6.3
+  resolution: "ts-expose-internals@npm:5.6.3"
+  checksum: 10c0/258c697c2d02d95ec2fde6a6b75c3f93bdfd7498dc980a85843ab0272e3cd08249acc7aab26b27395285f414f48afc7ca089626f215feeb84e97acb0e3bde4d6
   languageName: node
   linkType: hard
 
@@ -2929,7 +2929,7 @@ __metadata:
     "@types/eslint": "npm:^9"
     "@types/minimatch": "npm:^5.1.2"
     "@types/node": "npm:^22.5.2"
-    "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5"
+    "@types/ts-expose-internals": "npm:ts-expose-internals@5.6.3"
     "@types/ts-node": "npm:ts-node@^10.9.2"
     "@types/typescript-3": "npm:typescript@3.x"
     "@types/typescript-4.7": "npm:typescript@4.9.x"
