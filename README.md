@@ -192,6 +192,12 @@ Use the `@no-transform-path` tag to explicitly disable transformation for a sing
 import "normally-transformed"; // This will remain 'normally-transformed', even though it has a different value in paths config
 ```
 
+## Version Compatibility
+
+| `typescript-transform-paths` | TypeScript            | NodeJS |
+| ---------------------------- | --------------------- | ------ |
+| ^3.5.2                       | >=3.6.5, >=4.x, >=5.x | >=18   |
+
 ## Project Guidelines for Contributors
 
 - Package Manager: `yarn` (`yarn install`)
