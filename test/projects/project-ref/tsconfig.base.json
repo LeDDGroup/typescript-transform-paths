@@ -14,10 +14,10 @@
     },
     "plugins": [
       {
-        "transform": "typescript-transform-paths"
+        "transform": "../../../../src/index.ts"
       },
       {
-        "transform": "typescript-transform-paths",
+        "transform": "../../../../src/index.ts",
         "afterDeclarations": true
       }
     ]
