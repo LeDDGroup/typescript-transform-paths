@@ -1,13 +1,11 @@
 {
-  "extends": ["@tsconfig/strictest", "@tsconfig/node18"],
-  "include": ["src"],
-  "exclude": ["src/declarations"],
+  "extends": "@tsconfig/strictest",
+  "include": ["./src/**/*", "./test/**/*"],
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
-    "declaration": true,
-    "sourceMap": true,
+    "types": ["jest", "node", "ts-expose-internals"],
+    "noEmit": true,
     // less strict
+    "esModuleInterop": true,
     "exactOptionalPropertyTypes": false
   }
 }

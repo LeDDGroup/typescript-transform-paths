@@ -76,7 +76,6 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
         name: Identifier | undefined,
         namedBindings: NamedImportBindings | undefined,
       ) {
-        // @ts-expect-error TODO investigate type issue
         return ts.updateImportClause.apply(void 0, downSample(node, name, namedBindings));
       };
     }
@@ -113,6 +112,7 @@ export function handler(context: TsTransformPathsContext, prop: string | symbol)
           dsNode.modifiers,
           dsExportClause,
           dsModuleSpecifier,
+          // @ts-expect-error -- TODO fix later
           dsNode.isTypeOnly,
         );
       };
