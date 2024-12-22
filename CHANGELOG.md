@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.5.3
+
+
+### 🤖 CI
+
+- Fix changelogen not pushing code ([221136a](https://github.com/LeDDGroup/typescript-transform-paths/commit/221136a))
+
+### ❤️ Contributors
+
+- Daniel Perez Alvarez <danielpza@protonmail.com>
+
 ## v3.5.2
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.1...v3.5.2)
