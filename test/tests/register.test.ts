@@ -1,3 +1,4 @@
+import type { MockInstance } from "vitest";
 import * as tsNode from "ts-node";
 import { REGISTER_INSTANCE } from "ts-node";
 import { PluginConfig } from "ts-patch";
@@ -49,7 +50,7 @@ describe(`Register script`, () => {
     test(`Registers initial ts-node if none found`, () => {
       const originalTsNodeInstance = global.process[instanceSymbol];
       global.process[instanceSymbol] = void 0;
-      let registerSpy: vi.SpyInstance | undefined;
+      let registerSpy: MockInstance | undefined;
       try {
         registerSpy = vi.spyOn(tsNode, "register");
         expect(global.process[instanceSymbol]).toBeUndefined();
@@ -70,7 +71,7 @@ describe(`Register script`, () => {
       const originalTsNodeInstance = global.process[instanceSymbol];
       // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'Service | undefined'.
       global.process[instanceSymbol] = fakeInstance;
-      let registerSpy: vi.SpyInstance | undefined;
+      let registerSpy: MockInstance | undefined;
       try {
         registerSpy = vi.spyOn(tsNode, "register");
 
@@ -156,8 +157,8 @@ describe(`Register script`, () => {
       }
 
       describe.each(configMap)(`$label`, ({ transformers, hasBefore, hasAfterDeclarations }) => {
-        let mockTransformer: vi.SpyInstance;
-        let initializeSpy: vi.SpyInstance;
+        let mockTransformer: MockInstance;
+        let initializeSpy: MockInstance;
         let registerResult: tsNode.RegisterOptions;
         let instanceRegistrationResult: tsNode.Service;
         let mergedTransformers: CustomTransformers;
