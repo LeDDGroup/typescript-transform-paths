@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-explicit-any: warn */
 import { execSync } from "node:child_process";
 import { readFileSync, rmSync } from "node:fs";
 import path from "node:path";
@@ -8,6 +9,7 @@ import { nxTransformerPlugin } from "typescript-transform-paths";
 import * as transformerModule from "../../dist/transformer";
 
 import { projectsPaths } from "../config";
+import type { MockInstance } from "vitest";
 
 /* ****************************************************************************************************************** *
  * Tests
@@ -15,7 +17,7 @@ import { projectsPaths } from "../config";
 
 describe(`NX Transformer`, () => {
   describe("Plugin", () => {
-    let mockedTransformer: vi.SpyInstance;
+    let mockedTransformer: MockInstance;
 
     const program = { x: 1 };
 
@@ -38,6 +40,7 @@ describe(`NX Transformer`, () => {
       expect(mockedTransformer).toHaveBeenCalledTimes(1);
       expect(mockedTransformer.mock.lastCall).toHaveLength(2);
 
+      // @ts-expect-error -- TODO fix later
       const [recProgram, recConfig] = mockedTransformer.mock.lastCall;
       expect(recProgram).toBe(program);
       expect(recConfig).toStrictEqual(config);
