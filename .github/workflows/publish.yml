@@ -1,9 +1,26 @@
 name: Publish
 
 on:
-  push:
-    tags:
-      - v*.*.*
+  workflow_dispatch:
+    inputs:
+      publishTag:
+        description: "npm publish --tag <tag>"
+        required: true
+        default: "latest"
+        type: choice
+        options:
+          - latest
+          - next
+          - test
+      bump:
+        description: "Changelogen bump flag"
+        required: true
+        default: "--bump"
+        type: choice
+        options:
+          - --bump
+          - --prerelease
+          - --canary
 
 permissions:
   id-token: write
@@ -27,11 +44,11 @@ jobs:
       - name: Install Packages
         run: yarn install
 
-      - name: Build
-        run: yarn build
+      - name: Bump Version
+        run: yarn changelogen --release --push ${{ github.event.inputs.bump }}
 
       - name: Publish to NPM
-        run: npm publish --provenance
+        run: npm publish --provenance --tag ${{ github.event.inputs.publishTag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
