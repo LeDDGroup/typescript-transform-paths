@@ -7,14 +7,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url)); // https://stackoverf
 
 function patchTsModules() {
   const rootDir = __dirname;
+  const moduleName = "typescript";
 
-  /** @param {string} moduleName */
-  function patchTypescript(moduleName, tspatch) {
-    const basedir = resolve(rootDir, "node_modules", moduleName);
-    tspatch(["tsc.js", "typescript.js"], { basedir, dir: basedir });
-  }
-
-  patchTypescript("typescript", patch);
+  const basedir = resolve(rootDir, "node_modules", moduleName);
+  // @ts-expect-error -- TODO fix later
+  patch(["tsc.js", "typescript.js"], { basedir, dir: basedir });
 }
 
 patchTsModules();
