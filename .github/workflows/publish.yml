@@ -24,6 +24,7 @@ on:
 
 permissions:
   id-token: write
+  contents: write
 
 jobs:
   publish:
@@ -31,6 +32,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup git
+        run: |
+          # https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - run: corepack enable
 
