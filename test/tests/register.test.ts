@@ -1,3 +1,4 @@
+import type { MockInstance } from "vitest";
 import * as tsNode from "ts-node";
 import { REGISTER_INSTANCE } from "ts-node";
 import { PluginConfig } from "ts-patch";
@@ -49,9 +50,9 @@ describe(`Register script`, () => {
     test(`Registers initial ts-node if none found`, () => {
       const originalTsNodeInstance = global.process[instanceSymbol];
       global.process[instanceSymbol] = void 0;
-      let registerSpy: jest.SpyInstance | undefined;
+      let registerSpy: MockInstance | undefined;
       try {
-        registerSpy = jest.spyOn(tsNode, "register");
+        registerSpy = vi.spyOn(tsNode, "register");
         expect(global.process[instanceSymbol]).toBeUndefined();
 
         register.initialize();
@@ -70,9 +71,9 @@ describe(`Register script`, () => {
       const originalTsNodeInstance = global.process[instanceSymbol];
       // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'Service | undefined'.
       global.process[instanceSymbol] = fakeInstance;
-      let registerSpy: jest.SpyInstance | undefined;
+      let registerSpy: MockInstance | undefined;
       try {
-        registerSpy = jest.spyOn(tsNode, "register");
+        registerSpy = vi.spyOn(tsNode, "register");
 
         const { tsNodeInstance } = register.initialize();
 
@@ -94,26 +95,22 @@ describe(`Register script`, () => {
 
   describe(`Register`, () => {
     test(`Throws without ts-node`, () => {
-      jest.doMock(
-        "ts-node",
-        () => {
-          throw new ModuleNotFoundError("ts-node");
-        },
-        { virtual: true },
-      );
+      vi.doMock("ts-node", () => {
+        throw new ModuleNotFoundError("ts-node");
+      });
       expect(() => register()).toThrow(`Cannot resolve ts-node`);
-      jest.dontMock("ts-node");
+      vi.doUnmock("ts-node");
     });
 
     test(`Throws if can't register ts-node`, () => {
-      jest.doMock("ts-node", () => ({ register: () => {} }), { virtual: true });
+      vi.doMock("ts-node", () => ({ register: () => {} }));
       expect(() => register()).toThrow(`Could not register ts-node instance!`);
-      jest.dontMock("ts-node");
+      vi.doUnmock("ts-node");
     });
 
     test(`No transformers in tsConfig exits quietly`, () => {
       const originalInitialize = register.initialize;
-      const initializeSpy = jest.spyOn(register, "initialize");
+      const initializeSpy = vi.spyOn(register, "initialize");
       try {
         initializeSpy.mockImplementation(() => {
           const res = originalInitialize();
@@ -140,7 +137,7 @@ describe(`Register script`, () => {
         after: [fakeExistingTransformer],
         afterDeclarations: [fakeExistingTransformer],
       };
-      const transformerFactoryFn = jest.fn().mockReturnValue(fakeTransformerConfig);
+      const transformerFactoryFn = vi.fn().mockReturnValue(fakeTransformerConfig);
       const fakeProgram: unknown = {};
 
       let existingTransformers: CustomTransformers | ((p: Program) => CustomTransformers) | undefined;
@@ -160,20 +157,20 @@ describe(`Register script`, () => {
       }
 
       describe.each(configMap)(`$label`, ({ transformers, hasBefore, hasAfterDeclarations }) => {
-        let mockTransformer: jest.SpyInstance;
-        let initializeSpy: jest.SpyInstance;
+        let mockTransformer: MockInstance;
+        let initializeSpy: MockInstance;
         let registerResult: tsNode.RegisterOptions;
         let instanceRegistrationResult: tsNode.Service;
         let mergedTransformers: CustomTransformers;
 
         beforeAll(() => {
           // @ts-expect-error TS(2345) FIXME: Argument of type '() => unknown' is not assignable to parameter of type '(transformationContext: TransformationContext) => (sourceFile: SourceFile) => SourceFile'.
-          mockTransformer = jest.spyOn(transformerModule, "default").mockReturnValue(fakeTransformer);
+          mockTransformer = vi.spyOn(transformerModule, "default").mockReturnValue(fakeTransformer);
 
           global.process[instanceSymbol] = void 0;
 
           const originalInitialize = register.initialize;
-          initializeSpy = jest.spyOn(register, "initialize");
+          initializeSpy = vi.spyOn(register, "initialize");
           initializeSpy.mockImplementation(() => {
             const res = originalInitialize();
             if (existingTransformers) res.tsNodeInstance.options.transformers = existingTransformers;

@@ -2,7 +2,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "vitest --globals",
     "g:ts-node": "cd $INIT_CWD && ts-node",
     "postinstall": "node prepare.mjs"
   },
@@ -12,21 +12,15 @@
     "@nrwl/node": "^15.9.7",
     "@nrwl/workspace": "^15.9.7",
     "@tsconfig/node18": "^18.2.4",
-    "@types/jest": "^29.5.12",
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5",
-    "jest": "^29.7.0",
     "nx": "^15.9.7",
-    "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
     "ts-patch": "^3.3.0",
     "tsp1": "npm:ts-patch@1.*.*",
     "tsp2": "npm:ts-patch@2.*.*",
     "typescript": "^5.7.2",
-    "typescript-3": "npm:typescript@3.6.5",
-    "typescript-4.7": "npm:typescript@4.7.4",
-    "typescript-5.5": "npm:typescript@5.5.4",
-    "typescript-5.6": "npm:typescript@5.6.3",
-    "typescript-transform-paths": "portal:../"
+    "typescript-transform-paths": "portal:../",
+    "vitest": "^2.1.8"
   },
   "workspaces": [
     "projects/*"
