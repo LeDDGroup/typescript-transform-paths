@@ -401,13 +401,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/typescript-4.7@npm:typescript@4.9.x":
-  version: 4.9.5
-  resolution: "typescript@npm:4.9.5"
+"@types/typescript-4.7@npm:typescript@5.8.x":
+  version: 5.8.2
+  resolution: "typescript@npm:5.8.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/5f6cad2e728a8a063521328e612d7876e12f0d8a8390d3b3aaa452a6a65e24e9ac8ea22beb72a924fd96ea0a49ea63bb4e251fb922b12eedfb7f7a26475e5c56
+  checksum: 10c0/5c4f6fbf1c6389b6928fe7b8fcd5dc73bb2d58cd4e3883f1d774ed5bd83b151cbac6b7ecf11723de56d4676daeba8713894b1e9af56174f2f9780ae7848ec3c6
   languageName: node
   linkType: hard
 
@@ -2935,7 +2935,7 @@ __metadata:
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5"
     "@types/ts-node": "npm:ts-node@^10.9.2"
     "@types/typescript-3": "npm:typescript@3.x"
-    "@types/typescript-4.7": "npm:typescript@4.9.x"
+    "@types/typescript-4.7": "npm:typescript@5.8.x"
     changelogen: "npm:^0.5.5"
     eslint: "npm:9.x"
     globals: "npm:^15.9.0"
