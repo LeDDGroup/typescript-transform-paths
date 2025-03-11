@@ -46,7 +46,8 @@ function getIsFsCaseSensitive() {
   return isCaseSensitiveFilesystem;
 }
 
-function getMatchPortion(from: string, to: string) {
+/** @private The Export is only for unit tests */
+export function getMatchPortion(from: string, to: string) {
   const lowerFrom = from.toLocaleLowerCase();
   const lowerTo = to.toLocaleLowerCase();
 
@@ -58,7 +59,7 @@ function getMatchPortion(from: string, to: string) {
     i++;
   }
 
-  return from.slice(0, i);
+  return to.slice(0, i);
 }
 
 // endregion
