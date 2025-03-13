@@ -70,8 +70,8 @@ export function getMatchPortion(from: string, to: string) {
 
 export function getRelativePath(from: string, to: string) {
   try {
-    from = fs.realpathSync.native(from);
     to = fs.realpathSync.native(to);
+    from = fs.realpathSync.native(from);
   } catch {
     if (!getIsFsCaseSensitive()) {
       const matchPortion = getMatchPortion(from, to);
