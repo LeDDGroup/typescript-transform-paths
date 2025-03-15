@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.5.5
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.4...v3.5.5)
+
+### 🩹 Fixes
+
+- When installed typescript version contains 0 it would cause error to be thrown "Expected version to be parsed" ([#399](https://github.com/LeDDGroup/typescript-transform-paths/pull/399))
+
+### ❤️ Contributors
+
+- Anthony Y. Zhu ([@anthony-y-zhu14](http://github.com/anthony-y-zhu14))
+
 ## v3.5.4
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.2...v3.5.4)
