@@ -104,7 +104,7 @@ export default function transformer(
     const { tryParsePatterns } = tsInstance;
     const [tsVersionMajor, tsVersionMinor] = tsInstance.versionMajorMinor.split(".").map((v) => +v);
 
-    if (!tsVersionMajor || !tsVersionMinor) throw new Error("Expected version to be parsed");
+    if (tsVersionMajor === undefined || tsVersionMinor === undefined) throw new Error("Expected version to be parsed");
 
     const tsTransformPathsContext: TsTransformPathsContext = {
       compilerOptions,
