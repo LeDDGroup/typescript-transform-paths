@@ -83,7 +83,7 @@
     "typescript": ">=3.6.5"
   },
   "dependencies": {
-    "minimatch": "^9.0.5"
+    "minimatch": "^10.0.1"
   },
   "prettier": {
     "plugins": [
