@@ -70,7 +70,7 @@
     "@types/ts-node": "npm:ts-node@^10.9.2",
     "@types/typescript-3": "npm:typescript@3.x",
     "@types/typescript-4.7": "npm:typescript@4.9.x",
-    "changelogen": "^0.5.5",
+    "changelogen": "^0.6.0",
     "eslint": "9.x",
     "globals": "^15.9.0",
     "prettier": "^3.3.3",
