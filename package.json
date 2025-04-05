@@ -68,7 +68,7 @@
     "@types/node": "^22.5.2",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "@types/ts-node": "npm:ts-node@^10.9.2",
-    "@types/typescript-3": "npm:typescript@3.x",
+    "@types/typescript-3": "npm:typescript@5.x",
     "@types/typescript-4.7": "npm:typescript@4.9.x",
     "changelogen": "^0.5.5",
     "eslint": "9.x",
