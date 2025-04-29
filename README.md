@@ -214,21 +214,8 @@ GH_TOKEN=$(gh auth token) yarn release
 - [NodeJS subpath imports](https://nodejs.org/api/packages.html#subpath-imports)
 - [Yarn link: protocol](https://yarnpkg.com/protocol/link)
 
-## Maintainers
-
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/nonara"><img src="https://avatars0.githubusercontent.com/u/1427565?v=4" width="100px;" alt=""/><br /><sub><b>Ron S.</b></sub></a></td>
-    <td align="center"><a href="https://github.com/danielpza"><img src="https://avatars2.githubusercontent.com/u/17787042?v=4" width="100px;" alt=""/><br /><sub><b>Daniel Perez Alvarez</b></sub></a></td>
-  </tr>
-</table>
-
 ## Contributors 
 
 <a href="https://github.com/leddgroup/typescript-transform-paths/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=leddgroup/typescript-transform-paths" />
 </a>
-
-Made with [contrib.rocks](https://contrib.rocks).
