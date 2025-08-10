@@ -80,7 +80,13 @@
     "typescript-eslint": "^8.39.0"
   },
   "peerDependencies": {
+    "ts-node": ">=10",
     "typescript": ">=3.6.5"
+  },
+  "peerDependenciesMeta": {
+    "ts-node": {
+      "optional": true
+    }
   },
   "dependencies": {
     "minimatch": "^9.0.5"

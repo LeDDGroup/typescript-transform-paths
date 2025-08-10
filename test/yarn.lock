@@ -9283,7 +9283,11 @@ __metadata:
   dependencies:
     minimatch: "npm:^9.0.5"
   peerDependencies:
+    ts-node: ">=10"
     typescript: ">=3.6.5"
+  peerDependenciesMeta:
+    ts-node:
+      optional: true
   languageName: node
   linkType: soft
 

@@ -2778,7 +2778,11 @@ __metadata:
     typescript: "npm:^5.9.2"
     typescript-eslint: "npm:^8.39.0"
   peerDependencies:
+    ts-node: ">=10"
     typescript: ">=3.6.5"
+  peerDependenciesMeta:
+    ts-node:
+      optional: true
   languageName: unknown
   linkType: soft
 
