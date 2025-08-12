@@ -89,7 +89,7 @@
     }
   },
   "dependencies": {
-    "minimatch": "^9.0.5"
+    "minimatch": "^10.0.3"
   },
   "prettier": {
     "plugins": [
