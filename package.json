@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "build": "tsdown --unbundle --clean --dts",
+    "build": "tsdown --unbundle --clean --dts --format=cjs",
     "test": "yarn test/ test",
     "release": "changelogen --release --push",
     "--------------": "",
