@@ -2,8 +2,6 @@ import ts, { CompilerOptions, EmitHost, Pattern, SourceFile } from "typescript";
 import { PluginConfig } from "ts-patch";
 import { Minimatch } from "minimatch";
 
-import { HarmonyFactory } from "./harmony";
-
 /* ****************************************************************************************************************** */
 // region: TS Types
 /* ****************************************************************************************************************** */
@@ -49,7 +47,7 @@ export interface TsTransformPathsContext {
 }
 
 export interface VisitorContext extends TsTransformPathsContext {
-  readonly factory: HarmonyFactory;
+  readonly factory: ts.NodeFactory;
   readonly sourceFile: ts.SourceFile;
   readonly isDeclarationFile: boolean;
   readonly originalSourceFile: ts.SourceFile;

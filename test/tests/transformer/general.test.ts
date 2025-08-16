@@ -50,9 +50,7 @@ describe(`Transformer -> General Tests`, () => {
       beforeAll(() => {
         transformed = transformedFiles[file];
         expected = {
-          // @ts-expect-error TS(2345) FIXME: Argument of type 'typeof ts | typeof ts | typeof import("typescript")' is not assignable to parameter of type 'typeof import("typescript")'.
           js: getExpected(tsInstance, file, originalFiles[file].js, projectRoot),
-          // @ts-expect-error TS(2345) FIXME: Argument of type 'typeof ts | typeof ts | typeof import("typescript")' is not assignable to parameter of type 'typeof import("typescript")'.
           dts: getExpected(tsInstance, file, originalFiles[file].dts, projectRoot),
         };
       });
