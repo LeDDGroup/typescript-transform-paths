@@ -3,6 +3,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
+    "test:node": "node --test --watch '**/*.test.ts'",
     "g:ts-node": "cd $INIT_CWD && ts-node",
     "postinstall": "node prepare.mjs"
   },
@@ -12,13 +13,17 @@
     "@nrwl/node": "^15.9.7",
     "@nrwl/workspace": "^15.9.7",
     "@tsconfig/node18": "^18.2.4",
+    "@tsconfig/node22": "^22.0.2",
     "@types/jest": "^29.5.14",
+    "@types/node": "^24.3.0",
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5",
+    "escape-string-regexp": "^5.0.0",
     "jest": "^29.7.0",
     "nx": "^15.9.7",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
     "ts-patch": "^3.3.0",
+    "tsx": "^4.20.4",
     "typescript": "^5.7.2",
     "typescript-transform-paths": "portal:../"
   },
