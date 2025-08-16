@@ -32,7 +32,7 @@
       "src/register-entry.ts",
       "src/plugins/nx-transformer-plugin.ts"
     ],
-    "unbundle": true,
+    "unbundle": false,
     "dts": true,
     "format": "cjs",
     "clean": true
