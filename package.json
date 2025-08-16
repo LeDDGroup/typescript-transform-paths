@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "build": "tsdown --unbundle --clean --dts --format=cjs",
+    "build": "tsdown",
     "test": "yarn test/ test",
     "release": "changelogen --release --push",
     "--------------": "",
@@ -25,6 +25,17 @@
     "lint": "prettier --check . && eslint .",
     "-------------- ": "",
     "prepack": "yarn build"
+  },
+  "tsdown": {
+    "entry": [
+      "src/index.ts",
+      "src/register-entry.ts",
+      "src/plugins/nx-transformer-plugin.ts"
+    ],
+    "unbundle": true,
+    "dts": true,
+    "format": "cjs",
+    "clean": true
   },
   "keywords": [
     "typescript",
