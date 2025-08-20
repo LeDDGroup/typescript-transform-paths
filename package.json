@@ -65,7 +65,7 @@
     "@tsconfig/strictest": "^2.0.5",
     "@types/eslint": "^9",
     "@types/minimatch": "^5.1.2",
-    "@types/node": "^22.5.2",
+    "@types/node": "^24.3.0",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "@types/ts-node": "npm:ts-node@^10.9.2",
     "@types/typescript-3": "npm:typescript@3.x",
