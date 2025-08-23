@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> [Looking for maintainers](https://github.com/LeDDGroup/typescript-transform-paths/issues/439)
+> 
+> [Alternatives](https://github.com/LeDDGroup/typescript-transform-paths/issues/438)
+
+---
+
 # typescript-transform-paths
 
 [![npm version](https://img.shields.io/npm/v/typescript-transform-paths.svg)](https://www.npmjs.com/package/typescript-transform-paths)
