@@ -1511,10 +1511,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^15.9.0":
-  version: 15.15.0
-  resolution: "globals@npm:15.15.0"
-  checksum: 10c0/f9ae80996392ca71316495a39bec88ac43ae3525a438b5626cd9d5ce9d5500d0a98a266409605f8cd7241c7acf57c354a48111ea02a767ba4f374b806d6861fe
+"globals@npm:^16.3.0":
+  version: 16.3.0
+  resolution: "globals@npm:16.3.0"
+  checksum: 10c0/c62dc20357d1c0bf2be4545d6c4141265d1a229bf1c3294955efb5b5ef611145391895e3f2729f8603809e81b30b516c33e6c2597573844449978606aad6eb38
   languageName: node
   linkType: hard
 
@@ -2999,7 +2999,7 @@ __metadata:
     "@types/typescript-4.7": "npm:typescript@4.9.x"
     changelogen: "npm:^0.5.5"
     eslint: "npm:9.x"
-    globals: "npm:^15.9.0"
+    globals: "npm:^16.3.0"
     minimatch: "npm:^9.0.5"
     prettier: "npm:^3.6.2"
     prettier-plugin-jsdoc: "npm:^1.3.3"
