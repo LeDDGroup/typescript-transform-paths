@@ -2,7 +2,7 @@
   "name": "typescript-transform-paths",
   "version": "3.5.5",
   "description": "Transforms module resolution paths using TypeScript path mapping and/or custom paths",
-  "type": "commonjs",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

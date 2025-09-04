@@ -1,6 +1,6 @@
-import ts, { CompilerOptions, EmitHost, Pattern, SourceFile } from "typescript";
-import { PluginConfig } from "ts-patch";
 import { Minimatch } from "minimatch";
+import { type PluginConfig } from "ts-patch";
+import ts, { type CompilerOptions, type EmitHost, type Pattern, type SourceFile } from "typescript";
 
 /* ****************************************************************************************************************** */
 // region: TS Types

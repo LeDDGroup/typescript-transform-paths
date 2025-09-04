@@ -1,9 +1,11 @@
-import { VisitorContext } from "../types";
-import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
 import * as path from "node:path";
-import { removeFileExtension, removeSuffix, ResolvedModuleFull, SourceFile } from "typescript";
-import { getOutputDirForSourceFile } from "./ts-helpers";
-import { getRelativePath } from "./get-relative-path";
+
+import { removeFileExtension, removeSuffix, type ResolvedModuleFull, type SourceFile } from "typescript";
+
+import { type VisitorContext } from "../types.ts";
+import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils.ts";
+import { getRelativePath } from "./get-relative-path.ts";
+import { getOutputDirForSourceFile } from "./ts-helpers.ts";
 
 export interface ResolvedModule {
   /** Absolute path to resolved module */
@@ -14,12 +16,12 @@ export interface ResolvedModule {
   isURL: boolean;
 }
 
-enum IndexType {
-  NonIndex,
-  Explicit,
-  Implicit,
-  ImplicitPackage,
-}
+const IndexType = {
+  NonIndex: 0,
+  Explicit: 1,
+  Implicit: 2,
+  ImplicitPackage: 3,
+};
 
 function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
   const resolvedFileName = resolvedModule.originalPath ?? resolvedModule.resolvedFileName;

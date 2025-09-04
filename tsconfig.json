@@ -7,6 +7,10 @@
     "outDir": "dist",
     "declaration": true,
     "sourceMap": true,
+    // https://nodejs.org/docs/latest/api/typescript.html
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
     // less strict
     "exactOptionalPropertyTypes": false
   }
