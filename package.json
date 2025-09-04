@@ -8,16 +8,12 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./register": "./dist/register-entry.js",
-    "./nx-transformer": "./dist/plugins/nx-transformer-plugin.js"
+    "./register": "./dist/register-entry.js"
   },
   "files": [
     "dist",
-    "types",
     "README.md",
-    "CHANGELOG.md",
-    "register.js",
-    "nx-transformer.js"
+    "CHANGELOG.md"
   ],
   "scripts": {
     "compile": "tsc",

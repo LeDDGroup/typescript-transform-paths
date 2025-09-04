@@ -77,30 +77,6 @@ import { sum } from "@utils/sum";
 
 - **Use with node** — Use the register script: `node -r typescript-transform-paths/register src/index.ts`
 
-- **Use with NX** — Add the `typescript-transform-paths/nx-transformer` to project config
-
-  `project.json`
-
-  ```jsonc
-  {
-    /* ... */
-    "targets": {
-      "build": {
-        /* ... */
-        "options": {
-          /* ... */
-          "transformers": [
-            {
-              "name": "typescript-transform-paths/nx-transformer",
-              "options": { "afterDeclarations": true },
-            },
-          ],
-        },
-      },
-    },
-  }
-  ```
-
 ## Virtual Directories
 
 TS allows defining
