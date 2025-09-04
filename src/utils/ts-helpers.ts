@@ -1,7 +1,9 @@
-import ts, { GetCanonicalFileName, SourceFile } from "typescript";
 import path from "node:path";
-import { VisitorContext } from "../types";
+
 import type { REGISTER_INSTANCE } from "ts-node";
+import ts, { type GetCanonicalFileName, type SourceFile } from "typescript";
+
+import { type VisitorContext } from "../types.ts";
 
 /* ****************************************************************************************************************** */
 // region: TS Helpers
