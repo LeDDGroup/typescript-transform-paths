@@ -1,6 +1,6 @@
 > [!IMPORTANT]
 > [Looking for maintainers](https://github.com/LeDDGroup/typescript-transform-paths/issues/439)
-> 
+>
 > [Alternatives](https://github.com/LeDDGroup/typescript-transform-paths/issues/438)
 
 ---
