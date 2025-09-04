@@ -54,7 +54,7 @@
   ],
   "devDependencies": {
     "@eslint/js": "^9.9.1",
-    "@tsconfig/node-lts": "^22.0.2",
+    "@tsconfig/node22": "^22.0.2",
     "@tsconfig/strictest": "^2.0.5",
     "@types/eslint": "^9",
     "@types/minimatch": "^5.1.2",

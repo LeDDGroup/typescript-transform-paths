@@ -254,13 +254,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tsconfig/node18@npm:^18.2.4":
-  version: 18.2.4
-  resolution: "@tsconfig/node18@npm:18.2.4"
-  checksum: 10c0/cdfd17f212660374eb2765cd5907b2252e43cfa2623cd52307a49f004327ef49bbe7d53c78b0aca57f33e9a5cb0d7d2eb5ded9be1235e6212f65c9f0699322b6
-  languageName: node
-  linkType: hard
-
 "@tsconfig/node22@npm:^22.0.2":
   version: 22.0.2
   resolution: "@tsconfig/node22@npm:22.0.2"
@@ -1112,7 +1105,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@tsconfig/node18": "npm:^18.2.4"
     "@tsconfig/node22": "npm:^22.0.2"
     "@types/node": "npm:^24.3.0"
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5"

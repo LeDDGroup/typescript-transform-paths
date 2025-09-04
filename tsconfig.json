@@ -1,5 +1,5 @@
 {
-  "extends": ["@tsconfig/strictest", "@tsconfig/node-lts"],
+  "extends": ["@tsconfig/strictest", "@tsconfig/node22"],
   "include": ["src"],
   "exclude": ["src/declarations"],
   "compilerOptions": {
