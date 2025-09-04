@@ -1,10 +1,18 @@
 import path from "node:path";
-import ts, { CompilerOptions } from "typescript";
-import { RunMode, TsNodeState, TsTransformPathsConfig, TsTransformPathsContext, VisitorContext } from "./types";
-import { nodeVisitor } from "./visitor";
+
 import { Minimatch } from "minimatch";
-import { createSyntheticEmitHost, getTsNodeRegistrationProperties } from "./utils/ts-helpers";
-import { TransformerExtras } from "ts-patch";
+import type { TransformerExtras } from "ts-patch";
+import ts, { type CompilerOptions } from "typescript";
+
+import {
+  RunMode,
+  TsNodeState,
+  type TsTransformPathsConfig,
+  type TsTransformPathsContext,
+  type VisitorContext,
+} from "./types.ts";
+import { createSyntheticEmitHost, getTsNodeRegistrationProperties } from "./utils/ts-helpers.ts";
+import { nodeVisitor } from "./visitor.ts";
 
 function getTsProperties(args: Parameters<typeof transformer>) {
   let fileNames: readonly string[] | undefined;

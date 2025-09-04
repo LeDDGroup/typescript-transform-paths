@@ -1,10 +1,18 @@
 {
-  "extends": "@tsconfig/node22",
+  "extends": [
+    // "@tsconfig/strictest",
+    "@tsconfig/node22"
+  ],
   "include": ["tests", "utils"],
   "compilerOptions": {
     "types": ["node", "ts-expose-internals"],
     "noEmit": true,
     "strict": true,
-    "esModuleInterop": true
+    // https://nodejs.org/docs/latest/api/typescript.html
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    // less strict
+    "exactOptionalPropertyTypes": false
   }
 }

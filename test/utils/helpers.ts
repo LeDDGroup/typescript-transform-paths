@@ -1,7 +1,9 @@
-import { default as tstpTransform, TsTransformPathsConfig } from "typescript-transform-paths";
 import fs from "node:fs";
+
 import ts from "typescript";
-import * as config from "../config";
+import { default as tstpTransform, type TsTransformPathsConfig } from "typescript-transform-paths";
+
+import * as config from "../config.ts";
 
 /* ****************************************************************************************************************** */
 // region: Types

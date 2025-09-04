@@ -1,2 +1,2 @@
-export * from "./helpers";
-export * from "./module-not-found-error";
+export * from "./helpers.ts";
+export * from "./module-not-found-error.ts";

@@ -1,6 +1,6 @@
-import ts, { CompilerOptions, EmitHost, Pattern, SourceFile } from "typescript";
-import { PluginConfig } from "ts-patch";
 import { Minimatch } from "minimatch";
+import { type PluginConfig } from "ts-patch";
+import ts, { type CompilerOptions, type EmitHost, type Pattern, type SourceFile } from "typescript";
 
 /* ****************************************************************************************************************** */
 // region: TS Types
@@ -60,15 +60,19 @@ export interface VisitorContext extends TsTransformPathsContext {
 // region: General
 /* ****************************************************************************************************************** */
 
-export enum RunMode {
-  TsNode = "ts-node",
-  Manual = "manual",
-  Program = "program",
-}
+export const RunMode = {
+  TsNode: "ts-node",
+  Manual: "manual",
+  Program: "program",
+};
 
-export enum TsNodeState {
-  Full,
-  Stripped,
-}
+export type RunMode = (typeof RunMode)[keyof typeof RunMode];
+
+export const TsNodeState = {
+  Full: 0,
+  Stripped: 1,
+};
+
+export type TsNodeState = (typeof TsNodeState)[keyof typeof TsNodeState];
 
 // endregion
