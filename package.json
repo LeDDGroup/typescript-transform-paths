@@ -7,8 +7,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./register": "./dist/register-entry.js"
+    }
   },
   "files": [
     "dist",
