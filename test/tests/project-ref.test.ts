@@ -1,5 +1,6 @@
 // noinspection ES6UnusedImports
 import * as path from "node:path";
+import { describe, test, before } from "node:test";
 import { createTsSolutionBuilder, EmittedFiles } from "../utils";
 import { projectsPaths, ts } from "../config";
 
@@ -19,18 +20,18 @@ const indexFile = ts.normalizePath(path.join(projectDir, "lib/b/index.ts"));
 describe(`Project References`, () => {
   let emittedFiles: EmittedFiles;
 
-  beforeAll(() => {
+  before(() => {
     const builder = createTsSolutionBuilder({ tsInstance: ts, projectDir });
     emittedFiles = builder.getEmitFiles();
   });
 
-  test(`Specifier for referenced project file resolves properly`, () => {
-    expect(emittedFiles[indexFile].js).toMatch(`export { AReffedConst } from "../a/index"`);
-    expect(emittedFiles[indexFile].dts).toMatch(`export { AReffedConst } from "../a/index"`);
+  test(`Specifier for referenced project file resolves properly`, (t) => {
+    t.assert.match(emittedFiles[indexFile].js, /export { AReffedConst } from "..\/a\/index"/);
+    t.assert.match(emittedFiles[indexFile].dts, /export { AReffedConst } from "..\/a\/index"/);
   });
 
-  test(`Specifier for local file resolves properly`, () => {
-    expect(emittedFiles[indexFile].js).toMatch(`export { LocalConst } from "./local/index"`);
-    expect(emittedFiles[indexFile].dts).toMatch(`export { LocalConst } from "./local/index"`);
+  test(`Specifier for local file resolves properly`, (t) => {
+    t.assert.match(emittedFiles[indexFile].js, /export { LocalConst } from ".\/local\/index"/);
+    t.assert.match(emittedFiles[indexFile].dts, /export { LocalConst } from ".\/local\/index"/);
   });
 });
