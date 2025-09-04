@@ -1,3 +1,3 @@
 import { greet } from "#utils/greet.js";
 
-greet("World");
+console.log(greet("World"));

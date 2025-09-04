@@ -2,9 +2,9 @@
   "name": "example-basic",
   "type": "module",
   "scripts": {
-    "start": "dist/index.js",
+    "start": "node dist/index.js",
     "build": "tsc",
-    "prepare": "ts-patch install -s"
+    "prepare": "ts-patch install -s && node --run build"
   },
   "packageManager": "pnpm@10.12.4",
   "devDependencies": {
