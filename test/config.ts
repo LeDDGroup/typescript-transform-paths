@@ -1,7 +1,7 @@
 import ts from "typescript";
 import path from "node:path";
 
-export const tsModules = <const>[["Latest", ts, "typescript"]];
+export const tsModules = [["Latest", ts, "typescript"]] as const;
 
 export const projectsPaths = path.join(__dirname, "./projects");
 export const transformerPath = require.resolve("typescript-transform-paths");

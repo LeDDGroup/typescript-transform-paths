@@ -1,8 +1,9 @@
 // noinspection ES6UnusedImports
 import * as path from "node:path";
-import { describe, test, before } from "node:test";
-import { createTsSolutionBuilder, EmittedFiles } from "../utils";
-import { projectsPaths, ts } from "../config";
+import { before, describe, test } from "node:test";
+
+import { projectsPaths, ts } from "../config.ts";
+import { createTsSolutionBuilder, type EmittedFiles } from "../utils/index.ts";
 
 /* ****************************************************************************************************************** *
  * Config

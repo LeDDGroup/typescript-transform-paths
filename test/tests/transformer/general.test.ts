@@ -1,8 +1,9 @@
 // noinspection ES6UnusedImports
 import * as path from "node:path";
-import { describe, before, test } from "node:test";
-import { createTsProgram, EmittedFiles, getEmitResultFromProgram } from "../../utils";
-import { ts, tsModules, projectsPaths } from "../../config";
+import { before, describe, test } from "node:test";
+
+import { projectsPaths, ts, tsModules } from "../../config.ts";
+import { createTsProgram, getEmitResultFromProgram, type EmittedFiles } from "../../utils/index.ts";
 
 /* ****************************************************************************************************************** *
  * Helpers
