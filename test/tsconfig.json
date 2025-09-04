@@ -1,9 +1,8 @@
 {
-  "extends": "@tsconfig/node18",
+  "extends": "@tsconfig/node22",
   "include": ["tests", "utils"],
-
   "compilerOptions": {
-    "types": ["jest", "node", "ts-expose-internals"],
+    "types": ["node", "ts-expose-internals"],
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true
