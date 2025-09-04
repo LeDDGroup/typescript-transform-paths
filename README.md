@@ -60,22 +60,8 @@ import { sum } from "@utils/sum";
 ### 3. Usage
 
 - **Compile with `tsc`** — Use [ts-patch](https://github.com/nonara/ts-patch)
-
-- **Use with ts-node** — Add `typescript-transform-paths/register` to `require` config.
-
-  `tsconfig.json`
-
-  ```jsonc
-  {
-    "ts-node": {
-      "transpileOnly": true,
-      "require": [ "typescript-transform-paths/register" ],
-    },
-    "compilerOptions" { /* ... */ }
-  }
-  ```
-
-- **Use with node** — Use the register script: `node -r typescript-transform-paths/register src/index.ts`
+- **ts-node** — See [wiki](https://github.com/LeDDGroup/typescript-transform-paths/wiki/Integration-with-nx)
+- **nx** — See [wiki](https://github.com/LeDDGroup/typescript-transform-paths/wiki/Integration-with-ts%E2%80%90node)
 
 ## Virtual Directories
 
