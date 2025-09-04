@@ -1,10 +1,9 @@
 ---
 name: Bug report
 about: Report a bug
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 **Describe the bug**
@@ -15,6 +14,7 @@ Please provide a minimal reproduction. Use [this link](https://stackblitz.com/gi
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
