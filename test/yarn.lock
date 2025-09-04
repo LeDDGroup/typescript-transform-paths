@@ -6870,7 +6870,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx@npm:15.9.7, nx@npm:^15.9.7":
+"nx@npm:15.9.7":
   version: 15.9.7
   resolution: "nx@npm:15.9.7"
   dependencies:
@@ -7671,12 +7671,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"project-nx@workspace:projects/nx":
-  version: 0.0.0-use.local
-  resolution: "project-nx@workspace:projects/nx"
-  languageName: unknown
-  linkType: soft
-
 "promise-retry@npm:^2.0.1":
   version: 2.0.1
   resolution: "promise-retry@npm:2.0.1"
@@ -8025,7 +8019,6 @@ __metadata:
     "@types/jest": "npm:^29.5.14"
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5"
     jest: "npm:^29.7.0"
-    nx: "npm:^15.9.7"
     ts-jest: "npm:^29.2.4"
     ts-node: "npm:^10.9.2"
     ts-patch: "npm:^3.3.0"
