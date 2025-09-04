@@ -4,7 +4,7 @@ import { PluginConfig } from "ts-patch";
 import { CustomTransformers, PluginImport, Program } from "typescript";
 
 import { register } from "typescript-transform-paths";
-import transformerModule from "../../dist/transformer";
+import * as transformerModule from "../../dist/transformer";
 
 import { ModuleNotFoundError } from "../utils";
 

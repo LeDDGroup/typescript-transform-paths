@@ -5,7 +5,7 @@ import path from "node:path";
 import ts from "typescript";
 
 import { nxTransformerPlugin } from "typescript-transform-paths";
-import transformerModule from "../../dist/transformer";
+import * as transformerModule from "../../dist/transformer";
 
 import { projectsPaths } from "../config";
 
