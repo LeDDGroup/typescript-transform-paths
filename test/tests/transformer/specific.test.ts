@@ -5,10 +5,15 @@ import { before, describe, test } from "node:test";
 
 import TS from "typescript";
 
-import { TsTransformPathsConfig } from "typescript-transform-paths";
+import { type TsTransformPathsConfig } from "typescript-transform-paths";
 
-import { projectsPaths, ts, tsModules } from "../../config";
-import { createTsProgram, EmittedFiles, getEmitResultFromProgram, getManualEmitResult } from "../../utils";
+import { projectsPaths, ts, tsModules } from "../../config.ts";
+import {
+  createTsProgram,
+  getEmitResultFromProgram,
+  getManualEmitResult,
+  type EmittedFiles,
+} from "../../utils/index.ts";
 
 /* ****************************************************************************************************************** *
  * Config
