@@ -1,5 +1,5 @@
 import { describe, test } from "node:test";
-import { getMatchPortion } from "../../src/utils/get-relative-path";
+import { getMatchPortion } from "../../src/utils/get-relative-path.ts";
 
 describe(`getMatchPortion`, () => {
   test("works in a simple case", (t) => {
