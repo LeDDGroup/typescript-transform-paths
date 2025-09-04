@@ -1,6 +1,7 @@
 {
   "private": true,
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "test": "node --test --import tsx 'tests/**/*.test.ts'",
     "postinstall": "node prepare.mjs"
