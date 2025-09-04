@@ -30,7 +30,8 @@
     "entry": [
       "src/index.ts",
       "src/register-entry.ts",
-      "src/plugins/nx-transformer-plugin.ts"
+      "src/plugins/nx-transformer-plugin.ts",
+      "src/transformer.ts"
     ],
     "unbundle": false,
     "dts": true,
