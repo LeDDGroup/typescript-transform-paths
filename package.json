@@ -28,10 +28,7 @@
   },
   "tsdown": {
     "entry": [
-      "src/index.ts",
-      "src/register-entry.ts",
-      "src/plugins/nx-transformer-plugin.ts",
-      "src/transformer.ts"
+      "src/index.ts"
     ],
     "unbundle": false,
     "dts": true,
