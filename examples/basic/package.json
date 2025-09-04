@@ -1,0 +1,15 @@
+{
+  "name": "example-basic",
+  "type": "module",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "prepare": "ts-patch install -s && pnpm build"
+  },
+  "packageManager": "pnpm@10.12.4",
+  "devDependencies": {
+    "ts-patch": "^3.3.0",
+    "typescript": "^5.9.2",
+    "typescript-transform-paths": "^3.5.5"
+  }
+}
