@@ -1,7 +1,9 @@
 // noinspection ES6UnusedImports
 import * as path from "node:path";
-import { createTsProgram, EmittedFiles, getEmitResultFromProgram } from "../../utils";
-import { ts, tsModules, projectsPaths } from "../../config";
+import { before, describe, test } from "node:test";
+
+import { projectsPaths, ts, tsModules } from "../../config.ts";
+import { createTsProgram, getEmitResultFromProgram, type EmittedFiles } from "../../utils/index.ts";
 
 /* ****************************************************************************************************************** *
  * Helpers
@@ -30,35 +32,36 @@ describe(`Transformer -> General Tests`, () => {
   const projectRoot = path.join(projectsPaths, "general");
   const tsConfigFile = path.join(projectRoot, "tsconfig.json");
 
-  describe.each(tsModules)(`TypeScript %s`, (s, tsInstance) => {
-    let originalFiles: EmittedFiles = {};
-    let transformedFiles: EmittedFiles = {};
+  for (const [s, tsInstance] of tsModules)
+    describe(`TypeScript ${s}`, () => {
+      let originalFiles: EmittedFiles = {};
+      let transformedFiles: EmittedFiles = {};
 
-    const program = createTsProgram({ tsInstance: tsInstance as typeof ts, tsConfigFile, disablePlugin: true });
-    const programWithTransformer = createTsProgram({ tsInstance: tsInstance as typeof ts, tsConfigFile });
-    const fileNames = program.getRootFileNames() as string[];
+      const program = createTsProgram({ tsInstance: tsInstance as typeof ts, tsConfigFile, disablePlugin: true });
+      const programWithTransformer = createTsProgram({ tsInstance: tsInstance as typeof ts, tsConfigFile });
+      const fileNames = program.getRootFileNames() as string[];
 
-    beforeAll(() => {
-      originalFiles = getEmitResultFromProgram(program);
-      transformedFiles = getEmitResultFromProgram(programWithTransformer);
-    });
-
-    describe.each(fileNames!.map((p) => [p.slice(projectRoot.length), p]))(`%s`, (_, file) => {
-      let expected: EmittedFiles[string];
-      let transformed: EmittedFiles[string];
-
-      beforeAll(() => {
-        transformed = transformedFiles[file];
-        expected = {
-          // @ts-expect-error TS(2345) FIXME: Argument of type 'typeof ts | typeof ts | typeof import("typescript")' is not assignable to parameter of type 'typeof import("typescript")'.
-          js: getExpected(tsInstance, file, originalFiles[file].js, projectRoot),
-          // @ts-expect-error TS(2345) FIXME: Argument of type 'typeof ts | typeof ts | typeof import("typescript")' is not assignable to parameter of type 'typeof import("typescript")'.
-          dts: getExpected(tsInstance, file, originalFiles[file].dts, projectRoot),
-        };
+      before(() => {
+        originalFiles = getEmitResultFromProgram(program);
+        transformedFiles = getEmitResultFromProgram(programWithTransformer);
       });
 
-      test(`js matches`, () => expect(transformed.js).toEqual(expected.js));
-      test(`dts matches`, () => expect(transformed.dts).toEqual(expected.dts));
+      for (const file of fileNames!) {
+        describe(file, () => {
+          let expected: EmittedFiles[string];
+          let transformed: EmittedFiles[string];
+
+          before(() => {
+            transformed = transformedFiles[file];
+            expected = {
+              js: getExpected(tsInstance, file, originalFiles[file].js, projectRoot),
+              dts: getExpected(tsInstance, file, originalFiles[file].dts, projectRoot),
+            };
+          });
+
+          test(`js matches`, (t) => t.assert.strictEqual(transformed.js, expected.js));
+          test(`dts matches`, (t) => t.assert.strictEqual(transformed.dts, expected.dts));
+        });
+      }
     });
-  });
 });

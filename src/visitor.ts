@@ -1,6 +1,7 @@
 import ts from "typescript";
-import { VisitorContext } from "./types";
-import { elideImportOrExportDeclaration, resolvePathAndUpdateNode } from "./utils";
+
+import { type VisitorContext } from "./types.ts";
+import { elideImportOrExportDeclaration, resolvePathAndUpdateNode } from "./utils/index.ts";
 
 const isAsyncImport = ({ tsInstance }: VisitorContext, node: ts.Node): node is ts.CallExpression =>
   tsInstance.isCallExpression(node) &&
@@ -29,7 +30,7 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
    *   import("module");
    */
   if (isRequire(this, node) || isAsyncImport(this, node))
-    return resolvePathAndUpdateNode(this, node, (<ts.StringLiteral>node.arguments[0]).text, (p) => {
+    return resolvePathAndUpdateNode(this, node, (node.arguments[0] as ts.StringLiteral).text, (p) => {
       const res = factory.updateCallExpression(node, node.expression, node.typeArguments, [p]);
 
       /* Handle comments */

@@ -1,8 +1,9 @@
 import ts from "typescript";
-import { VisitorContext } from "../types";
-import { isURL, maybeAddRelativeLocalPrefix } from "./general-utils";
-import { isModulePathsMatch } from "./ts-helpers";
-import { resolveModuleName } from "./resolve-module-name";
+
+import { type VisitorContext } from "../types.ts";
+import { isURL, maybeAddRelativeLocalPrefix } from "./general-utils.ts";
+import { resolveModuleName } from "./resolve-module-name.ts";
+import { isModulePathsMatch } from "./ts-helpers.ts";
 
 /** Gets proper path and calls updaterFn to get the new node if it should be updated */
 export function resolvePathAndUpdateNode(
