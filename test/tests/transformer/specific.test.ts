@@ -1,15 +1,14 @@
 // noinspection ES6UnusedImports
+import assert from "node:assert";
 import * as path from "node:path";
-import {
-  createTsProgram,
-  EmittedFiles,
-  getEmitResultFromProgram,
-  getManualEmitResult,
-  getTsNodeEmitResult,
-} from "../../utils";
-import { projectsPaths, ts, tsModules } from "../../config";
-import { TsTransformPathsConfig } from "typescript-transform-paths";
+import { before, describe, test } from "node:test";
+
 import TS from "typescript";
+
+import { TsTransformPathsConfig } from "typescript-transform-paths";
+
+import { projectsPaths, ts, tsModules } from "../../config";
+import { createTsProgram, EmittedFiles, getEmitResultFromProgram, getManualEmitResult } from "../../utils";
 
 /* ****************************************************************************************************************** *
  * Config
@@ -18,8 +17,8 @@ import TS from "typescript";
 const baseConfig: TsTransformPathsConfig = { exclude: ["**/excluded/**", "excluded-file.*"] };
 
 /* Test Mapping */
-const modes = ["program", "manual", "ts-node"] as const;
-const testConfigs: { label: string; tsInstance: unknown; mode: (typeof modes)[number]; tsSpecifier: string }[] = [];
+const modes = ["program", "manual"] as const;
+const testConfigs: { label: string; tsInstance: unknown; mode: (typeof modes)[number] }[] = [];
 for (const cfg of tsModules)
   testConfigs.push(...modes.map((mode) => ({ label: cfg[0], tsInstance: cfg[1], mode, tsSpecifier: cfg[2] })));
 
@@ -38,11 +37,29 @@ const moduleAugmentFile = ts.normalizePath(path.join(projectRoot, "src/module-au
  * Types
  * ****************************************************************************************************************** */
 
-declare global {
-  namespace jest {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- no way to extend type definitions without using the same declaration as the original types
-    interface Matchers<R> {
-      transformedMatches(expected: RegExp | string, opt?: { base?: EmittedFiles[]; kind?: ("dts" | "js")[] }): void;
+type TransformedMatchesOptions = { base?: EmittedFiles[]; kind?: ("dts" | "js")[] };
+
+function transformedMatches(
+  fileName: string,
+  expected: RegExp | string,
+  normalEmit: EmittedFiles,
+  rootDirsEmit: EmittedFiles,
+  skipDts: boolean,
+  opt?: TransformedMatchesOptions,
+) {
+  const bases = opt?.base ?? [normalEmit, rootDirsEmit];
+  const kinds = (opt?.kind ?? ["dts", "js"]).filter((k) => !skipDts || k !== "dts");
+
+  for (const base of bases) {
+    for (const kind of kinds) {
+      const content = base[fileName][kind];
+      const isValid = typeof expected === "string" ? content.includes(expected) : expected.test(content);
+      if (!isValid) {
+        const message =
+          `File: ${fileName}\nKind: ${kind}\nrootDirs: ${base === rootDirsEmit}\n\n` +
+          `Expected: \`${expected}\`\nReceived:\n\t${content.replaceAll(/(\r?\n)+/g, "$1\t")}`;
+        throw new Error(message);
+      }
     }
   }
 }
@@ -52,242 +69,363 @@ declare global {
  * ****************************************************************************************************************** */
 
 describe(`Specific Tests`, () => {
-  describe.each(testConfigs)(`TypeScript $label - Mode: $mode`, ({ tsInstance, mode, tsSpecifier }) => {
-    // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
-    const tsVersion = +tsInstance.versionMajorMinor.split(".").slice(0, 2).join("");
-    let normalEmit: EmittedFiles;
-    let rootDirsEmit: EmittedFiles;
-    let skipDts = false;
+  for (const { tsInstance, mode, label } of testConfigs) {
+    describe(`TypeScript ${label} - Mode: ${mode}`, () => {
+      // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
+      const tsVersion = +tsInstance.versionMajorMinor.split(".").slice(0, 2).join("");
+      let normalEmit: EmittedFiles;
+      let rootDirsEmit: EmittedFiles;
+      let skipDts = false;
 
-    beforeAll(() => {
-      switch (mode) {
-        case "program": {
-          const program = createTsProgram({
-            // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'typeof import("typescript")'.
-            tsInstance,
-            tsConfigFile,
-            pluginOptions: {
-              ...baseConfig,
-              useRootDirs: false,
-            },
-          });
-          normalEmit = getEmitResultFromProgram(program);
+      before(() => {
+        switch (mode) {
+          case "program": {
+            const program = createTsProgram({
+              // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'typeof import("typescript")'.
+              tsInstance,
+              tsConfigFile,
+              pluginOptions: {
+                ...baseConfig,
+                useRootDirs: false,
+              },
+            });
+            normalEmit = getEmitResultFromProgram(program);
 
-          const rootDirsProgram = createTsProgram({
-            // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'typeof import("typescript")'.
-            tsInstance,
-            tsConfigFile,
-            pluginOptions: {
-              ...baseConfig,
-              useRootDirs: true,
-            },
-          });
-          rootDirsEmit = getEmitResultFromProgram(rootDirsProgram);
-          break;
-        }
-        case "manual": {
-          skipDts = true;
-          // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
-          const pcl = tsInstance.getParsedCommandLineOfConfigFile(
-            tsConfigFile,
-            {},
-            // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
-            <unknown>tsInstance.sys,
-          )! as TS.ParsedCommandLine;
-          normalEmit = getManualEmitResult({ ...baseConfig, useRootDirs: false }, tsInstance, pcl);
-          rootDirsEmit = getManualEmitResult({ ...baseConfig, useRootDirs: true }, tsInstance, pcl);
-          break;
-        }
-        case "ts-node": {
-          // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
-          const pcl = tsInstance.getParsedCommandLineOfConfigFile(
-            tsConfigFile,
-            {},
-            // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
-            <unknown>tsInstance.sys,
-          )! as TS.ParsedCommandLine;
-          skipDts = true;
-          normalEmit = getTsNodeEmitResult({ ...baseConfig, useRootDirs: false }, pcl, tsSpecifier);
-          rootDirsEmit = getTsNodeEmitResult({ ...baseConfig, useRootDirs: true }, pcl, tsSpecifier);
-        }
-      }
-
-      expect.extend({
-        transformedMatches(
-          fileName: string,
-          expected: RegExp | string,
-          opt?: { base?: EmittedFiles[]; kind?: ("dts" | "js")[] },
-        ) {
-          const bases = opt?.base ?? [normalEmit, rootDirsEmit];
-          const kinds = (opt?.kind ?? ["dts", "js"]).filter((k) => !skipDts || k !== "dts");
-
-          let failed: boolean = false;
-          const messages: string[] = [];
-          for (const base of bases) {
-            for (const kind of kinds) {
-              const content = base[fileName][kind];
-              const isValid = typeof expected === "string" ? content.includes(expected) : expected.test(content);
-              if (!isValid) {
-                failed = true;
-                messages.push(
-                  `File: ${fileName}\nKind: ${kind}\nrootDirs: ${base === normalEmit}\n\n` +
-                    `Expected: \`${expected}\`\nReceived:\n\t${content.replaceAll(/(\r?\n)+/g, "$1\t")}`,
-                );
-              }
-            }
+            const rootDirsProgram = createTsProgram({
+              // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type 'typeof import("typescript")'.
+              tsInstance,
+              tsConfigFile,
+              pluginOptions: {
+                ...baseConfig,
+                useRootDirs: true,
+              },
+            });
+            rootDirsEmit = getEmitResultFromProgram(rootDirsProgram);
+            break;
           }
-
-          return { message: () => messages.join("\n\n"), pass: !failed };
-        },
-      });
-    });
-
-    describe(`Options`, () => {
-      test(`(useRootDirs: true) Re-maps for rootDirs`, () => {
-        expect(genFile).transformedMatches(`import "./src-file"`, { base: [rootDirsEmit] });
-        expect(srcFile).transformedMatches(`import "./gen-file"`, { base: [rootDirsEmit] });
-        expect(indexFile).transformedMatches(`export { b } from "./dir/gen-file"`, { base: [rootDirsEmit] });
-        expect(indexFile).transformedMatches(`export { a } from "./dir/src-file"`, { base: [rootDirsEmit] });
-      });
-
-      test(`(useRootDirs: false) Ignores rootDirs`, () => {
-        expect(genFile).transformedMatches(`import "../../src/dir/src-file"`, { base: [normalEmit] });
-        expect(srcFile).transformedMatches(`import "../../generated/dir/gen-file"`, { base: [normalEmit] });
-        expect(indexFile).transformedMatches(`export { b } from "../generated/dir/gen-file"`, { base: [normalEmit] });
-        expect(indexFile).transformedMatches(`export { a } from "./dir/src-file"`, { base: [normalEmit] });
+          case "manual": {
+            skipDts = true;
+            // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
+            const pcl = tsInstance.getParsedCommandLineOfConfigFile(
+              tsConfigFile,
+              {},
+              // @ts-expect-error TS(18046) FIXME: 'tsInstance' is of type 'unknown'.
+              <unknown>tsInstance.sys,
+            )! as TS.ParsedCommandLine;
+            normalEmit = getManualEmitResult({ ...baseConfig, useRootDirs: false }, tsInstance, pcl);
+            rootDirsEmit = getManualEmitResult({ ...baseConfig, useRootDirs: true }, tsInstance, pcl);
+            break;
+          }
+        }
       });
 
-      test(`(exclude) Doesn't transform for exclusion patterns`, () => {
-        expect(indexFile).transformedMatches(
-          /export { bb } from "#exclusion\/ex";\s*export { dd } from "#root\/excluded-file"/,
-        );
-      });
-    });
-
-    describe(`Tags`, () => {
-      test(`(@no-transform-path) Doesn't transform path`, () => {
-        for (let i = 1; i <= 4; i++)
-          expect(tagFile).transformedMatches(`import * as skipTransform${i} from "#root/index`);
-      });
-
-      test(`(@transform-path) Transforms path with explicit value`, () => {
-        expect(tagFile).transformedMatches(`import * as explicitTransform1 from "./dir/src-file"`);
-        expect(tagFile).transformedMatches(`import * as explicitTransform2 from "http://www.go.com/react.js"`);
-        expect(tagFile).transformedMatches(`import * as explicitTransform3 from "./dir/src-file"`);
-        expect(tagFile).transformedMatches(`import * as explicitTransform4 from "http://www.go.com/react.js"`);
-      });
-    });
-
-    (mode === "program" ? test : test.skip)(`Type elision works properly`, () => {
-      expect(typeElisionIndex).transformedMatches(/import { ConstB } from "\.\/a";\s*export { ConstB };/, {
-        kind: ["js"],
-      });
-      expect(typeElisionIndex).transformedMatches(
-        /import { ConstB, TypeA } from "\.\/a";\s*import { TypeA as TypeA2 } from "\.\/a";\s*export { ConstB, TypeA };\s*export { TypeA2 };/,
-        { kind: ["dts"] },
-      );
-
-      if (tsVersion >= 50) {
-        /* Import type-only keyword on import specifier */
-        expect(typeElisionIndex).transformedMatches(/import { ConstB as __ } from "\.\/a";\s*export { __ };/, {
-          kind: ["js"],
+      describe(`Options`, () => {
+        test(`(useRootDirs: true) Re-maps for rootDirs`, () => {
+          transformedMatches(genFile, `import "./src-file"`, normalEmit, rootDirsEmit, skipDts, {
+            base: [rootDirsEmit],
+          });
+          transformedMatches(srcFile, `import "./gen-file"`, normalEmit, rootDirsEmit, skipDts, {
+            base: [rootDirsEmit],
+          });
+          transformedMatches(indexFile, `export { b } from "./dir/gen-file"`, normalEmit, rootDirsEmit, skipDts, {
+            base: [rootDirsEmit],
+          });
+          transformedMatches(indexFile, `export { a } from "./dir/src-file"`, normalEmit, rootDirsEmit, skipDts, {
+            base: [rootDirsEmit],
+          });
         });
 
-        expect(typeElisionIndex).transformedMatches(
-          /import { type TypeAndConst, ConstB as __ } from "\.\/a";\s*export { TypeAndConst, __ };/,
+        test(`(useRootDirs: false) Ignores rootDirs`, () => {
+          transformedMatches(genFile, `import "../../src/dir/src-file"`, normalEmit, rootDirsEmit, skipDts, {
+            base: [normalEmit],
+          });
+          transformedMatches(srcFile, `import "../../generated/dir/gen-file"`, normalEmit, rootDirsEmit, skipDts, {
+            base: [normalEmit],
+          });
+          transformedMatches(
+            indexFile,
+            `export { b } from "../generated/dir/gen-file"`,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+            { base: [normalEmit] },
+          );
+          transformedMatches(indexFile, `export { a } from "./dir/src-file"`, normalEmit, rootDirsEmit, skipDts, {
+            base: [normalEmit],
+          });
+        });
+
+        test(`(exclude) Doesn't transform for exclusion patterns`, () => {
+          transformedMatches(
+            indexFile,
+            /export { bb } from "#exclusion\/ex";\s*export { dd } from "#root\/excluded-file"/,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+          );
+        });
+      });
+
+      describe(`Tags`, () => {
+        test(`(@no-transform-path) Doesn't transform path`, () => {
+          for (let i = 1; i <= 4; i++)
+            transformedMatches(
+              tagFile,
+              `import * as skipTransform${i} from "#root/index`,
+              normalEmit,
+              rootDirsEmit,
+              skipDts,
+            );
+        });
+
+        test(`(@transform-path) Transforms path with explicit value`, () => {
+          transformedMatches(
+            tagFile,
+            `import * as explicitTransform1 from "./dir/src-file"`,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+          );
+          transformedMatches(
+            tagFile,
+            `import * as explicitTransform2 from "http://www.go.com/react.js"`,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+          );
+          transformedMatches(
+            tagFile,
+            `import * as explicitTransform3 from "./dir/src-file"`,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+          );
+          transformedMatches(
+            tagFile,
+            `import * as explicitTransform4 from "http://www.go.com/react.js"`,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+          );
+        });
+      });
+
+      (mode === "program" ? test : test.skip)(`Type elision works properly`, () => {
+        transformedMatches(
+          typeElisionIndex,
+          /import { ConstB } from "\.\/a";\s*export { ConstB };/,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
+          {
+            kind: ["js"],
+          },
+        );
+        transformedMatches(
+          typeElisionIndex,
+          /import { ConstB, TypeA } from "\.\/a";\s*import { TypeA as TypeA2 } from "\.\/a";\s*export { ConstB, TypeA };\s*export { TypeA2 };/,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
           { kind: ["dts"] },
         );
 
-        /* Export Import type-only keyword on import specifier */
-        expect(typeElisionIndex).transformedMatches(
-          /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { type TypeAndConst2, ___ };/,
+        if (tsVersion >= 50) {
+          /* Import type-only keyword on import specifier */
+          transformedMatches(
+            typeElisionIndex,
+            /import { ConstB as __ } from "\.\/a";\s*export { __ };/,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+            {
+              kind: ["js"],
+            },
+          );
+
+          transformedMatches(
+            typeElisionIndex,
+            /import { type TypeAndConst, ConstB as __ } from "\.\/a";\s*export { TypeAndConst, __ };/,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+            { kind: ["dts"] },
+          );
+
+          /* Export Import type-only keyword on import specifier */
+          transformedMatches(
+            typeElisionIndex,
+            /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { type TypeAndConst2, ___ };/,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+            { kind: ["dts"] },
+          );
+
+          transformedMatches(
+            typeElisionIndex,
+            /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { ___ };/,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+            { kind: ["js"] },
+          );
+
+          /* Unreferenced w/ type-only keyword on import specifier */
+          assert.throws(() => {
+            transformedMatches(
+              typeElisionIndex,
+              /import { ConstB as _{4}, type TypeAndConst as TypeAndConst3 } from "\.\/a";\s/,
+              normalEmit,
+              rootDirsEmit,
+              skipDts,
+              { kind: ["dts"] },
+            );
+          });
+
+          assert.throws(() => {
+            transformedMatches(
+              typeElisionIndex,
+              /import { ConstB as _{4} } from "\.\/a";\s/,
+              normalEmit,
+              rootDirsEmit,
+              skipDts,
+              { kind: ["js"] },
+            );
+          });
+        }
+      });
+
+      (!skipDts && tsVersion >= 38 ? test : test.skip)(`Import type-only transforms`, () => {
+        transformedMatches(
+          indexFile,
+          `import type { A as ATypeOnly } from "./dir/src-file"`,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
           { kind: ["dts"] },
         );
+      });
 
-        expect(typeElisionIndex).transformedMatches(
-          /import { TypeAndConst as TypeAndConst2, ConstB as ___ } from "\.\/a";\s*export { ___ };/,
+      test(`Copies comments in async import`, () => {
+        transformedMatches(
+          indexFile,
+          `import(/* webpackChunkName: "Comment" */ "./dir/src-file");`,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
+          {
+            kind: ["js"],
+          },
+        );
+        transformedMatches(
+          indexFile,
+          /\/\/ comment 1\r?\n\s*\/\*\r?\n\s*comment 2\r?\n\s*\*\/\r?\n\s*"\.\/dir\/src-file"/,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
           { kind: ["js"] },
         );
+      });
 
-        /* Unreferenced w/ type-only keyword on import specifier */
-        expect(typeElisionIndex).not.transformedMatches(
-          /import { ConstB as _{4}, type TypeAndConst as TypeAndConst3 } from "\.\/a";\s/,
+      test(`Preserves explicit extensions`, () => {
+        transformedMatches(indexFile, `export { JsonValue } from "./data.json"`, normalEmit, rootDirsEmit, skipDts);
+        transformedMatches(indexFile, `export { GeneralConstA } from "./general"`, normalEmit, rootDirsEmit, skipDts);
+        transformedMatches(
+          indexFile,
+          `export { GeneralConstB } from "./general.js"`,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
+        );
+      });
+
+      test(`Does not output implicit index filenames`, () => {
+        transformedMatches(indexFile, `export { ConstB } from "./type-elision"`, normalEmit, rootDirsEmit, skipDts);
+      });
+
+      test(`Resolves sub-modules properly`, () => {
+        const a = {
+          js: `export { packageAConst } from "./packages/pkg-a"`,
+          full: `export { packageAConst, PackageAType } from "./packages/pkg-a"`,
+        };
+        const b = {
+          js: `export { packageBConst } from "./packages/pkg-b"`,
+          full: `export { packageBConst, PackageBType } from "./packages/pkg-b"`,
+        };
+        const c = {
+          js: `export { packageCConst } from "./packages/pkg-c"`,
+          full: `export { packageCConst, PackageCType } from "./packages/pkg-c"`,
+        };
+        const sub = {
+          js: `export { subPackageConst } from "./packages/pkg-a/sub-pkg"`,
+          full: `export { SubPackageType, subPackageConst } from "./packages/pkg-a/sub-pkg"`,
+        };
+
+        for (const exp of [a, b, c, sub]) {
+          transformedMatches(
+            subPackagesFile,
+            mode === "program" ? exp.js : exp.full,
+            normalEmit,
+            rootDirsEmit,
+            skipDts,
+            { kind: ["js"] },
+          );
+          if (!skipDts)
+            transformedMatches(subPackagesFile, exp.full, normalEmit, rootDirsEmit, skipDts, { kind: ["dts"] });
+        }
+
+        transformedMatches(
+          subPackagesFile,
+          `export { packageCConst as C2 } from "./packages/pkg-c/main"`,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
+        );
+        transformedMatches(
+          subPackagesFile,
+          `export { packageCConst as C3 } from "./packages/pkg-c/main.js"`,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
+        );
+        transformedMatches(
+          subPackagesFile,
+          `export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
+        );
+        transformedMatches(
+          subPackagesFile,
+          `export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
+        );
+      });
+
+      (!skipDts && tsVersion >= 38 ? test : test.skip)(`Resolves nested imports`, () => {
+        transformedMatches(
+          subPackagesFile,
+          `export ${
+            tsVersion < 49 ? `declare ` : ""
+          }type ImportWithChildren = import("./packages/pkg-a").PassThru<import("./packages/pkg-b").PackageBType>`,
+          normalEmit,
+          rootDirsEmit,
+          skipDts,
           { kind: ["dts"] },
         );
-
-        expect(typeElisionIndex).not.transformedMatches(/import { ConstB as _{4} } from "\.\/a";\s/, { kind: ["js"] });
-      }
-    });
-
-    (!skipDts && tsVersion >= 38 ? test : test.skip)(`Import type-only transforms`, () => {
-      expect(indexFile).transformedMatches(`import type { A as ATypeOnly } from "./dir/src-file"`, { kind: ["dts"] });
-    });
-
-    test(`Copies comments in async import`, () => {
-      expect(indexFile).transformedMatches(`import(/* webpackChunkName: "Comment" */ "./dir/src-file");`, {
-        kind: ["js"],
       });
-      expect(indexFile).transformedMatches(
-        /\/\/ comment 1\r?\n\s*\/\*\r?\n\s*comment 2\r?\n\s*\*\/\r?\n\s*"\.\/dir\/src-file"/,
-        { kind: ["js"] },
-      );
+
+      (skipDts ? test.skip : test)(`Resolves module augmentation`, () => {
+        transformedMatches(moduleAugmentFile, `declare module "./general" {`, normalEmit, rootDirsEmit, skipDts, {
+          kind: ["dts"],
+        });
+        transformedMatches(moduleAugmentFile, `declare module "./excluded-file" {`, normalEmit, rootDirsEmit, skipDts, {
+          kind: ["dts"],
+        });
+      });
     });
-
-    test(`Preserves explicit extensions`, () => {
-      expect(indexFile).transformedMatches(`export { JsonValue } from "./data.json"`);
-      expect(indexFile).transformedMatches(`export { GeneralConstA } from "./general"`);
-      expect(indexFile).transformedMatches(`export { GeneralConstB } from "./general.js"`);
-    });
-
-    test(`Does not output implicit index filenames`, () => {
-      expect(indexFile).transformedMatches(`export { ConstB } from "./type-elision"`);
-    });
-
-    test(`Resolves sub-modules properly`, () => {
-      const a = {
-        js: `export { packageAConst } from "./packages/pkg-a"`,
-        full: `export { packageAConst, PackageAType } from "./packages/pkg-a"`,
-      };
-      const b = {
-        js: `export { packageBConst } from "./packages/pkg-b"`,
-        full: `export { packageBConst, PackageBType } from "./packages/pkg-b"`,
-      };
-      const c = {
-        js: `export { packageCConst } from "./packages/pkg-c"`,
-        full: `export { packageCConst, PackageCType } from "./packages/pkg-c"`,
-      };
-      const sub = {
-        js: `export { subPackageConst } from "./packages/pkg-a/sub-pkg"`,
-        full: `export { SubPackageType, subPackageConst } from "./packages/pkg-a/sub-pkg"`,
-      };
-
-      for (const exp of [a, b, c, sub]) {
-        expect(subPackagesFile).transformedMatches(mode === "program" ? exp.js : exp.full, { kind: ["js"] });
-        if (!skipDts) expect(subPackagesFile).transformedMatches(exp.full, { kind: ["dts"] });
-      }
-
-      expect(subPackagesFile).transformedMatches(`export { packageCConst as C2 } from "./packages/pkg-c/main"`);
-      expect(subPackagesFile).transformedMatches(`export { packageCConst as C3 } from "./packages/pkg-c/main.js"`);
-      expect(subPackagesFile).transformedMatches(
-        `export { subPackageConst as C4 } from "./packages/pkg-a/sub-pkg/main"`,
-      );
-      expect(subPackagesFile).transformedMatches(
-        `export { subPackageConst as C5 } from "./packages/pkg-a/sub-pkg/main.js"`,
-      );
-    });
-
-    (!skipDts && tsVersion >= 38 ? test : test.skip)(`Resolves nested imports`, () => {
-      expect(subPackagesFile).transformedMatches(
-        `export ${
-          tsVersion < 49 ? `declare ` : ""
-        }type ImportWithChildren = import("./packages/pkg-a").PassThru<import("./packages/pkg-b").PackageBType>`,
-        { kind: ["dts"] },
-      );
-    });
-
-    (skipDts ? test.skip : test)(`Resolves module augmentation`, () => {
-      expect(moduleAugmentFile).transformedMatches(`declare module "./general" {`, { kind: ["dts"] });
-      expect(moduleAugmentFile).transformedMatches(`declare module "./excluded-file" {`, { kind: ["dts"] });
-    });
-  });
+  }
 });

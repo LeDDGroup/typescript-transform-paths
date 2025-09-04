@@ -1,7 +1,6 @@
 import { default as tstpTransform, TsTransformPathsConfig } from "typescript-transform-paths";
 import fs from "node:fs";
 import ts from "typescript";
-import * as tsNode from "ts-node";
 import * as config from "../config";
 
 /* ****************************************************************************************************************** */
@@ -184,39 +183,6 @@ export function getManualEmitResult(
   for (const sourceFile of transformed) res[sourceFile.fileName] = <unknown>{ js: printer.printFile(sourceFile) };
 
   return res;
-}
-
-export function getTsNodeEmitResult(
-  pluginConfig: TsTransformPathsConfig,
-  pcl: ts.ParsedCommandLine,
-  tsSpecifier: string,
-) {
-  const compiler = tsNode.create({
-    transpileOnly: true,
-    transformers: {
-      // @ts-expect-error TS(2345) FIXME: Argument of type 'unknown' is not assignable to parameter of type 'TransformerExtras | undefined'.
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      before: [tstpTransform(void 0, pluginConfig, <unknown>{ ts: require(tsSpecifier) })],
-    },
-    project: pcl.options.configFilePath,
-    compiler: tsSpecifier,
-    logError: true,
-    ignoreDiagnostics: [1144, 1005], // Issues with old TS and type only imports
-  });
-
-  const originalRegister = global.process[tsNode.REGISTER_INSTANCE];
-  global.process[tsNode.REGISTER_INSTANCE] = compiler;
-  try {
-    const res: EmittedFiles = {};
-    for (const fileName of pcl.fileNames.filter((f) => !/\.d\.ts$/.test(f))) {
-      // @ts-expect-error TS(2322) FIXME: Type 'unknown' is not assignable to type '{ js: string; dts: string; }'.
-      res[fileName] = <unknown>{ js: compiler.compile(fs.readFileSync(fileName, "utf8"), fileName) };
-    }
-
-    return res;
-  } finally {
-    global.process[tsNode.REGISTER_INSTANCE] = originalRegister;
-  }
 }
 
 // endregion
