@@ -69,8 +69,8 @@ describe(`NX Transformer`, () => {
       execSync("yarn run build", { cwd: projectRoot });
 
       try {
-        const file = readFileSync(`${projectRoot}/dist/library1/packages/library1/src/index.d.ts`, "utf8");
-        t.assert.match(file, /import { name as library2Name } from "..\/..\/library2\/src";/);
+        const file = readFileSync(`${projectRoot}/dist/packages/library1/src/index.d.ts`, "utf8");
+        t.assert.match(file, /import { name as library2Name } from "..\/..\/library2";/);
       } finally {
         rmSync(`${projectRoot}/dist`, { recursive: true, force: true });
       }
