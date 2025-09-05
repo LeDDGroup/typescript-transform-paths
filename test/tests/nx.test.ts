@@ -5,16 +5,17 @@ import { describe, test } from "node:test";
 
 import ts from "typescript";
 
-import * as nxTransformerPlugin from "typescript-transform-paths/plugins/nx";
-import * as transformerModule from "../../dist/transformer";
+import { projectsPaths } from "../config.ts";
 
-import { projectsPaths } from "../config";
+// import * as nxTransformerPlugin from "typescript-transform-paths/plugins/nx";
+// import * as transformerModule from "../../dist/transformer";
 
 /* ****************************************************************************************************************** *
  * Tests
  * ****************************************************************************************************************** */
 
 describe(`NX Transformer`, () => {
+  // TODO migrate test from jest to node test runner
   // describe("Plugin", () => {
   //   let mockedTransformer: jest.SpyInstance;
 
