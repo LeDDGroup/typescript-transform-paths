@@ -12,11 +12,8 @@
   },
   "files": [
     "dist",
-    "types",
     "README.md",
-    "CHANGELOG.md",
-    "register.js",
-    "nx-transformer.js"
+    "CHANGELOG.md"
   ],
   "scripts": {
     "compile": "tsc",
