@@ -7,12 +7,16 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    }
+    },
+    "./plugins/nx": "./dist/plugins/nx-transformer-plugin.js"
   },
   "files": [
     "dist",
+    "types",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "register.js",
+    "nx-transformer.js"
   ],
   "scripts": {
     "compile": "tsc",

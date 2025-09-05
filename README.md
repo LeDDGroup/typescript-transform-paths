@@ -63,6 +63,30 @@ import { sum } from "@utils/sum";
 - **ts-node** — See [wiki](https://github.com/LeDDGroup/typescript-transform-paths/wiki/Integration-with-nx)
 - **nx** — See [wiki](https://github.com/LeDDGroup/typescript-transform-paths/wiki/Integration-with-ts%E2%80%90node)
 
+- **Use with NX** — Add the `typescript-transform-paths/nx-transformer` to project config
+
+  `project.json`
+
+  ```jsonc
+  {
+    /* ... */
+    "targets": {
+      "build": {
+        /* ... */
+        "options": {
+          /* ... */
+          "transformers": [
+            {
+              "name": "typescript-transform-paths/nx-transformer",
+              "options": { "afterDeclarations": true },
+            },
+          ],
+        },
+      },
+    },
+  }
+  ```
+
 ## Virtual Directories
 
 TS allows defining

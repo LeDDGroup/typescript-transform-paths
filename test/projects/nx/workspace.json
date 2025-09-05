@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "library1": "packages/library1",
+    "library2": "packages/library2"
+  }
+}
