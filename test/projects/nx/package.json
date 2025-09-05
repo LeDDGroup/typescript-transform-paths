@@ -4,5 +4,9 @@
   "scripts": {
     "build": "nx build library1 --skip-nx-cache"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@nx/js": "^21.4.1",
+    "nx": "^21.4.1"
+  }
 }

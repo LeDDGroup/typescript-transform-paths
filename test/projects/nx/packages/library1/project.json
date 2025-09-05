@@ -1,27 +1,26 @@
 {
-  "root": "packages/library1",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "library1",
   "sourceRoot": "packages/library1/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/library1",
+        "outputPath": "dist/packages/library1",
         "main": "packages/library1/src/index.ts",
-        "outputFileName": "index.js",
         "tsConfig": "packages/library1/tsconfig.lib.json",
-        "sourceMap": false,
+        "assets": ["packages/library1/*.md"],
         "transformers": [
           {
-            "name": "typescript-transform-paths/nx-transformer",
+            "name": "typescript-transform-paths/plugins/nx",
             "options": {
               "afterDeclarations": true
             }
           }
         ]
-      },
-      "dependsOn": []
+      }
     }
   },
   "tags": []
