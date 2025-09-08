@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: corepack enable
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: yarn
@@ -29,7 +29,7 @@ jobs:
       - run: corepack enable ${{ matrix.os == 'windows-latest' && '--install-directory C:\npm\prefix' || '' }}
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
