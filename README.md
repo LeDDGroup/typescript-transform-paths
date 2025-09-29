@@ -14,6 +14,9 @@
 
 Transform compiled source module resolution paths using TypeScript's `paths` config, and/or custom resolution paths.
 
+> [!NOTE]
+> Upgrading from v3 to v4?, see [migration](./docs/migrating-to-v4.md)
+
 ## Setup Steps
 
 ### 1. Install
@@ -60,23 +63,7 @@ import { sum } from "@utils/sum";
 ### 3. Usage
 
 - **Compile with `tsc`** — Use [ts-patch](https://github.com/nonara/ts-patch)
-
-- **Use with ts-node** — Add `typescript-transform-paths/register` to `require` config.
-
-  `tsconfig.json`
-
-  ```jsonc
-  {
-    "ts-node": {
-      "transpileOnly": true,
-      "require": [ "typescript-transform-paths/register" ],
-    },
-    "compilerOptions" { /* ... */ }
-  }
-  ```
-
-- **Use with node** — Use the register script: `node -r typescript-transform-paths/register src/index.ts`
-
+- **ts-node** — See [wiki](https://github.com/LeDDGroup/typescript-transform-paths/wiki/Integration-with-ts%E2%80%90node)
 - **Use with NX** — Add the `typescript-transform-paths/nx-transformer` to project config
 
   `project.json`
@@ -91,7 +78,7 @@ import { sum } from "@utils/sum";
           /* ... */
           "transformers": [
             {
-              "name": "typescript-transform-paths/nx-transformer",
+              "name": "typescript-transform-paths/plugins/nx",
               "options": { "afterDeclarations": true },
             },
           ],

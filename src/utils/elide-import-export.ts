@@ -35,24 +35,25 @@
  *   import { A, B } from "./b";
  *   export { A } from "./b";
  */
-import { ImportOrExportDeclaration, VisitorContext } from "../types";
 import {
   Debug,
-  EmitResolver,
-  ExportSpecifier,
-  ImportClause,
   ImportsNotUsedAsValues,
-  ImportSpecifier,
   isInJSFile,
-  NamedExportBindings,
-  NamedExports,
-  NamedImportBindings,
-  NamespaceExport,
-  Node,
-  StringLiteral,
-  Visitor,
-  VisitResult,
+  type EmitResolver,
+  type ExportSpecifier,
+  type ImportClause,
+  type ImportSpecifier,
+  type NamedExportBindings,
+  type NamedExports,
+  type NamedImportBindings,
+  type NamespaceExport,
+  type Node,
+  type StringLiteral,
+  type Visitor,
+  type VisitResult,
 } from "typescript";
+
+import type { ImportOrExportDeclaration, VisitorContext } from "../types.ts";
 
 /* ****************************************************************************************************************** */
 // region: Utilities
@@ -104,7 +105,7 @@ export function elideImportOrExportDeclaration(
     // Always elide type-only imports
     if (node.importClause.isTypeOnly) return undefined;
 
-    const importClause = visitNode(node.importClause, <Visitor>visitImportClause);
+    const importClause = visitNode(node.importClause, visitImportClause as Visitor);
 
     if (
       importClause ||
@@ -139,7 +140,7 @@ export function elideImportOrExportDeclaration(
 
     const exportClause = visitNode(
       node.exportClause,
-      <Visitor>((bindings: NamedExportBindings) => visitNamedExportBindings(bindings, allowEmpty)),
+      ((bindings: NamedExportBindings) => visitNamedExportBindings(bindings, allowEmpty)) as Visitor,
       isNamedExportBindings,
     );
 
@@ -171,7 +172,7 @@ export function elideImportOrExportDeclaration(
   function visitImportClause(node: ImportClause): VisitResult<ImportClause> {
     // Elide the import clause if we elide both its name and its named bindings.
     const name = shouldEmitAliasDeclaration(node) ? node.name : undefined;
-    const namedBindings = visitNode(node.namedBindings, <Visitor>visitNamedImportBindings, isNamedImportBindings);
+    const namedBindings = visitNode(node.namedBindings, visitNamedImportBindings as Visitor, isNamedImportBindings);
     return name || namedBindings
       ? factory.updateImportClause(node, /*isTypeOnly*/ false, name, namedBindings)
       : undefined;
@@ -194,7 +195,7 @@ export function elideImportOrExportDeclaration(
           (compilerOptions.importsNotUsedAsValues === ImportsNotUsedAsValues.Preserve ||
             compilerOptions.importsNotUsedAsValues === ImportsNotUsedAsValues.Error));
 
-      const elements = visitNodes(node.elements, <Visitor>visitImportSpecifier, isImportSpecifier);
+      const elements = visitNodes(node.elements, visitImportSpecifier as Visitor, isImportSpecifier);
       return allowEmpty || tsInstance.some(elements) ? factory.updateNamedImports(node, elements) : undefined;
     }
   }
@@ -212,7 +213,7 @@ export function elideImportOrExportDeclaration(
   /** Visits named exports, eliding it if it does not contain an export specifier that resolves to a value. */
   function visitNamedExports(node: NamedExports, allowEmpty: boolean): VisitResult<NamedExports> | undefined {
     // Elide the named exports if all of its export specifiers were elided.
-    const elements = visitNodes(node.elements, <Visitor>visitExportSpecifier, isExportSpecifier);
+    const elements = visitNodes(node.elements, visitExportSpecifier as Visitor, isExportSpecifier);
     return allowEmpty || tsInstance.some(elements) ? factory.updateNamedExports(node, elements) : undefined;
   }
 

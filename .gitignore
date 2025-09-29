@@ -77,3 +77,5 @@ fabric.properties
 .idea/httpRequests
 
 pnpm-lock.yaml
+
+.nx/
