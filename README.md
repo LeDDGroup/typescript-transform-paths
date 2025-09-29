@@ -14,6 +14,9 @@
 
 Transform compiled source module resolution paths using TypeScript's `paths` config, and/or custom resolution paths.
 
+> [!NOTE]
+> Upgrading from v3 to v4?, see [migration](./docs/migrating-to-v4.md)
+
 ## Setup Steps
 
 ### 1. Install
