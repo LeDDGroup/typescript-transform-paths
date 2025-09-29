@@ -7,7 +7,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    }
+    },
+    "./plugins/nx": "./dist/plugins/nx.js"
   },
   "files": [
     "dist",
