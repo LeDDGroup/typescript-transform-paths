@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v4.0.0-beta
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.5...v4.0.0-beta)
+
+### 💅 Refactors
+
+- ⚠️  Esm only ([#442](https://github.com/LeDDGroup/typescript-transform-paths/pull/442))
+
+### 📖 Documentation
+
+- Update readme ([a979660](https://github.com/LeDDGroup/typescript-transform-paths/commit/a979660))
+- Add maintenance section to the readme ([7bd130f](https://github.com/LeDDGroup/typescript-transform-paths/commit/7bd130f))
+- Add reproduction example ([d265d0b](https://github.com/LeDDGroup/typescript-transform-paths/commit/d265d0b))
+- Add issue templates ([#443](https://github.com/LeDDGroup/typescript-transform-paths/pull/443))
+- Add v4 migration draft ([877c489](https://github.com/LeDDGroup/typescript-transform-paths/commit/877c489))
+
+### 🏡 Chore
+
+- Add ts-node as optional peer dependency ([8bea6b9](https://github.com/LeDDGroup/typescript-transform-paths/commit/8bea6b9))
+- **deps-dev:** Bump typescript-eslint from 8.31.1 to 8.39.1 ([#432](https://github.com/LeDDGroup/typescript-transform-paths/pull/432))
+- **deps-dev:** Bump @eslint/js from 9.26.0 to 9.33.0 ([#434](https://github.com/LeDDGroup/typescript-transform-paths/pull/434))
+- **deps-dev:** Bump eslint from 9.26.0 to 9.33.0 ([#435](https://github.com/LeDDGroup/typescript-transform-paths/pull/435))
+- **deps-dev:** Bump @types/node from 22.15.3 to 24.3.0 ([#436](https://github.com/LeDDGroup/typescript-transform-paths/pull/436))
+- Fix readme formatting ([c31284b](https://github.com/LeDDGroup/typescript-transform-paths/commit/c31284b))
+- ⚠️  Remove main and types package.json properties ([ec9ae9c](https://github.com/LeDDGroup/typescript-transform-paths/commit/ec9ae9c))
+- ⚠️  Remove typescript 3 support ([3de3d81](https://github.com/LeDDGroup/typescript-transform-paths/commit/3de3d81))
+- ⚠️  Remove typescript 4.7 support ([e372543](https://github.com/LeDDGroup/typescript-transform-paths/commit/e372543))
+- ⚠️  Require node >= 22 ([d475adf](https://github.com/LeDDGroup/typescript-transform-paths/commit/d475adf))
+- **ci:** Update node version testing matrix ([30c8729](https://github.com/LeDDGroup/typescript-transform-paths/commit/30c8729))
+- Remove nx plugin ([6fbdadc](https://github.com/LeDDGroup/typescript-transform-paths/commit/6fbdadc))
+- ⚠️  Remove ts-node register interface ([58a0db0](https://github.com/LeDDGroup/typescript-transform-paths/commit/58a0db0))
+- Revert "chore: remove nx plugin" ([7948a8e](https://github.com/LeDDGroup/typescript-transform-paths/commit/7948a8e))
+- **deps-dev:** Bump typescript from 5.7.2 to 5.9.3 in /test ([e564526](https://github.com/LeDDGroup/typescript-transform-paths/commit/e564526))
+
+### ✅ Tests
+
+- Replace jest with node test runner ([c77edec](https://github.com/LeDDGroup/typescript-transform-paths/commit/c77edec))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Esm only ([#442](https://github.com/LeDDGroup/typescript-transform-paths/pull/442))
+- ⚠️  Remove main and types package.json properties ([ec9ae9c](https://github.com/LeDDGroup/typescript-transform-paths/commit/ec9ae9c))
+- ⚠️  Remove typescript 3 support ([3de3d81](https://github.com/LeDDGroup/typescript-transform-paths/commit/3de3d81))
+- ⚠️  Remove typescript 4.7 support ([e372543](https://github.com/LeDDGroup/typescript-transform-paths/commit/e372543))
+- ⚠️  Require node >= 22 ([d475adf](https://github.com/LeDDGroup/typescript-transform-paths/commit/d475adf))
+- ⚠️  Remove ts-node register interface ([58a0db0](https://github.com/LeDDGroup/typescript-transform-paths/commit/58a0db0))
+
+### ❤️ Contributors
+
+- Daniel Perez ([@danielpza](http://github.com/danielpza))
+- Daniel Perez Alvarez ([@danielpza](http://github.com/danielpza))
+
 ## v3.5.5
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.4...v3.5.5)

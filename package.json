@@ -1,6 +1,6 @@
 {
   "name": "typescript-transform-paths",
-  "version": "3.5.5",
+  "version": "4.0.0-beta",
   "description": "Transforms module resolution paths using TypeScript path mapping and/or custom paths",
   "type": "module",
   "exports": {
