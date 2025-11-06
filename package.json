@@ -6,9 +6,9 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "default": "./dist/index.mjs"
     },
-    "./plugins/nx": "./dist/plugins/nx.js"
+    "./plugins/nx": "./dist/plugins/nx.mjs"
   },
   "files": [
     "dist",
