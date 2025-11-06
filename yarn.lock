@@ -239,6 +239,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tsconfig/bases@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "@tsconfig/bases@npm:1.0.9"
+  checksum: 10c0/3c24517e103c3b7a88a5baccbeb904b64a8a51ec2fde9d31c14d3a65569213228b491080d8dc86d8ec88d2bf8ead9d8f2db6f9398825c8d94d2cb5c7381aa494
+  languageName: node
+  linkType: hard
+
 "@tsconfig/node10@npm:^1.0.7":
   version: 1.0.11
   resolution: "@tsconfig/node10@npm:1.0.11"
@@ -264,20 +271,6 @@ __metadata:
   version: 1.0.4
   resolution: "@tsconfig/node16@npm:1.0.4"
   checksum: 10c0/05f8f2734e266fb1839eb1d57290df1664fe2aa3b0fdd685a9035806daa635f7519bf6d5d9b33f6e69dd545b8c46bd6e2b5c79acb2b1f146e885f7f11a42a5bb
-  languageName: node
-  linkType: hard
-
-"@tsconfig/node22@npm:^22.0.2":
-  version: 22.0.2
-  resolution: "@tsconfig/node22@npm:22.0.2"
-  checksum: 10c0/c75e6b9ea86ec2a384adefac0e2f16a6c08202ae5cf6c8c745944396a6931ffb38e742809491c1882d1868c2af1c33744193701779674bfb1e05f6a130045a18
-  languageName: node
-  linkType: hard
-
-"@tsconfig/strictest@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "@tsconfig/strictest@npm:2.0.5"
-  checksum: 10c0/cfc86da2d57f7b4b0827701b132c37a4974284e5c40649656c0e474866dfd8a69f57c6718230d8a8139967e2a95438586b8224c13ab0ff9d3a43eda771c50cc4
   languageName: node
   linkType: hard
 
@@ -2884,8 +2877,7 @@ __metadata:
   resolution: "typescript-transform-paths@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.9.1"
-    "@tsconfig/node22": "npm:^22.0.2"
-    "@tsconfig/strictest": "npm:^2.0.5"
+    "@tsconfig/bases": "npm:^1.0.9"
     "@types/eslint": "npm:^9"
     "@types/minimatch": "npm:^5.1.2"
     "@types/node": "npm:^24.3.0"

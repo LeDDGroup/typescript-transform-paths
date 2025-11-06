@@ -1,7 +1,7 @@
 {
   "extends": [
-    // "@tsconfig/strictest",
-    "@tsconfig/node22"
+    // "@tsconfig/bases/strictest",
+    "@tsconfig/bases/node22"
   ],
   "include": ["tests", "utils"],
   "compilerOptions": {

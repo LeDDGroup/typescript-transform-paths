@@ -254,10 +254,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tsconfig/node22@npm:^22.0.2":
-  version: 22.0.2
-  resolution: "@tsconfig/node22@npm:22.0.2"
-  checksum: 10c0/c75e6b9ea86ec2a384adefac0e2f16a6c08202ae5cf6c8c745944396a6931ffb38e742809491c1882d1868c2af1c33744193701779674bfb1e05f6a130045a18
+"@tsconfig/bases@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "@tsconfig/bases@npm:1.0.9"
+  checksum: 10c0/3c24517e103c3b7a88a5baccbeb904b64a8a51ec2fde9d31c14d3a65569213228b491080d8dc86d8ec88d2bf8ead9d8f2db6f9398825c8d94d2cb5c7381aa494
   languageName: node
   linkType: hard
 
@@ -1105,7 +1105,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@tsconfig/node22": "npm:^22.0.2"
+    "@tsconfig/bases": "npm:^1.0.9"
     "@types/node": "npm:^24.3.0"
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5"
     escape-string-regexp: "npm:^5.0.0"
