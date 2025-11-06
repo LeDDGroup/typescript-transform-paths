@@ -33,7 +33,7 @@
     ],
     "unbundle": false,
     "dts": true,
-    "format": "cjs",
+    "format": "esm",
     "clean": true
   },
   "keywords": [
