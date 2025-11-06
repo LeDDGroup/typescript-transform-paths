@@ -1,6 +1,6 @@
-import ts from "typescript";
+import type ts from "typescript";
 
-import { type VisitorContext } from "./types.ts";
+import type { VisitorContext } from "./types.ts";
 import { elideImportOrExportDeclaration, resolvePathAndUpdateNode } from "./utils/index.ts";
 
 const isAsyncImport = ({ tsInstance }: VisitorContext, node: ts.Node): node is ts.CallExpression =>

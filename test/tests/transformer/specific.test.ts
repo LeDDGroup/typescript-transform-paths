@@ -3,9 +3,9 @@ import assert from "node:assert";
 import * as path from "node:path";
 import { before, describe, test } from "node:test";
 
-import TS from "typescript";
+import type TS from "typescript";
 
-import { type TsTransformPathsConfig } from "typescript-transform-paths";
+import type { TsTransformPathsConfig } from "typescript-transform-paths";
 
 import { projectsPaths, ts, tsModules } from "../../config.ts";
 import {

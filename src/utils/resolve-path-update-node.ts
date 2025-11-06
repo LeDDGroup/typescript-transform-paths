@@ -1,6 +1,6 @@
-import ts from "typescript";
+import type ts from "typescript";
 
-import { type VisitorContext } from "../types.ts";
+import type { VisitorContext } from "../types.ts";
 import { isURL, maybeAddRelativeLocalPrefix } from "./general-utils.ts";
 import { resolveModuleName } from "./resolve-module-name.ts";
 import { isModulePathsMatch } from "./ts-helpers.ts";
