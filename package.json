@@ -61,7 +61,7 @@
     "@types/node": "^24.3.0",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "@types/ts-node": "npm:ts-node@^10.9.2",
-    "changelogen": "^0.5.5",
+    "changelogen": "^0.6.2",
     "eslint": "9.x",
     "globals": "^16.4.0",
     "prettier": "^3.6.2",
