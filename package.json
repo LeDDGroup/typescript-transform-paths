@@ -28,7 +28,8 @@
   },
   "tsdown": {
     "entry": [
-      "src/index.ts"
+      "src/index.ts",
+      "src/plugins/*.ts"
     ],
     "unbundle": false,
     "dts": true,
