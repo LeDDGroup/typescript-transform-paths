@@ -184,15 +184,15 @@ Use the `@no-transform-path` tag to explicitly disable transformation for a sing
 ```ts
 // @no-transform-path
 import "normally-transformed"; // This will remain 'normally-transformed' even though
-                               // it has a different value in paths config
+//                                it has a different value in paths config
 ```
 
 ## Version Compatibility
 
-|  typescript-transform-paths  | TypeScript            | Node.js |
-|------------------------------|-----------------------|---------|
-| ^4.0.0                       | >=5.x                 | >=22    |
-| ^3.5.2                       | >=3.6.5, >=4.x, >=5.x | >=18    |
+| typescript-transform-paths | TypeScript            | Node.js |
+| -------------------------- | --------------------- | ------- |
+| ^4.0.0                     | >=5.x                 | >=22    |
+| ^3.5.2                     | >=3.6.5, >=4.x, >=5.x | >=18    |
 
 ## Project Guidelines for Contributors
 
