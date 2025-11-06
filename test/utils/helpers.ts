@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import ts from "typescript";
+import type ts from "typescript";
 import { default as tstpTransform, type TsTransformPathsConfig } from "typescript-transform-paths";
 
 import * as config from "../config.ts";

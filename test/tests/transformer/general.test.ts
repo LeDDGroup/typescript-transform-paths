@@ -2,7 +2,7 @@
 import * as path from "node:path";
 import { before, describe, test } from "node:test";
 
-import { projectsPaths, ts, tsModules } from "../../config.ts";
+import { projectsPaths, type ts, tsModules } from "../../config.ts";
 import { createTsProgram, getEmitResultFromProgram, type EmittedFiles } from "../../utils/index.ts";
 
 /* ****************************************************************************************************************** *

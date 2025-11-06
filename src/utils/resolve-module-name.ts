@@ -2,7 +2,7 @@ import * as path from "node:path";
 
 import { removeFileExtension, removeSuffix, type ResolvedModuleFull, type SourceFile } from "typescript";
 
-import { type VisitorContext } from "../types.ts";
+import type { VisitorContext } from "../types.ts";
 import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils.ts";
 import { getRelativePath } from "./get-relative-path.ts";
 import { getOutputDirForSourceFile } from "./ts-helpers.ts";

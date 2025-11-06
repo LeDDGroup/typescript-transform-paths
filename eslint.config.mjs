@@ -13,6 +13,8 @@ export default [
     rules: {
       "@typescript-eslint/no-empty-object-type": ["error", { allowInterfaces: "with-single-extends" }],
       "@typescript-eslint/no-namespace": ["error", { allowDeclarations: true }],
+      "@typescript-eslint/no-import-type-side-effects": "error",
+      "@typescript-eslint/consistent-type-imports": ["error", { fixStyle: "inline-type-imports" }],
       "no-empty": ["error", { allowEmptyCatch: true }],
       "prefer-const": ["error", { destructuring: "all" }],
     },
