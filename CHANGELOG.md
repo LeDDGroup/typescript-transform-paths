@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v4.0.0-beta.2
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v4.0.0-beta...v4.0.0-beta.2)
+
+### 🩹 Fixes
+
+- Use type-only imports whenever possible ([#460](https://github.com/LeDDGroup/typescript-transform-paths/pull/460))
+
+### 📖 Documentation
+
+- Refine the readme and v4 migration content ([#455](https://github.com/LeDDGroup/typescript-transform-paths/pull/455))
+
+### 🏡 Chore
+
+- **deps-dev:** Bump typescript-eslint from 8.39.1 to 8.46.2 ([#453](https://github.com/LeDDGroup/typescript-transform-paths/pull/453))
+- **deps-dev:** Bump @eslint/js from 9.33.0 to 9.38.0 ([#452](https://github.com/LeDDGroup/typescript-transform-paths/pull/452))
+- **deps-dev:** Bump typescript from 5.8.3 to 5.9.3 ([#449](https://github.com/LeDDGroup/typescript-transform-paths/pull/449))
+- **deps-dev:** Bump globals from 15.15.0 to 16.4.0 ([#446](https://github.com/LeDDGroup/typescript-transform-paths/pull/446))
+- Fix README formatting ([4f9509b](https://github.com/LeDDGroup/typescript-transform-paths/commit/4f9509b))
+- Replace @tsconfig/* with @tsconfig/bases ([#457](https://github.com/LeDDGroup/typescript-transform-paths/pull/457))
+- **deps-dev:** Update changelogen ([19c487a](https://github.com/LeDDGroup/typescript-transform-paths/commit/19c487a))
+
+### ❤️ Contributors
+
+- Daniel Perez ([@danielpza](https://github.com/danielpza))
+- Edoardo Luppi ([@lppedd](https://github.com/lppedd))
+
 ## v4.0.0-beta
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.5...v4.0.0-beta)
