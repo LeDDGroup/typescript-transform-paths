@@ -11,7 +11,8 @@
       "default": "./dist/index.js"
     },
     "./register": "./dist/register-entry.js",
-    "./nx-transformer": "./dist/plugins/nx-transformer-plugin.js"
+    "./nx-transformer": "./nx-transformer.js",
+    "./plugins/nx": "./dist/plugins/nx-transformer-plugin.js"
   },
   "files": [
     "dist",
