@@ -11,7 +11,7 @@ import {
   type TsTransformPathsContext,
   type VisitorContext,
 } from "./types.ts";
-import { createSyntheticEmitHost, getTsNodeRegistrationProperties } from "./utils/ts-helpers.ts";
+import { createSyntheticEmitHost } from "./utils/ts-helpers.ts";
 import { nodeVisitor } from "./visitor.ts";
 
 function getTsProperties(args: Parameters<typeof transformer>) {
@@ -25,15 +25,10 @@ function getTsProperties(args: Parameters<typeof transformer>) {
   const tsInstance = extras?.ts ?? ts;
 
   if (program) compilerOptions = program.getCompilerOptions();
-  const tsNodeProps = getTsNodeRegistrationProperties(tsInstance);
 
   /* Determine RunMode & Setup */
-  // Note: ts-node passes a Program with the paths property stripped, so we do some comparison to determine if it's the caller
-  const isTsNode =
-    tsNodeProps && (!program || compilerOptions!.configFilePath === tsNodeProps.compilerOptions.configFilePath);
-
   // RunMode: Program
-  if (program && !isTsNode) {
+  if (program) {
     runMode = RunMode.Program;
     compilerOptions = compilerOptions!;
   }
@@ -42,30 +37,10 @@ function getTsProperties(args: Parameters<typeof transformer>) {
     runMode = RunMode.Manual;
     fileNames = manualTransformOptions.fileNames;
     compilerOptions = manualTransformOptions.compilerOptions!;
-  }
-  // RunMode: TsNode
-  else if (isTsNode) {
-    fileNames = tsNodeProps.fileNames;
-    runMode = RunMode.TsNode;
-
-    tsNodeState =
-      !program ||
-      (fileNames.length > 1 && program?.getRootFileNames().length === 1) ||
-      (!compilerOptions!.paths && tsNodeProps!.compilerOptions.paths)
-        ? TsNodeState.Stripped
-        : TsNodeState.Full;
-
-    compilerOptions =
-      tsNodeState === TsNodeState.Full
-        ? compilerOptions!
-        : {
-            ...program?.getCompilerOptions(),
-            ...tsNodeProps!.compilerOptions,
-          };
   } else {
     throw new Error(
-      `Cannot transform without a Program, ts-node instance, or manual parameters supplied. ` +
-        `Make sure you're using ts-patch or ts-node with transpileOnly.`,
+      `Cannot transform without a Program or manual parameters supplied. ` +
+        `Make sure you're using ts-patch with transpileOnly.`,
     );
   }
 
