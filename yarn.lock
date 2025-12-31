@@ -201,10 +201,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/minimatch@npm:^5.1.2":
-  version: 5.1.2
-  resolution: "@types/minimatch@npm:5.1.2"
-  checksum: 10c0/83cf1c11748891b714e129de0585af4c55dd4c2cafb1f1d5233d79246e5e1e19d1b5ad9e8db449667b3ffa2b6c80125c429dbee1054e9efb45758dbc4e118562
+"@types/minimatch@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@types/minimatch@npm:6.0.0"
+  dependencies:
+    minimatch: "npm:*"
+  checksum: 10c0/901fc4208cf6f5ab0e86bf86504055fb387f76092e06e604a3f2403db1c20e613c42104b235fde05552e0632d8f82e4ceacb83351d8700c7ffc5c31010a80804
   languageName: node
   linkType: hard
 
@@ -1436,7 +1438,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.1.1":
+"minimatch@npm:*, minimatch@npm:^10.1.1":
   version: 10.1.1
   resolution: "minimatch@npm:10.1.1"
   dependencies:
@@ -1875,7 +1877,7 @@ __metadata:
     "@eslint/js": "npm:^9.39.2"
     "@tsconfig/bases": "npm:^1.0.16"
     "@types/eslint": "npm:^9"
-    "@types/minimatch": "npm:^5.1.2"
+    "@types/minimatch": "npm:^6.0.0"
     "@types/node": "npm:^24.10.4"
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5"
     changelogen: "npm:^0.6.2"
