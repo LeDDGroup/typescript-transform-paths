@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.5.6
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.5...v3.5.6)
+
+### 🏡 Chore
+
+- Backport ./plugins/nx export to v3 release ([4f02b2e](https://github.com/LeDDGroup/typescript-transform-paths/commit/4f02b2e))
+
+### ❤️ Contributors
+
+- Daniel Perez ([@danielpza](http://github.com/danielpza))
+
 ## v3.5.5
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v3.5.4...v3.5.5)
