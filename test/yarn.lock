@@ -1334,9 +1334,6 @@ __metadata:
     minimatch: "npm:^10.1.1"
   peerDependencies:
     typescript: ">=5"
-  peerDependenciesMeta:
-    ts-node:
-      optional: true
   languageName: node
   linkType: soft
 
