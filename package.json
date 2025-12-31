@@ -58,7 +58,7 @@
     "@tsconfig/bases": "^1.0.16",
     "@types/eslint": "^9",
     "@types/minimatch": "^5.1.2",
-    "@types/node": "^24.10.4",
+    "@types/node": "^25.0.3",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "changelogen": "^0.6.2",
     "eslint": "9.x",
