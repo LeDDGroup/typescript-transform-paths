@@ -73,11 +73,6 @@
   "peerDependencies": {
     "typescript": ">=5"
   },
-  "peerDependenciesMeta": {
-    "ts-node": {
-      "optional": true
-    }
-  },
   "dependencies": {
     "minimatch": "^10.1.1"
   },
