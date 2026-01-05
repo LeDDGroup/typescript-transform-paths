@@ -215,12 +215,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.10.4":
-  version: 24.10.4
-  resolution: "@types/node@npm:24.10.4"
+"@types/node@npm:^25.0.3":
+  version: 25.0.3
+  resolution: "@types/node@npm:25.0.3"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10c0/069639cb7233ee747df1897b5e784f6b6c5da765c96c94773c580aac888fa1a585048d2a6e95eb8302d89c7a9df75801c8b5a0b7d0221d4249059cf09a5f4228
+  checksum: 10c0/b7568f0d765d9469621615e2bb257c7fd1953d95e9acbdb58dffb6627a2c4150d405a4600aa1ad8a40182a94fe5f903cafd3c0a2f5132814debd0e3bfd61f835
   languageName: node
   linkType: hard
 
@@ -1876,7 +1876,7 @@ __metadata:
     "@tsconfig/bases": "npm:^1.0.16"
     "@types/eslint": "npm:^9"
     "@types/minimatch": "npm:^5.1.2"
-    "@types/node": "npm:^24.10.4"
+    "@types/node": "npm:^25.0.3"
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5"
     changelogen: "npm:^0.6.2"
     eslint: "npm:9.x"
