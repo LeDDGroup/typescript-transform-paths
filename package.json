@@ -62,7 +62,7 @@
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "changelogen": "^0.6.2",
     "eslint": "9.x",
-    "globals": "^16.5.0",
+    "globals": "^17.0.0",
     "prettier": "^3.7.4",
     "prettier-plugin-jsdoc": "^1.8.0",
     "ts-patch": "^3.3.0",
