@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v4.0.0
+
+[compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v4.0.0-beta.2...v4.0.0)
+
+### 💅 Refactors
+
+- Remove ts-node related code ([#468](https://github.com/LeDDGroup/typescript-transform-paths/pull/468))
+
+### 🏡 Chore
+
+- Remove typescript warning ([9d2b530](https://github.com/LeDDGroup/typescript-transform-paths/commit/9d2b530))
+
+### ❤️ Contributors
+
+- Daniel Perez ([@danielpza](https://github.com/danielpza))
+
 ## v4.0.0-beta.2
 
 [compare changes](https://github.com/LeDDGroup/typescript-transform-paths/compare/v4.0.0-beta...v4.0.0-beta.2)
