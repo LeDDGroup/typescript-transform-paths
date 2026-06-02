@@ -122,8 +122,10 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
 
   const resolvedSourceFile = getResolvedSourceFile(context, resolvedModule.resolvedFileName);
 
-  const { indexType, resolvedBaseNameNoExtension, resolvedFileName, implicitPackageIndex, extName, resolvedDir } =
-    getPathDetail(moduleName, resolvedModule);
+  const { indexType, resolvedBaseNameNoExtension, resolvedFileName, implicitPackageIndex, extName } = getPathDetail(
+    moduleName,
+    resolvedModule,
+  );
 
   /* Determine output filename */
   let outputBaseName = resolvedBaseNameNoExtension ?? "";
@@ -133,7 +135,12 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
 
   /* Determine output dir */
   let srcFileOutputDir = getOutputDirForSourceFile(context, sourceFile);
-  let moduleFileOutputDir = implicitPackageIndex ? resolvedDir : getOutputDirForSourceFile(context, resolvedSourceFile);
+  let moduleFileOutputDir = getOutputDirForSourceFile(context, resolvedSourceFile);
+
+  if (implicitPackageIndex) {
+    const implicitPackageDir = tsInstance.normalizePath(path.dirname(implicitPackageIndex));
+    if (implicitPackageDir !== ".") moduleFileOutputDir = removeSuffix(moduleFileOutputDir, `/${implicitPackageDir}`);
+  }
 
   // Handle rootDirs remapping
   if (config.useRootDirs && rootDirs) {

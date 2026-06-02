@@ -1,5 +1,5 @@
 {
-  "files": ["index.ts", "local/index.ts"],
+  "files": ["index.ts", "local/index.ts", "deep/package-root.ts", "packages/pkg-root/index.ts"],
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../lib/b"
