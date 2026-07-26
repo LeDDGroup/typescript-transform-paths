@@ -1,4 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "tags": ["-lintignore"]
+  "tags": ["-lintignore"],
+  "entry": ["test/config.ts", "test/prepare.mjs", "test/tests/**/*.test.ts"],
+  "ignore": ["examples/**/*", "test/projects/**/*"]
 }
