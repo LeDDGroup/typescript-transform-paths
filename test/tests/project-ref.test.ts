@@ -12,6 +12,7 @@ import { createTsSolutionBuilder, type EmittedFiles } from "../utils/index.ts";
 /* File Paths */
 const projectDir = ts.normalizePath(path.join(projectsPaths, "project-ref"));
 const indexFile = ts.normalizePath(path.join(projectDir, "lib/b/index.ts"));
+const packageRootFile = ts.normalizePath(path.join(projectDir, "lib/b/deep/package-root.ts"));
 
 /* ****************************************************************************************************************** *
  * Tests
@@ -34,5 +35,10 @@ describe(`Project References`, () => {
   test(`Specifier for local file resolves properly`, (t) => {
     t.assert.match(emittedFiles[indexFile].js, /export { LocalConst } from ".\/local\/index"/);
     t.assert.match(emittedFiles[indexFile].dts, /export { LocalConst } from ".\/local\/index"/);
+  });
+
+  test(`Specifier for package root resolves to emitted output`, (t) => {
+    t.assert.match(emittedFiles[packageRootFile].js, /export { PackageRootConst } from "..\/packages\/pkg-root"/);
+    t.assert.match(emittedFiles[packageRootFile].dts, /export type { PackageRootType } from "..\/packages\/pkg-root"/);
   });
 });
