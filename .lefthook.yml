@@ -1,0 +1,5 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - run: mise exec -- yarn format
+      stage_fixed: true
