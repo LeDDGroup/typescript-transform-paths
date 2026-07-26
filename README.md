@@ -191,11 +191,12 @@ import "normally-transformed"; // This will remain 'normally-transformed' even t
 
 | typescript-transform-paths | TypeScript            | Node.js |
 | -------------------------- | --------------------- | ------- |
-| ^4.0.0                     | >=5.x,>=6.x (*)       | >=22    |
+| ^4.0.0                     | >=5.x,>=6.x (\*)      | >=22    |
 | ^3.5.2                     | >=3.6.5, >=4.x, >=5.x | >=18    |
 
 > [!NOTE]  
-> (*) If your project fails to compile with TypeScript 6.x, you may need to:
+> (\*) If your project fails to compile with TypeScript 6.x, you may need to:
+>
 > 1. Set `"ignoreDeprecations": "6.0"`.
 > 2. Revert `"baseUrl"` and `"rootDir"` to their TypeScript 5.x values.
 
