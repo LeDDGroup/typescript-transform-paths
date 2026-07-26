@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@tsconfig/bases": "^1.0.16",
-    "@types/node": "^24.10.4",
+    "@types/node": "^25.0.3",
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5",
     "escape-string-regexp": "^5.0.0",
     "ts-patch": "^3.3.0",
