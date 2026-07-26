@@ -7,3 +7,4 @@ pre-commit:
     - run: mise exec -- yarn build
     - run: mise exec -- yarn install --mode=update-lockfile && git add yarn.lock
     - run: mise exec -- yarn test/ install --mode=update-lockfile && git add test/yarn.lock
+    - run: mise exec -- yarn knip
