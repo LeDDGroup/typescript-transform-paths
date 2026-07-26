@@ -3,3 +3,4 @@ pre-commit:
   jobs:
     - run: mise exec -- yarn format
       stage_fixed: true
+    - run: mise exec -- yarn eslint .
