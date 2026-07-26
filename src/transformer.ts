@@ -58,14 +58,12 @@ export default function transformer(
   },
 ) {
   return (transformationContext: ts.TransformationContext) => {
-    // prettier-ignore
-    const {
-      tsInstance,
-      compilerOptions,
-      fileNames,
-      runMode,
-      tsNodeState
-    } = getTsProperties([ program, pluginConfig, transformerExtras, manualTransformOptions ]);
+    const { tsInstance, compilerOptions, fileNames, runMode, tsNodeState } = getTsProperties([
+      program,
+      pluginConfig,
+      transformerExtras,
+      manualTransformOptions,
+    ]);
 
     const rootDirs = compilerOptions.rootDirs?.filter(path.isAbsolute);
     const config: TsTransformPathsConfig = pluginConfig ?? {};
