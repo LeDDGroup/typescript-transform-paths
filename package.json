@@ -21,8 +21,10 @@
     "test": "yarn test/ test",
     "release": "changelogen --release --push",
     "--------------": "",
-    "format": "oxfmt",
-    "lint": "oxfmt --check . && eslint .",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
     "clean": "rm -rf \"**/dist\"",
     "clean:all": "yarn clean && rm -rf node_modules \"**/node_modules\" \"**/yarn.lock\" yarn.lock",
     "reset": "yarn clean:all && yarn install && yarn build",
@@ -54,19 +56,15 @@
     "Ron S. (https://twitter.com/Ron)"
   ],
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
     "@tsconfig/bases": "^1.0.16",
-    "@types/eslint": "^9",
     "@types/minimatch": "^5.1.2",
     "@types/node": "^25.0.3",
     "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "changelogen": "^0.6.2",
-    "eslint": "9.x",
-    "globals": "^17.0.0",
     "oxfmt": "^0.60.0",
+    "oxlint": "^1.75.0",
     "ts-patch": "^3.3.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.51.0"
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "typescript": ">=5"
