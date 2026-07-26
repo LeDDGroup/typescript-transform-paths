@@ -161,7 +161,6 @@ export function getManualEmitResult(
   pcl: ts.ParsedCommandLine,
 ) {
   const { options: compilerOptions, fileNames } = pcl;
-  // @ts-expect-error TS(2345) FIXME: Argument of type 'unknown' is not assignable to parameter of type 'TransformerExtras | undefined'.
   const transformer = tstpTransform(void 0, pluginConfig, { ts: tsInstance } as unknown, {
     compilerOptions,
     fileNames,

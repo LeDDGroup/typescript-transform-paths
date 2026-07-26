@@ -1,10 +1,6 @@
 {
   "include": ["src"],
 
-  "ts-node": {
-    "require": ["typescript-transform-paths/register"]
-  },
-
   "compilerOptions": {
     "noEmit": true,
     "outDir": "dist",

@@ -1,6 +1,5 @@
 import path from "node:path";
 
-import type { REGISTER_INSTANCE } from "ts-node";
 import type ts from "typescript";
 import type { GetCanonicalFileName, SourceFile } from "typescript";
 
@@ -72,30 +71,6 @@ export function createSyntheticEmitHost(
       ),
     getCanonicalFileName,
   } as ts.EmitHost;
-}
-
-/** Get ts-node register info */
-export function getTsNodeRegistrationProperties(tsInstance: typeof ts) {
-  let tsNodeSymbol: typeof REGISTER_INSTANCE;
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    tsNodeSymbol = require("ts-node")?.["REGISTER_INSTANCE"];
-  } catch {
-    return;
-  }
-
-  if (!global.process[tsNodeSymbol]) return;
-
-  const { config, options } = global.process[tsNodeSymbol]!;
-
-  const { configFilePath } = config.options;
-  // @ts-expect-error TS(2345) FIXME: Argument of type 'System' is not assignable to parameter of type 'ParseConfigFileHost'.
-  const pcl = configFilePath ? tsInstance.getParsedCommandLineOfConfigFile(configFilePath, {}, tsInstance.sys) : void 0;
-
-  const fileNames = pcl?.fileNames || config.fileNames;
-  const compilerOptions = Object.assign({}, config.options, options.compilerOptions, { outDir: pcl?.options.outDir });
-
-  return { compilerOptions, fileNames, tsNodeOptions: options };
 }
 
 // endregion

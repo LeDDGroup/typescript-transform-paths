@@ -62,7 +62,6 @@ export interface VisitorContext extends TsTransformPathsContext {
 /* ****************************************************************************************************************** */
 
 export const RunMode = {
-  TsNode: "ts-node",
   Manual: "manual",
   Program: "program",
 };
