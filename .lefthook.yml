@@ -5,3 +5,6 @@ pre-commit:
       stage_fixed: true
     - run: mise exec -- yarn lint
     - run: mise exec -- yarn build
+    - run: mise exec -- yarn install --mode=update-lockfile
+    - run: mise exec -- yarn install --mode=update-lockfile
+      root: test/
