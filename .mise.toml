@@ -1,0 +1,4 @@
+[tools]
+lefthook = "latest"
+node = "24"
+"npm:corepack" = "latest"
