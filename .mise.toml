@@ -1,0 +1,7 @@
+[tools]
+lefthook = "latest"
+node = "24"
+"npm:corepack" = "latest"
+
+[hooks]
+postinstall = "lefthook install"

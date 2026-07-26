@@ -47,12 +47,13 @@ function getPathDetail(moduleName: string, resolvedModule: ResolvedModuleFull) {
     extName = void 0;
   }
 
-  // prettier-ignore
-  const indexType =
-    implicitPackageIndex ? IndexType.ImplicitPackage :
-      baseNameNoExtension === 'index' && resolvedBaseNameNoExtension === 'index' ? IndexType.Explicit :
-        baseNameNoExtension !== 'index' && resolvedBaseNameNoExtension === 'index' ? IndexType.Implicit :
-          IndexType.NonIndex;
+  const indexType = implicitPackageIndex
+    ? IndexType.ImplicitPackage
+    : baseNameNoExtension === "index" && resolvedBaseNameNoExtension === "index"
+      ? IndexType.Explicit
+      : baseNameNoExtension !== "index" && resolvedBaseNameNoExtension === "index"
+        ? IndexType.Implicit
+        : IndexType.NonIndex;
 
   if (indexType === IndexType.Implicit) {
     baseName = void 0;
