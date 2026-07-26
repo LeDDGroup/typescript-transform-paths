@@ -1,0 +1,7 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - run: mise exec -- yarn format
+      stage_fixed: true
+    - run: mise exec -- yarn eslint .
+    - run: mise exec -- yarn build
