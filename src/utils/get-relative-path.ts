@@ -47,7 +47,7 @@ function getIsFsCaseSensitive() {
 }
 
 /** @private The Export is only for unit tests */
-function getMatchPortion(from: string, to: string): string {
+export function getMatchPortion(from: string, to: string): string {
   const lowerFrom = from.toLocaleLowerCase();
   const lowerTo = to.toLocaleLowerCase();
 

@@ -8,7 +8,6 @@ import type { CompilerOptions, EmitHost, Pattern, SourceFile } from "typescript"
 /* ****************************************************************************************************************** */
 
 export type ImportOrExportDeclaration = ts.ImportDeclaration | ts.ExportDeclaration;
-type ImportOrExportClause = ts.ImportDeclaration["importClause"] | ts.ExportDeclaration["exportClause"];
 
 // endregion
 
