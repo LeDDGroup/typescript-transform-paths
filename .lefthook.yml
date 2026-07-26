@@ -5,6 +5,6 @@ pre-commit:
       stage_fixed: true
     - run: mise exec -- yarn lint
     - run: mise exec -- yarn build
-    - run: mise exec -- yarn install --mode=update-lockfile && git add yarn.lock
-    - run: mise exec -- yarn test/ install --mode=update-lockfile && git add test/yarn.lock
+    - run: mise exec -- yarn install --mode=update-lockfile && yarn dedupe --mode=update-lockfile && git add yarn.lock
+    - run: mise exec -- yarn test/ install --mode=update-lockfile && yarn test/ dedupe --mode=update-lockfile && git add test/yarn.lock
     - run: mise exec -- yarn knip
