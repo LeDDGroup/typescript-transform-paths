@@ -5,7 +5,6 @@
 [![npm version](https://img.shields.io/npm/v/typescript-transform-paths.svg)](https://www.npmjs.com/package/typescript-transform-paths)
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FLeDDGroup%2Ftypescript-transform-paths%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/LeDDGroup/typescript-transform-paths/goto?ref=master)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 </div>
 
@@ -203,7 +202,7 @@ import "normally-transformed"; // This will remain 'normally-transformed' even t
 ## Project Guidelines for Contributors
 
 - Package Manager: `yarn` (`yarn install`)
-- Format and lint the code before commit: `prettier` (`yarn format && yarn lint`)
+- Format and lint the code before commit: `oxfmt` (`yarn format && yarn lint`)
 - Commit messages: [Conventional Commit Specs](https://www.conventionalcommits.org/en/v1.0.0/)
 - Releases: `changelogen` (`yarn release`)
 
@@ -218,7 +217,7 @@ GH_TOKEN=$(gh auth token) yarn release
 
 ## Maintainers
 
-<!-- prettier-ignore-start -->
+<!-- oxfmt-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
   <tr>
