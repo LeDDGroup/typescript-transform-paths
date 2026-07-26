@@ -4,11 +4,9 @@
   "description": "Transforms module resolution paths using TypeScript path mapping and/or custom paths",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.mjs"
-    },
-    "./plugins/nx": "./dist/plugins/nx.mjs"
+    ".": "./dist/index.mjs",
+    "./plugins/nx": "./dist/plugins/nx.mjs",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
@@ -31,6 +29,7 @@
       "src/index.ts",
       "src/plugins/*.ts"
     ],
+    "exports": true,
     "unbundle": false,
     "dts": true,
     "format": "esm",
@@ -91,5 +90,8 @@
   "engines": {
     "node": ">=22"
   },
-  "packageManager": "yarn@4.12.0+sha512.f45ab632439a67f8bc759bf32ead036a1f413287b9042726b7cc4818b7b49e14e9423ba49b18f9e06ea4941c1ad062385b1d8760a8d5091a1a31e5f6219afca8"
+  "packageManager": "yarn@4.12.0+sha512.f45ab632439a67f8bc759bf32ead036a1f413287b9042726b7cc4818b7b49e14e9423ba49b18f9e06ea4941c1ad062385b1d8760a8d5091a1a31e5f6219afca8",
+  "inlinedDependencies": {
+    "ts-patch": "3.3.0"
+  }
 }
