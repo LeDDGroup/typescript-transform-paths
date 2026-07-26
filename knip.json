@@ -2,5 +2,6 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "tags": ["-lintignore"],
   "entry": ["test/config.ts", "test/prepare.mjs", "test/tests/**/*.test.ts"],
+  "ignoreDependencies": ["@types/ts-expose-internals"],
   "ignore": ["examples/**/*", "test/projects/**/*"]
 }

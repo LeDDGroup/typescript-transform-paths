@@ -58,7 +58,9 @@
   ],
   "devDependencies": {
     "@tsconfig/bases": "^1.0.16",
+    "@types/minimatch": "^5.1.2",
     "@types/node": "^25.0.3",
+    "@types/ts-expose-internals": "npm:ts-expose-internals@4.9.5",
     "changelogen": "^0.6.2",
     "knip": "^6.29.0",
     "oxfmt": "^0.60.0",
