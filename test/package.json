@@ -13,7 +13,7 @@
     "escape-string-regexp": "^5.0.0",
     "ts-patch": "^3.3.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
+    "typescript": "^7.0.2",
     "typescript-transform-paths": "portal:../"
   },
   "workspaces": [
