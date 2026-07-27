@@ -270,10 +270,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tsconfig/bases@npm:^1.0.16":
-  version: 1.0.16
-  resolution: "@tsconfig/bases@npm:1.0.16"
-  checksum: 10c0/16fff7404ea3c89517806ab202f7d6edf3f523c0ac77e23e1cc0af8caf57173b4f12a3fc1c38d87152c0aebc1cfd2adecd65afa08a6688430a49b08390062011
+"@tsconfig/bases@npm:^1.0.26":
+  version: 1.0.26
+  resolution: "@tsconfig/bases@npm:1.0.26"
+  checksum: 10c0/dd2ed993479f43fea9705be59b6575da6dc7d60a9482f9eaecc8224e01b49eae09d532fdef0ea62f6ce51200725650221d821815d74738c0a89c8cc6bd45d254
   languageName: node
   linkType: hard
 
@@ -1130,7 +1130,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@tsconfig/bases": "npm:^1.0.16"
+    "@tsconfig/bases": "npm:^1.0.26"
     "@types/node": "npm:^25.0.3"
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5"
     escape-string-regexp: "npm:^5.0.0"
