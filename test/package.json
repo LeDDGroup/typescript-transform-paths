@@ -7,7 +7,7 @@
     "postinstall": "node prepare.mjs"
   },
   "devDependencies": {
-    "@tsconfig/bases": "^1.0.16",
+    "@tsconfig/bases": "^1.0.26",
     "@types/node": "^25.0.3",
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5",
     "escape-string-regexp": "^5.0.0",
