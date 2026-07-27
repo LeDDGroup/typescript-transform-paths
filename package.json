@@ -75,7 +75,7 @@
     "oxlint": "^1.75.0",
     "ts-patch": "^3.3.0",
     "tsdown": "^0.22.14",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   },
   "peerDependencies": {
     "typescript": ">=5"
