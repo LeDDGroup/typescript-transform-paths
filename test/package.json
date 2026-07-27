@@ -11,7 +11,7 @@
     "@types/node": "^25.0.3",
     "@types/ts-expose-internals": "npm:ts-expose-internals@^4.9.5",
     "escape-string-regexp": "^5.0.0",
-    "ts-patch": "^3.3.0",
+    "ts-patch": "^4.0.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-transform-paths": "portal:../"
