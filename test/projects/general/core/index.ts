@@ -24,6 +24,21 @@ const n: NoRuntimecodeHere = null as any;
 subs(2, 3);
 const a = new A("");
 
+export function MaySkipHooks() {
+  class SkippableOnce {
+    get skipHooks() {
+      return undefined;
+    }
+  }
+
+  return SkippableOnce;
+}
+
+export declare function AccessorTypes(): {
+  get value(): import("@utils/types-only").NoRuntimecodeHere;
+  set value(value: import("@utils/types-only").NoRuntimecodeHere);
+};
+
 (async function () {
   const Logger = await (await import("@dynamic/logger")).Logger;
   const logger = new Logger();
