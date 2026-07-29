@@ -31,6 +31,7 @@ const getExpected = (tsInstance: typeof ts, fileName: string, original: string, 
 describe(`Transformer -> General Tests`, () => {
   const projectRoot = path.join(projectsPaths, "general");
   const tsConfigFile = path.join(projectRoot, "tsconfig.json");
+  const coreIndexFile = path.join(projectRoot, "core/index.ts");
 
   for (const [s, tsInstance] of tsModules)
     describe(`TypeScript ${s}`, () => {
@@ -63,5 +64,15 @@ describe(`Transformer -> General Tests`, () => {
           test(`dts matches`, (t) => t.assert.strictEqual(transformed.dts, expected.dts));
         });
       }
+
+      test(`handles accessors in declaration return types`, (t) => {
+        const dts = transformedFiles[coreIndexFile].dts;
+
+        t.assert.match(dts, /export declare function MaySkipHooks\(\): \{[\s\S]*?get skipHooks\(\): any;[\s\S]*?\};/);
+        t.assert.match(
+          dts,
+          /export declare function AccessorTypes\(\): \{\s*get value\(\): import\("\.\.\/utils\/types-only"\)\.NoRuntimecodeHere;\s*set value\(value: import\("\.\.\/utils\/types-only"\)\.NoRuntimecodeHere\);\s*\};/,
+        );
+      });
     });
 });
