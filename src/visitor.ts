@@ -151,5 +151,32 @@ export function nodeVisitor(this: VisitorContext, node: ts.Node): ts.Node | unde
       factory.updateModuleDeclaration(node, node.modifiers, p, node.body),
     );
 
+  /*
+   * TypeScript suspends the surrounding lexical environment while visiting a
+   * function's return type. Starting another lexical environment for an
+   * accessor inside that type currently triggers a compiler assertion
+   * (microsoft/TypeScript#58020). Visit bodyless accessors manually so import
+   * types in their annotations are still transformed without entering another
+   * parameter-list lexical environment.
+   */
+  if (tsInstance.isGetAccessorDeclaration(node) && !node.body)
+    return factory.updateGetAccessorDeclaration(
+      node,
+      node.modifiers,
+      node.name,
+      node.parameters,
+      tsInstance.visitNode(node.type, this.getVisitor(), tsInstance.isTypeNode),
+      node.body,
+    );
+
+  if (tsInstance.isSetAccessorDeclaration(node) && !node.body)
+    return factory.updateSetAccessorDeclaration(
+      node,
+      node.modifiers,
+      node.name,
+      tsInstance.visitNodes(node.parameters, this.getVisitor(), tsInstance.isParameter),
+      node.body,
+    );
+
   return tsInstance.visitEachChild(node, this.getVisitor(), transformationContext);
 }
