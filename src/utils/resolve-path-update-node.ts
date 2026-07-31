@@ -1,7 +1,7 @@
 import type ts from "typescript";
 
 import type { VisitorContext } from "../types.ts";
-import { isURL, maybeAddRelativeLocalPrefix } from "./general-utils.ts";
+import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils.ts";
 import { resolveModuleName } from "./resolve-module-name.ts";
 import { isModulePathsMatch } from "./ts-helpers.ts";
 
@@ -30,11 +30,13 @@ export function resolvePathAndUpdateNode(
   }
 
   /* Resolve Module */
-  // Skip if no paths match found
-  if (!isModulePathsMatch(context, moduleName)) return node;
+  const isPathsMatch = isModulePathsMatch(context, moduleName);
+  const isBaseUrlOnlyMatch = !isPathsMatch && isBaseUrlOnlyModule(context, moduleName);
+  if (!isPathsMatch && !isBaseUrlOnlyMatch) return node;
 
   const res = resolveModuleName(context, moduleName);
   if (!res) return node;
+  if (isBaseUrlOnlyMatch && !isResolvedInBaseUrl(context, res.resolvedPath)) return node;
 
   const { outputPath, resolvedPath } = res;
 
@@ -105,4 +107,16 @@ export function resolvePathAndUpdateNode(
       return undefined;
     }
   }
+}
+
+function isBaseUrlOnlyModule(context: VisitorContext, moduleName: string): boolean {
+  return !!(!context.pathsPatterns && context.compilerOptions.baseUrl && moduleName[0] !== "." && !isURL(moduleName));
+}
+
+function isResolvedInBaseUrl(context: VisitorContext, resolvedPath: string | undefined): boolean {
+  const { baseUrl } = context.compilerOptions;
+  if (!baseUrl || !resolvedPath) return false;
+
+  const { normalizePath } = context.tsInstance;
+  return isBaseDir(normalizePath(baseUrl), normalizePath(resolvedPath));
 }
