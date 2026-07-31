@@ -40,3 +40,4 @@ const a = new A("");
   testerClass.test(12);
   testerConst.test("12");
 })();
+import '@core/styles.css';

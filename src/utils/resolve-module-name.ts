@@ -5,7 +5,7 @@ import { removeFileExtension, removeSuffix, type ResolvedModuleFull, type Source
 import type { VisitorContext } from "../types.ts";
 import { isBaseDir, isURL, maybeAddRelativeLocalPrefix } from "./general-utils.ts";
 import { getRelativePath } from "./get-relative-path.ts";
-import { getOutputDirForSourceFile } from "./ts-helpers.ts";
+import { getOutputDirForSourceFile, isModulePathsMatch } from "./ts-helpers.ts";
 
 export interface ResolvedModule {
   /** Absolute path to resolved module */
@@ -103,7 +103,7 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
   const { tsInstance, compilerOptions, sourceFile, config, rootDirs } = context;
 
   // Attempt to resolve with TS Compiler API
-  const { resolvedModule, failedLookupLocations } = tsInstance.resolveModuleName(
+  const { resolvedModule: tsResolvedModule, failedLookupLocations } = tsInstance.resolveModuleName(
     moduleName,
     sourceFile.fileName,
     compilerOptions,
@@ -111,14 +111,33 @@ export function resolveModuleName(context: VisitorContext, moduleName: string): 
   );
 
   // Handle non-resolvable module
+  let resolvedModule = tsResolvedModule;
   if (!resolvedModule) {
     const maybeURL = failedLookupLocations[0];
-    if (!isURL(maybeURL)) return undefined;
-    return {
-      isURL: true,
-      resolvedPath: undefined,
-      outputPath: maybeURL,
-    };
+    if (maybeURL && isURL(maybeURL)) {
+      return {
+        isURL: true,
+        resolvedPath: undefined,
+        outputPath: maybeURL,
+      };
+    }
+
+    /* Support non-ts files (like .css, .svg, etc.) */
+    if (isModulePathsMatch(context, moduleName)) {
+      for (const failedLocation of failedLookupLocations) {
+        const candidate = failedLocation.replace(/\.(ts|tsx|d\.ts|js|jsx)$/, "");
+        if (candidate !== failedLocation && tsInstance.sys.fileExists(candidate)) {
+          resolvedModule = {
+            resolvedFileName: candidate,
+            extension: path.extname(candidate),
+            isExternalLibraryImport: false,
+          } as ResolvedModuleFull;
+          break;
+        }
+      }
+    }
+
+    if (!resolvedModule) return undefined;
   }
 
   const resolvedSourceFile = getResolvedSourceFile(context, resolvedModule.resolvedFileName);
